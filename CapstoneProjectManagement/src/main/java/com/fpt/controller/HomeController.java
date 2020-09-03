@@ -10,8 +10,4 @@ public class HomeController {
 		return "home/home-page";
 	}
 	
-	@GetMapping("/")
-	public String hihi() {
-		return "home/home-page";
-	}
 }
