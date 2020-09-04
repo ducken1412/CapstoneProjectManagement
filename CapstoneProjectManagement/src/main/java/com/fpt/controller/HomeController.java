@@ -10,4 +10,7 @@ public class HomeController {
 		return "home/home-page";
 	}
 	
+	public void Hello() {
+		
+	}
 }
