@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Shop</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="OneTech shop project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<th:block th:include="home/_css"></th:block>
+	<link rel="stylesheet" type="text/css" th:href="@{/home/styles/shop_styles.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/home/styles/shop_responsive.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/home/plugins/jquery-ui-1.12.1.custom/jquery-ui.css}">
+</head>
+
+<body>
+
+<div class="super_container">
+	
+<!-- Header -->
+<th:block th:include="home/_header"></th:block>
+	
+	<div class="breadcrumbs">
+		<div class="container">
+			<a th:href="@{/}">Home</a>
+			<i class="fa fa-angle-right"></i>
+			<a th:href="@{/shop}">Shop</a>
+		</div>
+</div>
+
+	<div class="shop">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3">
+
+					<!-- Shop Sidebar -->
+					<div class="shop_sidebar">
+						<div class="sidebar_section">
+							<div class="sidebar_title">Categories</div>
+							<ul class="sidebar_categories">
+								<li><a href="#" class="category active" th:categoryId="0" >ALL CATEGORIES</a></li>
+								<li th:each="category : ${categories}"><a href="#" class="category" th:categoryId="${category.id}" th:text="${category.name}"></a></li>
+							</ul>
+						</div>
+						<div class="sidebar_section filter_by_section">
+							<div class="sidebar_title">Filter By</div>
+							<div class="sidebar_subtitle">Price</div>
+							<div class="filter_price">
+								<div id="slider-range" class="slider_range"></div>
+								<p>Range: </p>
+								<p><input id="amount" class="amount" readonly style="border:0; font-weight:bold;"></p>
+							</div>
+						</div>
+						<div class="sidebar_section shop_sorting filter_condition">
+								<span>Condition:</span>
+								<ul>
+									<li>
+										<span class="condition_text">All Condition<i class="fas fa-chevron-down"></span></i>
+										<input type="number" id="condition" value="0" hidden="hidden">
+										<ul>
+											<li class="shop_condition_button">All Condition</li>
+											<li class="shop_condition_button">New</li>
+											<li class="shop_condition_button">Old</li>
+											<li class="shop_condition_button">Refurbished</li>
+										</ul>
+									</li>	
+								</ul>
+							</div>
+					</div>
+
+				</div>
+
+				<div class="col-lg-9">
+					
+					<!-- Shop Content -->
+
+					<div class="shop_content" id="shop_content">
+						
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>	
+
+	<!-- Content end -->
+
+<th:block th:include="home/_footer"></th:block>
+	
+</div>
+
+<th:block th:include="home/_js"></th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.7/loadingoverlay.js"></script>
+<script th:src="@{/home/plugins/Isotope/isotope.pkgd.min.js}"></script>
+<script th:src="@{/home/plugins/jquery-ui-1.12.1.custom/jquery-ui.js}" ></script>
+<script th:src="@{/home/plugins/parallax-js-master/parallax.min.js}" ></script>
+<script th:src="@{/home/js/getValueShop.js}"></script>
+<script>
+	$().ready(function(){
+		$.LoadingOverlay("show", {
+			background : "rgba(255, 255, 255, 0.9)",
+			 size : 5
+		});
+		var url = window.location.search;
+		const params = new URL(location.href).searchParams;
+		const category = params.get('category');
+		const priceMax = params.get('priceMax');
+		const priceMin = params.get('priceMin');
+		const condition = params.get('condition');
+		const sortedBy = params.get('sortedBy');
+		const name = params.get('keyword');
+		var data = {
+				categoryId : category,
+				priceMax : priceMax,
+				priceMin : priceMin,
+				sortedBy : sortedBy,
+				condition : condition,
+				name : name
+		}
+		$.ajax({
+			url : '/list-product'+url,
+			type : 'GET',
+			data : data,
+			success : function(data) {
+				$('#shop_content').html(data);
+				$('#keyWord').val(name);
+			},
+			error: function(xhr){
+				if(xhr.status == 302 || xhr.status == 200){
+					window.location.href = '/shop'
+				}
+			},
+			complete: function() {
+				setTimeout(() => {
+					$.LoadingOverlay("hide");
+				}, 600);
+			}
+		});
+		
+		initPriceSlider();
+		initCategory();
+		initCondition();
+	});
+</script>
+</body>
+
+</html>
