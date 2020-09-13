@@ -29,4 +29,55 @@ public class EvaluationDetails {
 	private Users assessor;
 	@Column(name = "type", columnDefinition = "NVARCHAR(50) NOT NULL")
 	private String type;
+	
+	public EvaluationDetails() {
+		super();
+	}
+	
+	public EvaluationDetails(Evaluations evaluation, Integer grade, String content, Users assessor,
+			String type) {
+		super();
+		this.evaluation = evaluation;
+		this.grade = grade;
+		this.content = content;
+		this.assessor = assessor;
+		this.type = type;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Evaluations getEvaluation() {
+		return evaluation;
+	}
+	public void setEvaluation(Evaluations evaluation) {
+		this.evaluation = evaluation;
+	}
+	public Integer getGrade() {
+		return grade;
+	}
+	public void setGrade(Integer grade) {
+		this.grade = grade;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public Users getAssessor() {
+		return assessor;
+	}
+	public void setAssessor(Users assessor) {
+		this.assessor = assessor;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 }

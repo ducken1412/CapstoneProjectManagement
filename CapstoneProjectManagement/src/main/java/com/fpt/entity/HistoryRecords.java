@@ -36,4 +36,85 @@ public class HistoryRecords {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "evaluation_id")
 	private Evaluations evaluation;
+
+	public HistoryRecords() {
+		super();
+	}
+
+	public HistoryRecords(Users user, Date createdDate, Date lastModifiedDate, String content,
+			CapstoneProjects capstoneProject, Reports report, Evaluations evaluation) {
+		super();
+		this.user = user;
+		this.createdDate = createdDate;
+		this.lastModifiedDate = lastModifiedDate;
+		this.content = content;
+		this.capstoneProject = capstoneProject;
+		this.report = report;
+		this.evaluation = evaluation;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getLastModifiedDate() {
+		return lastModifiedDate;
+	}
+
+	public void setLastModifiedDate(Date lastModifiedDate) {
+		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public CapstoneProjects getCapstoneProject() {
+		return capstoneProject;
+	}
+
+	public void setCapstoneProject(CapstoneProjects capstoneProject) {
+		this.capstoneProject = capstoneProject;
+	}
+
+	public Reports getReport() {
+		return report;
+	}
+
+	public void setReport(Reports report) {
+		this.report = report;
+	}
+
+	public Evaluations getEvaluation() {
+		return evaluation;
+	}
+
+	public void setEvaluation(Evaluations evaluation) {
+		this.evaluation = evaluation;
+	}
+
 }

@@ -38,4 +38,76 @@ public class Reports {
 	private String type;
 	@OneToOne(mappedBy = "report")
 	private ReportDetails reportDetail;
+
+	public Reports() {
+		super();
+	}
+
+	public Reports(String name, List<HistoryRecords> historyRecords, Users sender, List<Users> reportRecipients,
+			String type, ReportDetails reportDetail) {
+		super();
+		this.name = name;
+		this.historyRecords = historyRecords;
+		this.sender = sender;
+		this.reportRecipients = reportRecipients;
+		this.type = type;
+		this.reportDetail = reportDetail;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<HistoryRecords> getHistoryRecords() {
+		return historyRecords;
+	}
+
+	public void setHistoryRecords(List<HistoryRecords> historyRecords) {
+		this.historyRecords = historyRecords;
+	}
+
+	public Users getSender() {
+		return sender;
+	}
+
+	public void setSender(Users sender) {
+		this.sender = sender;
+	}
+
+	public List<Users> getReportRecipients() {
+		return reportRecipients;
+	}
+
+	public void setReportRecipients(List<Users> reportRecipients) {
+		this.reportRecipients = reportRecipients;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public ReportDetails getReportDetail() {
+		return reportDetail;
+	}
+
+	public void setReportDetail(ReportDetails reportDetail) {
+		this.reportDetail = reportDetail;
+	}
+
 }

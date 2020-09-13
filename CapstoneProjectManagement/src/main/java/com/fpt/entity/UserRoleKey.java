@@ -19,4 +19,35 @@ public class UserRoleKey implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private Users user;
+
+	public UserRoleKey() {
+		super();
+	}
+
+	public UserRoleKey(Roles role, Users user) {
+		super();
+		this.role = role;
+		this.user = user;
+	}
+
+	public Roles getRole() {
+		return role;
+	}
+
+	public void setRole(Roles role) {
+		this.role = role;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

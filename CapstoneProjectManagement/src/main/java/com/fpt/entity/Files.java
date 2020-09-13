@@ -30,4 +30,67 @@ public class Files {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "evaluation_id")
 	private Evaluations evaluation;
+
+	public Files() {
+		super();
+	}
+
+	public Files(String path, String description, CapstoneProjects capstoneProject, ReportDetails reportDetail,
+			Evaluations evaluation) {
+		super();
+		this.path = path;
+		this.description = description;
+		this.capstoneProject = capstoneProject;
+		this.reportDetail = reportDetail;
+		this.evaluation = evaluation;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CapstoneProjects getCapstoneProject() {
+		return capstoneProject;
+	}
+
+	public void setCapstoneProject(CapstoneProjects capstoneProject) {
+		this.capstoneProject = capstoneProject;
+	}
+
+	public ReportDetails getReportDetail() {
+		return reportDetail;
+	}
+
+	public void setReportDetail(ReportDetails reportDetail) {
+		this.reportDetail = reportDetail;
+	}
+
+	public Evaluations getEvaluation() {
+		return evaluation;
+	}
+
+	public void setEvaluation(Evaluations evaluation) {
+		this.evaluation = evaluation;
+	}
+
 }
