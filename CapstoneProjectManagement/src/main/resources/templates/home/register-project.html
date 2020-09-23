@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Home</title>
+<meta name="description" content="Ela Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<th:block th:include="home/_css"></th:block>
+
+</head>
+<body>
+	<div
+		class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+		<th:block th:include="home/_header"></th:block>
+		<div class="app-main">
+			<div class="app-sidebar sidebar-shadow">
+				<th:block th:include="home/_menu"></th:block>
+			</div>
+			<div class="app-main__outer">
+				<div class="app-main__inner">
+					<div class="app-page-title">
+						<div class="page-title-wrapper">
+							<div class="page-title-heading">
+								<div class="page-title-icon">
+									<i class="fas fa-home icon-gradient bg-mean-fruit"> </i>
+								</div>
+								<div>register-project</div>
+							</div>
+						</div>
+					</div>
+					<div class="row h-auto">register-project</div>
+					<div class="container my-4">
+
+						<p class="font-weight-bold">An example of bootstrap select
+							dropdown with search. Easy to implement and customize. Examples
+							of basic and advanced usage.</p>
+
+						<p>
+							<strong>Detailed documentation and more examples you can
+								find in our <a
+								href="https://mdbootstrap.com/docs/jquery/forms/select/"
+								target="_blank">Bootstrap Select Docs</a>
+						</p>
+
+						<hr>
+
+						<p class="font-weight-bold">Basic example</p>
+
+						<select class="mdb-select md-form" searchable="Search here.." data-live-search="true">
+							<option value="" disabled selected>Choose your country</option>
+							<option value="1">USA</option>
+							<option value="2">Germany</option>
+							<option value="4">France</option>
+							<option value="5">Poland</option>
+							<option value="6">Japan</option>
+						</select>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<th:block th:include="home/_footer"></th:block>
+	</div>
+	<th:block th:include="home/_script"></th:block>
+
+
+</body>
+</html>
