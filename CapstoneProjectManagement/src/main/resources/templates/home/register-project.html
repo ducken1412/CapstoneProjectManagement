@@ -27,45 +27,73 @@
 								<div class="page-title-icon">
 									<i class="fas fa-home icon-gradient bg-mean-fruit"> </i>
 								</div>
-								<div>register-project</div>
+								<div>Register Detail</div>
 							</div>
 						</div>
 					</div>
-					<div class="row h-auto">register-project</div>
-					<div class="container my-4">
-
-						<p class="font-weight-bold">An example of bootstrap select
-							dropdown with search. Easy to implement and customize. Examples
-							of basic and advanced usage.</p>
-
-						<p>
-							<strong>Detailed documentation and more examples you can
-								find in our <a
-								href="https://mdbootstrap.com/docs/jquery/forms/select/"
-								target="_blank">Bootstrap Select Docs</a>
-						</p>
-
-						<hr>
-
-						<p class="font-weight-bold">Basic example</p>
-
-						<select class="mdb-select md-form" searchable="Search here.." data-live-search="true">
-							<option value="" disabled selected>Choose your country</option>
-							<option value="1">USA</option>
-							<option value="2">Germany</option>
-							<option value="4">France</option>
-							<option value="5">Poland</option>
-							<option value="6">Japan</option>
-						</select>
-
+					<div class="row h-auto">
+						<div class="card w-75">
+							<div class="card-body">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										
+										<form action="#" th:action="@{/registerproject}" th:object="${CapstonProjects}" method="post">
+											<div class="input-group">
+												<label for="name" class="col-form-label">Name Project</label>
+												 	<input class="form-control" placeholder="Add name project..." type="text">
+											</div>
+											<br />
+											<div class="input-group">
+												<label for="description" class="col-form-label">Description Project</label>
+												<input class="form-control" placeholder="Add description project..." type="text">
+											</div>
+											<br />
+											<div class="input-group">
+												<label for="profession" class="col-form-label">Profession Project</label>
+													<input class="form-control" placeholder="Add profession project..." type="text">
+											</div>
+											<br />
+											<div class="input-group">
+												<label for="program" class="col-form-label">Program Project</label>
+													<input class="form-control" placeholder="Add program project..." type="text">
+											</div>
+											<br />
+											<div class="input-group">
+												<label for="specialty" class="col-form-label">Specialty Project</label>
+													<input class="form-control" placeholder="Add specialty project..." type="text">
+											</div>
+											<br />
+											<div class="input-group">
+												<label for="document" class="col-form-label">Document Project</label>
+													<input class="form-control" placeholder="Add document project..." type="text">
+											</div>
+											<br />
+											<div class="pull-right">
+												<input value="Submit" type="Submit">
+											</div>
+											<br />
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 
 				</div>
 			</div>
+			<th:block th:include="home/_footer"></th:block>
 		</div>
-		<th:block th:include="home/_footer"></th:block>
+		<div class="modal fade" id="topic-container" data-toggle="modal"
+			tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content" id="modal-content"></div>
+			</div>
+		</div>
 	</div>
 	<th:block th:include="home/_script"></th:block>
+
+	<script th:src="@{/js/forum/forum.js}"></script>
 
 
 </body>

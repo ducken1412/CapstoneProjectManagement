@@ -1,6 +1,6 @@
 // Material Select Initialization
 $(document).ready(function() {
-	alert("asd")
+	//alert("asd")
 $('.mdb-select').materialSelect();
 });
 
