@@ -37,35 +37,40 @@
 								<div class="panel panel-default">
 									<div class="panel-body">
 										
-										<form action="#" th:action="@{/registerproject}" th:object="${CapstonProjects}" method="post">
+										<form action="#" th:action="@{/register}" th:object="${CapstonProjects}" method="post">
 											<div class="input-group">
 												<label for="name" class="col-form-label">Name Project</label>
-												 	<input class="form-control" placeholder="Add name project..." type="text">
+												 	<input class="form-control" placeholder="Add name project..." type="text" name="name">
 											</div>
 											<br />
 											<div class="input-group">
 												<label for="description" class="col-form-label">Description Project</label>
-												<input class="form-control" placeholder="Add description project..." type="text">
+												<input class="form-control" placeholder="Add description project..." type="text" name="description">
 											</div>
 											<br />
 											<div class="input-group">
 												<label for="profession" class="col-form-label">Profession Project</label>
-													<input class="form-control" placeholder="Add profession project..." type="text">
+													<input class="form-control" placeholder="Add profession project..." type="text" name="profession">
 											</div>
 											<br />
 											<div class="input-group">
 												<label for="program" class="col-form-label">Program Project</label>
-													<input class="form-control" placeholder="Add program project..." type="text">
+													<input class="form-control" placeholder="Add program project..." type="text" name="program">
 											</div>
 											<br />
 											<div class="input-group">
 												<label for="specialty" class="col-form-label">Specialty Project</label>
-													<input class="form-control" placeholder="Add specialty project..." type="text">
+													<input class="form-control" placeholder="Add specialty project..." type="text" name="specialty">
 											</div>
 											<br />
 											<div class="input-group">
 												<label for="document" class="col-form-label">Document Project</label>
-													<input class="form-control" placeholder="Add document project..." type="text">
+													<input class="form-control" placeholder="Add document project..." type="text" name="document">
+											</div>
+											<br />
+											<div class="input-group">
+												<label for="status_id" class="col-form-label">Status id</label>
+													<input class="form-control" placeholder="Add id status" value="1" name="status_id">
 											</div>
 											<br />
 											<div class="pull-right">

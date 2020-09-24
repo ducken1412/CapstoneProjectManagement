@@ -16,19 +16,22 @@ import com.fpt.entity.CapstoneProjects;
 import com.fpt.repository.RegisterProjectRepository;
 
 @Controller
-@RequestMapping("register")
+
 public class RegisterProjectController {
-//	@GetMapping("/registerproject")
-//	public String registerProject() {
-//		return "home/register-project";
-//	}
-//	
+	@GetMapping("/registerproject")
+	public String registerProject() {
+		return "home/register-project";
+	}
+	
 	@Autowired
 	private RegisterProjectRepository registerProjectRepository;
 	
+	
+	
+	
 	//add a project in the database
 	@ResponseBody
-	@RequestMapping(value= "/register-project", method= RequestMethod.POST)
+	@RequestMapping(value= "/register", method= RequestMethod.POST)
 	public String addRegisterPoject(CapstoneProjects capstoneProjects ,BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return "register-project";
