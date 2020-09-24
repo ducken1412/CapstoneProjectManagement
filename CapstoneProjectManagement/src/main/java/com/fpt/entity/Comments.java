@@ -29,47 +29,70 @@ public class Comments {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "report_detail_id")
 	private ReportDetails reportDetail;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "post_id")
+	private Posts post ;
 	
 	public Comments() {
 		super();
 	}
 
-	public Comments(String content, Users sender, Date createdDate, ReportDetails reportDetail) {
+	public Comments(String content, Users sender, Date createdDate, ReportDetails reportDetail, Posts post) {
 		super();
 		this.content = content;
 		this.sender = sender;
 		this.createdDate = createdDate;
 		this.reportDetail = reportDetail;
+		this.post = post;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	public Users getSender() {
 		return sender;
 	}
+
 	public void setSender(Users sender) {
 		this.sender = sender;
 	}
+
 	public Date getCreatedDate() {
 		return createdDate;
 	}
+
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
+
 	public ReportDetails getReportDetail() {
 		return reportDetail;
 	}
+
 	public void setReportDetail(ReportDetails reportDetail) {
 		this.reportDetail = reportDetail;
-	}	
+	}
+
+	public Posts getPost() {
+		return post;
+	}
+
+	public void setPost(Posts post) {
+		this.post = post;
+	}
+
+	
 }

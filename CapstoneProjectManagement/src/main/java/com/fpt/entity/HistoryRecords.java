@@ -36,6 +36,9 @@ public class HistoryRecords {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "evaluation_id")
 	private Evaluations evaluation;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "post_id")
+	private Posts post;
 
 	public HistoryRecords() {
 		super();
