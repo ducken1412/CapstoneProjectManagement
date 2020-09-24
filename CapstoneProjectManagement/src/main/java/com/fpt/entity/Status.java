@@ -1,10 +1,15 @@
 package com.fpt.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,21 +24,21 @@ public class Status {
 	private String name;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
 	private String description;
-	@OneToOne(mappedBy = "status")
-	private Users user;
-	@OneToOne(mappedBy = "status")
-	private CapstoneProjects capstoneProject;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
+	private List<Users> users;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
+	private List<CapstoneProjects> capstoneProjects;
 
 	public Status() {
 		super();
 	}
 
-	public Status(String name, String description, Users user, CapstoneProjects capstoneProject) {
+	public Status(String name, String description, List<Users> users, List<CapstoneProjects> capstoneProjects) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.user = user;
-		this.capstoneProject = capstoneProject;
+		this.users = users;
+		this.capstoneProjects = capstoneProjects;
 	}
 
 	public Integer getId() {
@@ -60,20 +65,22 @@ public class Status {
 		this.description = description;
 	}
 
-	public Users getUser() {
-		return user;
+	public List<Users> getUsers() {
+		return users;
 	}
 
-	public void setUser(Users user) {
-		this.user = user;
+	public void setUsers(List<Users> users) {
+		this.users = users;
 	}
 
-	public CapstoneProjects getCapstoneProject() {
-		return capstoneProject;
+	public List<CapstoneProjects> getCapstoneProjects() {
+		return capstoneProjects;
 	}
 
-	public void setCapstoneProject(CapstoneProjects capstoneProject) {
-		this.capstoneProject = capstoneProject;
+	public void setCapstoneProjects(List<CapstoneProjects> capstoneProjects) {
+		this.capstoneProjects = capstoneProjects;
 	}
+
+	
 
 }

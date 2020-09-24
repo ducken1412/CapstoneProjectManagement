@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,8 +34,8 @@ public class CapstoneProjects {
 	private String program;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String description;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "status_id", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "status_id")
 	private Status status;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<HistoryRecords> historyRecords;

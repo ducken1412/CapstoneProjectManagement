@@ -46,8 +46,8 @@ public class Users implements Serializable {
 	private Locations location;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
 	private String description;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "status_id", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "status_id")
 	private Status status;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userRoleKey.user")
 	private List<UserRoles> roleUser;
