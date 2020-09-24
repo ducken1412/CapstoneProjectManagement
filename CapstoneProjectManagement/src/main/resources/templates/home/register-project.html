@@ -37,7 +37,7 @@
 								<div class="panel panel-default">
 									<div class="panel-body">
 										
-										<form action="#" th:action="@{/register}" th:object="${CapstonProjects}" method="post">
+										<form action="#" th:action="@{/register}" th:object="${RegisterProjectDTO}" method="post">
 											<div class="input-group">
 												<label for="name" class="col-form-label">Name Project</label>
 												 	<input class="form-control" placeholder="Add name project..." type="text" name="name">
@@ -70,7 +70,7 @@
 											<br />
 											<div class="input-group">
 												<label for="status_id" class="col-form-label">Status id</label>
-													<input class="form-control" placeholder="Add id status" value="1" name="status_id">
+													<input class="form-control" placeholder="Add id status" value="1" name="stautus_id">
 											</div>
 											<br />
 											<div class="pull-right">
@@ -86,7 +86,7 @@
 
 				</div>
 			</div>
-			<th:block th:include="home/_footer"></th:block>
+<!-- 			<th:block th:include="home/_footer"></th:block> -->
 		</div>
 		<div class="modal fade" id="topic-container" data-toggle="modal"
 			tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"

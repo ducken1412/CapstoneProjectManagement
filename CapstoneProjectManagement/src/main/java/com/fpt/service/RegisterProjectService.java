@@ -1,5 +1,10 @@
 package com.fpt.service;
 
-public interface RegisterProjectService {
+import org.springframework.stereotype.Service;
 
+import com.fpt.entity.CapstoneProjects;
+
+@Service
+public interface RegisterProjectService {
+	boolean saveRegisterProject(CapstoneProjects capstoneProjects);
 }
