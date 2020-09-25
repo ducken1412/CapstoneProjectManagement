@@ -30,19 +30,23 @@ public class Files {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "evaluation_id")
 	private Evaluations evaluation;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "post_id")
+	private Posts post;
 
 	public Files() {
 		super();
 	}
 
 	public Files(String path, String description, CapstoneProjects capstoneProject, ReportDetails reportDetail,
-			Evaluations evaluation) {
+			Evaluations evaluation, Posts post) {
 		super();
 		this.path = path;
 		this.description = description;
 		this.capstoneProject = capstoneProject;
 		this.reportDetail = reportDetail;
 		this.evaluation = evaluation;
+		this.post = post;
 	}
 
 	public int getId() {
@@ -92,5 +96,15 @@ public class Files {
 	public void setEvaluation(Evaluations evaluation) {
 		this.evaluation = evaluation;
 	}
+
+	public Posts getPost() {
+		return post;
+	}
+
+	public void setPost(Posts post) {
+		this.post = post;
+	}
+
+	
 
 }

@@ -4,7 +4,7 @@ $("#btn-addTopic").click(function() {
 
 function getFormAddTopic() {
 	$.ajax({
-		url : '/add-topic',
+		url : '/add-post',
 		type : 'GET',
 		success : function(data) {
 			$('#modal-content').html(data);
