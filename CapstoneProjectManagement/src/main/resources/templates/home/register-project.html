@@ -27,13 +27,85 @@
 								<div class="page-title-icon">
 									<i class="fas fa-home icon-gradient bg-mean-fruit"> </i>
 								</div>
-								<div>Register Detail</div>
+								<div>Register Project</div>
 							</div>
 						</div>
 					</div>
 					<div class="row h-auto">
 						<div class="card w-75">
-							<div class="card-body">
+							<form class="form-horizontal" style="margin-left: 100px" action="#" th:action="@{/register}" th:object="${RegisterProjectDTO}" method="post">
+								<fieldset>
+									<div class="control-group" style="padding-bottom: 20px; margin-top:20px; ">
+										<!-- name -->
+										<label class="control-label" for="username">Name Project</label>
+										<div class="controls">
+											<input type="text" id="name" name="name"
+												placeholder="Name Project..." class="input-xlarge" style="width: 700px; padding-bottom: 10px;" >
+										</div>
+									</div>
+
+									<div class="control-group" style="padding-bottom: 20px;">
+										<!-- description -->
+										<label class="control-label" for="description">Description Project</label>
+										<div class="controls">
+											<input type="text" id="description" name="description" placeholder=""
+												class="input-xlarge" style="width: 700px; padding-bottom: 10px;">
+										</div>
+									</div>
+
+									<div class="control-group" style="padding-bottom: 20px;">
+										<!-- profession-->
+										<label class="control-label" for="password">Profession Project</label>
+										<div class="controls">
+											<input type="text" id="profession" name="profession"
+												placeholder="" class="input-xlarge" style="width: 700px; padding-bottom: 10px;">
+										</div>
+									</div>
+
+									<div class="control-group" style="padding-bottom: 20px;">
+										<!-- program -->
+										<label class="control-label" for="password_confirm">Program Project</label>
+										<div class="controls">
+											<input type="text" id="program"
+												name="program" placeholder="" class="input-xlarge"
+												style="width: 700px; padding-bottom: 10px;">
+										</div>
+									</div>
+
+									<div class="control-group" style="padding-bottom: 20px;">
+										<!-- specialty -->
+										<label class="control-label" for="password_confirm">Specialty Project</label>
+										<div class="controls">
+											<input type="text" id="specialty"
+												name="specialty" placeholder="" class="input-xlarge"
+												style="width: 700px; padding-bottom: 10px;">
+										</div>
+									</div>
+
+									<div class="control-group">
+										<!-- document -->
+										<label class="control-label" for="password_confirm">Document Project</label>
+										<div class="controls">
+											<input type="text" id="document"
+												name="document" placeholder="" class="input-xlarge"
+												style="width: 700px; padding-bottom: 10px;">
+										</div>
+									</div>
+
+									<div class="control-group" >
+										<!-- Button -->
+										<div class="controls"
+											style="padding-bottom: 20px; margin-top: 20px; margin-left: 620px">
+											<button class="btn btn-success">Register</button>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+							<script type="text/javascript">
+								
+							</script>
+
+							<!-- <div class="card-body">
 								<div class="panel panel-default">
 									<div class="panel-body">
 										
@@ -80,13 +152,13 @@
 										</form>
 									</div>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 
 				</div>
 			</div>
-<!-- 			<th:block th:include="home/_footer"></th:block> -->
+			<!-- 			<th:block th:include="home/_footer"></th:block> -->
 		</div>
 		<div class="modal fade" id="topic-container" data-toggle="modal"
 			tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
