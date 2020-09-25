@@ -10,7 +10,6 @@
 
 <th:block th:include="home/_css"></th:block>
 
-</head>
 <body>
 	<div
 		class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
@@ -80,7 +79,9 @@
 		</div>
 	</div>
 	<th:block th:include="home/_script"></th:block>
-
-	<script th:src="@{/js/forum/forum.js}"></script>
+	<script th:src="@{/js/forum/forum.js}">
+		
+	</script>
+	
 </body>
 </html>

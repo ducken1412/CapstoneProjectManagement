@@ -29,12 +29,12 @@ public class ForumController {
 		post.setTitle(dto.getTitle());
 		post.setDescription(dto.getDescription());
 		HistoryRecords records = new HistoryRecords();
-		return "home/add-topic";
+		return "home/add-post";
 	}
 	
 	@GetMapping("/add-post")
 	public String addPost(Model model) {
 		model.addAttribute("post", new PostDTO());
-		return "home/add-topic";
+		return "home/add-post";
 	}
 }
