@@ -39,13 +39,15 @@ public class RegisterProjectController {
 			return "register-project";
 		}
 		CapstoneProjects projects = new CapstoneProjects();
+		//register status = 1 (seding)
+		int status_id = 1;
 		projects.setName(dto.getName());
 		projects.setDescription(dto.getDescription());
 		projects.setDocument(dto.getDocument());
 		projects.setProfession(dto.getProfession());
 		projects.setSpecialty(dto.getSpecialty());
 		projects.setProgram(dto.getProgram());
-		projects.setStatus(statusService.getStatusById(dto.getStautus_id()));
+		projects.setStatus(statusService.getStatusById(status_id));
 		//System.out.println(capstoneProjects);
 		projectService.saveRegisterProject(projects);
 		return "redirect:list";
