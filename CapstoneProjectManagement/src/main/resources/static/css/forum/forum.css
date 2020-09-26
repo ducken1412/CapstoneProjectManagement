@@ -154,7 +154,7 @@ h1,h2,h3 {
 }
 
 .btn-primary,.label-primary,.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus  {
-	background-color:#3B5999;
+	background-color:#007bff;
     color:#fffffe;
 }
 .btn-default {
@@ -271,5 +271,9 @@ small.text-muted {
   #sidebar, #sidebar a, #sidebar-footer a {
     padding-left:3px;
   }
+}
+
+.page-item.active .page-link, .pagination .active.page-number .page-link {
+    background-color: #007bff !important;
 }
 
