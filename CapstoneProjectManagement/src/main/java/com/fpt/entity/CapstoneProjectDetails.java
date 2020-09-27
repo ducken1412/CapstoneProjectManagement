@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,21 +22,23 @@ public class CapstoneProjectDetails {
 	@Column(name = "id", columnDefinition = "INT")
 	private Integer id;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProjectDetails")
-	private List<Users> users;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "capstone_project_id")
+	private CapstoneProjects capstoneProject;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProjectDetails")
-	private List<CapstoneProjects> capstoneProjects;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private Users user;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProjectDetails")
-	private List<Status> status;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "status_id")
+	private Status status;
 
-	public CapstoneProjectDetails(Integer id, List<Users> users, List<CapstoneProjects> capstoneProjects,
-			List<Status> status) {
+	public CapstoneProjectDetails(Integer id, CapstoneProjects capstoneProject, Users user, Status status) {
 		super();
 		this.id = id;
-		this.users = users;
-		this.capstoneProjects = capstoneProjects;
+		this.capstoneProject = capstoneProject;
+		this.user = user;
 		this.status = status;
 	}
 
@@ -46,27 +50,27 @@ public class CapstoneProjectDetails {
 		this.id = id;
 	}
 
-	public List<Users> getUsers() {
-		return users;
+	public CapstoneProjects getCapstoneProject() {
+		return capstoneProject;
 	}
 
-	public void setUsers(List<Users> users) {
-		this.users = users;
+	public void setCapstoneProject(CapstoneProjects capstoneProject) {
+		this.capstoneProject = capstoneProject;
 	}
 
-	public List<CapstoneProjects> getCapstoneProjects() {
-		return capstoneProjects;
+	public Users getUser() {
+		return user;
 	}
 
-	public void setCapstoneProjects(List<CapstoneProjects> capstoneProjects) {
-		this.capstoneProjects = capstoneProjects;
+	public void setUser(Users user) {
+		this.user = user;
 	}
 
-	public List<Status> getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(List<Status> status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
