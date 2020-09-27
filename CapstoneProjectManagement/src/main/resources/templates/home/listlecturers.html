@@ -35,6 +35,31 @@
 					<section id="team" class="pb-5">
     <div class="container">
         <h5 class="section-title h1">LIST LECTURERS</h5>
+        <div class="card-body">
+                                <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Username</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                             <th>Phone</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Role</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="lecturer,state :${lecturers}" class="user-line">
+                                            <td th:text="${lecturer.id}"></td>
+                                            <td th:text="${lecturer.userName}"></td>
+                                            <td th:text="${lecturer.firstName}"></td>
+                                            <td th:text="${lecturer.lastName}"></td>
+                                            <td th:text="${lecturer.phone}"></td>
+                                            <td th:text="${lecturer.email}"></td>
+                                            <td th:text="${lecturer.address}"></td>
+                                            <td>
         <div class="row">
             <!-- Team member -->
             <div class="col-xs-12 col-sm-6 col-md-4">
@@ -43,7 +68,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="./img_01.png" alt="card image"></p>
+                                    <p><img class=" img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="card image"></p>
                                     <h4 class="card-title">Sunlimetech</h4>
                                     <p class="card-text">Lecturer at FPT University</p>
                                     <a href="#" class="btn btn-primary">Choose</a>
@@ -95,7 +120,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="./img_02.png" alt="card image"></p>
+                                    <p><img class=" img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="card image"></p>
                                     <h4 class="card-title">Sunlimetech</h4>
                                     <p class="card-text">Lecturer at FPT University</p>
                                     <a href="#" class="btn btn-primary">Choose</a>
@@ -146,7 +171,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="./img_03.png" alt="card image"></p>
+                                    <p><img class=" img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="card image"></p>
                                     <h4 class="card-title">Sunlimetech</h4>
                                     <p class="card-text">Lecturer at FPT University</p>
                                     <a href="#" class="btn btn-primary">Choose</a>
@@ -197,7 +222,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="./img_04.jpg" alt="card image"></p>
+                                    <p><img class=" img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="card image"></p>
                                     <h4 class="card-title">Sunlimetech</h4>
                                     <p class="card-text">Lecturer at FPT University</p>
                                     <a href="#" class="btn btn-primary">Choose</a>
@@ -248,7 +273,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="./img_05.png" alt="card image"></p>
+                                    <p><img class=" img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="card image"></p>
                                     <h4 class="card-title">Sunlimetech</h4>
                                     <p class="card-text">Lecturer at FPT University</p>
                                     <a href="#" class="btn btn-primary">Choose</a>
@@ -299,7 +324,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="./img_06.jpg" alt="card image"></p>
+                                    <p><img class=" img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="card image"></p>
                                     <h4 class="card-title">Sunlimetech</h4>
                                     <p class="card-text">Lecturer at FPT University</p>
                                     <a href="#" class="btn btn-primary">Choose</a>
