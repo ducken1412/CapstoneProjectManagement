@@ -40,9 +40,8 @@ public class CapstoneProjects {
 	private List<HistoryRecords> historyRecords;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<Files> files;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "capstone_project_detail_id")
-	private CapstoneProjectDetails capstoneProjectDetails;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
+	private List<CapstoneProjectDetails> capstoneProjectDetails;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<Evaluations> evaluations;
 
@@ -52,7 +51,7 @@ public class CapstoneProjects {
 
 	public CapstoneProjects(Integer id, String name, String profession, String specialty, String document,
 			String program, String description, Status status, List<HistoryRecords> historyRecords, List<Files> files,
-			CapstoneProjectDetails capstoneProjectDetails, List<Evaluations> evaluations) {
+			List<CapstoneProjectDetails> capstoneProjectDetails, List<Evaluations> evaluations) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -148,11 +147,11 @@ public class CapstoneProjects {
 		this.files = files;
 	}
 
-	public CapstoneProjectDetails getCapstoneProjectDetails() {
+	public List<CapstoneProjectDetails> getCapstoneProjectDetails() {
 		return capstoneProjectDetails;
 	}
 
-	public void setCapstoneProjectDetails(CapstoneProjectDetails capstoneProjectDetails) {
+	public void setCapstoneProjectDetails(List<CapstoneProjectDetails> capstoneProjectDetails) {
 		this.capstoneProjectDetails = capstoneProjectDetails;
 	}
 
