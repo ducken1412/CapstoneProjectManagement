@@ -73,18 +73,21 @@ public class Users implements Serializable {
 	private ReportDetails reportDetail;
 	@OneToOne(mappedBy = "assessor")
 	private EvaluationDetails evaluationDetail;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "author")
+	private List<Posts> posts;
 
 	public Users() {
 		super();
 	}
 
-	public Users(String userName, String encrytedPassword, String firstName, String lastName, Date birthDate,
+	public Users(String id, String userName, String encrytedPassword, String firstName, String lastName, Date birthDate,
 			Integer gender, String phone, String email, Date createdDate, Locations location, String description,
 			Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords,
 			CapstoneProjects capstoneProject, Notifications notificationSend, List<Notifications> notificationReceives,
 			Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments,
-			ReportDetails reportDetail, EvaluationDetails evaluationDetail) {
+			ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts) {
 		super();
+		this.id = id;
 		this.userName = userName;
 		this.encrytedPassword = encrytedPassword;
 		this.firstName = firstName;
@@ -108,6 +111,7 @@ public class Users implements Serializable {
 		this.comments = comments;
 		this.reportDetail = reportDetail;
 		this.evaluationDetail = evaluationDetail;
+		this.posts = posts;
 	}
 
 	public String getId() {
@@ -302,33 +306,12 @@ public class Users implements Serializable {
 		this.evaluationDetail = evaluationDetail;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public List<Posts> getPosts() {
+		return posts;
 	}
 
-	@Override
-	public String toString() {
-		return "Users [id=" + id + ", userName=" + userName + ", encrytedPassword=" + encrytedPassword + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", gender=" + gender + ", phone="
-				+ phone + ", email=" + email + ", createdDate=" + createdDate + ", location=" + location
-				+ ", description=" + description + ", status=" + status + ", roleUser=" + roleUser + ", historyRecords="
-				+ historyRecords + ", capstoneProject=" + capstoneProject + ", notificationSend=" + notificationSend
-				+ ", notificationReceives=" + notificationReceives + ", reportSend=" + reportSend + ", reportReceive="
-				+ reportReceive + ", reportReceives=" + reportReceives + ", comments=" + comments + ", reportDetail="
-				+ reportDetail + ", evaluationDetail=" + evaluationDetail + ", getId()=" + getId() + ", getUserName()="
-				+ getUserName() + ", getEncrytedPassword()=" + getEncrytedPassword() + ", getFirstName()="
-				+ getFirstName() + ", getLastName()=" + getLastName() + ", getBirthDate()=" + getBirthDate()
-				+ ", getGender()=" + getGender() + ", getPhone()=" + getPhone() + ", getEmail()=" + getEmail()
-				+ ", getCreatedDate()=" + getCreatedDate() + ", getLocation()=" + getLocation() + ", getDescription()="
-				+ getDescription() + ", getStatus()=" + getStatus() + ", getRoleUser()=" + getRoleUser()
-				+ ", getHistoryRecords()=" + getHistoryRecords() + ", getCapstoneProject()=" + getCapstoneProject()
-				+ ", getNotificationSend()=" + getNotificationSend() + ", getNotificationReceives()="
-				+ getNotificationReceives() + ", getReportSend()=" + getReportSend() + ", getReportReceive()="
-				+ getReportReceive() + ", getReportReceives()=" + getReportReceives() + ", getComments()="
-				+ getComments() + ", getReportDetail()=" + getReportDetail() + ", getEvaluationDetail()="
-				+ getEvaluationDetail() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
-				+ super.toString() + "]";
+	public void setPosts(List<Posts> posts) {
+		this.posts = posts;
 	}
-
 	
 }
