@@ -21,9 +21,9 @@ public class HistoryRecords {
 	private Integer id;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Users user;
-	@Column(name = "created_date", columnDefinition = "DATE")
+	@Column(name = "created_date", columnDefinition = "DATETIME")
 	private Date createdDate;
-	@Column(name = "last_modified_date", columnDefinition = "DATE")
+	@Column(name = "last_modified_date", columnDefinition = "DATETIME")
 	private Date lastModifiedDate;
 	@Column(name = "content", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String content;
@@ -44,9 +44,10 @@ public class HistoryRecords {
 		super();
 	}
 
-	public HistoryRecords(Users user, Date createdDate, Date lastModifiedDate, String content,
-			CapstoneProjects capstoneProject, Reports report, Evaluations evaluation) {
+	public HistoryRecords(Integer id, Users user, Date createdDate, Date lastModifiedDate, String content,
+			CapstoneProjects capstoneProject, Reports report, Evaluations evaluation, Posts post) {
 		super();
+		this.id = id;
 		this.user = user;
 		this.createdDate = createdDate;
 		this.lastModifiedDate = lastModifiedDate;
@@ -54,6 +55,7 @@ public class HistoryRecords {
 		this.capstoneProject = capstoneProject;
 		this.report = report;
 		this.evaluation = evaluation;
+		this.post = post;
 	}
 
 	public Integer getId() {
@@ -118,6 +120,14 @@ public class HistoryRecords {
 
 	public void setEvaluation(Evaluations evaluation) {
 		this.evaluation = evaluation;
+	}
+
+	public Posts getPost() {
+		return post;
+	}
+
+	public void setPost(Posts post) {
+		this.post = post;
 	}
 
 }

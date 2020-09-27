@@ -1,5 +1,6 @@
 package com.fpt.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,9 +24,11 @@ public class Posts {
 	private Integer id;
 	@Column(name = "title", columnDefinition = "NVARCHAR(256)")
 	private String title;
-	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
+	@Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
 	private String description;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
+	@Column(name = "created_date", columnDefinition = "DATETIME")
+	private Date created_date;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "post")
 	private List<Comments> comments;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
 	private List<HistoryRecords> historyRecords;
@@ -34,16 +37,18 @@ public class Posts {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "post_author")
 	private Users author;
-	
+
 	public Posts() {
 		super();
 	}
 
-	public Posts(String title, String description, List<Comments> comments, List<HistoryRecords> historyRecords,
-			List<Files> files, Users author) {
+	public Posts(Integer id, String title, String description, Date created_date, List<Comments> comments,
+			List<HistoryRecords> historyRecords, List<Files> files, Users author) {
 		super();
+		this.id = id;
 		this.title = title;
 		this.description = description;
+		this.created_date = created_date;
 		this.comments = comments;
 		this.historyRecords = historyRecords;
 		this.files = files;
@@ -72,6 +77,14 @@ public class Posts {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Date getCreated_date() {
+		return created_date;
+	}
+
+	public void setCreated_date(Date created_date) {
+		this.created_date = created_date;
 	}
 
 	public List<Comments> getComments() {
@@ -105,6 +118,5 @@ public class Posts {
 	public void setAuthor(Users author) {
 		this.author = author;
 	}
-	
-	
+
 }
