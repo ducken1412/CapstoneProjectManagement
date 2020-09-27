@@ -314,5 +314,4 @@ public class Users implements Serializable {
 	public void setPosts(List<Posts> posts) {
 		this.posts = posts;
 	}
-
 }
