@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,19 +27,22 @@ public class Status {
 	private String description;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
 	private List<Users> users;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
-	private List<CapstoneProjects> capstoneProjects;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "capstone_project_detail_id")
+	private CapstoneProjectDetails capstoneProjectDetails;
 
 	public Status() {
 		super();
 	}
 
-	public Status(String name, String description, List<Users> users, List<CapstoneProjects> capstoneProjects) {
+	public Status(Integer id, String name, String description, List<Users> users,
+			CapstoneProjectDetails capstoneProjectDetails) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.users = users;
-		this.capstoneProjects = capstoneProjects;
+		this.capstoneProjectDetails = capstoneProjectDetails;
 	}
 
 	public Integer getId() {
@@ -72,14 +77,12 @@ public class Status {
 		this.users = users;
 	}
 
-	public List<CapstoneProjects> getCapstoneProjects() {
-		return capstoneProjects;
+	public CapstoneProjectDetails getCapstoneProjectDetails() {
+		return capstoneProjectDetails;
 	}
 
-	public void setCapstoneProjects(List<CapstoneProjects> capstoneProjects) {
-		this.capstoneProjects = capstoneProjects;
+	public void setCapstoneProjectDetails(CapstoneProjectDetails capstoneProjectDetails) {
+		this.capstoneProjectDetails = capstoneProjectDetails;
 	}
-
-	
 
 }
