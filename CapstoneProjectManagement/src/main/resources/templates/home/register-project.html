@@ -36,7 +36,7 @@
 							<div class="card-body">
 								<div class="panel panel-default">
 									<div class="panel-body">
-									<form action="#" th:action="@{/register}" th:object="${RegisterProjectDTO}" method="post">
+									<form action="#" th:action="@{/register}" th:object="${RegisterProjectDTO}" method="post">				
 										<div class="form-group row">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">Name Project</label>
                                     <div class="col-md-6">
@@ -72,6 +72,19 @@
                                     </div>
                                 </div>
 
+								<div class="form-group row">
+									<label for="dropdown" class="col-md-4 col-form-label text-md-right">Add Member</label>
+										<div class="col-md-6">
+	                                        <select class="selectpicker" data-live-search="true" multiple="true">
+											<option value="" >Situation Maritale</option>
+											<option value="MARIE">Marié</option>
+											<option value="DIVORCE">Divorcé</option>
+											<option value="CELIBATAIRE">Célibataire</option>
+											<option value="VEUF">Veuf</option>
+										</select>
+	                                    </div>
+								</div>
+
                                 <div class="form-group row">
                                     <label for="description" class="col-md-4 col-form-label text-md-right">Description Project</label>
                                     <div class="col-md-6">
@@ -84,8 +97,9 @@
                                         Register
                                         </button>
                                     </div>
+                                    	</form>
                                 </div>
-									</form>
+								
 										
 										<!-- <form action="#" th:action="@{/register}" th:object="${RegisterProjectDTO}" method="post">
 											<div class="input-group">
