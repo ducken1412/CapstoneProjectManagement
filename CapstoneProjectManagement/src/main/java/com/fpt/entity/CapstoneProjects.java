@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -41,8 +40,9 @@ public class CapstoneProjects {
 	private List<HistoryRecords> historyRecords;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<Files> files;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
-	private List<Users> users;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "capstone_project_detail_id")
+	private CapstoneProjectDetails capstoneProjectDetails;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<Evaluations> evaluations;
 
@@ -50,10 +50,11 @@ public class CapstoneProjects {
 		super();
 	}
 
-	public CapstoneProjects(String name, String profession, String specialty, String document, String program,
-			String description, Status status, List<HistoryRecords> historyRecords, List<Files> files,
-			List<Users> users, List<Evaluations> evaluations) {
+	public CapstoneProjects(Integer id, String name, String profession, String specialty, String document,
+			String program, String description, Status status, List<HistoryRecords> historyRecords, List<Files> files,
+			CapstoneProjectDetails capstoneProjectDetails, List<Evaluations> evaluations) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.profession = profession;
 		this.specialty = specialty;
@@ -63,7 +64,7 @@ public class CapstoneProjects {
 		this.status = status;
 		this.historyRecords = historyRecords;
 		this.files = files;
-		this.users = users;
+		this.capstoneProjectDetails = capstoneProjectDetails;
 		this.evaluations = evaluations;
 	}
 
@@ -147,12 +148,12 @@ public class CapstoneProjects {
 		this.files = files;
 	}
 
-	public List<Users> getUsers() {
-		return users;
+	public CapstoneProjectDetails getCapstoneProjectDetails() {
+		return capstoneProjectDetails;
 	}
 
-	public void setUsers(List<Users> users) {
-		this.users = users;
+	public void setCapstoneProjectDetails(CapstoneProjectDetails capstoneProjectDetails) {
+		this.capstoneProjectDetails = capstoneProjectDetails;
 	}
 
 	public List<Evaluations> getEvaluations() {
@@ -163,5 +164,4 @@ public class CapstoneProjects {
 		this.evaluations = evaluations;
 	}
 
-	
 }
