@@ -11,5 +11,5 @@ import com.fpt.entity.CapstoneProjects;
 @Repository
 public interface RegisterProjectRepository extends JpaRepository<CapstoneProjects, Long>{
 	List<CapstoneProjects> findByName(String name);
-
+	
 }
