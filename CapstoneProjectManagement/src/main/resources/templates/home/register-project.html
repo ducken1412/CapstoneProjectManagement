@@ -76,11 +76,10 @@
 									<label for="dropdown" class="col-md-4 col-form-label text-md-right">Add Member</label>
 										<div class="col-md-6">
 	                                        <select class="selectpicker" data-live-search="true" multiple="true">
-											<option value="" >Situation Maritale</option>
-											<option value="MARIE">Marié</option>
-											<option value="DIVORCE">Divorcé</option>
-											<option value="CELIBATAIRE">Célibataire</option>
-											<option value="VEUF">Veuf</option>
+	                                        <th:block th:each="user: ${user}">
+	                                        <option value="${user.id}" th:text="${user.userName}"></option>
+	                                        </th:block>
+											
 										</select>
 	                                    </div>
 								</div>
