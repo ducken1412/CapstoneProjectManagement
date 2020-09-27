@@ -53,9 +53,8 @@ public class Users implements Serializable {
 	private List<UserRoles> roleUser;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
 	private List<HistoryRecords> historyRecords;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "capstone_project_detail_id")
-	private CapstoneProjectDetails capstoneProjectDetails;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
+	private List<CapstoneProjectDetails> capstoneProjectDetails;
 	@OneToOne(mappedBy = "sender")
 	private Notifications notificationSend;
 	@ManyToMany(mappedBy = "receivers")
@@ -83,7 +82,7 @@ public class Users implements Serializable {
 	public Users(String id, String userName, String encrytedPassword, String firstName, String lastName, Date birthDate,
 			Integer gender, String phone, String email, Date createdDate, Locations location, String description,
 			Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords,
-			CapstoneProjectDetails capstoneProjectDetails, Notifications notificationSend,
+			List<CapstoneProjectDetails> capstoneProjectDetails, Notifications notificationSend,
 			List<Notifications> notificationReceives, Reports reportSend, Reports reportReceive,
 			List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail,
 			EvaluationDetails evaluationDetail, List<Posts> posts) {
@@ -235,11 +234,11 @@ public class Users implements Serializable {
 		this.historyRecords = historyRecords;
 	}
 
-	public CapstoneProjectDetails getCapstoneProjectDetails() {
+	public List<CapstoneProjectDetails> getCapstoneProjectDetails() {
 		return capstoneProjectDetails;
 	}
 
-	public void setCapstoneProjectDetails(CapstoneProjectDetails capstoneProjectDetails) {
+	public void setCapstoneProjectDetails(List<CapstoneProjectDetails> capstoneProjectDetails) {
 		this.capstoneProjectDetails = capstoneProjectDetails;
 	}
 
@@ -314,4 +313,5 @@ public class Users implements Serializable {
 	public void setPosts(List<Posts> posts) {
 		this.posts = posts;
 	}
+
 }

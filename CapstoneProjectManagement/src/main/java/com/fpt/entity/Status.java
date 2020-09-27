@@ -9,8 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,16 +25,15 @@ public class Status {
 	private String description;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
 	private List<Users> users;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "capstone_project_detail_id")
-	private CapstoneProjectDetails capstoneProjectDetails;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
+	private List<CapstoneProjectDetails> capstoneProjectDetails;
 
 	public Status() {
 		super();
 	}
 
 	public Status(Integer id, String name, String description, List<Users> users,
-			CapstoneProjectDetails capstoneProjectDetails) {
+			List<CapstoneProjectDetails> capstoneProjectDetails) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -77,11 +74,11 @@ public class Status {
 		this.users = users;
 	}
 
-	public CapstoneProjectDetails getCapstoneProjectDetails() {
+	public List<CapstoneProjectDetails> getCapstoneProjectDetails() {
 		return capstoneProjectDetails;
 	}
 
-	public void setCapstoneProjectDetails(CapstoneProjectDetails capstoneProjectDetails) {
+	public void setCapstoneProjectDetails(List<CapstoneProjectDetails> capstoneProjectDetails) {
 		this.capstoneProjectDetails = capstoneProjectDetails;
 	}
 
