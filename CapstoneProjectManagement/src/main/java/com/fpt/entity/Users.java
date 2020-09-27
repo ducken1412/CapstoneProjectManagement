@@ -54,8 +54,8 @@ public class Users implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
 	private List<HistoryRecords> historyRecords;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "capstone_project_id")
-	private CapstoneProjects capstoneProject;
+	@JoinColumn(name = "capstone_project_detail_id")
+	private CapstoneProjectDetails capstoneProjectDetails;
 	@OneToOne(mappedBy = "sender")
 	private Notifications notificationSend;
 	@ManyToMany(mappedBy = "receivers")
@@ -73,18 +73,22 @@ public class Users implements Serializable {
 	private ReportDetails reportDetail;
 	@OneToOne(mappedBy = "assessor")
 	private EvaluationDetails evaluationDetail;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "author")
+	private List<Posts> posts;
 
 	public Users() {
 		super();
 	}
 
-	public Users(String userName, String encrytedPassword, String firstName, String lastName, Date birthDate,
+	public Users(String id, String userName, String encrytedPassword, String firstName, String lastName, Date birthDate,
 			Integer gender, String phone, String email, Date createdDate, Locations location, String description,
 			Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords,
-			CapstoneProjects capstoneProject, Notifications notificationSend, List<Notifications> notificationReceives,
-			Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments,
-			ReportDetails reportDetail, EvaluationDetails evaluationDetail) {
+			CapstoneProjectDetails capstoneProjectDetails, Notifications notificationSend,
+			List<Notifications> notificationReceives, Reports reportSend, Reports reportReceive,
+			List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail,
+			EvaluationDetails evaluationDetail, List<Posts> posts) {
 		super();
+		this.id = id;
 		this.userName = userName;
 		this.encrytedPassword = encrytedPassword;
 		this.firstName = firstName;
@@ -99,7 +103,7 @@ public class Users implements Serializable {
 		this.status = status;
 		this.roleUser = roleUser;
 		this.historyRecords = historyRecords;
-		this.capstoneProject = capstoneProject;
+		this.capstoneProjectDetails = capstoneProjectDetails;
 		this.notificationSend = notificationSend;
 		this.notificationReceives = notificationReceives;
 		this.reportSend = reportSend;
@@ -108,6 +112,7 @@ public class Users implements Serializable {
 		this.comments = comments;
 		this.reportDetail = reportDetail;
 		this.evaluationDetail = evaluationDetail;
+		this.posts = posts;
 	}
 
 	public String getId() {
@@ -230,12 +235,12 @@ public class Users implements Serializable {
 		this.historyRecords = historyRecords;
 	}
 
-	public CapstoneProjects getCapstoneProject() {
-		return capstoneProject;
+	public CapstoneProjectDetails getCapstoneProjectDetails() {
+		return capstoneProjectDetails;
 	}
 
-	public void setCapstoneProject(CapstoneProjects capstoneProject) {
-		this.capstoneProject = capstoneProject;
+	public void setCapstoneProjectDetails(CapstoneProjectDetails capstoneProjectDetails) {
+		this.capstoneProjectDetails = capstoneProjectDetails;
 	}
 
 	public Notifications getNotificationSend() {
@@ -302,8 +307,11 @@ public class Users implements Serializable {
 		this.evaluationDetail = evaluationDetail;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public List<Posts> getPosts() {
+		return posts;
 	}
 
+	public void setPosts(List<Posts> posts) {
+		this.posts = posts;
+	}
 }

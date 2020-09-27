@@ -3,14 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Template</title>
+<title>Forum</title>
 <meta name="description" content="Ela Admin - HTML5 Admin Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
 <th:block th:include="home/_css"></th:block>
-
-</head>
 <body>
 	<div
 		class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
@@ -31,45 +29,19 @@
 							</div>
 						</div>
 					</div>
-					<div class="row h-auto">
-						<div class="card w-75">
+					<div class="">
+						<div class="card w-75 mb-2">
 							<div class="card-header pt-3">
 								<button class="card-title btn btn-primary" id="btn-addTopic"
 									data-toggle="modal" data-target="#topic-container">Add
 									Topic</button>
 							</div>
-							<div class="card-body">
-
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<a href="#" class="pull-right">View all</a>
-										<h4>Title here</h4>
-									</div>
-									<div class="panel-body">
-										<a href="#" class="text-secondary">DucDD</a> <a href="#"
-											class="pull-right">Message</a>
-										<div class="clearfix"></div>
-										<hr>
-
-										<p>Comment here</p>
-
-										<hr>
-										<form>
-											<div class="input-group">
-												<input class="form-control" placeholder="Add a comment.."
-													type="text">
-											</div>
-										</form>
-
-									</div>
-								</div>
-							</div>
 						</div>
-					</div>
+						<div id="post-container"></div>
 
+					</div>
 				</div>
 			</div>
-			<th:block th:include="home/_footer"></th:block>
 		</div>
 		<div class="modal fade" id="topic-container" data-toggle="modal"
 			tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
@@ -79,8 +51,11 @@
 			</div>
 		</div>
 	</div>
+	<th:block th:include="home/_footer"></th:block>
 	<th:block th:include="home/_script"></th:block>
+	<script th:src="@{/js/forum/forum.js}">
+		
+	</script>
 
-	<script th:src="@{/js/forum/forum.js}"></script>
 </body>
 </html>

@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Detail</title>
+<meta name="description" content="Ela Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<th:block th:include="home/_css"></th:block>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="robots" content="noindex, nofollow">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+</head>
+<body>
+	<div
+		class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+		<th:block th:include="home/_header"></th:block>
+		<div class="app-main">
+			<div class="app-sidebar sidebar-shadow">
+				<th:block th:include="home/_menu"></th:block>
+			</div>
+			<div class="app-main__outer">
+				<div class="app-main__inner">
+					<div class="app-page-title">
+						<div class="page-title-wrapper">
+							<div class="page-title-heading">
+								<div class="page-title-icon">
+									<i class="fas fa-home icon-gradient bg-mean-fruit"> </i>
+								</div>
+								<div>Title</div>
+							</div>
+						</div>
+					</div>
+					<div class="row h-auto">
+						<div class="container emp-profile w-75 ml-2 mt-0">
+							<form method="post">
+
+								<div class="row">
+									<div class="col-md-4">
+										<div class="profile-img">
+											<img
+												src="https://scontent.fhan5-2.fna.fbcdn.net/v/t1.0-9/50565256_782137095472995_5004522719664930816_o.jpg?_nc_cat=102&amp;_nc_sid=85a577&amp;_nc_ohc=ajWkrED4AZ4AX-131le&amp;_nc_ht=scontent.fhan5-2.fna&amp;oh=9b777851279fac46cd4d1daf50b3d064&amp;oe=5F93DD7E" style="width: 285px" 
+												alt="" class="img-rounded">
+											<div class="file btn btn-lg btn-primary">
+												Change Photo <input type="file" name="file">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="profile-head">
+										<div class="row">
+												<div class="col-md-0">
+													<h1 th:text=${user.firstName}></h1>
+												</div>
+												<div class="col-md-2">
+													<h1 th:text=${user.lastName}></h1>
+												</div>
+											</div>
+										
+										
+										
+											<h6 style="margin-top: 10px">Web Developer and Designer</h6>
+											<p class="proile-rating">
+												RANKINGS : <span>8/10</span>
+											</p>
+
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="tab-content profile-tab" id="myTabContent">
+											<div class="row">
+												<div class="col-md-6">
+													<label>Birth Date :</label>
+												</div>
+												<div class="col-md-6">
+													<p th:text=${user.birthDate}></p>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Create Date :</label>
+												</div>
+												<div class="col-md-6">
+													<p th:text=${user.createdDate}></p>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Description :</label>
+												</div>
+												<div class="col-md-6">
+													<p th:text=${user.description}></p>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Email :</label>
+												</div>
+												<div class="col-md-6">
+													<p th:text=${user.email}></p>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Encryted Password :</label>
+												</div>
+												<div class="col-md-6">
+													<p th:text=${user.encrytedPassword}></p>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Gender :</label>
+												</div>
+												<div class="col-md-6">
+													<p th:text=${user.gender}></p>
+												</div>
+											</div>
+
+
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="tab-content profile-tab" id="myTabContent">
+
+											<div class="tab-pane fade active show" id="profile"
+												role="tabpanel" aria-labelledby="profile-tab">
+												<div class="row">
+													<div class="col-md-6">
+														<label>Phone :</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${user.phone}></p>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>User Name :</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${user.userName}></p>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Capstone Project : </label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${user.capstoneProject}></p>
+
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Location :</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${user.location}></p>
+
+
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Report Detail :</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${user.reportDetail}></p>
+
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Report Receive:</label>
+													</div>
+													<div class="col-md-6">
+													<p th:text=${user.reportReceives}></p>														
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Status :</label>
+													</div>
+													<div class="col-md-6">
+													<p th:text=${user.status}></p>
+														
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<script type="text/javascript">
+							
+						</script>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<th:block th:include="home/_footer"></th:block>
+	</div>
+	<th:block th:include="home/_script"></th:block>
+
+
+</body>
+</html>

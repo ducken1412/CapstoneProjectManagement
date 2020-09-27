@@ -1,7 +1,5 @@
 package com.fpt.dto;
 
-import com.fpt.entity.Status;
-
 public class RegisterProjectDTO {
 	private Integer id;
 	private String name;
