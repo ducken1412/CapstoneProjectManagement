@@ -306,4 +306,29 @@ public class Users implements Serializable {
 		return serialVersionUID;
 	}
 
+	@Override
+	public String toString() {
+		return "Users [id=" + id + ", userName=" + userName + ", encrytedPassword=" + encrytedPassword + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", gender=" + gender + ", phone="
+				+ phone + ", email=" + email + ", createdDate=" + createdDate + ", location=" + location
+				+ ", description=" + description + ", status=" + status + ", roleUser=" + roleUser + ", historyRecords="
+				+ historyRecords + ", capstoneProject=" + capstoneProject + ", notificationSend=" + notificationSend
+				+ ", notificationReceives=" + notificationReceives + ", reportSend=" + reportSend + ", reportReceive="
+				+ reportReceive + ", reportReceives=" + reportReceives + ", comments=" + comments + ", reportDetail="
+				+ reportDetail + ", evaluationDetail=" + evaluationDetail + ", getId()=" + getId() + ", getUserName()="
+				+ getUserName() + ", getEncrytedPassword()=" + getEncrytedPassword() + ", getFirstName()="
+				+ getFirstName() + ", getLastName()=" + getLastName() + ", getBirthDate()=" + getBirthDate()
+				+ ", getGender()=" + getGender() + ", getPhone()=" + getPhone() + ", getEmail()=" + getEmail()
+				+ ", getCreatedDate()=" + getCreatedDate() + ", getLocation()=" + getLocation() + ", getDescription()="
+				+ getDescription() + ", getStatus()=" + getStatus() + ", getRoleUser()=" + getRoleUser()
+				+ ", getHistoryRecords()=" + getHistoryRecords() + ", getCapstoneProject()=" + getCapstoneProject()
+				+ ", getNotificationSend()=" + getNotificationSend() + ", getNotificationReceives()="
+				+ getNotificationReceives() + ", getReportSend()=" + getReportSend() + ", getReportReceive()="
+				+ getReportReceive() + ", getReportReceives()=" + getReportReceives() + ", getComments()="
+				+ getComments() + ", getReportDetail()=" + getReportDetail() + ", getEvaluationDetail()="
+				+ getEvaluationDetail() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
+	}
+
+	
 }
