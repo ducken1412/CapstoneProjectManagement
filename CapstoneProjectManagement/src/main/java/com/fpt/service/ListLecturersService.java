@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 
 
 import com.fpt.dto.ListLecturersDTO;
+import com.fpt.dto.UserDTO;
+import com.fpt.entity.Users;
 
 @Service
 
 public interface ListLecturersService {
-	List<ListLecturersDTO> getAllLecturersDTOActive();
+	List<Users> getAllLecturersDTOActive();
 }
