@@ -1,5 +1,7 @@
 package com.fpt.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fpt.entity.Users;
@@ -16,4 +18,8 @@ public class UserServiceImpl implements UserService{
 		return userRepository.findById(id).orElse(null);
 	}
 
+	@Override
+	public List<Users> getAllUser() {
+		return userRepository.findAll();
+	}
 }
