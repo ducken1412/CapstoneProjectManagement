@@ -6,5 +6,10 @@ import com.fpt.entity.Users;
 
 public interface UserService {
 	Users findById(String id);
+	
+	//list all user, all role
 	List<Users> getAllUser();
+	
+	//list all user role student
+	List<Users> getAllUserStudent();
 }

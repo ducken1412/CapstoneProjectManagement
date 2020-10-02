@@ -2,14 +2,15 @@ package com.fpt.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.fpt.dto.RegisterProjectDTO;
 import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Users;
@@ -40,7 +41,7 @@ public class RegisterProjectController {
 	
 	//add a project in the database
 	@RequestMapping(value= "/register", method= RequestMethod.POST)
-	public String addRegisterPoject(RegisterProjectDTO dto ,BindingResult result, Model model) {
+	public String addRegisterPoject(@Valid RegisterProjectDTO dto ,BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return "register-project";
 		}
@@ -57,6 +58,6 @@ public class RegisterProjectController {
 		projects.setStatus(statusService.getStatusById(status_id));
 		//System.out.println(capstoneProjects);
 		projectService.saveRegisterProject(projects);
-		return "redirect:list";
+		return "redirect:";
 	}
 }
