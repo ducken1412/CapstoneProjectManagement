@@ -11,20 +11,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.fpt.dto.RegisterProjectDTO;
+import com.fpt.dto.CapstoneProjectDTO;
 import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Users;
-import com.fpt.service.RegisterProjectService;
+import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.StatusService;
 import com.fpt.service.UserService;
 
 @Controller
 
-public class RegisterProjectController {
+public class CapstoneProjectController {
 	
 	
 	@Autowired
-	private RegisterProjectService projectService;
+	private CapstoneProjectService projectService;
 	
 	@Autowired
 	private StatusService statusService;
@@ -41,7 +41,7 @@ public class RegisterProjectController {
 	
 	//add a project in the database
 	@RequestMapping(value= "/register", method= RequestMethod.POST)
-	public String addRegisterPoject(@Valid RegisterProjectDTO dto ,BindingResult result, Model model) {
+	public String addRegisterPoject(@Valid CapstoneProjectDTO dto ,BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return "register-project";
 		}

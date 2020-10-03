@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.CapstoneProjects;
-import com.fpt.repository.RegisterProjectRepository;
+import com.fpt.repository.CapstoneProjectRepository;
 
 
 @Service
-public class RegisterProjectServiceImpl implements RegisterProjectService {
+public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 
 	@Autowired
-	private RegisterProjectRepository registerProjectServiceImpl;
+	private CapstoneProjectRepository registerProjectServiceImpl;
 	
 	@Override
 	public boolean saveRegisterProject(CapstoneProjects capstoneProjects) {

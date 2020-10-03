@@ -23,6 +23,12 @@ public class CapstoneProjects {
 	private Integer id;
 	@Column(name = "name", columnDefinition = "NVARCHAR(100) NOT NULL")
 	private String name;
+	@Column(name = "name_lang_other", columnDefinition = "NVARCHAR(20)")
+	private String nameOther;
+	@Column(name = "name_vi", columnDefinition = "NVARCHAR(20)")
+	private String nameVi;
+	@Column(name = "name_abbreviation", columnDefinition = "NVARCHAR(20)")
+	private String nameAbbreviation;
 	@Column(name = "profession", columnDefinition = "NVARCHAR(10) NOT NULL")
 	private String profession;
 	@Column(name = "specialty", columnDefinition = "NVARCHAR(10) NOT NULL")
@@ -49,12 +55,15 @@ public class CapstoneProjects {
 		super();
 	}
 
-	public CapstoneProjects(Integer id, String name, String profession, String specialty, String document,
-			String program, String description, Status status, List<HistoryRecords> historyRecords, List<Files> files,
-			List<CapstoneProjectDetails> capstoneProjectDetails, List<Evaluations> evaluations) {
+	public CapstoneProjects(String name, String nameOther, String nameVi, String nameAbbreviation, String profession,
+			String specialty, String document, String program, String description, Status status,
+			List<HistoryRecords> historyRecords, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails,
+			List<Evaluations> evaluations) {
 		super();
-		this.id = id;
 		this.name = name;
+		this.nameOther = nameOther;
+		this.nameVi = nameVi;
+		this.nameAbbreviation = nameAbbreviation;
 		this.profession = profession;
 		this.specialty = specialty;
 		this.document = document;
@@ -65,6 +74,52 @@ public class CapstoneProjects {
 		this.files = files;
 		this.capstoneProjectDetails = capstoneProjectDetails;
 		this.evaluations = evaluations;
+	}
+
+	public CapstoneProjects(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation,
+			String profession, String specialty, String document, String program, String description, Status status,
+			List<HistoryRecords> historyRecords, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails,
+			List<Evaluations> evaluations) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.nameOther = nameOther;
+		this.nameVi = nameVi;
+		this.nameAbbreviation = nameAbbreviation;
+		this.profession = profession;
+		this.specialty = specialty;
+		this.document = document;
+		this.program = program;
+		this.description = description;
+		this.status = status;
+		this.historyRecords = historyRecords;
+		this.files = files;
+		this.capstoneProjectDetails = capstoneProjectDetails;
+		this.evaluations = evaluations;
+	}
+
+	public String getNameOther() {
+		return nameOther;
+	}
+
+	public void setNameOther(String nameOther) {
+		this.nameOther = nameOther;
+	}
+
+	public String getNameVi() {
+		return nameVi;
+	}
+
+	public void setNameVi(String nameVi) {
+		this.nameVi = nameVi;
+	}
+
+	public String getNameAbbreviation() {
+		return nameAbbreviation;
+	}
+
+	public void setNameAbbreviation(String nameAbbreviation) {
+		this.nameAbbreviation = nameAbbreviation;
 	}
 
 	public Integer getId() {

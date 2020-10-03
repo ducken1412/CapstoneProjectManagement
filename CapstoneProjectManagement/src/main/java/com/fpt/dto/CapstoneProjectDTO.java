@@ -1,23 +1,29 @@
 package com.fpt.dto;
 
-public class RegisterProjectDTO {
+public class CapstoneProjectDTO {
 	private Integer id;
 	private String name;
+	private String nameOther;
+	private String nameVi;
+	private String nameAbbreviation;
 	private String profession;
 	private String specialty;
 	private String document;
 	private String program;
 	private String description;
 	private Integer stautus_id;
-	
-	public RegisterProjectDTO() {
+
+	public CapstoneProjectDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public RegisterProjectDTO(String name, String profession, String specialty, String document,
-			String program, String description, Integer stautus_id) {
+	public CapstoneProjectDTO(String name, String nameOther, String nameVi, String nameAbbreviation, String profession,
+			String specialty, String document, String program, String description, Integer stautus_id) {
 		super();
 		this.name = name;
+		this.nameOther = nameOther;
+		this.nameVi = nameVi;
+		this.nameAbbreviation = nameAbbreviation;
 		this.profession = profession;
 		this.specialty = specialty;
 		this.document = document;
@@ -26,21 +32,49 @@ public class RegisterProjectDTO {
 		this.stautus_id = stautus_id;
 	}
 
-	public RegisterProjectDTO(Integer id, String name, String profession, String specialty, String document,
-			String program, String description, Integer stautus_id) {
+	public CapstoneProjectDTO(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation,
+			String profession, String specialty, String document, String program, String description,
+			Integer stautus_id) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.nameOther = nameOther;
+		this.nameVi = nameVi;
+		this.nameAbbreviation = nameAbbreviation;
 		this.profession = profession;
 		this.specialty = specialty;
 		this.document = document;
 		this.program = program;
 		this.description = description;
 		this.stautus_id = stautus_id;
+	}
+
+	public String getNameAbbreviation() {
+		return nameAbbreviation;
+	}
+
+	public void setNameAbbreviation(String nameAbbreviation) {
+		this.nameAbbreviation = nameAbbreviation;
 	}
 
 	public Integer getId() {
 		return id;
+	}
+
+	public String getNameOther() {
+		return nameOther;
+	}
+
+	public void setNameOther(String nameOther) {
+		this.nameOther = nameOther;
+	}
+
+	public String getNameVi() {
+		return nameVi;
+	}
+
+	public void setNameVi(String nameVi) {
+		this.nameVi = nameVi;
 	}
 
 	public void setId(Integer id) {
@@ -102,6 +136,5 @@ public class RegisterProjectDTO {
 	public void setStautus_id(Integer stautus_id) {
 		this.stautus_id = stautus_id;
 	}
-	
-	
+
 }
