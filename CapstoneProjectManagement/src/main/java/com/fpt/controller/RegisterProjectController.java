@@ -57,6 +57,6 @@ public class RegisterProjectController {
 		projects.setStatus(statusService.getStatusById(status_id));
 		//System.out.println(capstoneProjects);
 		projectService.saveRegisterProject(projects);
-		return "redirect:list";
+		return "redirect:";
 	}
 }

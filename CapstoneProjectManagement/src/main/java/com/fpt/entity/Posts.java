@@ -24,7 +24,7 @@ public class Posts {
 	private Integer id;
 	@Column(name = "title", columnDefinition = "NVARCHAR(256)")
 	private String title;
-	@Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
+	@Column(name = "description", columnDefinition = "longtext")
 	private String description;
 	@Column(name = "created_date", columnDefinition = "DATETIME")
 	private Date created_date;
