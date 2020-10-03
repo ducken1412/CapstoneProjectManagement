@@ -1,6 +1,5 @@
 package com.fpt.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,13 +13,11 @@ import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Users;
 import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.StatusService;
-import com.fpt.service.UserService;
 
 @Controller
 public class CapstoneProjectController {
 	@Autowired
 	private CapstoneProjectService projectService;
-	
 	@Autowired
 	private StatusService statusService;
 	
@@ -49,7 +46,6 @@ public class CapstoneProjectController {
 		projects.setSpecialty(dto.getSpecialty());
 		projects.setProgram(dto.getProgram());
 		projects.setStatus(statusService.getStatusById(status_id));
-		// System.out.println(capstoneProjects);
 		projectService.saveRegisterProject(projects);
 		return "redirect:";
 	}
