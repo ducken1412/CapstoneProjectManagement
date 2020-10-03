@@ -9,7 +9,7 @@ import com.fpt.entity.CapstoneProjects;
 
 
 @Repository
-public interface RegisterProjectRepository extends JpaRepository<CapstoneProjects, Long>{
+public interface CapstoneProjectRepository extends JpaRepository<CapstoneProjects, Long>{
 	List<CapstoneProjects> findByName(String name);
 	
 }
