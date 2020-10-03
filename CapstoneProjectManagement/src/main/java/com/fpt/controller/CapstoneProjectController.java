@@ -2,8 +2,6 @@ package com.fpt.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +17,7 @@ import com.fpt.service.StatusService;
 import com.fpt.service.UserService;
 
 @Controller
-
 public class CapstoneProjectController {
-	
-	
 	@Autowired
 	private CapstoneProjectService projectService;
 	
@@ -39,15 +34,13 @@ public class CapstoneProjectController {
 		return "home/register-project";
 	}
 	
-	//add a project in the database
-	@RequestMapping(value= "/register", method= RequestMethod.POST)
-	public String addRegisterPoject(@Valid CapstoneProjectDTO dto ,BindingResult result, Model model) {
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String addRegisterPoject(CapstoneProjectDTO dto, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return "register-project";
 		}
-		
 		CapstoneProjects projects = new CapstoneProjects();
-		//register status = 1 (sending)
 		int status_id = 1;
 		projects.setName(dto.getName());
 		projects.setDescription(dto.getDescription());
@@ -56,7 +49,7 @@ public class CapstoneProjectController {
 		projects.setSpecialty(dto.getSpecialty());
 		projects.setProgram(dto.getProgram());
 		projects.setStatus(statusService.getStatusById(status_id));
-		//System.out.println(capstoneProjects);
+		// System.out.println(capstoneProjects);
 		projectService.saveRegisterProject(projects);
 		return "redirect:";
 	}
