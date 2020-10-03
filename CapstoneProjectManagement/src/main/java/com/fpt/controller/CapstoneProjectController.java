@@ -1,6 +1,8 @@
 package com.fpt.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,8 @@ import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Users;
 import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.StatusService;
+import com.fpt.service.UserService;
+
 
 @Controller
 public class CapstoneProjectController {
@@ -38,14 +42,14 @@ public class CapstoneProjectController {
 			return "register-project";
 		}
 		CapstoneProjects projects = new CapstoneProjects();
-		int status_id = 1;
+		int statusId = 1;
 		projects.setName(dto.getName());
 		projects.setDescription(dto.getDescription());
 		projects.setDocument(dto.getDocument());
 		projects.setProfession(dto.getProfession());
 		projects.setSpecialty(dto.getSpecialty());
 		projects.setProgram(dto.getProgram());
-		projects.setStatus(statusService.getStatusById(status_id));
+		projects.setStatus(statusService.getStatusById(statusId));
 		projectService.saveRegisterProject(projects);
 		return "redirect:";
 	}
