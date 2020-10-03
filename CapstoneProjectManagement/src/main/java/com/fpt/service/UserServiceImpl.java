@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService {
 	public List<Users> getAllUser() {
 		return userRepository.findAll();
 	}
-
 	@Override
 	public List<Users> getAllUserStudent() {
 		// return userRepository.getAllUserStudent();
@@ -51,5 +50,4 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<Users> findAll() {
 		return userRepository.findAll();
-	}
 }

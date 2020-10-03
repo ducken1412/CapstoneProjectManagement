@@ -25,7 +25,7 @@
 		<th:block th:include="home/_header"></th:block>
 		<div class="app-main">
 			<div class="app-sidebar sidebar-shadow">
-				<th:block th:include="home/_menu"></th:block>
+				<th:blocAk th:include="home/_menu"></th:block>
 			</div>
 			<div class="app-main__outer">
 				<div class="app-main__inner">
@@ -67,9 +67,9 @@
 										
 										
 										
-											<h6 style="margin-top: 10px">Web Developer and Designer</h6>
-											<p class="proile-rating">
-												RANKINGS : <span>8/10</span>
+											
+											<p class="proile-ratin">
+												Role : <p th:text=${roleView}> </p>
 											</p>
 
 										</div>
@@ -83,17 +83,17 @@
 													<label>Birth Date :</label>
 												</div>
 												<div class="col-md-6">
-													<p th:text=${user.birthDate}></p>
+													<p th:text=${dob}></p>
 												</div>
 											</div>
-											<div class="row">
+											<!-- <div class="row">
 												<div class="col-md-6">
 													<label>Create Date :</label>
 												</div>
 												<div class="col-md-6">
-													<p th:text=${user.createdDate}></p>
+													<p th:text=${do}></p>
 												</div>
-											</div>
+											</div> -->
 											<div class="row">
 												<div class="col-md-6">
 													<label>Description :</label>
@@ -110,14 +110,14 @@
 													<p th:text=${user.email}></p>
 												</div>
 											</div>
-											<div class="row">
+											<!-- <div class="row">
 												<div class="col-md-6">
 													<label>Encryted Password :</label>
 												</div>
 												<div class="col-md-6">
 													<p th:text=${user.encrytedPassword}></p>
 												</div>
-											</div>
+											</div> -->
 											<div class="row">
 												<div class="col-md-6">
 													<label>Gender :</label>
@@ -126,6 +126,14 @@
 													<p th:text=${user.gender}></p>
 												</div>
 											</div>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Phone :</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${user.phone}></p>
+													</div>
+												</div>
 
 
 										</div>
@@ -135,14 +143,7 @@
 
 											<div class="tab-pane fade active show" id="profile"
 												role="tabpanel" aria-labelledby="profile-tab">
-												<div class="row">
-													<div class="col-md-6">
-														<label>Phone :</label>
-													</div>
-													<div class="col-md-6">
-														<p th:text=${user.phone}></p>
-													</div>
-												</div>
+											
 												<div class="row">
 													<div class="col-md-6">
 														<label>User Name :</label>
@@ -156,13 +157,13 @@
 														<label>Capstone Project : </label>
 													</div>
 													<div class="col-md-6">
-														<p th:text=${user.capstoneProject}></p>
+														<p ></p>
 
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-md-6">
-														<label>Location :</label>
+														<label>Address :</label>
 													</div>
 													<div class="col-md-6">
 														<p th:text=${user.location}></p>
@@ -170,7 +171,7 @@
 
 													</div>
 												</div>
-												<div class="row">
+												<!-- <div class="row">
 													<div class="col-md-6">
 														<label>Report Detail :</label>
 													</div>
@@ -186,7 +187,7 @@
 													<div class="col-md-6">
 													<p th:text=${user.reportReceives}></p>														
 													</div>
-												</div>
+												</div> -->
 												<div class="row">
 													<div class="col-md-6">
 														<label>Status :</label>
