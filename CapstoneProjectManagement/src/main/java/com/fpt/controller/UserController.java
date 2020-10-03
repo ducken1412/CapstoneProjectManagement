@@ -1,12 +1,9 @@
 package com.fpt.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.security.Principal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.fpt.entity.Users;
 import com.fpt.service.UserRoleService;
 import com.fpt.service.UserService;
