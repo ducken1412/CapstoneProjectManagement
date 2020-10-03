@@ -42,14 +42,14 @@ public class CapstoneProjectController {
 			return "register-project";
 		}
 		CapstoneProjects projects = new CapstoneProjects();
-		int status_id = 1;
+		int statusId = 1;
 		projects.setName(dto.getName());
 		projects.setDescription(dto.getDescription());
 		projects.setDocument(dto.getDocument());
 		projects.setProfession(dto.getProfession());
 		projects.setSpecialty(dto.getSpecialty());
 		projects.setProgram(dto.getProgram());
-		projects.setStatus(statusService.getStatusById(status_id));
+		projects.setStatus(statusService.getStatusById(statusId));
 		projectService.saveRegisterProject(projects);
 		return "redirect:";
 	}
