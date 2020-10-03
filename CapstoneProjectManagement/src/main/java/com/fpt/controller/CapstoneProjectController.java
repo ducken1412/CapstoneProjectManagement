@@ -1,6 +1,8 @@
 package com.fpt.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,8 @@ import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Users;
 import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.StatusService;
+import com.fpt.service.UserService;
+
 
 @Controller
 public class CapstoneProjectController {
