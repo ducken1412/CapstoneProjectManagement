@@ -23,28 +23,31 @@
 <body>
 	<div class="jumbotron jumbotron-fluid">
 		<div class="container">
-			<h1>Capstone Project Management Login</h1>
-			<p>
-				Helping the school to have the tools to register and manage project
-				making and grading while <br />making it as easy, convenient and
-				fast as possible for students, teachers, and training rooms.
-			</p>
+					<img src= "/image/logo2.png"/>
 		</div>
+	</div>
+	<div class="container" style="padding-left: 254px;padding-top: 85px;">
+		<h1>Capstone Project Management Login</h1>
+		<p>
+			Helping the school to have the tools to register and manage project
+			making and grading while <br />making it as easy, convenient and
+			fast as possible for students, teachers, and training rooms.
+		</p>
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-4"></div>
-			<div class="col-sm-3">
-				<div style="padding-top: 200px;">
-					<a class="btn btn-block btn-social btn-google customBtn"
-						th:href="@{/auth/google}"> <span
-						class="fa fa-google width42px"></span> Sign in with Google
-					</a>
-					<h2 th:utext="${message}"></h2>
-			<!-- <span th:text="${T(com.fpt.utils.Constant).ROLE_STUDENT_LEADER}"></span> -->
+			<div class="col-sm-4"  > </div>
+				<div class="col-sm-4" style="padding-top: 30px; padding-left: 60px;">
+					<div>
+						<a class="btn btn-block btn-social btn-google customBtn"
+							th:href="@{/auth/google}"> <span
+							class="fa fa-google width42px"></span> Sign in with Google
+						</a>
+						<h2 th:utext="${message}"></h2>
+				<!-- <span th:text="${T(com.fpt.utils.Constant).ROLE_STUDENT_LEADER}"></span> -->
+					</div>
 				</div>
 
-			</div>
 			<div class="col-sm-4">
 			</div>
 		
