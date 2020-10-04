@@ -54,13 +54,6 @@ public class LoginController {
 		}
 	}
 
-	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
-	public String welcomePage(Model model) {
-		model.addAttribute("message", "This is welcome page!");
-		return "welcomePage";
-	}
-
-
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String adminPage(Model model, Principal principal) {
 		String userName = principal.getName();
@@ -70,13 +63,7 @@ public class LoginController {
 		model.addAttribute("userInfo", userInfo);
 		return "login/adminPage";
 	}
-/*
-	@RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
-	public String logoutSuccessfulPage(Model model) {
-		model.addAttribute("title", "Logout");
-		System.out.println("logout called");
-		return "logoutSuccessfulPage";
-	}*/
+
 
 	@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
 	public String userInfo(Model model, Principal principal) {
@@ -85,7 +72,7 @@ public class LoginController {
 		UserDetails loginedUser = (UserDetails) ((Authentication) principal).getPrincipal();
 		String userInfo = WebUtils.toString(loginedUser);
 		model.addAttribute("userInfo", userInfo);
-		return "/login/userInfoPage";
+		return "login/userInfoPage";
 	}
 
 	@RequestMapping(value = "/403", method = RequestMethod.GET)
@@ -109,7 +96,7 @@ public class LoginController {
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public String login(Model model) {
-		return "/login/loginPage";
+		return "login/loginPage";
 	}
 
 	@RequestMapping(value = { "/signin" }, method = RequestMethod.GET)

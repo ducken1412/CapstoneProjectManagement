@@ -37,6 +37,8 @@ public class Users implements Serializable {
 	private Integer gender;
 	@Column(name = "phone", columnDefinition = "VARCHAR(15) NOT NULL")
 	private String phone;
+	@Column(name = "image", columnDefinition = "longtext")
+	private String image;
 	@Column(name = "email", columnDefinition = "NVARCHAR(64) NOT NULL")
 	private String email;
 	@Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
@@ -85,7 +87,7 @@ public class Users implements Serializable {
 			List<CapstoneProjectDetails> capstoneProjectDetails, Notifications notificationSend,
 			List<Notifications> notificationReceives, Reports reportSend, Reports reportReceive,
 			List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail,
-			EvaluationDetails evaluationDetail, List<Posts> posts) {
+			EvaluationDetails evaluationDetail, List<Posts> posts,String image) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -112,6 +114,7 @@ public class Users implements Serializable {
 		this.reportDetail = reportDetail;
 		this.evaluationDetail = evaluationDetail;
 		this.posts = posts;
+		this.image = image;
 	}
 
 	public String getId() {
@@ -313,4 +316,12 @@ public class Users implements Serializable {
 	public void setPosts(List<Posts> posts) {
 		this.posts = posts;
 	}
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 }
