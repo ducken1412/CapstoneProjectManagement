@@ -43,8 +43,8 @@ public class Users implements Serializable {
 	private String email;
 	@Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
 	private Date createdDate;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "locations_id", referencedColumnName = "id")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "locations_id", referencedColumnName = "id", columnDefinition = "INT")
 	private Locations location;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
 	private String description;
@@ -57,11 +57,13 @@ public class Users implements Serializable {
 	private List<HistoryRecords> historyRecords;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
 	private List<CapstoneProjectDetails> capstoneProjectDetails;
-	@OneToOne(mappedBy = "sender")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "notification_id", referencedColumnName = "id", columnDefinition = "INT")
 	private Notifications notificationSend;
 	@ManyToMany(mappedBy = "receivers")
 	private List<Notifications> notificationReceives;
-	@OneToOne(mappedBy = "sender")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "report_id", referencedColumnName = "id", columnDefinition = "INT")
 	private Reports reportSend;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Reports reportReceive;
@@ -72,9 +74,10 @@ public class Users implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "report_detail_id")
 	private ReportDetails reportDetail;
-	@OneToOne(mappedBy = "assessor")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "evaluation_detail_id", referencedColumnName = "id", columnDefinition = "INT")
 	private EvaluationDetails evaluationDetail;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "author")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Posts> posts;
 
 	public Users() {

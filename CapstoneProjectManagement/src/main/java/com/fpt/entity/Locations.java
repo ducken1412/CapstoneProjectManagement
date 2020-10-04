@@ -2,6 +2,7 @@ package com.fpt.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +20,7 @@ public class Locations {
 	private String street;
 	@Column(name = "city", columnDefinition = "NVARCHAR(50) NOT NULL")
 	private String city;
-	@OneToOne(mappedBy = "location")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "location")
 	private Users user;
 
 	public Locations() {
