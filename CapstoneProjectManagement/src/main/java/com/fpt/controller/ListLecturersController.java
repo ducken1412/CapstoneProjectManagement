@@ -13,30 +13,41 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fpt.controller.ListLecturersController;
 import com.fpt.dto.ListLecturersDTO;
+import com.fpt.entity.Users;
 import com.fpt.service.ListLecturersService;
 import com.fpt.dto.ListLecturersDTO;
 import com.fpt.service.ListLecturersService;
 @Controller
 
 public class ListLecturersController {
+	/*
 	@GetMapping("/listlecturersproject")
 	public String registerProject() {
 		return "home/listlecturers";
 	}
+	*/
+	
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListLecturersController.class);
 	
 	@Autowired
 	private ListLecturersService lecturersServiceImpl;
 	
-	@RequestMapping(value = "/templates/home/listlecturers", method = RequestMethod.GET)
-	public String getListUser(Model model) {
+	@RequestMapping(value = "/listlecturersproject", method = RequestMethod.GET)
+	public String getListLecturers(Model model) {
 		LOGGER.info("Running on getListLecturers method of UserController");
 		
-		List<ListLecturersDTO> lecturer = lecturersServiceImpl.getAllLecturersDTOActive();
-		model.addAttribute("lecturers", lecturer);
+		List<Users> lecturer = lecturersServiceImpl.getAllLecturersDTOActive();
+		model.addAttribute("lecturer", lecturer);
+		
+		
 		return "home/listlecturers";
 	}
+	
+	
+	
+	
+	
 
 
 }

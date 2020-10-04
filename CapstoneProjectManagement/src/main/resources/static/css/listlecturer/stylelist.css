@@ -1,15 +1,18 @@
 .backside .card a {
     font-size: 18px;
     color: #007b5e !important;
+   
 }
 
 .frontside .card .card-title,
 .backside .card .card-title {
     color: #007b5e !important;
+    
 }
 
 .frontside .card .card-body img {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
+    
 }   
