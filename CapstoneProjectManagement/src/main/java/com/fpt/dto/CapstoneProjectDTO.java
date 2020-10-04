@@ -2,8 +2,13 @@ package com.fpt.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class CapstoneProjectDTO {
 	private Integer id;
+	@NotBlank
+	@Size(max=50)
 	private String name;
 	private String nameOther;
 	private String nameVi;

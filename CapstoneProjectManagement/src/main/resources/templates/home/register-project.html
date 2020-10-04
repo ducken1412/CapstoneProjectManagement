@@ -37,14 +37,15 @@
 								<div class="panel panel-default">
 									<div class="panel-body">
 										<form action="#" th:action="@{/register}"
-											th:object="${CapstoneProjectDTO}" method="post" id="register">
+											th:object="${capstoneProjectDTO}" method="post" id="register">
 											<div class="form-group row">
 												<label for="name"
 													class="col-md-4 col-form-label text-md-right">Name
 													Project</label>
 												<div class="col-md-6">
 													<input type="text" id="name" class="form-control"
-														name="name" required>
+														name="name" th:field="*{name}">
+													<span class="bg-danger pull-right" th:errors="*{name}">name Error</span>
 												</div>
 											</div>
 
