@@ -21,7 +21,7 @@ import com.fpt.service.ListLecturersService;
 public class ListLecturersController {
 	@GetMapping("/listlecturersproject")
 	public String registerProject() {
-		return "home/listlecturers";
+		return "home/ ";
 	}
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListLecturersController.class);
