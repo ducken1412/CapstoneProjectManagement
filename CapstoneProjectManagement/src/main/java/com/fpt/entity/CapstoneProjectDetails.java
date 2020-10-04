@@ -34,6 +34,10 @@ public class CapstoneProjectDetails {
 	@JoinColumn(name = "status_id")
 	private Status status;
 
+	public CapstoneProjectDetails() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public CapstoneProjectDetails(Integer id, CapstoneProjects capstoneProject, Users user, Status status) {
 		super();
 		this.id = id;

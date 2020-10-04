@@ -21,8 +21,14 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 			registerProjectServiceImpl.save(capstoneProjects);
 			return true;
 		} catch (Exception e) {
-			System.out.println("error");
+			System.out.println("error add capstone project");
 		}
 		return false;
+	}
+
+	@Override
+	public CapstoneProjects getCapstonProjectById(Integer id) {
+		CapstoneProjects cp = registerProjectServiceImpl.findById(id).orElse(null);
+		return cp;
 	}
 }
