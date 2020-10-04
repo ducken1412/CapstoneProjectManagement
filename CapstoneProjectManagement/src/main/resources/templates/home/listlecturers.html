@@ -37,62 +37,6 @@
         <h5 class="section-title h1">LIST LECTURERS</h5>
         <div class="row">
             <!-- Team member -->
-<!--             <div class="col-xs-12 col-sm-6 col-md-4"> -->
-<!--                 <div class="image-flip"> -->
-<!--                     <div class="mainflip flip-0"> -->
-<!--                         <div class="frontside"> -->
-<!--                             <div class="card"> -->
-<!--                                 <div class="card-body text-center"> -->
-<!--                                     <p><img class=" img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="card image"></p> -->
-<!--                                     <h4 class="card-title">Sunlimetech</h4> -->
-<!--                                     <p class="card-text">Lecturer at FPT University</p> -->
-<!--                                     <a href="#" class="btn btn-primary">Choose</a> -->
-                                    
-<!--                                 </div> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                         <div class="backside"> -->
-<!--                             <div class="card"> -->
-<!--                                 <div class="card-body text-center mt-4"> -->
-<!--                                     <h4 class="card-title">Infomation</h4> -->
-<!--                                     <p class="card-text"">Date of birth :</p> -->
-<!--                                     <p class="card-text">Phone Number :</p> -->
-<!--                                     <p class="card-text">Email : </p> -->
-                                    
-<!--                                      <tbody> -->
-<!--                                         <tr th:each="lecturer :${lecturer}" class="user-line"> -->
-<!--                                             <td th:text="${lecturer.birthDate}"></td> -->
-<!--                                             <td th:text="${lecturer.phone}"></td> -->
-<!--                                             <td th:text="${lecturer.email></td> -->
-                                            
-<!--                                     <ul class="list-inline"> -->
-<!--                                         <li class="list-inline-item"> -->
-<!--                                             <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02"> -->
-<!--                                                 <i class="fa fa-facebook"></i> -->
-<!--                                             </a> -->
-<!--                                         </li> -->
-<!--                                         <li class="list-inline-item"> -->
-<!--                                             <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02"> -->
-<!--                                                 <i class="fa fa-twitter"></i> -->
-<!--                                             </a> -->
-<!--                                         </li> -->
-<!--                                         <li class="list-inline-item"> -->
-<!--                                             <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02"> -->
-<!--                                                 <i class="fa fa-skype"></i> -->
-<!--                                             </a> -->
-<!--                                         </li> -->
-<!--                                         <li class="list-inline-item"> -->
-<!--                                             <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02"> -->
-<!--                                                 <i class="fa fa-google"></i> -->
-<!--                                             </a> -->
-<!--                                         </li> -->
-<!--                                     </ul> -->
-<!--                                 </div> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                     </div> -->
-<!--                 </div> -->
-<!--             </div> -->
             <!-- ./Team member -->
             <!-- Team member -->
             <div class="col-xs-12 col-sm-6 col-md-4" th:each="lecturer :${lecturer}">
@@ -102,42 +46,11 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <p><img class=" img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="card image"></p>
-                                    <h4 class="card-title">Sunlimetech</h4>
+                                    <a class="card-title" href=""><h6 class="card-title" th:text=${lecturer.userName}></h6></a>
                                     <p class="card-text">Lecturer at FPT University</p>
+                                    <p class="card-text" th:text=${lecturer.phone}></p>
+                                    <p class="card-text" th:text=${lecturer.email}></p>
                                     <a href="#" class="btn btn-primary">Choose</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Infomation</h4>
-                                    <p class="card-text" th:text=${lecturer.birthDate}>Date of birth : </p>
-                                    <p class="card-text" th:text=${lecturer.phone}>Phone Number : </p>
-                                    <p class="card-text" th:text=${lecturer.email}>Email : </p>
-                                    <p class="card-text" th:text=${lecturer.description}>Description : </p>                                    
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                <i class="fa fa-facebook"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                <i class="fa fa-twitter"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                <i class="fa fa-skype"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                <i class="fa fa-google"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>

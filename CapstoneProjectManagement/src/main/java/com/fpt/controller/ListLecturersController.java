@@ -39,6 +39,8 @@ public class ListLecturersController {
 		
 		List<Users> lecturer = lecturersServiceImpl.getAllLecturersDTOActive();
 		model.addAttribute("lecturer", lecturer);
+		
+		
 		return "home/listlecturers";
 	}
 	
