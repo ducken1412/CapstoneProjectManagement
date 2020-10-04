@@ -34,8 +34,8 @@ public class Posts {
 	private List<HistoryRecords> historyRecords;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
 	private List<Files> files;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "post_author")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "author_id")
 	private Users author;
 
 	public Posts() {
