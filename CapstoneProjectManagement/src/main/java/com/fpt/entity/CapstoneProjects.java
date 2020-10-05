@@ -29,8 +29,9 @@ public class CapstoneProjects {
 	private String nameVi;
 	@Column(name = "name_abbreviation", columnDefinition = "NVARCHAR(20)")
 	private String nameAbbreviation;
-	@Column(name = "profession", columnDefinition = "NVARCHAR(10) NOT NULL")
-	private String profession;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "profession_id")
+	private Profession profession;
 	@Column(name = "specialty", columnDefinition = "NVARCHAR(10) NOT NULL")
 	private String specialty;
 	@Column(name = "document", columnDefinition = "NVARCHAR(256) NOT NULL")
@@ -39,7 +40,7 @@ public class CapstoneProjects {
 	private String program;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String description;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "status_id")
 	private Status status;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
@@ -55,29 +56,8 @@ public class CapstoneProjects {
 		super();
 	}
 
-	public CapstoneProjects(String name, String nameOther, String nameVi, String nameAbbreviation, String profession,
-			String specialty, String document, String program, String description, Status status,
-			List<HistoryRecords> historyRecords, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails,
-			List<Evaluations> evaluations) {
-		super();
-		this.name = name;
-		this.nameOther = nameOther;
-		this.nameVi = nameVi;
-		this.nameAbbreviation = nameAbbreviation;
-		this.profession = profession;
-		this.specialty = specialty;
-		this.document = document;
-		this.program = program;
-		this.description = description;
-		this.status = status;
-		this.historyRecords = historyRecords;
-		this.files = files;
-		this.capstoneProjectDetails = capstoneProjectDetails;
-		this.evaluations = evaluations;
-	}
-
 	public CapstoneProjects(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation,
-			String profession, String specialty, String document, String program, String description, Status status,
+			Profession profession, String specialty, String document, String program, String description, Status status,
 			List<HistoryRecords> historyRecords, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails,
 			List<Evaluations> evaluations) {
 		super();
@@ -96,6 +76,22 @@ public class CapstoneProjects {
 		this.files = files;
 		this.capstoneProjectDetails = capstoneProjectDetails;
 		this.evaluations = evaluations;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getNameOther() {
@@ -122,27 +118,11 @@ public class CapstoneProjects {
 		this.nameAbbreviation = nameAbbreviation;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getProfession() {
+	public Profession getProfession() {
 		return profession;
 	}
 
-	public void setProfession(String profession) {
+	public void setProfession(Profession profession) {
 		this.profession = profession;
 	}
 
