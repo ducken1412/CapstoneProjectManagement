@@ -2,7 +2,7 @@ package com.fpt.service;
 
 
 
-import java.awt.print.Pageable;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -12,30 +12,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-
+import org.springframework.data.domain.Pageable;
 import com.fpt.repository.UserRepository;
-import com.fpt.service.ListLecturersServiceImpl;
+import com.fpt.service.LecturersServiceImpl;
 import com.fpt.dto.ListLecturersDTO;
 import com.fpt.dto.UserDTO;
 import com.fpt.entity.Posts;
 import com.fpt.entity.Users;
 
 
+
 @Service
 
-public class ListLecturersServiceImpl implements ListLecturersService{
+public class LecturersServiceImpl implements LecturersService{
 	
-private static final Logger LOGGER = LoggerFactory.getLogger(ListLecturersServiceImpl.class);
+private static final Logger LOGGER = LoggerFactory.getLogger(LecturersServiceImpl.class);
 	
 	@Autowired
-	private UserRepository listlecturerRepository;
+	private UserRepository userRepository;
 	
 	
 	@Override
 	public List<Users> getAllLecturersDTOActive() {
-		return listlecturerRepository.findAll();
+		return userRepository.findAll();
 	}
 	/*
 	@Override
@@ -55,4 +57,13 @@ private static final Logger LOGGER = LoggerFactory.getLogger(ListLecturersServic
 		return bookPage;
 	}
 	*/
+
+
+	@Override
+	public Page<Users> findPaginated(Pageable pageable) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+		return userRepository.findAll(secondPageWithFiveElements);
+	}
 }
