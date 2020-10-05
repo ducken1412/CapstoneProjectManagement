@@ -59,7 +59,7 @@ public class CapstoneProjectController {
 		projects.setNameAbbreviation(dto.getNameAbbreviation());
 		projects.setDescription(dto.getDescription());
 		projects.setDocument(dto.getDocument());
-		projects.setProfession(dto.getProfession());
+//		projects.setProfession(dto.getProfession());
 		projects.setSpecialty(dto.getSpecialty());
 		projects.setProgram(dto.getProgram());
 		projects.setStatus(statusService.getStatusById(statusId));
