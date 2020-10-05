@@ -37,12 +37,14 @@ public class Users implements Serializable {
 	private Integer gender;
 	@Column(name = "phone", columnDefinition = "VARCHAR(15) NOT NULL")
 	private String phone;
+	@Column(name = "image", columnDefinition = "longtext")
+	private String image;
 	@Column(name = "email", columnDefinition = "NVARCHAR(64) NOT NULL")
 	private String email;
 	@Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
 	private Date createdDate;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "locations_id", referencedColumnName = "id")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "locations_id", referencedColumnName = "id", columnDefinition = "INT")
 	private Locations location;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
 	private String description;
@@ -55,11 +57,13 @@ public class Users implements Serializable {
 	private List<HistoryRecords> historyRecords;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
 	private List<CapstoneProjectDetails> capstoneProjectDetails;
-	@OneToOne(mappedBy = "sender")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "notification_id", referencedColumnName = "id", columnDefinition = "INT")
 	private Notifications notificationSend;
 	@ManyToMany(mappedBy = "receivers")
 	private List<Notifications> notificationReceives;
-	@OneToOne(mappedBy = "sender")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "report_id", referencedColumnName = "id", columnDefinition = "INT")
 	private Reports reportSend;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Reports reportReceive;
@@ -70,9 +74,10 @@ public class Users implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "report_detail_id")
 	private ReportDetails reportDetail;
-	@OneToOne(mappedBy = "assessor")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "evaluation_detail_id", referencedColumnName = "id", columnDefinition = "INT")
 	private EvaluationDetails evaluationDetail;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "author")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Posts> posts;
 
 	public Users() {
@@ -85,7 +90,7 @@ public class Users implements Serializable {
 			List<CapstoneProjectDetails> capstoneProjectDetails, Notifications notificationSend,
 			List<Notifications> notificationReceives, Reports reportSend, Reports reportReceive,
 			List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail,
-			EvaluationDetails evaluationDetail, List<Posts> posts) {
+			EvaluationDetails evaluationDetail, List<Posts> posts,String image) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -112,6 +117,7 @@ public class Users implements Serializable {
 		this.reportDetail = reportDetail;
 		this.evaluationDetail = evaluationDetail;
 		this.posts = posts;
+		this.image = image;
 	}
 
 	public String getId() {
@@ -313,4 +319,12 @@ public class Users implements Serializable {
 	public void setPosts(List<Posts> posts) {
 		this.posts = posts;
 	}
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 }

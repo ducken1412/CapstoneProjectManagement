@@ -27,8 +27,7 @@ public class Reports {
 	private String name;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "report")
 	private List<HistoryRecords> historyRecords;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sender_id", referencedColumnName = "id", columnDefinition = "NVARCHAR(50) NOT NULL")
+	@OneToOne(mappedBy = "reportSend")
 	private Users sender;
 	@ManyToMany(cascade = { CascadeType.ALL })
 	@JoinTable(name = "Report_User", joinColumns = { @JoinColumn(name = "report_id") }, inverseJoinColumns = {
