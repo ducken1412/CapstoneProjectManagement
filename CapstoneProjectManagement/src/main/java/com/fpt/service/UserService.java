@@ -2,6 +2,9 @@ package com.fpt.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.fpt.entity.Users;
 
 public interface UserService {
@@ -20,5 +23,8 @@ public interface UserService {
 
 	List<Users> findAll();
 	List<Users> getUserByRoleId(Integer id);
+	
+	//pagination User
+	Page<Users> findPaginated(Pageable pageable);
 
 }

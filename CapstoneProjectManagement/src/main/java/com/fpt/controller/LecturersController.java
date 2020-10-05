@@ -41,8 +41,6 @@ public class LecturersController {
 	@Autowired
 	private UserService  userService;
 	
-	@Autowired
-	private LecturersService lecturersService;
 	
 //	@RequestMapping(value = "/listlecturersproject", method = RequestMethod.GET)
 //	public String getListLecturers(Model model) {
@@ -59,15 +57,16 @@ public class LecturersController {
 	public String getPosts(Model model, @RequestParam("page") Optional<Integer> page, 
 		      @RequestParam("size") Optional<Integer> size) {
 		LOGGER.info("Running on getListLecturers method of UserController");
+		//Id = 3 (role lecturers)
 		List<Users> lecturer = userService.getUserByRoleId(3);
 		model.addAttribute("lecturer", lecturer);
-
+		
+		//phan trang
 		int currentPage = page.orElse(1);
         int pageSize = size.orElse(6);
-
-		Page<Users> postPage = lecturersService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-		model.addAttribute("postPage", postPage);
-		int totalPages = postPage.getTotalPages();
+		Page<Users> lecturersPage = userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+		model.addAttribute("lecturersPage", lecturersPage);
+		int totalPages = lecturersPage.getTotalPages();
 		if (totalPages > 0) {
 			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 			model.addAttribute("pageNumbers", pageNumbers);
