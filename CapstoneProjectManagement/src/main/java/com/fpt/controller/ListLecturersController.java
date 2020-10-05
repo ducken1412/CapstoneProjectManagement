@@ -24,7 +24,7 @@ public class ListLecturersController {
 	/*
 	@GetMapping("/listlecturersproject")
 	public String registerProject() {
-		return "home/listlecturers";
+		return "home/ ";
 	}
 	*/
 	
