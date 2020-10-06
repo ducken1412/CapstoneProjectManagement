@@ -12,7 +12,7 @@
 		<div class="card-body pt-2">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<a href="#" class="text-secondary" style="font-size: 12px">DucDDSE04936</a>
+					<a th:href="@{'/user/' + ${post.author.id}}" class="text-secondary" style="font-size: 12px" th:text="${post.author.username}"></a>
 					<a href="#" class="pull-right">Message</a>
 					<p class="text-secondary" th:text=${post.created_date}></p>
 					<div class="p-2"
@@ -22,7 +22,7 @@
 					<div class="my-2 p-2"
 						style="background-color: #edeef0; width: fit-content; border-radius: 15px"
 						th:each="comment :${post.comments}">
-						<a href="#" class="">DucDDSE04936</a> <br> <span
+						<a th:href="@{'/user/' + ${comment.sender.id}}" class="" th:text="${comment.sender.username}"></a> <br> <span
 							th:text=${comment.content}></span>
 					</div>
 					<form class="form-comment" method="post">
