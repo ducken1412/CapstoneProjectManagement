@@ -130,6 +130,12 @@ public class ForumController {
 		Date date = new Date();
 		Posts post = postService.findById(dto.getPostId());
 		Comments comment = new Comments();
+		List<Users> author = userService.findByUsername("ducddse04936");
+		if (!author.isEmpty()) {
+			comment.setSender(author.get(0));
+		} else {
+			return "error/403Page";
+		}
 		comment.setCreatedDate(date);
 		comment.setContent(dto.getContent());
 		comment.setPost(post);
