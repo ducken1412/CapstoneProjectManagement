@@ -1,11 +1,7 @@
-<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Forum</title>
-<meta name="description" content="Ela Admin - HTML5 Admin Template">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
 
 <th:block th:include="home/_css"></th:block>
@@ -29,16 +25,15 @@
 							</div>
 						</div>
 					</div>
-					<div class="">
-						<div class="card w-75 mb-2">
-							<div class="card-header pt-3">
-								<button class="card-title btn btn-primary" id="btn-addTopic"
-									data-toggle="modal" data-target="#topic-container">Add
-									Topic</button>
+					<div class="w-75" id="content-body">
+						<div class="card mb-2">
+							<div class="card-header pt-3" style="background-color: #edeef0">
+								<button class="card-title btn btn-primary mt-2"
+									id="btn-addTopic" data-toggle="modal"
+									data-target="#topic-container">Add Topic</button>
 							</div>
 						</div>
 						<div id="post-container"></div>
-
 					</div>
 				</div>
 			</div>
@@ -53,9 +48,6 @@
 	</div>
 	<th:block th:include="home/_footer"></th:block>
 	<th:block th:include="home/_script"></th:block>
-	<script th:src="@{/js/forum/forum.js}">
-		
-	</script>
-
+	<script th:src="@{/js/forum/forum.js}"></script>
 </body>
 </html>

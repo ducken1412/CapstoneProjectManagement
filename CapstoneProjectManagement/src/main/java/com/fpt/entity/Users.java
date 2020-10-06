@@ -24,7 +24,7 @@ public class Users implements Serializable {
 	@Column(name = "id", columnDefinition = "NVARCHAR(50)")
 	private String id;
 	@Column(name = "user_name", columnDefinition = "NVARCHAR(50) NOT NULL")
-	private String userName;
+	private String username;
 	@Column(name = "encryted_password", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String encrytedPassword;
 	@Column(name = "first_name", columnDefinition = "NVARCHAR(30) NOT NULL")
@@ -84,7 +84,7 @@ public class Users implements Serializable {
 		super();
 	}
 
-	public Users(String id, String userName, String encrytedPassword, String firstName, String lastName, Date birthDate,
+	public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate,
 			Integer gender, String phone, String email, Date createdDate, Locations location, String description,
 			Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords,
 			List<CapstoneProjectDetails> capstoneProjectDetails, Notifications notificationSend,
@@ -93,7 +93,7 @@ public class Users implements Serializable {
 			EvaluationDetails evaluationDetail, List<Posts> posts,String image) {
 		super();
 		this.id = id;
-		this.userName = userName;
+		this.username = username;
 		this.encrytedPassword = encrytedPassword;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -128,12 +128,12 @@ public class Users implements Serializable {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEncrytedPassword() {
