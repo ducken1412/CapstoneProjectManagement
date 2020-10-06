@@ -35,7 +35,7 @@ public class SocialUserDetailsImpl implements SocialUserDetails {
 
 	@Override
 	public String getUsername() {
-		return appUser.getUserName();
+		return appUser.getUsername();
 	}
 
 	@Override

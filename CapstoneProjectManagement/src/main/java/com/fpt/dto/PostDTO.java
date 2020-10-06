@@ -2,12 +2,14 @@ package com.fpt.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fpt.entity.Comments;
 import com.fpt.entity.Files;
 import com.fpt.entity.HistoryRecords;
 import com.fpt.entity.Users;
 
 public class PostDTO {
+	@JsonProperty("id")
 	private Integer id;
 	private String title;
 	private String description;

@@ -61,4 +61,9 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userRoleRepository.getUserByRoleId(id);
 	}
+
+	@Override
+	public List<Users> findByUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
 }
