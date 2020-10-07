@@ -1,6 +1,10 @@
 package com.fpt.controller;
 
+import com.fpt.dto.CommentDTO;
+import com.fpt.entity.Comments;
 import com.fpt.entity.Files;
+import com.fpt.entity.Posts;
+import com.fpt.entity.Users;
 import com.fpt.service.FilesService;
 import com.fpt.service.FilesServiceImpl;
 import com.fpt.service.PostService;
@@ -13,6 +17,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +34,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +51,13 @@ public class FileUploadController {
 	 @Autowired
      private HttpServletRequest request;
 
-
+	 @RequestMapping(value = "/uploadMultipleFiles", method = RequestMethod.GET)
+	public String upload(Model model) {
+			model.addAttribute("upload", new Files());
+			return "common/upload";
+	}
+	 
+	 	
 
     @PostMapping("/uploadMultipleFiles")
     public List<Files> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
@@ -64,14 +76,13 @@ public class FileUploadController {
 				if (!new File(realPathtoUploads).exists()) {
 					new File(realPathtoUploads).mkdir();
 				}
-
 				logger.info("realPathtoUploads = {}", realPathtoUploads);
-
 				String orgName = file.getOriginalFilename();
 				String filePath = realPathtoUploads + orgName;
 				String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 				Files dbFile = new Files();
 				dbFile.setFileName(fileName);
+				logger.info("filename = {}", fileName);
 				dbFile.setPath(filePath);
 				filesService.saveFiles(dbFile);
 
@@ -85,6 +96,8 @@ public class FileUploadController {
 		return null;
 
 	}
+    
+   
 
 	@RequestMapping("/file/{filePath:.+}")
 	public void downloadResource(HttpServletRequest request, HttpServletResponse response,
