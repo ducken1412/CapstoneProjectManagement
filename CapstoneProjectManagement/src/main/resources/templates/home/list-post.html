@@ -14,9 +14,9 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<a th:href="@{'/user/' + ${post.author.id}}" class="text-secondary"
-						style="font-size: 12px" th:text="${post.author.username}"></a> <a
+						style="font-size: 14px" th:text="${post.author.username}"></a> <a
 						href="#" class="pull-right">Message</a>
-					<p class="text-secondary" th:text=${post.created_date}></p>
+					<p class="text-secondary" style="font-size: 14px" th:text=${post.created_date}></p>
 					<div class="p-2"
 						style="max-height: 400px; overflow-y: auto; border-radius: 15px"
 						th:utext=${post.description}></div>
@@ -39,7 +39,7 @@
 								class="btn btn-primary ml-2 btn-comment">
 								<span th:loadingPostId="${post.id}"
 									class="loading-send spinner-border spinner-border-sm mr-2"
-									role="status" aria-hidden="true" hidden="true"></span>Send
+									role="status" aria-hidden="true" hidden="false"></span>Send
 							</button>
 						</div>
 					</form>
