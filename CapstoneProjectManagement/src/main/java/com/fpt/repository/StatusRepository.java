@@ -8,4 +8,5 @@ import com.fpt.entity.Status;
 
 public interface StatusRepository extends JpaRepository<Status, Integer>{
 	public Optional<Status> findById(Integer id);
+	
 }

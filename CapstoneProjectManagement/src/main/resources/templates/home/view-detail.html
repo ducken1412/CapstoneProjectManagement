@@ -68,8 +68,8 @@
 										
 										
 											
-											<p class="proile-ratin">
-												Role : <p th:text=${roleView}> </p>
+											<p class="col-md-2" style="float: left">
+												<label>Role: <p th:text=${roleView}> </p></label> 
 											</p>
 
 										</div>
@@ -79,10 +79,10 @@
 									<div class="col-md-6">
 										<div class="tab-content profile-tab" id="myTabContent">
 											<div class="row">
-												<div class="col-md-6">
+												<div class="col-md-4">
 													<label>Birth Date :</label>
 												</div>
-												<div class="col-md-6">
+												<div class="col-md-4">
 													<p th:text=${dob}></p>
 												</div>
 											</div>
@@ -90,23 +90,23 @@
 												<div class="col-md-6">
 													<label>Create Date :</label>
 												</div>
-												<div class="col-md-6">
+												<div class="col-md-4">
 													<p th:text=${do}></p>
 												</div>
 											</div> -->
 											<div class="row">
-												<div class="col-md-6">
+												<div class="col-md-4">
 													<label>Description :</label>
 												</div>
-												<div class="col-md-6">
+												<div class="col-md-4">
 													<p th:text=${user.description}></p>
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-md-6">
+												<div class="col-md-4">
 													<label>Email :</label>
 												</div>
-												<div class="col-md-6">
+												<div class="col-md-4">
 													<p th:text=${user.email}></p>
 												</div>
 											</div>
@@ -119,18 +119,18 @@
 												</div>
 											</div> -->
 											<div class="row">
-												<div class="col-md-6">
+												<div class="col-md-4">
 													<label>Gender :</label>
 												</div>
-												<div class="col-md-6">
-													<p th:text=${user.gender}></p>
+												<div class="col-md-4">
+													<p th:text=${gender}></p>
 												</div>
 											</div>
 												<div class="row">
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<label>Phone :</label>
 													</div>
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<p th:text=${user.phone}></p>
 													</div>
 												</div>
@@ -145,28 +145,28 @@
 												role="tabpanel" aria-labelledby="profile-tab">
 											
 												<div class="row">
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<label>User Name :</label>
 													</div>
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<p th:text=${user.userName}></p>
 													</div>
 												</div>
 												<div class="row">
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<label>Capstone Project : </label>
 														<p th:text=${capstone}></p>
 													</div>
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<p ></p>
 
 													</div>
 												</div>
 												<div class="row">
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<label>Address :</label>
 													</div>
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<p th:text=${location}></p>
 
 
@@ -190,11 +190,11 @@
 													</div>
 												</div> -->
 												<div class="row">
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<label>Status :</label>
 													</div>
-													<div class="col-md-6">
-													<p th:text=${user.status}></p>
+													<div class="col-md-4">
+													<p th:text=${status}></p>
 														
 													</div>
 												</div>
