@@ -94,6 +94,8 @@ public class UserController {
 			model.addAttribute("status",user.getStatus().getName());
 		}
 		
+	
+		
 		
 		model.addAttribute("roleView",roleView);
 		List<String> capstone= capstoneProjectService.getCapstoneProjectNameByUserId(id);

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.fpt.entity.CapstoneProjectDetails;
 import com.fpt.entity.CapstoneProjects;
 @Repository
-public interface CapstoneProjectRepository extends JpaRepository<CapstoneProjectDetails, String> {
+public interface CapstoneProjectRepository extends JpaRepository<CapstoneProjects, String> {
 	@Query("SELECT ru.capstoneProject.name FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1")
 	List<String> getCapstoneProjectNameByUserId(String UserId);
 	
