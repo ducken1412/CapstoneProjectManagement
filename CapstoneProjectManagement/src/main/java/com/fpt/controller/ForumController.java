@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fpt.dto.CommentDTO;
 import com.fpt.dto.PostDTO;
@@ -76,10 +77,9 @@ public class ForumController {
 		return "home/list-post";
 	}
 
+	@ResponseBody
 	@PostMapping("/add-post")
-	public String addPost(@ModelAttribute PostDTO dto, Model model) {
-		int currentPage = 1;
-		int pageSize = 5;
+	public String addPost(@ModelAttribute PostDTO dto) {
 		Posts post;
 		Date date = new Date();
 		if (dto.getId() != null) {
@@ -92,7 +92,7 @@ public class ForumController {
 			records.setPost(post);
 			if (postService.save(post)) {
 				recordService.save(records);
-				return getPosts(model, String.valueOf(currentPage), String.valueOf(pageSize)); 
+				return "The post has been successfully updated"; 
 			} else {
 				return "error/403Page";
 			}
@@ -120,13 +120,12 @@ public class ForumController {
 		} else {
 			return "error/403Page";
 		}
-		return getPosts(model, String.valueOf(currentPage), String.valueOf(pageSize));
+		return "The post has been added successfully";
 	}
 
+	@ResponseBody
 	@PostMapping("/add-comment")
-	public String addComment(@ModelAttribute CommentDTO dto, Model model) {
-		int currentPage = 1;
-		int pageSize = 5;
+	public String addComment(@ModelAttribute CommentDTO dto) {
 		Date date = new Date();
 		Posts post = postService.findById(dto.getPostId());
 		Comments comment = new Comments();
@@ -143,7 +142,7 @@ public class ForumController {
 		List<Comments> comments = post.getComments();
 		comments.add(comment);
 		post.setComments(comments);
-		return getPosts(model, String.valueOf(currentPage), String.valueOf(pageSize));
+		return "success";
 	}
 
 	@GetMapping("/add-post")

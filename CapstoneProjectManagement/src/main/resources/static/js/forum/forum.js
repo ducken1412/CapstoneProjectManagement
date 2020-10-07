@@ -1,8 +1,8 @@
 $(document).ready(function () {
-  getListPost();
+	getListPostInit();
 });
 
-function getListPost() {
+function getListPostInit() {
   $.LoadingOverlay("show", {
     size: 50,
     maxSize: 50,
@@ -26,6 +26,27 @@ function getListPost() {
       }
     },
   });
+}
+
+function getListPost() {
+	const params = new URL(location.href).searchParams;
+	  const size = params.get("size");
+	  const page = params.get("page");
+	  $.ajax({
+	    url: "/list-post?size=" + size + "&page=" + page,
+	    type: "GET",
+	    success: function (data) {
+	      $("#post-container").html(data);
+	      if (!(size === null || page === null)) {
+	        window.history.pushState("", "", "/forum" + rewriteUrl(size, page));
+	      }
+	    },
+	    error: function (xhr) {
+	      if (xhr.status == 302 || xhr.status == 200) {
+	        window.location.href = "/forum";
+	      }
+	    },
+	  });
 }
 
 $(document).on("click", ".page-link", function (e) {
@@ -79,16 +100,16 @@ $(document).on("click", "#btn-addTopic", function () {
 
 $(document).on("click", "#btn-editTopic", function () {
   var postId = $(this).attr("postId");
-  getFormAddTopic()
-  $('#modal-content').LoadingOverlay("show", {
-	    size: 50,
-	    maxSize: 50,
-	  });
+  getFormAddTopic();
+  $("#modal-content").LoadingOverlay("show", {
+    size: 50,
+    maxSize: 50,
+  });
   $.ajax({
     url: "/edit-post/" + postId,
     type: "GET",
     success: function (data) {
-    	$('#modal-content').LoadingOverlay("hide");
+      $("#modal-content").LoadingOverlay("hide");
       $("#modal-content").html(data);
     },
     error: function (xhr) {
@@ -118,17 +139,25 @@ function getFormAddTopic() {
 
 $(document).on("submit", "#post-form", function (e) {
   e.preventDefault();
-  var postId = $("#id").val();
-  $('#loading-add').attr("hidden",false);
+  $("#loading-add").attr("hidden", false);
+  $("#btn-post").attr("disabled", true);
   dataForm = $("#post-form").serialize();
   $.ajax({
     url: "/add-post",
     type: "POST",
     data: dataForm,
     success: function (data) {
-    	$("#post-container").html(data);
-    	$('#topic-container').trigger('click');
-    	 $('#loading-add').attr("hidden",true);
+    	getListPost()
+    	$.showNotification({
+		  body: data,
+		  type: "success",
+		  duration: 3000,
+		  shadow: "0 2px 6px rgba(0,0,0,0.2)", 
+		  zIndex: 100,
+		  margin: "1rem"
+		})
+      $("#topic-container").trigger("click");
+      $("#loading-add").attr("hidden", true);
     },
     error: function (xhr) {
       $("#modal-content").html("Error");
@@ -139,17 +168,32 @@ $(document).on("submit", "#post-form", function (e) {
   });
 });
 
-
 $(document).on("submit", ".form-comment", function (e) {
   e.preventDefault();
-  $('#loading-send').attr("hidden",false);
+  const params = new URL(location.href).searchParams;
+  const size = params.get("size");
+  const page = params.get("page");
+  var values = {};
+  $.each($(this).serializeArray(), function (i, field) {
+    values[field.name] = field.value;
+  });
+  var getValue = function (valueName) {
+    return values[valueName];
+  };
+  var postId = getValue("postId");
+  dataForm = $(this).serialize();
+  $(".loading-send").each(function () {
+    if ($(this).attr("loadingPostId") === postId) {
+      $(this).attr("hidden", false);
+    }
+  });
   dataForm = $(this).serialize();
   $.ajax({
     url: "/add-comment",
     type: "POST",
     data: dataForm,
     success: function (data) {
-      $("#post-container").html(data);
+    	getListPost()
     },
     error: function (xhr) {
       if (xhr.status == 302 || xhr.status == 200) {
