@@ -66,11 +66,12 @@ public class UserServiceImpl implements UserService {
 		return userRoleRepository.getUserByRoleId(id);
 	}
 
+	//load user role = 3 (lecturers)
 	@Override
 	public Page<Users> findPaginated(Pageable pageable) {
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
-		return userRepository.findAll(secondPageWithFiveElements);
+		return userRepository.getUserByRoleId(secondPageWithFiveElements, 3);
 	}
 }

@@ -15,77 +15,80 @@
 	<div
 		class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
 		<th:block th:include="home/_header"></th:block>
-		<div class="app-main">
-			<div class="app-sidebar sidebar-shadow">
-				<th:block th:include="home/_menu"></th:block>
-			</div>
-			<div class="app-main__outer">
-				<div class="app-main__inner">
-					<div class="app-page-title">
-						<div class="page-title-wrapper">
-							<div class="page-title-heading">
-								<div class="page-title-icon">
-									<i class="fas fa-home icon-gradient bg-mean-fruit"> </i>
+
+		<div class="row w-75">
+			<div class="app-main">
+				<div class="app-sidebar sidebar-shadow">
+					<th:block th:include="home/_menu"></th:block>
+				</div>
+				<div class="app-main__outer">
+					<div class="app-main__inner">
+						<div class="app-page-title">
+							<div class="page-title-wrapper">
+								<div class="page-title-heading">
+									<div class="page-title-icon">
+										<i class="fas fa-home icon-gradient bg-mean-fruit"> </i>
+									</div>
+									<div>LIST LECTURERS</div>
 								</div>
-								<div>LIST LECTURERS</div>
 							</div>
 						</div>
-					</div>
-					<div class="row h-auto w-75">
-						<section id="team" class="pb-5">
-							<div class="container">
-								<div class="row">
-									<!-- Team member -->
-									<!-- ./Team member -->
-									<!-- Team member -->
-									<div class="col-xs-12 col-sm-6 col-md-4"
-										th:each="lecturer :${lecturersPage.content}">
-										<div class="image-flip"
-											>
-											<div class="mainflip">
-												<div class="frontside">
-													<div class="card mt-4">
-														<div class="card-body text-center">
-															<p>
-																<img class=" img-fluid" th:src="${lecturer.image}"
-																	alt="card image">
-															</p>
-															<a class="card-title"
-																th:href="@{'/user/' + ${lecturer.id}}">
-																<h6 class="card-title" th:text=${lecturer.userName}></h6>
-															</a>
-															<p class="card-text">Lecturer at FPT University</p>
-															<p class="card-text" th:text=${lecturer.phone}></p>
-															<p class="card-text" th:text=${lecturer.email}></p>
-															<a href="#" class="btn btn-primary">Choose</a>
+						<div class="row h-auto">
+							<section id="team" class="pb-5">
+								<div class="container">
+									<div class="row">
+										<!-- Team member -->
+										<div class="col-xs-12 col-sm-6 col-md-4"
+											th:each="lecturer :${lecturersPage}">
+											<div class="image-flip">
+												<div class="mainflip">
+													<div class="frontside">
+														<div class="card mt-4">
+															<div class="card-body text-center">
+																<p>
+																	<img class=" img-fluid" th:src="${lecturer.image}"
+																		alt="card image">
+																</p>
+																<a class="card-title"
+																	th:href="@{'/user/' + ${lecturer.id}}">
+																	<h6 class="card-title" th:text=${lecturer.userName}></h6>
+																</a>
+																<p class="card-text">Lecturer at FPT University</p>
+																<p class="card-text" th:text=${lecturer.phone}></p>
+																<div
+																	style="white-space: nowrap; width: 100%; overflow: hidden; text-overflow: ellipsis;">
+																	<p class="card-text" th:text=${lecturer.email}></p>
+																</div>
+																<a href="#" class="btn btn-primary">Choose</a>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
+										<!-- ./Team member -->
 									</div>
-									<!-- ./Team member -->
-									<!-- Team member -->
-
-									<!-- ./Team member -->
-
+									<div style="display: flex; con: center; padding-top: 20px">
+										<nav aria-label="Page navigation">
+											<ul th:if="${lecturersPage.totalPages > 0}"
+												class="pagination w-75 justify-content-end">
+												<th:block th:each="pageNumber : ${pageNumbers}">
+													<li
+														th:class="${pageNumber==lecturersPage.number + 1} ? active + ' ' + page-item : page-item"><a
+														th:href="@{/listlecturersproject(size=${lecturersPage.size}, page=${pageNumber})}"
+														th:text=${pageNumber} th:class="page-link"></a></li>
+												</th:block>
+											</ul>
+										</nav>
+									</div>
 								</div>
-							</div>
-						</section>
+							</section>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<nav aria-label="Page navigation">
-			<ul th:if="${lecturersPage.totalPages > 0}"
-				class="pagination w-75 justify-content-end">
-				<th:block th:each="pageNumber : ${pageNumbers}">
-					<li
-						th:class="${pageNumber==lecturersPage.number + 1} ? active + ' ' + page-item : page-item"><a
-						th:href="@{/listlecturersproject(size=${lecturersPage.size}, page=${pageNumber})}" th:text=${pageNumber} th:class="page-link"></a></li>
-				</th:block>
-			</ul>
-		</nav>
+
 		<th:block th:include="home/_footer"></th:block>
 	</div>
 	<th:block th:include="home/_script"></th:block>

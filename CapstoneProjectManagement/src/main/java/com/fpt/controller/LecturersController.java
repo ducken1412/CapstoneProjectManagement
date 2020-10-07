@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fpt.controller.LecturersController;
 import com.fpt.dto.ListLecturersDTO;
+import com.fpt.entity.Notifications;
 import com.fpt.entity.Posts;
 import com.fpt.entity.Users;
 import com.fpt.service.UserRoleService;
 import com.fpt.service.UserService;
 import com.fpt.dto.ListLecturersDTO;
 import com.fpt.service.LecturersService;
+import com.fpt.service.NotificationsService;
 @Controller
 
 public class LecturersController {
@@ -41,7 +43,8 @@ public class LecturersController {
 	@Autowired
 	private UserService  userService;
 	
-	
+	@Autowired
+	private NotificationsService notificationService;
 //	@RequestMapping(value = "/listlecturersproject", method = RequestMethod.GET)
 //	public String getListLecturers(Model model) {
 //		LOGGER.info("Running on getListLecturers method of UserController");
@@ -59,7 +62,16 @@ public class LecturersController {
 		LOGGER.info("Running on getListLecturers method of UserController");
 		//Id = 3 (role lecturers)
 		List<Users> lecturer = userService.getUserByRoleId(3);
+		for (Users users : lecturer) {
+			System.out.println(users.getUserName());
+		}
 		model.addAttribute("lecturer", lecturer);
+		
+
+		List<Notifications> notifications = notificationService.getAllTitle();
+		for(int i = 0; i < notifications.size(); i++) {
+			System.out.println(notifications.get(i).getContent());
+		}
 		
 		//phan trang
 		int currentPage = page.orElse(1);
