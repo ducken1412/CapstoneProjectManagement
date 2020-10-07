@@ -2,7 +2,13 @@ package com.fpt.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import com.fpt.entity.Locations;
+
+
+@Service
 public interface LocationService {
-//	List<String> getLocationByUserId(String UserId);
-//	
+	List<Locations> getLocationByUserId(String userId);
+	
 }

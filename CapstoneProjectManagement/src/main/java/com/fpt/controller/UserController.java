@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fpt.entity.Locations;
+import com.fpt.entity.Status;
 import com.fpt.entity.Users;
 import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.LocationService;
@@ -45,7 +47,7 @@ public class UserController {
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
 	public String userProfile(@PathVariable("id") String id, Model model, Principal principal) {
 		
-		Integer status_id= Integer.parseInt(id);
+		
 		Users user = userService.findById(id); 
 		if(user == null){
 			return "home/error";
@@ -77,13 +79,33 @@ public class UserController {
 			}
 			
 		}
-//		StatusService statusService=statusService.getStatusById(id);
+		if(user.getGender()==1) {
+			model.addAttribute("gender","male");
+		}
+		else {
+			model.addAttribute("gender","female");
+			
+		}
+		Status status= user.getStatus();
+		if(status==null) {
+			model.addAttribute("status","");
+		}
+		else {
+			model.addAttribute("status",user.getStatus().getName());
+		}
+		
+	
+		
+		
 		model.addAttribute("roleView",roleView);
 		List<String> capstone= capstoneProjectService.getCapstoneProjectNameByUserId(id);
 		model.addAttribute("capstone",capstone);
-//		List<String> location= locationService.getLocationByUserId(id);
-//		model.addAttribute("location",location);
-		
+	List<Locations> location= locationService.getLocationByUserId(id);
+	if(location.size()>0) {
+	model.addAttribute("location",location.get(0).getCity()+ "," + location.get(0).getStreet());
+	}else {
+		model.addAttribute("location","");
+	}
 		return "home/view-detail";
 	}
 		
