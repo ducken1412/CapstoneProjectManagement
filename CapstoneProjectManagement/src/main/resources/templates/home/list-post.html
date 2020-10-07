@@ -1,10 +1,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:each="post :${postPage.content}">
 	<div class="card mb-2" style="border-radius: 15px">
-		<div class="card-header pt-3 d-block"
-			style="background-color: #edeef0">
-			
-			<a th:if="${loggedUser == post.author.id}" href="#" class="pull-right mr-2">Delete</a> <a th:if="${loggedUser == post.author.id}" href="#"
+		<div class="card-header pt-3 d-block">
+
+			<a th:if="${loggedUser == post.author.id}" href="#"
+				class="pull-right mr-2">Delete</a> <a
+				th:if="${loggedUser == post.author.id}" href="#"
 				class="pull-right mr-2" id="btn-editTopic" data-toggle="modal"
 				data-target="#topic-container" th:postId=${post.id}>Edit</a>
 			<h4 class="font-weight-bold" th:text=${post.title}></h4>
@@ -12,8 +13,9 @@
 		<div class="card-body pt-2">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<a th:href="@{'/user/' + ${post.author.id}}" class="text-secondary" style="font-size: 12px" th:text="${post.author.username}"></a>
-					<a href="#" class="pull-right">Message</a>
+					<a th:href="@{'/user/' + ${post.author.id}}" class="text-secondary"
+						style="font-size: 12px" th:text="${post.author.username}"></a> <a
+						href="#" class="pull-right">Message</a>
 					<p class="text-secondary" th:text=${post.created_date}></p>
 					<div class="p-2"
 						style="max-height: 400px; overflow-y: auto; border-radius: 15px"
@@ -22,16 +24,23 @@
 					<div class="my-2 p-2"
 						style="background-color: #edeef0; width: fit-content; border-radius: 15px"
 						th:each="comment :${post.comments}">
-						<a th:href="@{'/user/' + ${comment.sender.id}}" class="" th:text="${comment.sender.username}"></a> <br> <span
+						<a th:href="@{'/user/' + ${comment.sender.id}}" class=""
+							th:text="${comment.sender.username}"></a> <br> <span
 							th:text=${comment.content}></span>
 					</div>
-					<form class="form-comment" method="post">
+					<form class="form-comment mb-0 mt-4" method="post">
 						<div class="input-group">
 							<input type="text" id="postId" name="postId"
 								th:value="${post.id}" hidden="true" /> <input
 								class="form-control" name="content"
-								placeholder="Add a comment.." type="text">
-							<button type="submit" class="btn btn-primary ml-2"><span id="loading-send" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true"></span>Send</button>
+								placeholder="Add a comment.." type="text"
+								style="border-radius: 15px">
+							<button id="" type="submit"
+								class="btn btn-primary ml-2 btn-comment">
+								<span th:loadingPostId="${post.id}"
+									class="loading-send spinner-border spinner-border-sm mr-2"
+									role="status" aria-hidden="true" hidden="true"></span>Send
+							</button>
 						</div>
 					</form>
 				</div>
@@ -39,19 +48,27 @@
 		</div>
 	</div>
 </th:block>
-<nav aria-label="Page navigation">
-	<ul th:if="${postPage.totalPages > 0}"
-		class="pagination w-75 justify-content-end">
-		<input type="text" id="page-size" name="page-size"
-			th:value="${postPage.size}" hidden="true" />
-		<input type="text" id="total-page" name="total-page"
-			th:value="${postPage.totalPages}" hidden="true" />
-		<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-		<th:block th:each="pageNumber : ${pageNumbers}">
-			<li
-				th:class="${pageNumber==postPage.number + 1} ? active + ' ' + page-item : page-item"><a
-				href="#" th:text=${pageNumber} th:class="page-link"></a></li>
-		</th:block>
-		<li class="page-item"><a class="page-link" href="#">Next</a></li>
-	</ul>
-</nav>
+
+
+<div class="mb-2 au-card recent-report">
+	<div class="table-data__tool">
+		<div class="table-data__tool-right mx-auto">
+			<nav aria-label="Page navigation">
+				<ul th:if="${postPage.totalPages > 0}"
+					class="pagination w-75">
+					<input type="text" id="page-size" name="page-size"
+						th:value="${postPage.size}" hidden="true" />
+					<input type="text" id="total-page" name="total-page"
+						th:value="${postPage.totalPages}" hidden="true" />
+					<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+					<th:block th:each="pageNumber : ${pageNumbers}">
+						<li
+							th:class="${pageNumber==postPage.number + 1} ? active + ' ' + page-item : page-item"><a
+							href="#" th:text=${pageNumber} th:class="page-link"></a></li>
+					</th:block>
+					<li class="page-item"><a class="page-link" href="#">Next</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>

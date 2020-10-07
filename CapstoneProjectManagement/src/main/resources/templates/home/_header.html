@@ -1,101 +1,172 @@
-<header class="header" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-	<div class="app-header header-shadow ">
-		<div class="app-header__logo">
-			<div class="logo-src " th:style="'background: url(/image/logo-inverse.png)'">
-			</div>
-			<div class="header__pane ml-auto">
-				<div>
-					<button type="button"
-						class="hamburger close-sidebar-btn hamburger--elastic"
-						data-class="closed-sidebar">
-						<span class="hamburger-box"> <span class="hamburger-inner"></span>
-						</span>
-					</button>
-				</div>
-			</div>
-		</div>
-		<div class="app-header__mobile-menu">
-			<div>
-				<button type="button"
-					class="hamburger hamburger--elastic mobile-toggle-nav">
-					<span class="hamburger-box"> <span class="hamburger-inner"></span>
-					</span>
-				</button>
-			</div>
-		</div>
-		<div class="app-header__menu">
-			<span>
-				<button type="button"
-					class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
-					<span class="btn-icon-wrapper"> <i
-						class="fa fa-ellipsis-v fa-w-6"></i>
-					</span>
-				</button>
-			</span>
-		</div>
-		<div class="app-header__content">
-			<div class="app-header-left">
-				<div class="search-wrapper">
-					<div class="input-holder">
-						<input type="text" class="search-input"
-							placeholder="Type to search" />
-						<button class="search-icon">
-							<span></span>
-						</button>
-					</div>
-					<button class="close"></button>
-				</div>
-				<ul class="header-menu nav">
-					<li class="nav-item"><a href="javascript:void(0);"
-						class="nav-link"> <i class="nav-link-icon fa fa-database">
-						</i> Statistics
-					</a></li>
-					<li class="btn-group nav-item"><a href="javascript:void(0);"
-						class="nav-link"> <i class="nav-link-icon fa fa-edit"></i>
-							Projects
-					</a></li>
-					<li class="dropdown nav-item"><a href="javascript:void(0);"
-						class="nav-link"> <i class="nav-link-icon fa fa-cog"></i>
-							Settings
-					</a></li>
-				</ul>
-			</div>
-			<div class="app-header-right">
-				<div class="header-btn-lg pr-0">
-					<div class="widget-content p-0">
-						<div class="widget-content-wrapper">
-							<div class="widget-content-left">
-								<div class="btn-group">
-									<a data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="false" class="p-0 btn"> <img width="42"
-										class="rounded-circle" th:src="@{/image/avatars/9.jpg}" alt="" />
-										<i class="fa fa-angle-down ml-2 opacity-8"></i>
-									</a>
-									<div tabindex="-1" role="menu" aria-hidden="true"
-										class="dropdown-menu dropdown-menu-right">
-										<button type="button" tabindex="0" class="dropdown-item">
-											User Account</button>
-										<button type="button" tabindex="0" class="dropdown-item">
-											Settings</button>
-										<h6 tabindex="-1" class="dropdown-header">Header</h6>
-										<button type="button" tabindex="0" class="dropdown-item">
-											Actions</button>
-										<div tabindex="-1" class="dropdown-divider"></div>
-										<button type="button" tabindex="0" class="dropdown-item">
-											Dividers</button>
-									</div>
-								</div>
-							</div>
-							<div class="widget-content-left ml-3 header-user-info">
-								<div class="widget-heading">Alina Mclourd</div>
-								<div class="widget-subheading">VP People Manager</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</header>
-<script th:src="@{/js/main/main.js}"></script>
+<header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <form class="form-header" action="" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
+                                <button class="au-btn--submit" type="submit">
+                                   <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                            <div class="header-button">
+                                <div class="noti-wrap">
+                                    <div class="noti__item js-item-menu">
+                                        <i class="fas fa-comments"></i>
+                                        <span class="quantity">1</span>
+                                        <div class="mess-dropdown js-dropdown">
+                                            <div class="mess__title">
+                                                <p>You have 2 news message</p>
+                                            </div>
+                                            <div class="mess__item">
+                                                <div class="image img-cir img-40">
+                                                    <img src="images/icon/avatar-06.jpg" alt="Michelle Moreno" />
+                                                </div>
+                                                <div class="content">
+                                                    <h6>Michelle Moreno</h6>
+                                                    <p>Have sent a photo</p>
+                                                    <span class="time">3 min ago</span>
+                                                </div>
+                                            </div>
+                                            <div class="mess__item">
+                                                <div class="image img-cir img-40">
+                                                    <img src="images/icon/avatar-04.jpg" alt="Diane Myers" />
+                                                </div>
+                                                <div class="content">
+                                                    <h6>Diane Myers</h6>
+                                                    <p>You are now connected on message</p>
+                                                    <span class="time">Yesterday</span>
+                                                </div>
+                                            </div>
+                                            <div class="mess__footer">
+                                                <a href="#">View all messages</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="noti__item js-item-menu">
+                                        <i class="fas fa-envelope"></i>
+                                        <span class="quantity">1</span>
+                                        <div class="email-dropdown js-dropdown">
+                                            <div class="email__title">
+                                                <p>You have 3 New Emails</p>
+                                            </div>
+                                            <div class="email__item">
+                                                <div class="image img-cir img-40">
+                                                    <img src="images/icon/avatar-06.jpg" alt="Cynthia Harvey" />
+                                                </div>
+                                                <div class="content">
+                                                    <p>Meeting about new dashboard...</p>
+                                                    <span>Cynthia Harvey, 3 min ago</span>
+                                                </div>
+                                            </div>
+                                            <div class="email__item">
+                                                <div class="image img-cir img-40">
+                                                    <img src="images/icon/avatar-05.jpg" alt="Cynthia Harvey" />
+                                                </div>
+                                                <div class="content">
+                                                    <p>Meeting about new dashboard...</p>
+                                                    <span>Cynthia Harvey, Yesterday</span>
+                                                </div>
+                                            </div>
+                                            <div class="email__item">
+                                                <div class="image img-cir img-40">
+                                                    <img src="images/icon/avatar-04.jpg" alt="Cynthia Harvey" />
+                                                </div>
+                                                <div class="content">
+                                                    <p>Meeting about new dashboard...</p>
+                                                    <span>Cynthia Harvey, April 12,,2018</span>
+                                                </div>
+                                            </div>
+                                            <div class="email__footer">
+                                                <a href="#">See all emails</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="noti__item js-item-menu">
+                                        <i class="fas fa-bell"></i>
+                                        <span class="quantity">3</span>
+                                        <div class="notifi-dropdown js-dropdown">
+                                            <div class="notifi__title">
+                                                <p>You have 3 Notifications</p>
+                                            </div>
+                                            <div class="notifi__item">
+                                                <div class="bg-c1 img-cir img-40">
+                                                    <i class="zmdi zmdi-email-open"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <p>You got a email notification</p>
+                                                    <span class="date">April 12, 2018 06:50</span>
+                                                </div>
+                                            </div>
+                                            <div class="notifi__item">
+                                                <div class="bg-c2 img-cir img-40">
+                                                    <i class="zmdi zmdi-account-box"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <p>Your account has been blocked</p>
+                                                    <span class="date">April 12, 2018 06:50</span>
+                                                </div>
+                                            </div>
+                                            <div class="notifi__item">
+                                                <div class="bg-c3 img-cir img-40">
+                                                    <i class="zmdi zmdi-file-text"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <p>You got a new file</p>
+                                                    <span class="date">April 12, 2018 06:50</span>
+                                                </div>
+                                            </div>
+                                            <div class="notifi__footer">
+                                                <a href="#">All notifications</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <img src="https://i.pinimg.com/originals/30/24/f8/3024f8d283b734bd6b7e4fc5531fe2e9.png" alt="John Doe" />
+                                        </div>
+                                        <div class="content">
+                                            <a class="js-acc-btn" href="#">john doe</a>
+                                            <i class="fas fa-angle-down"></i>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="info clearfix">
+                                                <div class="image">
+                                                    <a href="#">
+                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a href="#">john doe</a>
+                                                    </h5>
+                                                    <span class="email">johndoe@example.com</span>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__body">
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-account"></i>Account</a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__footer">
+                                                <a href="#">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
