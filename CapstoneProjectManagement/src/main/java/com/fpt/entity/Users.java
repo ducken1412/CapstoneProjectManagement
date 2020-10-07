@@ -24,7 +24,7 @@ public class Users implements Serializable {
 	@Column(name = "id", columnDefinition = "NVARCHAR(50)")
 	private String id;
 	@Column(name = "user_name", columnDefinition = "NVARCHAR(50) NOT NULL")
-	private String userName;
+	private String username;
 	@Column(name = "encryted_password", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String encrytedPassword;
 	@Column(name = "first_name", columnDefinition = "NVARCHAR(30) NOT NULL")
@@ -37,12 +37,14 @@ public class Users implements Serializable {
 	private Integer gender;
 	@Column(name = "phone", columnDefinition = "VARCHAR(15) NOT NULL")
 	private String phone;
+	@Column(name = "image", columnDefinition = "longtext")
+	private String image;
 	@Column(name = "email", columnDefinition = "NVARCHAR(64) NOT NULL")
 	private String email;
 	@Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
 	private Date createdDate;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "locations_id", referencedColumnName = "id")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "locations_id", referencedColumnName = "id", columnDefinition = "INT")
 	private Locations location;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
 	private String description;
@@ -55,11 +57,13 @@ public class Users implements Serializable {
 	private List<HistoryRecords> historyRecords;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
 	private List<CapstoneProjectDetails> capstoneProjectDetails;
-	@OneToOne(mappedBy = "sender")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "notification_id", referencedColumnName = "id", columnDefinition = "INT")
 	private Notifications notificationSend;
 	@ManyToMany(mappedBy = "receivers")
 	private List<Notifications> notificationReceives;
-	@OneToOne(mappedBy = "sender")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "report_id", referencedColumnName = "id", columnDefinition = "INT")
 	private Reports reportSend;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Reports reportReceive;
@@ -70,25 +74,26 @@ public class Users implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "report_detail_id")
 	private ReportDetails reportDetail;
-	@OneToOne(mappedBy = "assessor")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "evaluation_detail_id", referencedColumnName = "id", columnDefinition = "INT")
 	private EvaluationDetails evaluationDetail;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "author")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Posts> posts;
 
 	public Users() {
 		super();
 	}
 
-	public Users(String id, String userName, String encrytedPassword, String firstName, String lastName, Date birthDate,
+	public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate,
 			Integer gender, String phone, String email, Date createdDate, Locations location, String description,
 			Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords,
 			List<CapstoneProjectDetails> capstoneProjectDetails, Notifications notificationSend,
 			List<Notifications> notificationReceives, Reports reportSend, Reports reportReceive,
 			List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail,
-			EvaluationDetails evaluationDetail, List<Posts> posts) {
+			EvaluationDetails evaluationDetail, List<Posts> posts,String image) {
 		super();
 		this.id = id;
-		this.userName = userName;
+		this.username = username;
 		this.encrytedPassword = encrytedPassword;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -112,6 +117,7 @@ public class Users implements Serializable {
 		this.reportDetail = reportDetail;
 		this.evaluationDetail = evaluationDetail;
 		this.posts = posts;
+		this.image = image;
 	}
 
 	public String getId() {
@@ -122,12 +128,12 @@ public class Users implements Serializable {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEncrytedPassword() {
@@ -313,4 +319,12 @@ public class Users implements Serializable {
 	public void setPosts(List<Posts> posts) {
 		this.posts = posts;
 	}
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 }

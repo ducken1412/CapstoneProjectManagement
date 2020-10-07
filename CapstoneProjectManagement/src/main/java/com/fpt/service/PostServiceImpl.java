@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.Posts;
@@ -52,16 +53,7 @@ public class PostServiceImpl implements PostService {
 	public Page<Posts> findPaginated(Pageable pageable) {
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
-		int startItem = currentPage * pageSize;
-		List<Posts> list;
-		List<Posts> posts = findAll();
-		if (posts.size() < startItem) {
-			list = Collections.emptyList();
-		} else {
-			int toIndex = Math.min(startItem + pageSize, posts.size());
-			list = posts.subList(startItem, toIndex);
-		}
-		Page<Posts> bookPage = new PageImpl<Posts>(list, PageRequest.of(currentPage, pageSize), posts.size());
-		return bookPage;
+		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+		return postRepository.findAll(secondPageWithFiveElements);
 	}
 }

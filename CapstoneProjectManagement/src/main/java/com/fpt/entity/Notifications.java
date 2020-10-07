@@ -21,8 +21,7 @@ public class Notifications {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "INT")
 	private Integer id;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sender_id", referencedColumnName = "id", columnDefinition = "NVARCHAR(50) NOT NULL")
+	@OneToOne(mappedBy = "notificationSend")
 	private Users sender;
 	@ManyToMany(cascade = { CascadeType.ALL })
 	@JoinTable(name = "Notification_User", joinColumns = {

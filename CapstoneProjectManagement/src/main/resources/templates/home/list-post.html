@@ -1,37 +1,39 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:each="post :${postPage.content}">
-	<div class="card w-75 mb-2">
-		<div class="card-header pt-3 d-block">
-			<a href="#" class="pull-right">View all</a> <a href="#"
+	<div class="card mb-2" style="border-radius: 15px">
+		<div class="card-header pt-3 d-block"
+			style="background-color: #edeef0">
+			
+			<a th:if="${loggedUser == post.author.id}" href="#" class="pull-right mr-2">Delete</a> <a th:if="${loggedUser == post.author.id}" href="#"
 				class="pull-right mr-2" id="btn-editTopic" data-toggle="modal"
-				data-target="#topic-container">Edit</a>
+				data-target="#topic-container" th:postId=${post.id}>Edit</a>
 			<h4 class="font-weight-bold" th:text=${post.title}></h4>
 		</div>
-		<div class="card-body">
+		<div class="card-body pt-2">
 			<div class="panel panel-default">
-				<div class=""></div>
 				<div class="panel-body">
-					<a href="#" class="text-secondary">Author: <span>DucDD</span></a> <a href="#"
-						class="pull-right">Message</a>
-					<p class="text-danger" th:text=${post.created_date}></p>
-					<div class="clearfix" th:utext=${post.description}></div>
+					<a th:href="@{'/user/' + ${post.author.id}}" class="text-secondary" style="font-size: 12px" th:text="${post.author.username}"></a>
+					<a href="#" class="pull-right">Message</a>
+					<p class="text-secondary" th:text=${post.created_date}></p>
+					<div class="p-2"
+						style="max-height: 400px; overflow-y: auto; border-radius: 15px"
+						th:utext=${post.description}></div>
 					<hr>
-					<form id="form-comment" method="post">
+					<div class="my-2 p-2"
+						style="background-color: #edeef0; width: fit-content; border-radius: 15px"
+						th:each="comment :${post.comments}">
+						<a th:href="@{'/user/' + ${comment.sender.id}}" class="" th:text="${comment.sender.username}"></a> <br> <span
+							th:text=${comment.content}></span>
+					</div>
+					<form class="form-comment" method="post">
 						<div class="input-group">
 							<input type="text" id="postId" name="postId"
 								th:value="${post.id}" hidden="true" /> <input
-								class="form-control" name="content" placeholder="Add a comment.." type="text">
-							<button type="submit" class="btn btn-primary ml-2">Send</button>
+								class="form-control" name="content"
+								placeholder="Add a comment.." type="text">
+							<button type="submit" class="btn btn-primary ml-2"><span id="loading-send" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true"></span>Send</button>
 						</div>
 					</form>
-					<div class="mx-2 my-2">
-					<div class="">
-					<th:block th:each="comment :${post.comments}">
-						<strong>DucDD</strong><p class="ml-4" th:text=${comment.content}></p>
-					</th:block>
-						</div>
-					</div>
-
 				</div>
 			</div>
 		</div>

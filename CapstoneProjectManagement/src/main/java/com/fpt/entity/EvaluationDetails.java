@@ -24,8 +24,7 @@ public class EvaluationDetails {
 	private Integer grade;
 	@Column(name = "content", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String content;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "assessor_id", referencedColumnName = "id", columnDefinition = "NVARCHAR(50) NOT NULL")
+	@OneToOne(mappedBy = "evaluationDetail")
 	private Users assessor;
 	@Column(name = "type", columnDefinition = "NVARCHAR(50) NOT NULL")
 	private String type;

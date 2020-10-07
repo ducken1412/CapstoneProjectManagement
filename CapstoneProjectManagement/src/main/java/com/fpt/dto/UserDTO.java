@@ -7,6 +7,7 @@ import com.fpt.entity.Locations;
 import com.fpt.entity.ReportDetails;
 import com.fpt.entity.Reports;
 import com.fpt.entity.Status;
+import com.fpt.entity.Users;
 
 
 public class UserDTO {
@@ -168,6 +169,7 @@ public class UserDTO {
 		this.reportReceives = reportReceives;
 		this.reportDetail = reportDetail;
 	}
+	
 	private Date birthDate;
 
 	private Integer gender;
