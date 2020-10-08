@@ -11,5 +11,7 @@ import com.fpt.entity.Users;
 public interface CapstoneProjectDetailService {
 	//add the capstone project detail
 	boolean addCapstonprojectDetail(CapstoneProjectDetails capstoneProjectDetails);
-	List<String> getUserByCapstoneProjectDetailId(Integer id);
+	//List<String> getUserByCapstoneProjectDetailId(Integer id);
+	
+	List<CapstoneProjectDetails> getUserByCapstioneID(Integer id);
 }

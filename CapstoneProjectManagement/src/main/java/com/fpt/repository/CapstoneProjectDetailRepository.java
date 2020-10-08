@@ -10,8 +10,9 @@ import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Users;
 
 public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneProjectDetails, CapstoneProjects>{
-	@Query("SELECT ru.CapstoneProjectDetails.user FROM CapstoneProjects ru WHERE ru.capstoneProjects.id = ?1")
-	List<String> getUserByCapstoneProjectDetailId(Integer id);
+	//query loi
+	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProjects = ?1")
+	List<CapstoneProjectDetails> getUserByCapstoneProjectDetailId(Integer id);
 	
 	
 }
