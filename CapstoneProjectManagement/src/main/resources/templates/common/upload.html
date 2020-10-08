@@ -9,7 +9,7 @@
 	</div>
 	<div class="card-body card-block">
 		<form id="post-form" method="post" class="form-horizontal"
-			th:object="${upload}">
+			th:object="${upload}" enctype="multipart/form-data">
 			<input type="text" id="id" name="id" th:value="${upload.id}"
 				hidden="true">
 			<div class="row form-group">
@@ -18,7 +18,8 @@
 				</div>
 				<div class="col-12 col-md-9">
 					<input type="file" id="file-multiple-input"
-						name="file-multiple-input" multiple class="form-control-file" th:field="*{files}">
+						name="file-multiple-input" multiple class="form-control-file"
+						 >
 				</div>
 			</div>
 			<div class="float-right">
