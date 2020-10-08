@@ -21,15 +21,15 @@ public class Comments {
 	private Integer id;
 	@Column(name = "content", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String content;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sender_id")
 	private Users sender;
 	@Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
 	private Date createdDate;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "report_detail_id")
 	private ReportDetails reportDetail;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Posts post ;
 	

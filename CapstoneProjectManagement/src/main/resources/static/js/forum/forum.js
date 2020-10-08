@@ -147,17 +147,36 @@ $(document).on("submit", "#post-form", function (e) {
     type: "POST",
     data: dataForm,
     success: function (data) {
-    	getListPost()
-    	$.showNotification({
-		  body: data,
-		  type: "success",
-		  duration: 3000,
-		  shadow: "0 2px 6px rgba(0,0,0,0.2)", 
-		  zIndex: 100,
-		  margin: "1rem"
-		})
-      $("#topic-container").trigger("click");
-      $("#loading-add").attr("hidden", true);
+//    	getListPost()
+    	const params = new URL(location.href).searchParams;
+	  const size = params.get("size");
+	  const page = params.get("page");
+	  $.ajax({
+	    url: "/list-post?size=" + size + "&page=" + page,
+	    type: "GET",
+	    success: function (data1) {
+	      $("#post-container").html(data1);
+	      $.showNotification({
+			  body: data,
+			  type: "success",
+			  duration: 3000,
+			  shadow: "0 2px 6px rgba(0,0,0,0.2)", 
+			  zIndex: 100,
+			  margin: "1rem"
+			})
+	      $("#topic-container").trigger("click");
+	      $("#loading-add").attr("hidden", true);
+	      if (!(size === null || page === null)) {
+	        window.history.pushState("", "", "/forum" + rewriteUrl(size, page));
+	      }
+	    },
+	    error: function (xhr) {
+	      if (xhr.status == 302 || xhr.status == 200) {
+	        window.location.href = "/forum";
+	      }
+	    },
+	  });
+    	
     },
     error: function (xhr) {
       $("#modal-content").html("Error");
