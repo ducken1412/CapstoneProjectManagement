@@ -28,7 +28,7 @@ public class Posts {
 	private String description;
 	@Column(name = "created_date", columnDefinition = "DATETIME")
 	private Date created_date;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "post")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
 	private List<Comments> comments;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
 	private List<HistoryRecords> historyRecords;
