@@ -38,10 +38,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@RestController
+@Controller
 public class FileUploadController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
@@ -51,7 +52,7 @@ public class FileUploadController {
 	 @Autowired
      private HttpServletRequest request;
 
-	 @RequestMapping(value = "/uploadMultipleFiles", method = RequestMethod.GET)
+	 @GetMapping(value = "/uploadMultipleFiles")
 	public String upload(Model model) {
 			model.addAttribute("upload", new Files());
 			return "common/upload";
@@ -60,7 +61,8 @@ public class FileUploadController {
 	 	
 
     @PostMapping("/uploadMultipleFiles")
-    public List<Files> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    public List<Files> uploadMultipleFiles(@RequestParam("file-multiple-input") MultipartFile[] files) {
+    	logger.info("bbbbbbbb");
         return Arrays.asList(files)
                 .stream()
                 .map(file -> uploadFile(file))
