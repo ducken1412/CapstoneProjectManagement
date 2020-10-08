@@ -1,79 +1,84 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
-<title>Forum</title>
+    <meta charset="utf-8">
+    <title>Forum</title>
 
 
-<th:block th:include="home/_css"></th:block>
+    <th:block th:include="home/_css"></th:block>
 <body>
-	<div class="page-wrapper">
-		<th:block th:include="home/_header-mobile"></th:block>
-		<th:block th:include="home/_menu"></th:block>
-		<div class="page-container">
-			<th:block th:include="home/_header"></th:block>
-			<div class="main-content">
-				<div class="section__content section__content--p30">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="overview-wrap">
-									<h2 class="title-1">Forum</h2>
-								</div>
-							</div>
-						</div>
-						<div class="row m-t-25">
-							<div class="w-75 p-4" id="content-body">
-								<div class="mb-2 au-card recent-report">
-									<div class="table-data__tool">
-											<div class="table-data__tool-left">
-												<div class="rs-select2--light rs-select2--md">
-													<select class="js-select2" name="property">
-														<option selected="selected">All Properties</option>
-														<option value="">Option 1</option>
-														<option value="">Option 2</option>
-													</select>
-													<div class="dropDownSelect2"></div>
-												</div>
-												<div class="rs-select2--light rs-select2--sm">
-													<select class="js-select2" name="time">
-														<option selected="selected">Today</option>
-														<option value="">3 Days</option>
-														<option value="">1 Week</option>
-													</select>
-													<div class="dropDownSelect2"></div>
-												</div>
-												<button class="au-btn-filter">
-													<i class="zmdi zmdi-filter-list"></i>filters
-												</button>
-											</div>
-											<div class="table-data__tool-right" >
-												<button
-													class="au-btn btn-primary au-btn--small mr-3" id="btn-addTopic" data-toggle="modal" data-target="#topic-container">Add
-												</button>
-											</div>
-										</div>
-								</div>
-								<div id="post-container"></div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<th:block th:include="home/_footer"></th:block>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal fade" id="topic-container" data-toggle="modal"
-					tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
-					aria-hidden="true">
-					<div class="modal-dialog modal-lg" role="document">
-						<div class="modal-content" id="modal-content"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<th:block th:include="home/_script"></th:block>
-	<script th:src="@{/js/forum/forum.js}"></script>
+<div class="page-wrapper">
+    <th:block th:include="home/_header-mobile"></th:block>
+    <th:block th:include="home/_menu"></th:block>
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Forum</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-75 p-4" id="content-body">
+                            <div class="mb-2 au-card recent-report">
+                                <div class="table-data__tool">
+                                    <div class="table-data__tool-left d-flex">
+                                        <form class="au-form-icon--sm mx-4" action="" method="post">
+                                            <input class="au-input--w300 au-input--style2" type="text"
+                                                   placeholder="Search...">
+                                            <button class="au-btn--submit2" type="submit">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </form>
+                                        <div class="rs-select2--light rs-select2--md">
+                                            <select class="js-select2" name="property">
+                                                <option selected="selected">All Properties</option>
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                        <div class="rs-select2--light rs-select2--sm">
+                                            <select class="js-select2" name="time">
+                                                <option selected="selected">Today</option>
+                                                <option value="">3 Days</option>
+                                                <option value="">1 Week</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="table-data__tool-right">
+                                        <button
+                                                class="au-btn btn-primary au-btn--small mr-3" id="btn-addTopic"
+                                                data-toggle="modal" data-target="#topic-container">Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="post-container"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <th:block th:include="home/_footer"></th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="topic-container" data-toggle="modal"
+                 tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" id="modal-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<script th:src="@{/js/forum/forum.js}"></script>
 </body>
 </html>
