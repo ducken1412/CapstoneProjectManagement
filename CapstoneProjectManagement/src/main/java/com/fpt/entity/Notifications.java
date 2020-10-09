@@ -27,8 +27,10 @@ public class Notifications {
 	@JoinTable(name = "Notification_User", joinColumns = {
 			@JoinColumn(name = "notification_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
 	private List<Users> receivers;
-	@Column(name = "content", columnDefinition = "NVARCHAR(256) NOT NULL")
+	@Column(name = "content", columnDefinition = "longtext NOT NULL")
 	private String content;
+	@Column(name = "title", columnDefinition = "NVARCHAR(256) NOT NULL")
+	private String title;
 	@Column(name = "type", columnDefinition = "NVARCHAR(50) NOT NULL")
 	private String type;
 
@@ -36,11 +38,13 @@ public class Notifications {
 		super();
 	}
 
-	public Notifications(Users sender, List<Users> receivers, String content, String type) {
+	public Notifications(Integer id, Users sender, List<Users> receivers, String content, String title, String type) {
 		super();
+		this.id = id;
 		this.sender = sender;
 		this.receivers = receivers;
 		this.content = content;
+		this.title = title;
 		this.type = type;
 	}
 
@@ -76,6 +80,14 @@ public class Notifications {
 		this.content = content;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -83,5 +95,7 @@ public class Notifications {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	
 
 }
