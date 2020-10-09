@@ -66,7 +66,6 @@ public class UserServiceImpl implements UserService {
 		return userRoleRepository.getUserByRoleId(id);
 	}
 
-	//load user role = 3 (lecturers)
 	@Override
 	public Page<Users> findPaginated(Pageable pageable) {
 		int pageSize = pageable.getPageSize();

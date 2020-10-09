@@ -15,9 +15,9 @@
 	<div
 		class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
 		<th:block th:include="home/_header"></th:block>
+		<div class="row w-100">
 
-		<div class="row w-75">
-			<div class="app-main">
+			<div class="app-main w-75">
 				<div class="app-sidebar sidebar-shadow">
 					<th:block th:include="home/_menu"></th:block>
 				</div>
@@ -34,7 +34,9 @@
 							</div>
 						</div>
 						<div class="row h-auto">
+
 							<section id="team" class="pb-5">
+							<form th:action="@{/listlecturersproject}" th:object= "${UserDTO}" method="GET" id="booklecturers" >
 								<div class="container">
 									<div class="row">
 										<!-- Team member -->
@@ -59,7 +61,8 @@
 																	style="white-space: nowrap; width: 100%; overflow: hidden; text-overflow: ellipsis;">
 																	<p class="card-text" th:text=${lecturer.email}></p>
 																</div>
-																<a href="#" class="btn btn-primary">Choose</a>
+																<a th:href="@{'/listlecturersproject/' + ${lecturer.id}}" class="btn btn-primary">Choose</a>
+																<!-- <button class="btn btn-primary" type="submit" >Choose</button> -->
 															</div>
 														</div>
 													</div>
@@ -68,7 +71,8 @@
 										</div>
 										<!-- ./Team member -->
 									</div>
-									<div style="display: flex; justify-content: center;; padding-top: 20px">
+									<div
+										style="display: flex; justify-content: center;; padding-top: 20px">
 										<nav aria-label="Page navigation">
 											<ul th:if="${lecturersPage.totalPages > 0}"
 												class="pagination w-75 justify-content-end">
@@ -82,12 +86,28 @@
 										</nav>
 									</div>
 								</div>
+							</form>
+								
 							</section>
 						</div>
 					</div>
 				</div>
 			</div>
+			<div class="popular-news-widget mb-30 row w-25 scrollbar-sidebar">
+				<h2>News</h2>
+
+				<!-- Single Popular Blog -->
+				<div class="single-popular-post" th:each = "notifications : ${notifications}">
+					<a href="#">
+						<h6>
+							<span th:text="${notifications.title}"></span> 
+						</h6>
+					</a>
+					<p>April 14, 2018</p>
+				</div>
+			</div>
 		</div>
+
 
 		<th:block th:include="home/_footer"></th:block>
 	</div>

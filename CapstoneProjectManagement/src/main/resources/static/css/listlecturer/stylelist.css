@@ -12,6 +12,9 @@
 	height: 150px;
 	border-radius: 50%;
 }
+.popular-news-widget mb-30 row w-25{
+	margin-top: 14%;
+}
 
 .popular-news-widget {
 	position: relative;
