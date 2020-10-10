@@ -5,7 +5,7 @@
             <a href="#"
                class="pull-right mr-2"><i class="far fa-comments"></i></a>
             <a th:if="${loggedUser == post.author.id}" href="#"
-               class="pull-right mr-2"><i class="far fa-trash-alt"></i></a> <a
+               class="pull-right mr-2" id="btn-deleteTopic" th:postId=${post.id} data-toggle="modal" data-target="#confirm-delete"><i class="far fa-trash-alt"></i></a> <a
                 th:if="${loggedUser == post.author.id}" href="#"
                 class="pull-right mr-2" id="btn-editTopic" data-toggle="modal"
                 data-target="#topic-container" th:postId=${post.id}><i class="far fa-edit"></i></a>
