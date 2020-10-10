@@ -1,0 +1,12 @@
+<div class="popular-news-widget mb-30 row w-25 scrollbar-sidebar">
+	<h2>News</h2>
+	<div class="single-popular-post"
+		th:each="notifications : ${notifications}">
+		<a href="#">
+			<h6>
+				<span th:text="${notifications.title}"></span>
+			</h6>
+		</a>
+		<p>create date</p>
+	</div>
+</div>

@@ -3,6 +3,10 @@ package com.fpt.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.Users;
@@ -62,8 +66,17 @@ public class UserServiceImpl implements UserService {
 		return userRoleRepository.getUserByRoleId(id);
 	}
 
+
 	@Override
 	public List<Users> findByUsername(String username) {
 		return userRepository.findByUsername(username);
+	}
+
+	@Override
+	public Page<Users> findPaginated(Pageable pageable) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+		return userRepository.getUserByRoleId(secondPageWithFiveElements, 3);
 	}
 }

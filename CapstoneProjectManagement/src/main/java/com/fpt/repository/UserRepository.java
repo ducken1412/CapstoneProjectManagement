@@ -2,7 +2,10 @@ package com.fpt.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.fpt.entity.Users;
@@ -15,4 +18,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 	//List<UserDTO> getAllUserStudent;
 	List<Users> findByUsername(String username);
 	
+	//List<UserDTO> getAllUserStudent;
+		@Query("SELECT ru.userRoleKey.user FROM UserRoles ru WHERE ru.userRoleKey.role.id = ?1")
+		Page<Users> getUserByRoleId(Pageable pageable,Integer id);
 }
