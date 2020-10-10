@@ -66,11 +66,12 @@ public class UserServiceImpl implements UserService {
 		return userRoleRepository.getUserByRoleId(id);
 	}
 
+
 	@Override
 	public List<Users> findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
-	
+
 	@Override
 	public Page<Users> findPaginated(Pageable pageable) {
 		int pageSize = pageable.getPageSize();

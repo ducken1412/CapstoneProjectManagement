@@ -1,114 +1,139 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="utf-8">
-	<title>Template</title>
+<meta charset="utf-8">
+<title>Template</title>
 
 
-	<th:block th:include="home/_css"></th:block>
+<th:block th:include="home/_css"></th:block>
 
 </head>
 <body>
-<div class="page-wrapper">
-	<th:block th:include="home/_header-mobile"></th:block>
-	<th:block th:include="home/_menu"></th:block>
-	<div class="page-container">
-		<th:block th:include="home/_header"></th:block>
-		<div class="main-content">
-			<div class="section__content section__content--p30">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="overview-wrap">
-								<h2 class="title-1">LECTURERS</h2>
+	<div class="page-wrapper">
+		<th:block th:include="home/_header-mobile"></th:block>
+		<th:block th:include="home/_menu"></th:block>
+		<div class="page-container">
+			<th:block th:include="home/_header"></th:block>
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="overview-wrap">
+									<h2 class="title-1">LECTURERS</h2>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row m-t-25">
-						<div class="w-75" id="content-body">
-							<div id="post-container">
+						<div class="row m-t-25">
+							<div class="w-75" id="content-body">
+								<div id="post-container">
+									<div class="row w-100">
+										<div class="app-main w-75">
+											<div class="app-sidebar sidebar-shadow">
+												<th:block th:include="home/_menu"></th:block>
+											</div>
+											<div class="app-main__outer">
+												<div class="row h-auto">
 
-								<div class="container">
-									<div class="row">
-										<!-- Team member -->
-										<!-- ./Team member -->
-										<!-- Team member -->
-										<div class="container">
-									<div class="row">
-										<!-- Team member -->
-										<div class="col-xs-12 col-sm-6 col-md-4"
-											th:each="lecturer :${lecturersPage}">
-											<div class="image-flip">
-												<div class="mainflip">
-													<div class="frontside">
-														<div class="card mt-4">
-															<div class="card-body text-center">
-																<p>
-																	<img class=" img-fluid" th:src="${lecturer.image}"
-																		alt="card image">
-																</p>
-																<a class="card-title"
-																	th:href="@{'/user/' + ${lecturer.id}}">
-																	<h6 class="card-title" th:text=${lecturer.username}></h6>
-																</a>
-																<p class="card-text">Lecturer at FPT University</p>
-																<p class="card-text" th:text=${lecturer.phone}></p>
-																<div
-																	style="white-space: nowrap; width: 100%; overflow: hidden; text-overflow: ellipsis;">
-																	<p class="card-text" th:text=${lecturer.email}></p>
+													<section id="team" class="pb-5">
+														<form th:action="@{/listlecturersproject}"
+															th:object="${UserDTO}" method="GET" id="booklecturers">
+															<div class="container">
+																<div class="row">
+																	<!-- Team member -->
+																	<div class="container">
+																		<div class="row">
+																			<!-- Team member -->
+																			<div class="col-xs-12 col-sm-6 col-md-4"
+																				th:each="lecturer :${lecturersPage}">
+																				<div class="image-flip">
+																					<div class="mainflip">
+																						<div class="frontside">
+																							<div class="card mt-4">
+																								<div class="card-body text-center">
+																									<p>
+																										<img class=" img-fluid"
+																											th:src="${lecturer.image}" alt="card image">
+																									</p>
+																									<a class="card-title"
+																										th:href="@{'/user/' + ${lecturer.id}}">
+																										<h6 class="card-title"
+																											th:text=${lecturer.username}></h6>
+																									</a>
+																									<p class="card-text">Lecturer at FPT
+																										University</p>
+																									<p class="card-text" th:text=${lecturer.phone}></p>
+																									<div
+																										style="white-space: nowrap; width: 100%; overflow: hidden; text-overflow: ellipsis;">
+																										<p class="card-text" th:text=${lecturer.email}></p>
+																									</div>
+																									<a
+																										th:href="@{'/listlecturersproject/' + ${lecturer.id}}"
+																										class="btn btn-primary">Choose</a>
+																									<!-- <button class="btn btn-primary" type="submit" >Choose</button> -->
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																			<!-- ./Team member -->
+																		</div>
+																		<div
+																			style="display: flex; justify-content: center;; padding-top: 20px">
+																			<nav aria-label="Page navigation">
+																				<ul th:if="${lecturersPage.totalPages > 0}"
+																					class="pagination w-75 justify-content-end">
+																					<th:block th:each="pageNumber : ${pageNumbers}">
+																						<li
+																							th:class="${pageNumber==lecturersPage.number + 1} ? active + ' ' + page-item : page-item"><a
+																							th:href="@{/listlecturersproject(size=${lecturersPage.size}, page=${pageNumber})}"
+																							th:text=${pageNumber} th:class="page-link"></a></li>
+																					</th:block>
+																				</ul>
+																			</nav>
+																		</div>
+																	</div>
 																</div>
-																<a th:href="@{'/listlecturersproject/' + ${lecturer.id}}" class="btn btn-primary">Choose</a>
-																<!-- <button class="btn btn-primary" type="submit" >Choose</button> -->
 															</div>
-														</div>
-													</div>
+											
+												</form>
+												</section>
 												</div>
 											</div>
 										</div>
-										<!-- ./Team member -->
-									</div>
-									<div style="display: flex; justify-content: center;; padding-top: 20px">
-										<nav aria-label="Page navigation">
-											<ul th:if="${lecturersPage.totalPages > 0}"
-												class="pagination w-75 justify-content-end">
-												<th:block th:each="pageNumber : ${pageNumbers}">
-													<li
-														th:class="${pageNumber==lecturersPage.number + 1} ? active + ' ' + page-item : page-item"><a
-														th:href="@{/listlecturersproject(size=${lecturersPage.size}, page=${pageNumber})}"
-														th:text=${pageNumber} th:class="page-link"></a></li>
-												</th:block>
-											</ul>
-										</nav>
+										<div class="row">
+										</div>
 									</div>
 								</div>
-										<!-- ./Team member -->
-										<!-- Team member -->
-
-										<!-- ./Team member -->
-
+								<div class="modal fade" id="topic-container" data-toggle="modal"
+									tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog modal-lg" role="document">
+										<div class="modal-content" id="modal-content"></div>
 									</div>
 								</div>
+<!-- 								<div
+									class="popular-news-widget mb-30 row w-25 scrollbar-sidebar">
+									<h2>News</h2>
+
+									Single Popular Blog
+									<div class="single-popular-post"
+										th:each="notifications : ${notifications}">
+										<a href="#">
+											<h6>
+												<span th:text="${notifications.title}"></span>
+											</h6>
+										</a>
+										<p>April 14, 2018</p>
+									</div>
+								</div> -->
 							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
+							</div>
 							<th:block th:include="home/_footer"></th:block>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="modal fade" id="topic-container" data-toggle="modal"
-				 tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
-				 aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content" id="modal-content"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<th:block th:include="home/_script"></th:block>
+					<th:block th:include="home/_script"></th:block>
 </body>
 </html>
 
