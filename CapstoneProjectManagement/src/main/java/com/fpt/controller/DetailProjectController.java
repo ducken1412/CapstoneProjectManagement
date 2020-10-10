@@ -41,27 +41,31 @@ public class DetailProjectController {
 		// CapstoneProjectDetails capstoneProjectDetails =
 		// capstoneProjectDetailService.getUserByCapstoneProjectDetailId(id);
 		// load capstone project detail
-		CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(31);
-		System.out.println(cp.getName());
-		System.out.println(cp.getDescription());
-		System.out.println(cp.getDocument());
-		System.out.println(cp.getNameVi());
-		System.out.println(cp.getSpecialty());
+//		CapstoneProjects cp = capstoneProjectService.getCapstonProjectById();
+		
+//		System.out.println(cp.getName());
+//		System.out.println(cp.getDescription());
+//		System.out.println(cp.getDocument());
+//		System.out.println(cp.getNameVi());
+//		System.out.println(cp.getSpecialty());
 
 		// load user thuoc project
+		
+		return "home/detail_project";
+		
+	}
+
+	@RequestMapping(value = "/projectDetail/{id}", method = RequestMethod.POST)
+	public String detailProject(@PathVariable("id") Integer id, Model model, Principal principal) {
+		CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
+		model.addAttribute("detail", cp);
+		
 		List<CapstoneProjectDetails> cpd = capstoneProjectDetailService.getUserByCapstioneID(31);
 		for (int i = 0; i < cpd.size(); i++) {
 			System.out.println(cpd.get(i).getUser());
 			
 		}
-
 		return "home/detail_project";
-	}
-
-	@RequestMapping(value = "/projectDetail/{id}", method = RequestMethod.POST)
-	public String detailProject(@PathVariable("id") Integer id, Model model, Principal principal) {
-
-		return null;
 	}
 
 }
