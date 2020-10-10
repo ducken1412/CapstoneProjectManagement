@@ -155,4 +155,13 @@ public class ForumController {
         }
         return "home/add-post";
     }
+
+    @ResponseBody
+    @GetMapping("/delete-post/{postId}")
+    public String deletePost(@PathVariable Integer postId, Model model) {
+        if(postService.deletePost(postId)) {
+            return "The post has been successfully deleted";
+        }
+        return "error";
+    }
 }

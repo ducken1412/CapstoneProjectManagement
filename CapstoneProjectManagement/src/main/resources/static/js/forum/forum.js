@@ -98,7 +98,37 @@ $(document).on("click", "#btn-addTopic", function () {
     getFormAddTopic();
 });
 
+$(document).on("click", "#btn-deleteTopic", function () {
+    const postId = $(this).attr("postId");
+    $(".btn-ok").click(function () {
+        $("#loading-delete").attr("hidden", false);
+        $.ajax({
+            url: "/delete-post/" + postId,
+            type: "GET",
+            success: function (data) {
+                $.showNotification({
+                    body: data,
+                    type: "success",
+                    duration: 3000,
+                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    zIndex: 100,
+                    margin: "1rem"
+                })
+                $("#loading-delete").attr("hidden", true);
+                getListPost();
+                $("#confirm-delete").trigger("click");
+            },
+            error: function (xhr) {
+                if (xhr.status == 302 || xhr.status == 200) {
+                    window.location.href = "/forum";
+                }
+            },
+        });
+    })
+});
+
 $(document).on("click", "#btn-editTopic", function () {
+
     const postId = $(this).attr("postId");
     getFormAddTopic();
     $("#modal-content").LoadingOverlay("show", {
@@ -236,3 +266,5 @@ function rewriteUrl(size, page) {
     url += "page=" + page;
     return url;
 }
+
+
