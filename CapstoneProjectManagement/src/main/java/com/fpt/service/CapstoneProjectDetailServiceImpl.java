@@ -1,5 +1,6 @@
 package com.fpt.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,8 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
 
 	@Override
 	public List<CapstoneProjectDetails> getUserByCapstioneID(Integer id) {
-		return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
+//		return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
+		return new ArrayList<>();
 	}
 
 //	@Override
