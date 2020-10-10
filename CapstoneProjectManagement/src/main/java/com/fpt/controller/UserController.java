@@ -78,7 +78,6 @@ public class UserController {
 				roleView.add(Constant.ROLE_TRAINING_DEP);
 			}
 			
-		}
 		if(user.getGender()==1) {
 			model.addAttribute("gender","male");
 		}
@@ -92,6 +91,53 @@ public class UserController {
 		}
 		else {
 			model.addAttribute("status",user.getStatus().getName());
+		}
+		if(status.equals(Constant.ROLE_LECTURERS_DB)) {
+			model.addAttribute("status",Constant.ROLE_LECTURERS);
+		}
+		if(status.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
+			model.addAttribute("status",Constant.ROLE_STUDENT_LEADER_DB);
+		}
+		if(status.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+			model.addAttribute("status",Constant.ROLE_STUDENT_MEMBER);
+		}
+		if(status.equals(Constant.ROLE_TRAINING_DEP_DB)) {
+			model.addAttribute("status",Constant.ROLE_TRAINING_DEP);
+		}
+		if(status.equals(Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB)) {
+			model.addAttribute("status",Constant.STATUS_APPROVE_CAPSTONE_HEAD);
+		}
+		if(status.equals(Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB)) {
+			model.addAttribute("status",Constant.STATUS_APPROVE_CAPSTONE_HEAD);
+		}
+		if(status.equals(Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB)) {
+			model.addAttribute("status",Constant.STATUS_APPROVE_CAPSTONE_LUCTURER);
+		}
+		if(status.equals(Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB)) {
+			model.addAttribute("status",Constant.STATUS_APPROVE_CAPSTONE_TRAINING);
+		}
+		if(status.equals(Constant.STATUS_CHANGING_NAME_CAPSTONE_DB)) {
+			model.addAttribute("status",Constant.STATUS_CHANGING_NAME_CAPSTONE);
+		}
+		if(status.equals(Constant.STATUS_DOING_CAPSTONE_DB)) {
+			model.addAttribute("status",Constant.STATUS_DOING_CAPSTONE);
+		}
+		if(status.equals(Constant.STATUS_ELIGIBLE_CAPSTONE_DB)) {
+			model.addAttribute("status",Constant.STATUS_ELIGIBLE_CAPSTONE);
+		}
+		if(status.equals(Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB)) {
+			model.addAttribute("status",Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE);
+			
+		}
+		if(status.equals(Constant.STATUS_INACTIVE_USER_DB)) {
+			model.addAttribute("status",Constant.STATUS_INACTIVE_USER);
+		}
+		if(status.equals(Constant.STATUS_NOT_ELIGIBLE_CAPSTONE_DB)) {
+			model.addAttribute("status",Constant.STATUS_NOT_ELIGIBLE_CAPSTONE);
+		}
+		if(status.equals(Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB)) {
+			model.addAttribute("status",Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB);
+		}
 		}
 		
 	

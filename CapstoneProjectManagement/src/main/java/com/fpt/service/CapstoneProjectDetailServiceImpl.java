@@ -1,9 +1,12 @@
 package com.fpt.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.CapstoneProjectDetails;
+import com.fpt.entity.Users;
 import com.fpt.repository.CapstoneProjectDetailRepository;
 
 @Service
@@ -23,5 +26,19 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
 		}
 		return false;
 	}
+
+	@Override
+	public List<CapstoneProjectDetails> getUserByCapstioneID(Integer id) {
+		return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
+	}
+
+//	@Override
+//	public List<String> getUserByCapstoneProjectDetailId(Integer id) {
+//		return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
+//	}
+
+	
+
+	
 	
 }
