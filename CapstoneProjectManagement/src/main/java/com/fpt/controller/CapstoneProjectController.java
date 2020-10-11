@@ -84,6 +84,8 @@ public class CapstoneProjectController {
 			cpd.setStatus(statusService.getStatusById(4));
 			capstoneProjectDetailService.addCapstonprojectDetail(cpd);
 		}*/
+		dto.setId(projects.getId());
+		model.addAttribute("capstoneProjectDTO", dto);
 		return "home/register-project-form";
 	}
 
