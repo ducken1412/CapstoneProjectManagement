@@ -100,7 +100,7 @@ public class LecturersController {
 		return "home/listlecturers";
 	}
 
-	@RequestMapping(value="/listlecturersproject/{id}", method= RequestMethod.POST)
+	@RequestMapping(value="/listlecturersproject/{id}", method= RequestMethod.GET)
 	public String bookLecturers(@PathVariable("id") String id,UserDTO dto,Model model, BindingResult bindingResult) {
 		CapstoneProjectDetails cpd = new CapstoneProjectDetails();
 		Users user_id = userService.findById(id);
