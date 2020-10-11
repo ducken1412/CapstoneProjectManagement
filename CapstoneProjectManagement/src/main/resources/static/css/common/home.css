@@ -6,3 +6,18 @@ body button :hover{
     background-color: #63c76a !important;
     border-color: #63c76a !important;
 }
+
+.btn {
+    background-color: #63c76a !important;
+    border-color: #63c76a !important;
+}
+
+.pagination .page-link {
+    color: #666 !important;
+}
+
+.pagination .page-item.active .page-link {
+    color: white !important;
+    background-color: #63c76a !important;
+    border-color: #63c76a !important;
+}
