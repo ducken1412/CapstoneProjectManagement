@@ -267,4 +267,31 @@ function rewriteUrl(size, page) {
     return url;
 }
 
+$(document).on("click", "#chat", function (event) {
+    const postId = $(this).attr("postId");
+    $.ajax({
+        url: "/chat",
+        type: "GET",
+        success: function (data) {
+            $("#content-body").html(data)
+            $(document).on("submit", "#userJoinForm", function (e) {
+                connect(e,postId)
+            })
+            $(document).on("submit", "#messagebox", function (e) {
+                sendMessage(e,postId)
+            })
+            // userJoinForm.addEventListener('submit', connect(e,postId), true);
+            // messagebox.addEventListener('submit', sendMessage(e,postId), true);
+        },
+        error: function (xhr) {
+            if (xhr.status == 302 || xhr.status == 200) {
+                // window.location.href = "/forum";
+            }
+        },
+    });
+})
+
+
+
+
 
