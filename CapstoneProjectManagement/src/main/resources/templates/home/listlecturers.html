@@ -29,15 +29,15 @@
 								<div id="post-container">
 									<div class="row w-100">
 										<div class="app-main w-75">
-											<div class="app-sidebar sidebar-shadow">
+											<div class="">
 												<th:block th:include="home/_menu"></th:block>
 											</div>
 											<div class="app-main__outer">
 												<div class="row h-auto">
 
 													<section id="team" class="pb-5">
-														<form th:action="@{/listlecturersproject}"
-															th:object="${UserDTO}" method="GET" id="booklecturers">
+														<!-- <form th:action="@{/listlecturersproject}"
+															th:object="${UserDTO}" method="GET" id="booklecturers"> -->
 															<div class="container">
 																<div class="row">
 																	<!-- Team member -->
@@ -69,7 +69,7 @@
 																									</div>
 																									<a
 																										th:href="@{'/listlecturersproject/' + ${lecturer.id}}"
-																										class="btn btn-primary">Choose</a>
+																										 class="au-btn au-btn-icon au-btn--green mr-3">Choose</a>
 																									<!-- <button class="btn btn-primary" type="submit" >Choose</button> -->
 																								</div>
 																							</div>
@@ -97,7 +97,7 @@
 																</div>
 															</div>
 											
-												</form>
+												<!-- </form> -->
 												</section>
 												</div>
 											</div>
