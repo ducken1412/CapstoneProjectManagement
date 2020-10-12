@@ -1,109 +1,89 @@
 <form
-        th:object="${capstoneProjectDTO}" method="post" id="register">
+        th:object="${capstoneProjectDTO}" method="post" id="register" class="mx-5">
     <div class="form-group row">
         <label for="name"
-               class="col-md-4 col-form-label text-md-right">Name
+               class="text-md-right">Name
             Project</label>
-        <div class="col-md-6">
             <input type="text" id="name" class="form-control"
                    name="name" th:field="*{name}">
             <span class="bg-danger pull-right error-mess" th:errors="*{name}"></span>
-        </div>
     </div>
 
     <div class="form-group row">
         <label for="nameOther"
-               class="col-md-4 col-form-label text-md-right">Name
+               class="text-md-right">Name
             Project Other language</label>
-        <div class="col-md-6">
             <input type="text" id="nameOther" class="form-control"
                    name="nameOther"  th:field="*{nameOther}">
             <span class="bg-danger pull-right error-mess" th:errors="*{nameOther}"></span>
-        </div>
     </div>
 
     <div class="form-group row">
         <label for="nameVi"
-               class="col-md-4 col-form-label text-md-right">Name
+               class="text-md-right">Name
             Project VietNamese</label>
-        <div class="col-md-6">
             <input type="text" id="nameVi" class="form-control"
                    name="nameVi" >
-        </div>
     </div>
 
     <div class="form-group row">
         <label for="nameAbbreviation"
-               class="col-md-4 col-form-label text-md-right">Name
+               class="text-md-right">Name
             Project Abbreviation</label>
-        <div class="col-md-6">
             <input type="text" id="nameAbbreviation"
                    class="form-control" name="nameAbbreviation"
             >
-        </div>
     </div>
 
     <div class="form-group row">
         <label for="profession"
-               class="col-md-4 col-form-label text-md-right">Profession
+               class="text-md-right">Profession
             Project</label>
-        <div class="col-md-6">
             <input type="text" id="profession" class="form-control"
                    name="profession" >
-        </div>
     </div>
 
     <div class="form-group row">
-        <label for="user_name"
-               class="col-md-4 col-form-label text-md-right">Program
+        <label for="program"
+               class="text-md-right">Program
             Project</label>
-        <div class="col-md-6">
             <input type="text" id="program" class="form-control"
                    name="program" >
-        </div>
     </div>
 
     <div class="form-group row">
-        <label for="phone_number"
-               class="col-md-4 col-form-label text-md-right">Specialty
+        <label for="specialty"
+               class="text-md-right">Specialty
             Project</label>
-        <div class="col-md-6">
             <input type="text" id="specialty" class="form-control"
                    name="specialty" >
-        </div>
     </div>
 
     <div class="form-group row">
         <label for="document"
-               class="col-md-4 col-form-label text-md-right">Document
+               class="text-md-right">Document
             Project</label>
-        <div class="col-md-6">
             <input type="text" id="document" class="form-control"
                    name="document" >
-        </div>
     </div>
 
     <div class="form-group row">
         <label for="description"
-               class="col-md-4 col-form-label text-md-right">Description
+               class="text-md-right">Description
             Project</label>
-        <div class="col-md-6">
 													<textarea class="form-control" rows="7" id="description"
                                                               name="description" ></textarea>
-        </div>
     </div>
 
     <div class="row form-group">
         <label for="file-multiple-input"
-               class="col-md-4 col-form-label text-md-right">Add a files</label>
-        <div class="col-md-6">
+               class=" text-md-right">Add a files</label>
             <input type="file" id="file-multiple-input"
                    name="file-multiple-input" multiple
                    class="form-control-file">
-        </div>
     </div>
 
-    <div class="col-md-10  text-md-right">
+    <div class="text-md-right">
         <button type="submit" class="btn btn-primary" style="">
             Register</button>
     </div>
