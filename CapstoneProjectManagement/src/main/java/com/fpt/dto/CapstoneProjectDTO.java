@@ -10,6 +10,8 @@ public class CapstoneProjectDTO {
 	@NotBlank
 	@Size(max=50)
 	private String name;
+	@NotBlank
+	@Size(max=50)
 	private String nameOther;
 	private String nameVi;
 	private String nameAbbreviation;

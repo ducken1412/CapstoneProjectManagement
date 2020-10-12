@@ -19,6 +19,8 @@ public class Files {
 	private int id;
 	@Column(name = "path", columnDefinition = "NVARCHAR(256)")
 	private String path;
+	@Column(name = "file_name", columnDefinition = "NVARCHAR(256)")
+	private String file_name;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
 	private String description;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -38,7 +40,7 @@ public class Files {
 		super();
 	}
 
-	public Files(String path, String description, CapstoneProjects capstoneProject, ReportDetails reportDetail,
+	public Files(String path,String fileName, String description, CapstoneProjects capstoneProject, ReportDetails reportDetail,
 			Evaluations evaluation, Posts post) {
 		super();
 		this.path = path;
@@ -47,6 +49,15 @@ public class Files {
 		this.reportDetail = reportDetail;
 		this.evaluation = evaluation;
 		this.post = post;
+		this.file_name = fileName;
+	}
+
+	public String getFileName() {
+		return file_name;
+	}
+
+	public void setFileName(String fileName) {
+		this.file_name = fileName;
 	}
 
 	public int getId() {

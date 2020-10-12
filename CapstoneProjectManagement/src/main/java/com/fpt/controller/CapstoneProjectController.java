@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,7 +57,7 @@ public class CapstoneProjectController {
 			List<Users> user = userService.getUserByRoleId(2);
 			model.addAttribute("user", user);
 			model.addAttribute("capstoneProjectDTO", dto);
-			return "home/register-project";
+			return "home/register-project-form";
 		}
 		CapstoneProjects projects = new CapstoneProjects();
 		int statusId = 1;
@@ -66,13 +67,12 @@ public class CapstoneProjectController {
 		projects.setNameAbbreviation(dto.getNameAbbreviation());
 		projects.setDescription(dto.getDescription());
 		projects.setDocument(dto.getDocument());
-//		projects.setProfession(dto.getProfession());
 		projects.setSpecialty(dto.getSpecialty());
 		projects.setProgram(dto.getProgram());
 		projects.setStatus(statusService.getStatusById(statusId));
 		projectService.saveRegisterProject(projects);
 
-		CapstoneProjectDetails cpd;
+		/*CapstoneProjectDetails cpd;
 		// lop id by Users Role Student and add capstone project detail
 		for (String idStudent : dto.getMembers()) {
 			cpd = new CapstoneProjectDetails();
@@ -83,7 +83,14 @@ public class CapstoneProjectController {
 			//set status id = 4 (registering_capstone)
 			cpd.setStatus(statusService.getStatusById(4));
 			capstoneProjectDetailService.addCapstonprojectDetail(cpd);
-		}
-		return "redirect:";
+		}*/
+		dto.setId(projects.getId());
+		model.addAttribute("capstoneProjectDTO", dto);
+		return "home/register-project-form";
+	}
+
+	@GetMapping("/get-member-form")
+	public String getForm() {
+		return "home/add-member";
 	}
 }

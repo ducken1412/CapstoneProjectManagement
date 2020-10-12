@@ -31,28 +31,7 @@ import com.fpt.config.*;
 @Controller
 @Transactional
 public class LoginController {
-	@Autowired
-	private ConnectionFactoryLocator connectionFactoryLocator;
 
-	@Autowired
-	private UsersConnectionRepository connectionRepository;
-
-	@Autowired
-	private AppUserValidator appUserValidator;
-
-	@InitBinder
-	protected void initBinder(WebDataBinder dataBinder) {
-
-		Object target = dataBinder.getTarget();
-		if (target == null) {
-			return;
-		}
-		System.out.println("Target=" + target);
-
-		if (target.getClass() == AppUserForm.class) {
-			dataBinder.setValidator(appUserValidator);
-		}
-	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String adminPage(Model model, Principal principal) {
@@ -99,10 +78,10 @@ public class LoginController {
 		return "login/loginPage";
 	}
 
-	@RequestMapping(value = { "/signin" }, method = RequestMethod.GET)
-	public String signInPage(Model model) {
-		return "redirect:/login";
-	}
+	/*
+	 * @RequestMapping(value = { "/signin" }, method = RequestMethod.GET) public
+	 * String signInPage(Model model) { return "redirect:/login"; }
+	 */
 
 
 }
