@@ -9,14 +9,19 @@ import com.fpt.entity.Notifications;
 import com.fpt.repository.NotificationsRepository;
 
 @Service
-public class NotificationsServiceImpl implements NotificationsService{
+public class NotificationsServiceImpl implements NotificationsService {
 
 	@Autowired
 	private NotificationsRepository notificationsRepository;
-	
+
 	@Override
 	public List<Notifications> getAllTitle() {
 		return notificationsRepository.findAll();
+	}
+
+	@Override
+	public List<Notifications> getTitleByUserId(String id) {
+		return notificationsRepository.findByReceivers_Id(id);
 	}
 
 }
