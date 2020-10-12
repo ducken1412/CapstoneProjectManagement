@@ -169,4 +169,22 @@
                         </div>
                     </div>
                 </div>
+                <div id="notification-container" class="w-25 float-right position-absolute h-100"></div>
             </header>
+<th:block th:include="home/_script"></th:block>
+<script>
+    $().ready(function () {
+        $.ajax({
+            url: "/notifications",
+            type: "GET",
+            success: function (data) {
+                $("#notification-container").html(data)
+            },
+            error: function (xhr) {
+                if (xhr.status == 302 || xhr.status == 200) {
+                    window.location.href = "/forum";
+                }
+            },
+        });
+    })
+</script>
