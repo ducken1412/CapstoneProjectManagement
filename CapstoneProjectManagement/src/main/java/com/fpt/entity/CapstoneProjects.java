@@ -51,16 +51,14 @@ public class CapstoneProjects {
 	private List<CapstoneProjectDetails> capstoneProjectDetails;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<Evaluations> evaluations;
+	@Column(name = "description_action", columnDefinition = "longtext")
+	private String desAction;
 
 	public CapstoneProjects() {
 		super();
 	}
 
-	public CapstoneProjects(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation,
-			Profession profession, String specialty, String document, String program, String description, Status status,
-			List<HistoryRecords> historyRecords, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails,
-			List<Evaluations> evaluations) {
-		super();
+	public CapstoneProjects(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation, Profession profession, String specialty, String document, String program, String description, Status status, List<HistoryRecords> historyRecords, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails, List<Evaluations> evaluations, String desAction) {
 		this.id = id;
 		this.name = name;
 		this.nameOther = nameOther;
@@ -76,6 +74,15 @@ public class CapstoneProjects {
 		this.files = files;
 		this.capstoneProjectDetails = capstoneProjectDetails;
 		this.evaluations = evaluations;
+		this.desAction = desAction;
+	}
+
+	public String getDesAction() {
+		return desAction;
+	}
+
+	public void setDesAction(String desAction) {
+		this.desAction = desAction;
 	}
 
 	public Integer getId() {
