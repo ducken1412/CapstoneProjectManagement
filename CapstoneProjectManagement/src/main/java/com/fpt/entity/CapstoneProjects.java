@@ -47,7 +47,7 @@ public class CapstoneProjects {
 	private List<HistoryRecords> historyRecords;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<Files> files;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<CapstoneProjectDetails> capstoneProjectDetails;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<Evaluations> evaluations;

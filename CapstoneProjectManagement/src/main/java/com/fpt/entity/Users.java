@@ -60,12 +60,10 @@ public class Users implements Serializable {
     private List<UserRoles> roleUser;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<HistoryRecords> historyRecords;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<CapstoneProjectDetails> capstoneProjectDetails;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sender")
-    private List<Notifications> notificationSends;
-    @ManyToMany(mappedBy = "receivers")
-    private List<Notifications> notificationReceives;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<NotificationDetails> notificationDetails;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id", referencedColumnName = "id", columnDefinition = "INT")
     private Reports reportSend;
@@ -85,10 +83,9 @@ public class Users implements Serializable {
     private List<Posts> posts;
 
     public Users() {
-        super();
     }
 
-    public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<Notifications> notificationSends, List<Notifications> notificationReceives, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts) {
+    public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts) {
         this.id = id;
         this.username = username;
         this.encrytedPassword = encrytedPassword;
@@ -106,8 +103,7 @@ public class Users implements Serializable {
         this.roleUser = roleUser;
         this.historyRecords = historyRecords;
         this.capstoneProjectDetails = capstoneProjectDetails;
-        this.notificationSends = notificationSends;
-        this.notificationReceives = notificationReceives;
+        this.notificationDetails = notificationDetails;
         this.reportSend = reportSend;
         this.reportReceive = reportReceive;
         this.reportReceives = reportReceives;
@@ -253,20 +249,12 @@ public class Users implements Serializable {
         this.capstoneProjectDetails = capstoneProjectDetails;
     }
 
-    public List<Notifications> getNotificationSends() {
-        return notificationSends;
+    public List<NotificationDetails> getNotificationDetails() {
+        return notificationDetails;
     }
 
-    public void setNotificationSends(List<Notifications> notificationSends) {
-        this.notificationSends = notificationSends;
-    }
-
-    public List<Notifications> getNotificationReceives() {
-        return notificationReceives;
-    }
-
-    public void setNotificationReceives(List<Notifications> notificationReceives) {
-        this.notificationReceives = notificationReceives;
+    public void setNotificationDetails(List<NotificationDetails> notificationDetails) {
+        this.notificationDetails = notificationDetails;
     }
 
     public Reports getReportSend() {

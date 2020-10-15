@@ -22,15 +22,15 @@ public class CapstoneProjectDetails {
     @Column(name = "id", columnDefinition = "INT")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "capstone_project_id")
     private CapstoneProjects capstoneProject;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     private Status status;
     @Column(name = "description_action", columnDefinition = "longtext")
