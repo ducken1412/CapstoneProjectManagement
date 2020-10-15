@@ -11,5 +11,5 @@ public interface NotificationsService {
 	List<Notifications> getAllTitle();
 	
 	//get notification by user id
-	List<Notifications> getTitleByUserId(String id);
+//	List<Notifications> getTitleByUserId(String id);
 }

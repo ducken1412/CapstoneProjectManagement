@@ -12,5 +12,5 @@ import com.fpt.entity.Notifications;
 public interface NotificationsRepository extends JpaRepository<Notifications, Integer>{
 	//get notification by user id
 	
-	List<Notifications> findByReceivers_Id(String id);
+//	List<Notifications> findByReceivers_Id(String id);
 }
