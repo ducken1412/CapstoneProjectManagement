@@ -81,11 +81,13 @@ public class Users implements Serializable {
     private EvaluationDetails evaluationDetail;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Posts> posts;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Chat> chats;
 
     public Users() {
     }
 
-    public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts) {
+    public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats) {
         this.id = id;
         this.username = username;
         this.encrytedPassword = encrytedPassword;
@@ -111,6 +113,15 @@ public class Users implements Serializable {
         this.reportDetail = reportDetail;
         this.evaluationDetail = evaluationDetail;
         this.posts = posts;
+        this.chats = chats;
+    }
+
+    public List<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
     }
 
     public String getId() {
