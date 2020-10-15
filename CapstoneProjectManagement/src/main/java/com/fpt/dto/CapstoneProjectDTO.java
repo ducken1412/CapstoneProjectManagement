@@ -18,7 +18,7 @@ public class CapstoneProjectDTO {
 	private String document;
 	private String program;
 	private String description;
-	private Integer stautus_id;
+	private Integer stautus;
 	private List<String> members;
 
 	public CapstoneProjectDTO() {
@@ -27,7 +27,7 @@ public class CapstoneProjectDTO {
 
 	public CapstoneProjectDTO(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation,
 			String profession, String specialty, String document, String program, String description,
-			Integer stautus_id, List<String> members) {
+			Integer stautus, List<String> members) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -39,7 +39,7 @@ public class CapstoneProjectDTO {
 		this.document = document;
 		this.program = program;
 		this.description = description;
-		this.stautus_id = stautus_id;
+		this.stautus = stautus;
 		this.members = members;
 	}
 
@@ -123,12 +123,12 @@ public class CapstoneProjectDTO {
 		this.description = description;
 	}
 
-	public Integer getStautus_id() {
-		return stautus_id;
+	public Integer getStautus() {
+		return stautus;
 	}
 
-	public void setStautus_id(Integer stautus_id) {
-		this.stautus_id = stautus_id;
+	public void setStautus_id(Integer stautus) {
+		this.stautus = stautus;
 	}
 
 	public List<String> getMembers() {

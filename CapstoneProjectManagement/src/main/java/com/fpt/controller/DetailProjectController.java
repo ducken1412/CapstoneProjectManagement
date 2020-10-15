@@ -21,6 +21,7 @@ import com.fpt.entity.Users;
 import com.fpt.service.CapstoneProjectDetailService;
 import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.StatusService;
+import com.fpt.service.UserRoleService;
 import com.fpt.service.UserService;
 import com.fpt.utils.Constant;
 
@@ -34,7 +35,11 @@ public class DetailProjectController {
 	private CapstoneProjectService capstoneProjectService;
 
 	@Autowired
-	private UserService userService;
+	private UserService userService; 
+	@Autowired
+	private UserRoleService userRoleService ; 
+	@Autowired
+	private StatusService statusService;
 
 	@GetMapping("/detailproject")
 	public String detailProject() {
@@ -55,17 +60,69 @@ public class DetailProjectController {
 		
 	}
 
-	@RequestMapping(value = "/projectDetail/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/projectDetail/{id}", method = RequestMethod.GET)
 	public String detailProject(@PathVariable("id") Integer id, Model model, Principal principal) {
 		CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
 		model.addAttribute("detail", cp);
+		List<Users> userproject= capstoneProjectDetailService.getUserByCapstoneProjectDetailId(id);
+		model.addAttribute("userproject", userproject);
+		List<String> statusProject= new ArrayList<>();
 		
-		List<CapstoneProjectDetails> cpd = capstoneProjectDetailService.getUserByCapstioneID(31);
-		for (int i = 0; i < cpd.size(); i++) {
-			System.out.println(cpd.get(i).getUser());
+		List<String> roleView= new ArrayList<>();
+		for (Users users : userproject) {
+			String user_id = users.getId();
 			
+			List<String> role= userRoleService.getRoleNamesByUserId(user_id);
+			for (String string : role) {
+				if(string.equals(Constant.ROLE_HEAD_DB)) {
+					roleView.add(Constant.ROLE_HEAD);
+				}
+				if(string.equals(Constant.ROLE_LECTURERS_DB)) {
+					roleView.add(Constant.ROLE_LECTURERS);
+				}
+				if(string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
+					roleView.add(Constant.ROLE_STUDENT_LEADER);
+				}
+				if(string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+					roleView.add(Constant.ROLE_STUDENT_MEMBER);
+				}
+				if(string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
+					roleView.add(Constant.ROLE_TRAINING_DEP);
+				}
+				
 		}
+		}
+		
+//		for (Users users : userproject) {
+//			int adsa = users.getStatus();
+//			
+//			List<String> status= userService.findById(user_id);
+//			for (String string : role) {
+//				if(string.equals(Constant.ROLE_HEAD_DB)) {
+//					roleView.add(Constant.ROLE_HEAD);
+//				}
+//				if(string.equals(Constant.ROLE_LECTURERS_DB)) {
+//					roleView.add(Constant.ROLE_LECTURERS);
+//				}
+//				if(string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
+//					roleView.add(Constant.ROLE_STUDENT_LEADER);
+//				}
+//				if(string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+//					roleView.add(Constant.ROLE_STUDENT_MEMBER);
+//				}
+//				if(string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
+//					roleView.add(Constant.ROLE_TRAINING_DEP);
+//				}
+//				
+//		}
+//		}
+		
+//		model.addAttribute("statusProject", statusProject);
+		
+		model.addAttribute("roleView",roleView);
+		
 		return "home/detail_project";
 	}
-
 }
+
+
