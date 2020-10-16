@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.CapstoneProjects;
+import com.fpt.entity.Status;
 
 @Service
 public interface CapstoneProjectService {
@@ -15,4 +16,5 @@ public interface CapstoneProjectService {
 
 	// get project by Id
 	CapstoneProjects getCapstonProjectById(Integer id);
+	
 }

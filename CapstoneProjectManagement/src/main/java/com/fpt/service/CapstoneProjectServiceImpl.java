@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.CapstoneProjects;
+import com.fpt.entity.Status;
 import com.fpt.repository.CapstoneProjectRepository;
 
 @Service
@@ -34,4 +35,5 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 		CapstoneProjects cp = capstoneProjectRepository.findById(id).orElse(null);
 		return cp;
 	}
+
 }

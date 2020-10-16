@@ -3,7 +3,12 @@ package com.fpt.controller;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +26,7 @@ import com.fpt.entity.Users;
 import com.fpt.service.CapstoneProjectDetailService;
 import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.StatusService;
+import com.fpt.service.UserRoleService;
 import com.fpt.service.UserService;
 import com.fpt.utils.Constant;
 
@@ -34,7 +40,11 @@ public class DetailProjectController {
 	private CapstoneProjectService capstoneProjectService;
 
 	@Autowired
-	private UserService userService;
+	private UserService userService; 
+	@Autowired
+	private UserRoleService userRoleService ; 
+	@Autowired
+	private StatusService statusService;
 
 	@GetMapping("/detailproject")
 	public String detailProject() {
@@ -55,17 +65,47 @@ public class DetailProjectController {
 		
 	}
 
-	@RequestMapping(value = "/projectDetail/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/projectDetail/{id}", method = RequestMethod.GET)
 	public String detailProject(@PathVariable("id") Integer id, Model model, Principal principal) {
+		
 		CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
 		model.addAttribute("detail", cp);
-		
-		List<CapstoneProjectDetails> cpd = capstoneProjectDetailService.getUserByCapstioneID(31);
-		for (int i = 0; i < cpd.size(); i++) {
-			System.out.println(cpd.get(i).getUser());
+		List<Users> userproject= capstoneProjectDetailService.getUserByCapstoneProjectDetailId(id);
+		model.addAttribute("userproject", userproject);
+		List<String> roleView= new ArrayList<>();
+		for (Users users : userproject) {
+			String user_id = users.getId();
 			
+			List<String> role= userRoleService.getRoleNamesByUserId(user_id);
+			for (String string : role) {
+				if(string.equals(Constant.ROLE_HEAD_DB)) {
+					roleView.add(Constant.ROLE_HEAD);
+				}
+				if(string.equals(Constant.ROLE_LECTURERS_DB)) {
+					roleView.add(Constant.ROLE_LECTURERS);
+				}
+				if(string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
+					roleView.add(Constant.ROLE_STUDENT_LEADER);
+				}
+				if(string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+					roleView.add(Constant.ROLE_STUDENT_MEMBER);
+				}
+				if(string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
+					roleView.add(Constant.ROLE_TRAINING_DEP);	
+				}
+				
 		}
+		}
+		Map<Object, String> result =
+			    IntStream.range(0,userproject.size())
+			             .boxed()
+			             .collect(Collectors.toMap(i -> userproject.get(i), i -> roleView.get(i)));
+		model.addAttribute("roleView",roleView);
+		model.addAttribute("result", result);
+		
+
 		return "home/detail_project";
 	}
-
 }
+
+
