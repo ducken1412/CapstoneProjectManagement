@@ -1,6 +1,7 @@
 package com.fpt.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,12 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/", "/signup", "/login", "/logout").permitAll();
 		
 		
-		  http.authorizeRequests().antMatchers("/userInfo").access("hasRole('" +
-		  Constant.ROLE_STUDENT_MEMBER + "')");
-		  http.authorizeRequests().antMatchers("/admin").access("hasRole('" +
-		  Constant.ROLE_LECTURERS + "')");
-		 
-		 
+		/*
+		 * http.authorizeRequests().antMatchers("/userInfo").access("hasRole('" +
+		 * Constant.ROLE_STUDENT_MEMBER + "')");
+		 * http.authorizeRequests().antMatchers("/admin").access("hasRole('" +
+		 * Constant.ROLE_LECTURERS + "')");
+		 */
 		http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 		http.authorizeRequests().and().formLogin()
 				.loginProcessingUrl("/j_spring_security_check") 
@@ -52,4 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return userDetailsService;
     }
+    
+
 }

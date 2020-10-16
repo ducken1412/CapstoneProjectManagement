@@ -19,7 +19,7 @@ public class HistoryRecords {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "INT")
 	private Integer id;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Users user;
 	@Column(name = "created_date", columnDefinition = "DATETIME")
 	private Date createdDate;
@@ -27,16 +27,16 @@ public class HistoryRecords {
 	private Date lastModifiedDate;
 	@Column(name = "content", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String content;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "capstone_project_id")
 	private CapstoneProjects capstoneProject;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "report_id")
 	private Reports report;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "evaluation_id")
 	private Evaluations evaluation;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Posts post;
 

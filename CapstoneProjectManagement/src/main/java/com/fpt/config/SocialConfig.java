@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.UserIdSource;
 import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
@@ -22,9 +24,6 @@ import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
 
-/*import com.talk2amareswaran.projects.socialloginapp.dao.AppUserDAO;
-import com.talk2amareswaran.projects.socialloginapp.service.ConnectionSignUpImpl;*/
-
 @Configuration
 @EnableSocial
 @PropertySource("classpath:social-cfg.properties")
@@ -36,15 +35,10 @@ public class SocialConfig implements SocialConfigurer {
 	 * @Autowired private AppUserDAO appUserDAO;
 	 */
 	
-	private boolean autoSignUp = false;  
+
     
 	@Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
-        try {
-            this.autoSignUp = Boolean.parseBoolean(env.getProperty("social.auto-signup"));
-        } catch (Exception e) {
-            this.autoSignUp = false;
-        }
         GoogleConnectionFactory gfactory = new GoogleConnectionFactory(env.getProperty("google.client.id"), env.getProperty("google.client.secret"));
         gfactory.setScope(env.getProperty("google.scope"));
         cfConfig.addConnectionFactory(gfactory);
@@ -67,6 +61,8 @@ public class SocialConfig implements SocialConfigurer {
     public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator,  ConnectionRepository connectionRepository) {
         return new ConnectController(connectionFactoryLocator, connectionRepository);
     }
+    
+
 
 	
 }

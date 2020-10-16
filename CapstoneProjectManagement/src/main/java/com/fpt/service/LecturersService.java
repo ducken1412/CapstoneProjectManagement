@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.fpt.entity.Users;
 
-@Service
 
 public interface LecturersService {
 	List<Users> getAllLecturersDTOActive();

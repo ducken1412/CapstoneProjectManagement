@@ -1,5 +1,6 @@
 package com.fpt.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,12 @@ public class NotificationsController {
 	
 	@RequestMapping(value = "/notifications")
 	public String getAllNotications(Model model) {
-		List<Notifications> notification = notificationsService.getAllTitle();
+//		List<Notifications> notification = notificationsService.getAllTitle();
+		List<Notifications> notification = new ArrayList<>();
 		model.addAttribute("notifications", notification);
 		Users user= userService.findById("1");
-		List<Notifications> notificationByUserId = notificationsService.getTitleByUserId(user.getId().toString());
+//		List<Notifications> notificationByUserId = notificationsService.getTitleByUserId(user.getId().toString());
+		List<Notifications> notificationByUserId= new ArrayList<>();
 		model.addAttribute("notificationByUserId", notificationByUserId);
 		return "home/notifications";
 	}

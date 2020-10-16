@@ -19,9 +19,9 @@ public class NotificationsServiceImpl implements NotificationsService {
 		return notificationsRepository.findAll();
 	}
 
-	@Override
-	public List<Notifications> getTitleByUserId(String id) {
-		return notificationsRepository.findByReceivers_Id(id);
-	}
+//	@Override
+//	public List<Notifications> getTitleByUserId(String id) {
+//		return notificationsRepository.findByReceivers_Id(id);
+//	}
 
 }

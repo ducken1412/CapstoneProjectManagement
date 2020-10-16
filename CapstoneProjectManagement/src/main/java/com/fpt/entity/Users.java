@@ -24,312 +24,292 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Users implements Serializable {
-	private static final long serialVersionUID = 1L;
-	@Id
-	@Column(name = "id", columnDefinition = "NVARCHAR(50)")
-	private String id;
-	@Column(name = "user_name", columnDefinition = "NVARCHAR(50) NOT NULL")
-	private String username;
-	@Column(name = "encryted_password", columnDefinition = "NVARCHAR(256) NOT NULL")
-	private String encrytedPassword;
-	@Column(name = "first_name", columnDefinition = "NVARCHAR(30) NOT NULL")
-	private String firstName;
-	@Column(name = "last_name", columnDefinition = "NVARCHAR(30) NOT NULL")
-	private String lastName;
-	@Column(name = "birth_date", columnDefinition = "DATE")
-	private Date birthDate;
-	@Column(name = "gender", columnDefinition = "INT NOT NULL")
-	private Integer gender;
-	@Column(name = "phone", columnDefinition = "VARCHAR(15) NOT NULL")
-	private String phone;
-	@Column(name = "image", columnDefinition = "longtext")
-	private String image;
-	@Column(name = "email", columnDefinition = "NVARCHAR(64) NOT NULL")
-	private String email;
-	@Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
-	private Date createdDate;
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "locations_id", referencedColumnName = "id", columnDefinition = "INT")
-	private Locations location;
-	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
-	private String description;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "status_id")
-	private Status status;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userRoleKey.user")
-	private List<UserRoles> roleUser;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private List<HistoryRecords> historyRecords;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
-	private List<CapstoneProjectDetails> capstoneProjectDetails;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "notification_id", referencedColumnName = "id", columnDefinition = "INT")
-	private Notifications notificationSend;
-	@ManyToMany(mappedBy = "receivers")
-	private List<Notifications> notificationReceives;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "report_id", referencedColumnName = "id", columnDefinition = "INT")
-	private Reports reportSend;
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Reports reportReceive;
-	@ManyToMany(mappedBy = "reportRecipients")
-	private List<Reports> reportReceives;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sender")
-	private List<Comments> comments;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "report_detail_id")
-	private ReportDetails reportDetail;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "evaluation_detail_id", referencedColumnName = "id", columnDefinition = "INT")
-	private EvaluationDetails evaluationDetail;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Posts> posts;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "id", columnDefinition = "NVARCHAR(50)")
+    private String id;
+    @Column(name = "user_name", columnDefinition = "NVARCHAR(50) NOT NULL")
+    private String username;
+    @Column(name = "encryted_password", columnDefinition = "NVARCHAR(256) NOT NULL")
+    private String encrytedPassword;
+    @Column(name = "first_name", columnDefinition = "NVARCHAR(30) NOT NULL")
+    private String firstName;
+    @Column(name = "last_name", columnDefinition = "NVARCHAR(30) NOT NULL")
+    private String lastName;
+    @Column(name = "birth_date", columnDefinition = "DATE")
+    private Date birthDate;
+    @Column(name = "gender", columnDefinition = "INT NOT NULL")
+    private Integer gender;
+    @Column(name = "phone", columnDefinition = "VARCHAR(15) NOT NULL")
+    private String phone;
+    @Column(name = "image", columnDefinition = "longtext")
+    private String image;
+    @Column(name = "email", columnDefinition = "NVARCHAR(64) NOT NULL")
+    private String email;
+    @Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
+    private Date createdDate;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "locations_id", referencedColumnName = "id", columnDefinition = "INT")
+    private Locations location;
+    @Column(name = "description", columnDefinition = "NVARCHAR(256)")
+    private String description;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id")
+    private Status status;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userRoleKey.user")
+    private List<UserRoles> roleUser;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<HistoryRecords> historyRecords;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<CapstoneProjectDetails> capstoneProjectDetails;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<NotificationDetails> notificationDetails;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "report_id", referencedColumnName = "id", columnDefinition = "INT")
+    private Reports reportSend;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Reports reportReceive;
+    @ManyToMany(mappedBy = "reportRecipients")
+    private List<Reports> reportReceives;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sender")
+    private List<Comments> comments;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "report_detail_id")
+    private ReportDetails reportDetail;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "evaluation_detail_id", referencedColumnName = "id", columnDefinition = "INT")
+    private EvaluationDetails evaluationDetail;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Posts> posts;
 
-	public Users() {
-		super();
-	}
+    public Users() {
+    }
 
-	public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate,
-			Integer gender, String phone, String email, Date createdDate, Locations location, String description,
-			Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords,
-			List<CapstoneProjectDetails> capstoneProjectDetails, Notifications notificationSend,
-			List<Notifications> notificationReceives, Reports reportSend, Reports reportReceive,
-			List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail,
-			EvaluationDetails evaluationDetail, List<Posts> posts,String image) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.encrytedPassword = encrytedPassword;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.birthDate = birthDate;
-		this.gender = gender;
-		this.phone = phone;
-		this.email = email;
-		this.createdDate = createdDate;
-		this.location = location;
-		this.description = description;
-		this.status = status;
-		this.roleUser = roleUser;
-		this.historyRecords = historyRecords;
-		this.capstoneProjectDetails = capstoneProjectDetails;
-		this.notificationSend = notificationSend;
-		this.notificationReceives = notificationReceives;
-		this.reportSend = reportSend;
-		this.reportReceive = reportReceive;
-		this.reportReceives = reportReceives;
-		this.comments = comments;
-		this.reportDetail = reportDetail;
-		this.evaluationDetail = evaluationDetail;
-		this.posts = posts;
-		this.image = image;
-	}
+    public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts) {
+        this.id = id;
+        this.username = username;
+        this.encrytedPassword = encrytedPassword;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.phone = phone;
+        this.image = image;
+        this.email = email;
+        this.createdDate = createdDate;
+        this.location = location;
+        this.description = description;
+        this.status = status;
+        this.roleUser = roleUser;
+        this.historyRecords = historyRecords;
+        this.capstoneProjectDetails = capstoneProjectDetails;
+        this.notificationDetails = notificationDetails;
+        this.reportSend = reportSend;
+        this.reportReceive = reportReceive;
+        this.reportReceives = reportReceives;
+        this.comments = comments;
+        this.reportDetail = reportDetail;
+        this.evaluationDetail = evaluationDetail;
+        this.posts = posts;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getEncrytedPassword() {
-		return encrytedPassword;
-	}
+    public String getEncrytedPassword() {
+        return encrytedPassword;
+    }
 
-	public void setEncrytedPassword(String encrytedPassword) {
-		this.encrytedPassword = encrytedPassword;
-	}
+    public void setEncrytedPassword(String encrytedPassword) {
+        this.encrytedPassword = encrytedPassword;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public Date getBirthDate() {
-		return birthDate;
-	}
+    public Date getBirthDate() {
+        return birthDate;
+    }
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
-	public Integer getGender() {
-		return gender;
-	}
+    public Integer getGender() {
+        return gender;
+    }
 
-	public void setGender(Integer gender) {
-		this.gender = gender;
-	}
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public Locations getLocation() {
-		return location;
-	}
+    public Date getCreatedDate() {
+        return createdDate;
+    }
 
-	public void setLocation(Locations location) {
-		this.location = location;
-	}
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Locations getLocation() {
+        return location;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setLocation(Locations location) {
+        this.location = location;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public List<UserRoles> getRoleUser() {
-		return roleUser;
-	}
+    public Status getStatus() {
+        return status;
+    }
 
-	public void setRoleUser(List<UserRoles> roleUser) {
-		this.roleUser = roleUser;
-	}
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-	public List<HistoryRecords> getHistoryRecords() {
-		return historyRecords;
-	}
+    public List<UserRoles> getRoleUser() {
+        return roleUser;
+    }
 
-	public void setHistoryRecords(List<HistoryRecords> historyRecords) {
-		this.historyRecords = historyRecords;
-	}
+    public void setRoleUser(List<UserRoles> roleUser) {
+        this.roleUser = roleUser;
+    }
 
-	public List<CapstoneProjectDetails> getCapstoneProjectDetails() {
-		return capstoneProjectDetails;
-	}
+    public List<HistoryRecords> getHistoryRecords() {
+        return historyRecords;
+    }
 
-	public void setCapstoneProjectDetails(List<CapstoneProjectDetails> capstoneProjectDetails) {
-		this.capstoneProjectDetails = capstoneProjectDetails;
-	}
+    public void setHistoryRecords(List<HistoryRecords> historyRecords) {
+        this.historyRecords = historyRecords;
+    }
 
-	public Notifications getNotificationSend() {
-		return notificationSend;
-	}
+    public List<CapstoneProjectDetails> getCapstoneProjectDetails() {
+        return capstoneProjectDetails;
+    }
 
-	public void setNotificationSend(Notifications notificationSend) {
-		this.notificationSend = notificationSend;
-	}
+    public void setCapstoneProjectDetails(List<CapstoneProjectDetails> capstoneProjectDetails) {
+        this.capstoneProjectDetails = capstoneProjectDetails;
+    }
 
-	public List<Notifications> getNotificationReceives() {
-		return notificationReceives;
-	}
+    public List<NotificationDetails> getNotificationDetails() {
+        return notificationDetails;
+    }
 
-	public void setNotificationReceives(List<Notifications> notificationReceives) {
-		this.notificationReceives = notificationReceives;
-	}
+    public void setNotificationDetails(List<NotificationDetails> notificationDetails) {
+        this.notificationDetails = notificationDetails;
+    }
 
-	public Reports getReportSend() {
-		return reportSend;
-	}
+    public Reports getReportSend() {
+        return reportSend;
+    }
 
-	public void setReportSend(Reports reportSend) {
-		this.reportSend = reportSend;
-	}
+    public void setReportSend(Reports reportSend) {
+        this.reportSend = reportSend;
+    }
 
-	public Reports getReportReceive() {
-		return reportReceive;
-	}
+    public Reports getReportReceive() {
+        return reportReceive;
+    }
 
-	public void setReportReceive(Reports reportReceive) {
-		this.reportReceive = reportReceive;
-	}
+    public void setReportReceive(Reports reportReceive) {
+        this.reportReceive = reportReceive;
+    }
 
-	public List<Reports> getReportReceives() {
-		return reportReceives;
-	}
+    public List<Reports> getReportReceives() {
+        return reportReceives;
+    }
 
-	public void setReportReceives(List<Reports> reportReceives) {
-		this.reportReceives = reportReceives;
-	}
+    public void setReportReceives(List<Reports> reportReceives) {
+        this.reportReceives = reportReceives;
+    }
 
-	public List<Comments> getComments() {
-		return comments;
-	}
+    public List<Comments> getComments() {
+        return comments;
+    }
 
-	public void setComments(List<Comments> comments) {
-		this.comments = comments;
-	}
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
+    }
 
-	public ReportDetails getReportDetail() {
-		return reportDetail;
-	}
+    public ReportDetails getReportDetail() {
+        return reportDetail;
+    }
 
-	public void setReportDetail(ReportDetails reportDetail) {
-		this.reportDetail = reportDetail;
-	}
+    public void setReportDetail(ReportDetails reportDetail) {
+        this.reportDetail = reportDetail;
+    }
 
-	public EvaluationDetails getEvaluationDetail() {
-		return evaluationDetail;
-	}
+    public EvaluationDetails getEvaluationDetail() {
+        return evaluationDetail;
+    }
 
-	public void setEvaluationDetail(EvaluationDetails evaluationDetail) {
-		this.evaluationDetail = evaluationDetail;
-	}
+    public void setEvaluationDetail(EvaluationDetails evaluationDetail) {
+        this.evaluationDetail = evaluationDetail;
+    }
 
-	public List<Posts> getPosts() {
-		return posts;
-	}
+    public List<Posts> getPosts() {
+        return posts;
+    }
 
-	public void setPosts(List<Posts> posts) {
-		this.posts = posts;
-	}
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
+    public void setPosts(List<Posts> posts) {
+        this.posts = posts;
+    }
 }

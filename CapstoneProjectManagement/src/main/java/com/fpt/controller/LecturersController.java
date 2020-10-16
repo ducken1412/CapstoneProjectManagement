@@ -33,11 +33,10 @@ import com.fpt.service.UserService;
 import com.fpt.dto.ListLecturersDTO;
 import com.fpt.service.CapstoneProjectDetailService;
 import com.fpt.service.CapstoneProjectService;
-import com.fpt.service.LecturersService;
 import com.fpt.service.NotificationsService;
 import com.fpt.service.StatusService;
-@Controller
 
+@Controller
 public class LecturersController {
 	/*
 	@GetMapping("/listlecturersproject")

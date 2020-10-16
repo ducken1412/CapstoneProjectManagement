@@ -1,0 +1,35 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="card">
+	<div class="card-header">
+		<div class="w-100">
+			<strong id="title-modal">Upload</strong>
+			<button type="button" id="close-add-form" class="close"
+				data-dismiss="modal">&times;</button>
+		</div>
+	</div>
+	<div class="card-body card-block">
+		<form id="post-form" method="post" class="form-horizontal"
+			th:object="${upload}" enctype="multipart/form-data">
+			<input type="text" id="id" name="id" th:value="${upload.id}"
+				hidden="true">
+			<div class="row form-group">
+				<div class="col col-md-3">
+					<label for="file-multiple-input" class=" form-control-label">Files</label>
+				</div>
+				<div class="col-12 col-md-9">
+					<input type="file" id="file-multiple-input"
+						name="file-multiple-input" multiple class="form-control-file"
+						 >
+				</div>
+			</div>
+			<div class="float-right">
+				<button type="submit" id="btn-post" class="btn btn-outline-success">
+					<span id="loading-add" class="spinner-border spinner-border-sm"
+						role="status" aria-hidden="true" hidden="true"></span> Submit
+				</button>
+				<button type="reset" class="btn btn-outline-warning">Reset
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
