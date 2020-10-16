@@ -36,37 +36,41 @@
 													<div class="card-body">
 														<div
 															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
-															<span class="badge badge-pill badge-primary">NAME PROJECT</span>
+															<span class="badge badge-pill badge-primary">NAME
+																PROJECT</span>
 
 
-															<h4 th:text=${detail.name}> </h4>
-
-														</div>
-
-														<div
-															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
-															<span class="badge badge-pill badge-primary">PROFESSION PROJECT</span>
-
-
-															<h4 th:text=${detail.profession}> </h4>
+															<h4 th:text=${detail.name}></h4>
 
 														</div>
 
 														<div
 															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
-															<span class="badge badge-pill badge-primary">SPECIALTY PROJECT</span>
+															<span class="badge badge-pill badge-primary">PROFESSION
+																PROJECT</span>
 
 
-															<h4 th:text=${detail.specialty}> </h4>
+															<h4 th:text=${detail.profession}></h4>
 
 														</div>
 
 														<div
 															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
-															<span class="badge badge-pill badge-primary">DOCUMENT PROJECT</span>
+															<span class="badge badge-pill badge-primary">SPECIALTY
+																PROJECT</span>
 
 
-															<h4 th:text=${detail.document}> </h4>
+															<h4 th:text=${detail.specialty}></h4>
+
+														</div>
+
+														<div
+															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
+															<span class="badge badge-pill badge-primary">DOCUMENT
+																PROJECT</span>
+
+
+															<h4 th:text=${detail.document}></h4>
 
 														</div>
 
@@ -86,36 +90,40 @@
 													<div class="card-body">
 														<div
 															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
-															<span class="badge badge-pill badge-primary">PROGRAM PROJECT</span>
+															<span class="badge badge-pill badge-primary">PROGRAM
+																PROJECT</span>
 
 
-															<h4 th:text=${detail.program}> </h4>
-
-														</div>
-
-														<div
-															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
-															<span class="badge badge-pill badge-primary">DESCRIPTOPN PROJECT</span>
-
-
-															<h4 th:text=${detail.description}> </h4>
-
-														</div>
-														<div
-															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
-															<span class="badge badge-pill badge-primary">STATUS PROJJECT</span>
-
-
-															<h4 th:text=${detail.status}> </h4>
+															<h4 th:text=${detail.program}></h4>
 
 														</div>
 
 														<div
 															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
-															<span class="badge badge-pill badge-primary">EVALUATIONS PROJECT</span>
+															<span class="badge badge-pill badge-primary">DESCRIPTOPN
+																PROJECT</span>
 
 
-															<h4 th:text=${detail.evaluations}> </h4>
+															<h4 th:text=${detail.description}></h4>
+
+														</div>
+														<div
+															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
+															<span class="badge badge-pill badge-primary">STATUS
+																PROJJECT</span>
+
+
+															<h4 th:text=${detail.status}></h4>
+
+														</div>
+
+														<div
+															class="sufee-alert alert with-close alert-primary alert-dismissible fade show">
+															<span class="badge badge-pill badge-primary">EVALUATIONS
+																PROJECT</span>
+
+
+															<h4 th:text=${detail.evaluations}></h4>
 
 														</div>
 
@@ -141,14 +149,14 @@
 															</tr>
 														</thead>
 														<tbody>
-															<tr th:each="userproject: ${userproject}">
+															<tr th:each="result: ${userproject}">
 																<td><a th:text=${userproject.username}></a></td>
-
+																<td th:text=${roleView}></td>
 															</tr>
-															<tr th:each="roleView: ${roleView}">
+															<!-- <tr th:each="roleView: ${roleView}">
 																<td th:text=${roleView}></td>
 
-															</tr>
+															</tr> -->
 															<!-- <tr th:each ="statusProject: ${statusProject}">
 													<td th:text=${statusProject}></td>
 													
