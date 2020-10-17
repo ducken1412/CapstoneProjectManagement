@@ -19,9 +19,9 @@ public interface CapstoneProjectDetailService {
 
 	Integer getProjectIdByUserId(String id);
 
-	List<Users> getUserByCapstoneProjectDetailId(Integer id);
+//	List<Users> getUserByCapstoneProjectDetailId(Integer id);
 	
-	List<CapstoneProjectDetails> getUserByCapstioneID(Integer id);
+//	List<CapstoneProjectDetails> getUserByCapstioneID(Integer id);
 //	List<Status> getStatusByCapStoneProjrectDeatailId(Integer id);
 
 }

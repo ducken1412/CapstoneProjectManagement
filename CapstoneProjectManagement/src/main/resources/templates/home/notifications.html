@@ -1,25 +1,25 @@
-	<div class=" ">
+	<div class="p-2">
 		<h2>Global News</h2>
-		<div class="single-popular-post"
+		<div class="single-popular-post pt-2"
 			 th:each="notifications : ${notifications}">
 			<a href="#">
 				<h6>
 					<span th:text="${notifications.title}"></span>
 				</h6>
 			</a>
-			<p th:text="${notifications.created_date}"></p>
+			<p th:text="${notifications.created_date}" style="font-size: 14px"></p>
 		</div>
 	</div>
-	<div class=" ">
-		<h2>News</h2>
-		<div class="single-popular-post"
+	<div class="p-2">
+		<h2>Notification</h2>
+		<div class="single-popular-post pt-2"
 			 th:each="notifications : ${notificationByUser}">
 			<a href="#">
 				<h6>
 					<span th:text="${notifications.title}"></span>
 				</h6>
 			</a>
-			<p th:text="${notifications.created_date}"></p>
+			<p th:text="${notifications.created_date}" style="font-size: 14px"></p>
 		</div>
 	</div>
 

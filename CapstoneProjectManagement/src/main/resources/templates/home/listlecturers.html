@@ -28,7 +28,7 @@
 							<div class="w-75" id="content-body">
 								<div id="post-container">
 									<div class="row w-100">
-										<div class="app-main w-75">
+										<div class="app-main">
 											<div class="">
 												<th:block th:include="home/_menu"></th:block>
 											</div>
@@ -55,7 +55,7 @@
 																										<img class=" img-fluid"
 																											th:src="${lecturer.image}" alt="card image">
 																									</p>
-																									<a class="card-title"
+																									<a class="card-title mt-4"
 																										th:href="@{'/user/' + ${lecturer.id}}">
 																										<h6 class="card-title"
 																											th:text=${lecturer.username}></h6>
@@ -69,7 +69,7 @@
 																									</div>
 																									<a
 																										th:href="@{'/listlecturersproject/' + ${lecturer.id}}"
-																										 class="au-btn au-btn-icon au-btn--green mr-3">Choose</a>
+																										 class="btn btn-success mt-2">Choose</a>
 																									<!-- <button class="btn btn-primary" type="submit" >Choose</button> -->
 																								</div>
 																							</div>
