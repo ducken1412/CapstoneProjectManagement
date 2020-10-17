@@ -1,11 +1,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div id="list-post-container" th:each="post :${postPage.content}">
+<div id="list-post-container" class="list-post-container" th:each="post :${postPage.content}">
+    <input type="text" id="post-id" th:value="${post.id}"
+           hidden="true">
     <div class="card mb-2" style="border-radius: 15px">
         <div class="card-header pt-3 d-block">
             <a id="chat" href="#"
-               class="pull-right mr-2" th:postId=${post.id}><i class=" far fa-comments"></i></a>
+               class="pull-right mr-2" th:postId=${post.id}><i class=" far fa-comments" ></i></a>
             <a th:if="${loggedUser == post.author.id}" href="#"
-               class="pull-right mr-2" id="btn-deleteTopic" th:postId=${post.id} data-toggle="modal" data-target="#confirm-delete"><i class="far fa-trash-alt"></i></a> <a
+               class="pull-right mr-2" id="btn-deleteTopic" th:postId=${post.id} data-toggle="modal" data-target="#confirm-delete" ><i class="far fa-trash-alt"></i></a> <a
                 th:if="${loggedUser == post.author.id}" href="#"
                 class="pull-right mr-2" id="btn-editTopic" data-toggle="modal"
                 data-target="#topic-container" th:postId=${post.id}><i class="far fa-edit"></i></a>
@@ -21,11 +23,12 @@
                          style="max-height: 400px; overflow-y: auto; border-radius: 15px"
                          th:utext=${post.description}></div>
                     <hr>
-                    <div class="my-2 p-2"
-                         style="background-color: #edeef0; width: fit-content; border-radius: 15px"
+                    <a href="#" id="view-more-comments" class="view-more-comments" th:postId=${post.id}>View more comments</a>
+                    <div class="my-2 p-2 comment-container"
+                         style="background-color: #e5e5e5; width: fit-content; border-radius: 15px"
                          th:each="comment :${post.comments}">
                         <a th:href="@{'/user/' + ${comment.sender.id}}" class=""
-                           th:text="${comment.sender.username}" style="color: #666"></a> <br> <span
+                           th:text="${comment.sender.username}" style="color: #666; font-weight: bold"></a> <br> <span
                             th:text=${comment.content}></span>
                     </div>
                     <form class="form-comment mb-0 mt-4" method="post">

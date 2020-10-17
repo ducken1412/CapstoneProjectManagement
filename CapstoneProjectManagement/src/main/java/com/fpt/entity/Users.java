@@ -53,7 +53,7 @@ public class Users implements Serializable {
     private Locations location;
     @Column(name = "description", columnDefinition = "NVARCHAR(256)")
     private String description;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     private Status status;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userRoleKey.user")
@@ -67,13 +67,13 @@ public class Users implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id", referencedColumnName = "id", columnDefinition = "INT")
     private Reports reportSend;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Reports reportReceive;
     @ManyToMany(mappedBy = "reportRecipients")
     private List<Reports> reportReceives;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sender")
     private List<Comments> comments;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_detail_id")
     private ReportDetails reportDetail;
     @OneToOne(cascade = CascadeType.ALL)

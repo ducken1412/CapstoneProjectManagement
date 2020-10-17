@@ -1,6 +1,6 @@
 'use strict';
 const usernamePage = document.querySelector('#userJoin');
-const chatPage = document.querySelector('#chatPage');
+const chatPage = document.querySelector('#chat-page');
 const name = $("#userLogged").val().trim();
 const waiting = document.querySelector('.waiting');
 const roomIdDisplay = document.querySelector('#room-id-display');
@@ -8,6 +8,11 @@ let stompClient = null;
 let currentSubscription;
 let topic = null;
 let roomId;
+
+let colors = [
+    '#2196F3', '#32c787', '#00BCD4', '#ff5652',
+    '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
+];
 
 function connect(event, rId) {
     roomId = rId;
@@ -20,8 +25,6 @@ function connect(event, rId) {
 
 function onConnected() {
     enterRoom(roomId);
-    waiting.classList.add('d-none');
-
 }
 
 function onError(error) {
@@ -72,6 +75,11 @@ function onMessageReceived(payload) {
         message.content = message.sender + ' left!';
     } else {
         messageElement.classList.add('chat-message');
+        let avatarElement = document.createElement('i');
+        let avatarText = document.createTextNode(message.sender[0]);
+        avatarElement.appendChild(avatarText);
+        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+        messageElement.appendChild(avatarElement);
         let usernameElement = document.createElement('span');
         let usernameText = document.createTextNode(message.sender);
         usernameElement.appendChild(usernameText);
@@ -90,6 +98,14 @@ function onMessageReceived(payload) {
     let messageArea = document.querySelector('#messageArea');
     messageArea.appendChild(divCard);
     messageArea.scrollTop = messageArea.scrollHeight;
+}
+function getAvatarColor(messageSender) {
+    var hash = 0;
+    for (var i = 0; i < messageSender.length; i++) {
+        hash = 31 * hash + messageSender.charCodeAt(i);
+    }
+    var index = Math.abs(hash % colors.length);
+    return colors[index];
 }
 
 

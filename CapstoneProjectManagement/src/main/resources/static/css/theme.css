@@ -154,7 +154,7 @@ strong {
 
 .title-1 {
 	text-transform: capitalize;
-	font-weight: 400;
+	font-weight: 700;
 	font-size: 30px;
 }
 
@@ -284,7 +284,6 @@ section {
 @media ( max-width : 991px) {
 	.page-container {
 		position: relative;
-		top: 88px;
 		padding-left: 0;
 	}
 }
@@ -1334,6 +1333,7 @@ rotate
 	-moz-box-pack: justify;
 	-ms-flex-pack: justify;
 	justify-content: space-between;
+	width: 100%;
 }
 
 @media ( min-width : 992px) and (max-width: 1199px) {
@@ -1403,6 +1403,7 @@ rotate
 	-moz-box-align: center;
 	-ms-flex-align: center;
 	align-items: center;
+
 }
 
 .noti-wrap .noti__item:last-child {
