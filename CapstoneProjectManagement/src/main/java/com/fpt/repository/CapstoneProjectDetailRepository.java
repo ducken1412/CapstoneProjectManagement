@@ -15,6 +15,9 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	//query loi
 	@Query("SELECT ru FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1")
 	List<CapstoneProjectDetails> getUserByCapstoneProjectDetailId(Integer id);
-	
+
+	//get id project by user id
+	@Query("SELECT ru.capstoneProject.id FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1")
+	Integer getIdProjectByUserID(String id);
 	
 }

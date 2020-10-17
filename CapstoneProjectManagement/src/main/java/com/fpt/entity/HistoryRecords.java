@@ -39,14 +39,15 @@ public class HistoryRecords {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Posts post;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "notification_id")
+	private Notifications notification;
 
 	public HistoryRecords() {
 		super();
 	}
 
-	public HistoryRecords(Integer id, Users user, Date createdDate, Date lastModifiedDate, String content,
-			CapstoneProjects capstoneProject, Reports report, Evaluations evaluation, Posts post) {
-		super();
+	public HistoryRecords(Integer id, Users user, Date createdDate, Date lastModifiedDate, String content, CapstoneProjects capstoneProject, Reports report, Evaluations evaluation, Posts post, Notifications notification) {
 		this.id = id;
 		this.user = user;
 		this.createdDate = createdDate;
@@ -56,6 +57,15 @@ public class HistoryRecords {
 		this.report = report;
 		this.evaluation = evaluation;
 		this.post = post;
+		this.notification = notification;
+	}
+
+	public Notifications getNotification() {
+		return notification;
+	}
+
+	public void setNotification(Notifications notification) {
+		this.notification = notification;
 	}
 
 	public Integer getId() {

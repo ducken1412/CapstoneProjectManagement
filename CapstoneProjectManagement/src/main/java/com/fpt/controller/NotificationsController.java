@@ -1,6 +1,7 @@
 package com.fpt.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.fpt.dto.NotificationDTO;
@@ -34,6 +35,9 @@ public class NotificationsController {
 	@Autowired
 	public CapstoneProjectDetailService capstoneProjectDetailService;
 
+	@Autowired
+	public HistoryRecordService recordService;
+
 	@RequestMapping(value = "/notifications")
 	public String getAllNotications(Model model) {
 		//get notification public
@@ -66,18 +70,26 @@ public class NotificationsController {
 	@RequestMapping(value = "/add-notification", method = RequestMethod.POST)
 	public String saveNotification(@Valid NotificationDTO dto , BindingResult result, Model model) {
 			if(result.hasErrors()) {
-			model.addAttribute("notificationsDTO",dto);
-			List<CapstoneProjects> capstoneProjects = capstoneProjectService.getAllProject();
-			model.addAttribute("capstoneProjects", capstoneProjects);
+				model.addAttribute("notificationsDTO", new NotificationDTO());
+				model.addAttribute("notificationsDTO",dto);
+				List<CapstoneProjects> capstoneProjects = capstoneProjectService.getAllProject();
+				model.addAttribute("capstoneProjects", capstoneProjects);
 			return "home/add-notification";
 		}
+			HistoryRecords records = new HistoryRecords();
+			Date date = new Date();
 			Notifications notifications = new Notifications();
 		//add notification all user
 			if(dto.getUser_id() == null && dto.getProject_id() == null){
 				notifications.setTitle(dto.getTitle());
 				notifications.setType("all");
 				notifications.setContent(dto.getContent());
+				notifications.setCreated_date(date);
 				notificationsService.addNotification(notifications);
+				records.setContent("Create notificaton");
+				records.setNotification(notifications);
+				records.setCreatedDate(date);
+				recordService.save(records);
 			}
 
 		//add notifitcation for one user
@@ -86,6 +98,7 @@ public class NotificationsController {
 			notifications.setType("private");
 			notifications.setTitle(dto.getTitle());
 			notifications.setContent(dto.getContent());
+			notifications.setCreated_date(date);
 			notificationsService.addNotification(notifications);
 			int noti_id = notifications.getId();
 			notificationDetails.setNotification(notificationsService.getOneNoification(noti_id));
@@ -95,12 +108,17 @@ public class NotificationsController {
 			String type = "private";
 			notificationDetails.setType(type);
 			notificationDetailService.addNotificationDetail(notificationDetails);
+			records.setContent("Create notificaton");
+			records.setNotification(notifications);
+			records.setCreatedDate(date);
+			recordService.save(records);
 		}
 
 		if(dto.getProject_id() != null) {
 			notifications.setTitle(dto.getTitle());
 			notifications.setType("private");
 			notifications.setContent(dto.getContent());
+			notifications.setCreated_date(date);
 			notificationsService.addNotification(notifications);
 			int project_id = dto.getProject_id();
 			int noti_id = notifications.getId();
@@ -112,6 +130,10 @@ public class NotificationsController {
 				notificationDetails.setUser(capstoneProjectDetails.get(i).getUser());
 				notificationDetails.setType("private");
 				notificationDetailService.addNotificationDetail(notificationDetails);
+				records.setContent("Create notificaton");
+				records.setNotification(notifications);
+				records.setCreatedDate(date);
+				recordService.save(records);
 			}
 		}
 		return "home/add-notification";

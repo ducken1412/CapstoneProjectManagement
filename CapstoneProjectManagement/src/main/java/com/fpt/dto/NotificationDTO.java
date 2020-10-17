@@ -1,5 +1,6 @@
 package com.fpt.dto;
 
+import com.fpt.entity.HistoryRecords;
 import com.fpt.entity.NotificationDetails;
 import com.fpt.entity.Notifications;
 
@@ -7,6 +8,7 @@ import javax.management.Notification;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
 public class NotificationDTO {
@@ -28,15 +30,20 @@ public class NotificationDTO {
 
     private Integer project_id;
 
+    private Date created_date;
+
+    private List<HistoryRecords> historyRecords;
     public NotificationDTO() {
     }
 
     public NotificationDTO(Notifications notifications) {
         this.id = notifications.getId();
         this.title = notifications.getTitle();
+        this.created_date = notifications.getCreated_date();
+        this.historyRecords = notifications.getHistoryRecords();
     }
 
-    public NotificationDTO(Integer id, List<NotificationDetails> notificationDetails, String content, String title, String type, String user_id, Integer project_id) {
+    public NotificationDTO(Integer id, List<NotificationDetails> notificationDetails, @NotBlank String content, @NotBlank String title, String type, String user_id, Integer project_id, Date created_date, List<HistoryRecords> historyRecords) {
         this.id = id;
         this.notificationDetails = notificationDetails;
         this.content = content;
@@ -44,6 +51,24 @@ public class NotificationDTO {
         this.type = type;
         this.user_id = user_id;
         this.project_id = project_id;
+        this.created_date = created_date;
+        this.historyRecords = historyRecords;
+    }
+
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
+    }
+
+    public List<HistoryRecords> getHistoryRecords() {
+        return historyRecords;
+    }
+
+    public void setHistoryRecords(List<HistoryRecords> historyRecords) {
+        this.historyRecords = historyRecords;
     }
 
     public List<NotificationDetails> getNotificationDetails() {
