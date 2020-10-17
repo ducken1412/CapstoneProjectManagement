@@ -11,10 +11,10 @@ import com.fpt.entity.Users;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneProjectDetails, CapstoneProjects>{
+public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneProjectDetails, Integer>{
 	//query loi
-//	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProjects = ?1")
-//	List<CapstoneProjectDetails> getUserByCapstoneProjectDetailId(Integer id);
+	@Query("SELECT ru FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1")
+	List<CapstoneProjectDetails> getUserByCapstoneProjectDetailId(Integer id);
 	
 	
 }

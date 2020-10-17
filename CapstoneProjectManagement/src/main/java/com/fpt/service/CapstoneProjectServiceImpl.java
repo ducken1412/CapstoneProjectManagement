@@ -34,4 +34,9 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 		CapstoneProjects cp = capstoneProjectRepository.findById(id).orElse(null);
 		return cp;
 	}
+
+	@Override
+	public List<CapstoneProjects> getAllProject() {
+		return capstoneProjectRepository.findAll();
+	}
 }

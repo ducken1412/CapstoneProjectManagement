@@ -2,7 +2,7 @@ package com.fpt.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import com.fpt.dto.NotificationDTO;
 
 import com.fpt.entity.Notifications;
 
@@ -12,4 +12,14 @@ public interface NotificationsService {
 	
 	//get notification by user id
 //	List<Notifications> getTitleByUserId(String id);
+	List<NotificationDTO> getTitle();
+
+	//add notification
+	boolean addNotification(Notifications notifications);
+
+	//get one notification
+	Notifications getOneNoification(Integer id);
+
+	//get notification by id
+	Notifications getNotificationById(Integer id);
 }

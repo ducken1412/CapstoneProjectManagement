@@ -3,17 +3,18 @@ package com.fpt.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fpt.dto.NotificationDTO;
+import com.fpt.entity.*;
+import com.fpt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.fpt.entity.Notifications;
-import com.fpt.entity.Users;
-import com.fpt.service.NotificationsService;
-import com.fpt.service.UserService;
+import javax.validation.Valid;
 
 @Controller
 public class NotificationsController {
@@ -23,17 +24,96 @@ public class NotificationsController {
 
 	@Autowired
 	public UserService userService;
-	
+
+	@Autowired
+	public CapstoneProjectService capstoneProjectService;
+
+	@Autowired
+	public NotificationDetailService notificationDetailService;
+
+	@Autowired
+	public CapstoneProjectDetailService capstoneProjectDetailService;
+
 	@RequestMapping(value = "/notifications")
 	public String getAllNotications(Model model) {
-//		List<Notifications> notification = notificationsService.getAllTitle();
-		List<Notifications> notification = new ArrayList<>();
+		//get notification public
+		List<NotificationDTO> notification = notificationsService.getTitle();
 		model.addAttribute("notifications", notification);
-		Users user= userService.findById("1");
-//		List<Notifications> notificationByUserId = notificationsService.getTitleByUserId(user.getId().toString());
-		List<Notifications> notificationByUserId= new ArrayList<>();
-		model.addAttribute("notificationByUserId", notificationByUserId);
+
+		//fix cung id user
+		//load notification by user id
+		List<NotificationDetails> notificationDetails = notificationDetailService.getIdNotification("SE05045");
+		ArrayList<Notifications> noti = new ArrayList<>();
+		for (NotificationDetails notidetail: notificationDetails
+			 ) {
+			int noti_id = notidetail.getNotification().getId();
+			Notifications n =  notificationsService.getNotificationById(noti_id);
+			noti.add(n);
+		};
+			model.addAttribute("notificationByUser", noti);
 		return "home/notifications";
 	}
-	
+
+	@RequestMapping(value = "/notification", method = RequestMethod.GET)
+	public String notification(Model model) {
+		model.addAttribute("notificationsDTO", new NotificationDTO());
+		Notifications notifications = new Notifications();
+		List<CapstoneProjects> capstoneProjects = capstoneProjectService.getAllProject();
+		model.addAttribute("capstoneProjects", capstoneProjects);
+		return "home/add-notification";
+	}
+
+	@RequestMapping(value = "/add-notification", method = RequestMethod.POST)
+	public String saveNotification(@Valid NotificationDTO dto , BindingResult result, Model model) {
+			if(result.hasErrors()) {
+			model.addAttribute("notificationsDTO",dto);
+			List<CapstoneProjects> capstoneProjects = capstoneProjectService.getAllProject();
+			model.addAttribute("capstoneProjects", capstoneProjects);
+			return "home/add-notification";
+		}
+			Notifications notifications = new Notifications();
+		//add notification all user
+			if(dto.getUser_id() == null && dto.getProject_id() == null){
+				notifications.setTitle(dto.getTitle());
+				notifications.setType("all");
+				notifications.setContent(dto.getContent());
+				notificationsService.addNotification(notifications);
+			}
+
+		//add notifitcation for one user
+		if (dto.getUser_id() != null){
+			NotificationDetails notificationDetails = new NotificationDetails();
+			notifications.setType("private");
+			notifications.setTitle(dto.getTitle());
+			notifications.setContent(dto.getContent());
+			notificationsService.addNotification(notifications);
+			int noti_id = notifications.getId();
+			notificationDetails.setNotification(notificationsService.getOneNoification(noti_id));
+			String user_id = dto.getUser_id();
+			//System.out.println(user_id);
+			notificationDetails.setUser(userService.findById(user_id));
+			String type = "private";
+			notificationDetails.setType(type);
+			notificationDetailService.addNotificationDetail(notificationDetails);
+		}
+
+		if(dto.getProject_id() != null) {
+			notifications.setTitle(dto.getTitle());
+			notifications.setType("private");
+			notifications.setContent(dto.getContent());
+			notificationsService.addNotification(notifications);
+			int project_id = dto.getProject_id();
+			int noti_id = notifications.getId();
+			List<CapstoneProjectDetails> capstoneProjectDetails = capstoneProjectDetailService.getUserByCapstoneProjectDetailId(project_id);
+			NotificationDetails notificationDetails;
+			for (int i = 0; i < capstoneProjectDetails.size(); i++) {
+				notificationDetails = new NotificationDetails();
+				notificationDetails.setNotification(notificationsService.getOneNoification(noti_id));
+				notificationDetails.setUser(capstoneProjectDetails.get(i).getUser());
+				notificationDetails.setType("private");
+				notificationDetailService.addNotificationDetail(notificationDetails);
+			}
+		}
+		return "home/add-notification";
+	}
 }
