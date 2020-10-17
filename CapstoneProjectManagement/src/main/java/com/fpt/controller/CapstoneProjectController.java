@@ -60,17 +60,17 @@ public class CapstoneProjectController {
 			return "home/register-project-form";
 		}
 		CapstoneProjects projects = new CapstoneProjects();
-		int statusId = 1;
-		projects.setName(dto.getName());
-		projects.setNameOther(dto.getNameOther());
-		projects.setNameVi(dto.getNameVi());
-		projects.setNameAbbreviation(dto.getNameAbbreviation());
-		projects.setDescription(dto.getDescription());
-		projects.setDocument(dto.getDocument());
-		projects.setSpecialty(dto.getSpecialty());
-		projects.setProgram(dto.getProgram());
-		projects.setStatus(statusService.getStatusById(statusId));
-		projectService.saveRegisterProject(projects);
+//		int statusId = 1;
+//		projects.setName(dto.getName());
+//		projects.setNameOther(dto.getNameOther());
+//		projects.setNameVi(dto.getNameVi());
+//		projects.setNameAbbreviation(dto.getNameAbbreviation());
+//		projects.setDescription(dto.getDescription());
+//		projects.setDocument(dto.getDocument());
+//		projects.setSpecialty(dto.getSpecialty());
+//		projects.setProgram(dto.getProgram());
+//		projects.setStatus(statusService.getStatusById(statusId));
+//		projectService.saveRegisterProject(projects);
 
 		/*CapstoneProjectDetails cpd;
 		// lop id by Users Role Student and add capstone project detail

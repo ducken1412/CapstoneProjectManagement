@@ -29,7 +29,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	@CacheEvict(value="postCache", allEntries = true) 
+	@CacheEvict(value = { "commentCache", "postCache" }, allEntries = true)
 	public boolean deletePost(Integer id) {
 		try {
 			postRepository.deleteById(id);
