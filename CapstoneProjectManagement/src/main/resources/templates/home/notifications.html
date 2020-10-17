@@ -7,19 +7,19 @@
 					<span th:text="${notifications.title}"></span>
 				</h6>
 			</a>
-			<p>create date</p>
+			<p th:text="${notifications.created_date}"></p>
 		</div>
 	</div>
 	<div class=" ">
 		<h2>News</h2>
 		<div class="single-popular-post"
-			 th:each="notifications : ${notificationByUserId}">
+			 th:each="notifications : ${notificationByUser}">
 			<a href="#">
 				<h6>
 					<span th:text="${notifications.title}"></span>
 				</h6>
 			</a>
-			<p>create date</p>
+			<p th:text="${notifications.created_date}"></p>
 		</div>
 	</div>
 

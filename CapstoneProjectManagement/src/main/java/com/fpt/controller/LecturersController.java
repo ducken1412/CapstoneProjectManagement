@@ -78,8 +78,8 @@ public class LecturersController {
 	public String getListLecturers(Model model, @RequestParam("page") Optional<Integer> page, 
 		      @RequestParam("size") Optional<Integer> size) {
 		LOGGER.info("Running on getListLecturers method of UserController");
-		//Id = 3 (role lecturers)
-		List<Users> lecturer = userService.getUserByRoleId(3);
+		//Id = 4 (role lecturers)
+		List<Users> lecturer = userService.getUserByRoleId(4);
 		model.addAttribute("lecturer", lecturer);
 		
 		UserDTO userDTO = new UserDTO();
@@ -103,7 +103,10 @@ public class LecturersController {
 	public String bookLecturers(@PathVariable("id") String id,UserDTO dto,Model model, BindingResult bindingResult) {
 		CapstoneProjectDetails cpd = new CapstoneProjectDetails();
 		Users user_id = userService.findById(id);
-		cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(37));
+//		String userlogin = "SE05045";
+//		int project_id = capstoneProjectDetailService.getProjectIdByUserId(userlogin);
+//		System.out.println(project_id);
+		cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(1));
 		cpd.setUser(user_id);
 		cpd.setStatus(statusService.getStatusById(4));
 		capstoneProjectDetailService.addCapstonprojectDetail(cpd);

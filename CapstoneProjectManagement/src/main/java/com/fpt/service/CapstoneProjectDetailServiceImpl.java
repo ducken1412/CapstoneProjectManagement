@@ -30,14 +30,24 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
 	}
 
 	@Override
+	public List<CapstoneProjectDetails> getUserByCapstoneProjectDetailId(Integer id) {
+		return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
+	}
+
+	@Override
 	public List<CapstoneProjectDetails> getUserByCapstioneID(Integer id) {
-//		return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
+		//return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
 		return new ArrayList<>();
 	}
 
 	@Override
+
+	public Integer getProjectIdByUserId(String id) {
+		return capstoneProjectDetailRepository.getIdProjectByUserID(id);
+
 	public List<Users> getUserByCapstoneProjectDetailId(Integer id) {
 		return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
+
 	}
 
 //	@Override

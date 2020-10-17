@@ -36,4 +36,10 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 		return cp;
 	}
 
+
+	@Override
+	public List<CapstoneProjects> getAllProject() {
+		return capstoneProjectRepository.findAll();
+	}
+
 }

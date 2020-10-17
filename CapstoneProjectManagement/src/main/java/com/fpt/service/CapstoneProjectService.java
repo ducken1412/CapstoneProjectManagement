@@ -16,5 +16,8 @@ public interface CapstoneProjectService {
 
 	// get project by Id
 	CapstoneProjects getCapstonProjectById(Integer id);
-	
+
+	//get all project
+	List<CapstoneProjects> getAllProject();
+
 }
