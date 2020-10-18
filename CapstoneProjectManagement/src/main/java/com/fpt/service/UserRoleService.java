@@ -16,5 +16,6 @@ public interface UserRoleService {
 	boolean removeAllRoleOfUserByUserId(Integer userId);
 
 	UserRoles isExists(UserRoleKey roleUserKey);
+	List<String> getRoleNamesByEmail(String email);
 
 }
