@@ -12,11 +12,11 @@ public class CapstoneProjectDetailDTO {
 	private Users user;
 	private Status status;
 	public static Map<String, Object> detailMap;
-	
+
 	public CapstoneProjectDetailDTO() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public CapstoneProjectDetailDTO(CapstoneProjects capstoneProject, Users user, Status status) {
 		super();
 		this.capstoneProject = capstoneProject;
@@ -55,5 +55,5 @@ public class CapstoneProjectDetailDTO {
 		this.status = status;
 	}
 
-	
+
 }

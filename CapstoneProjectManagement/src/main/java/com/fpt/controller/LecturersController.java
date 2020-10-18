@@ -38,14 +38,7 @@ import com.fpt.service.StatusService;
 
 @Controller
 public class LecturersController {
-	/*
-	@GetMapping("/listlecturersproject")
-	public String registerProject() {
-		return "home/listlecturers";
-	}
-	*/
-	
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(LecturersController.class);
 	
 	@Autowired
@@ -74,7 +67,7 @@ public class LecturersController {
 //		return "home/listlecturers";
 //	}
 	
-	@RequestMapping(value = "/listlecturersproject", method = RequestMethod.GET)
+	@RequestMapping(value = "/lecturers", method = RequestMethod.GET)
 	public String getListLecturers(Model model, @RequestParam("page") Optional<Integer> page, 
 		      @RequestParam("size") Optional<Integer> size) {
 		LOGGER.info("Running on getListLecturers method of UserController");

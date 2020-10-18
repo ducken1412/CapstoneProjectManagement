@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Status;
 
-@Service
 public interface CapstoneProjectService {
 	List<String> getCapstoneProjectNameByUserId(String UserId);
 

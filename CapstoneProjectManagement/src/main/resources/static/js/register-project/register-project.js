@@ -1,5 +1,9 @@
 $(document).on("submit", "#register", function (e) {
     e.preventDefault();
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
     let dataForm = $("#register").serialize();
     $.ajax({
         url: "/register",
@@ -7,7 +11,6 @@ $(document).on("submit", "#register", function (e) {
         data: dataForm,
         success: function (data) {
             $("#form-content").html(data)
-            console.log(data)
             let check = false
             $(".error-mess").each(function loop() {
                 if($(this).text() !== ""){
@@ -22,6 +25,7 @@ $(document).on("submit", "#register", function (e) {
                     success: function (data1) {
                         $("#modal-content").html(data1);
                         $('#member-container').modal('show');
+                        $.LoadingOverlay("hide");
 
                     },
                     error: function (xhr) {

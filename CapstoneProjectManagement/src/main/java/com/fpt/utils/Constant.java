@@ -2,7 +2,7 @@ package com.fpt.utils;
 
 public class Constant {
 	public final static String ROLE_STUDENT_LEADER = "Leader";
-	public final static String ROLE_STUDENT_MEMBER = "Student";
+	public final static String ROLE_STUDENT_MEMBER = "Member";
 	public final static String ROLE_HEAD = "Head of Departement";
 	public final static String ROLE_LECTURERS = "Lecturer";
 	public final static String ROLE_TRAINING_DEP = "Training Departement";
@@ -21,12 +21,12 @@ public class Constant {
 	public final static String STATUS_APPROVE_CAPSTONE_LUCTURER = "Approve Captone Lucturer";
 	public final static String STATUS_APPROVE_CAPSTONE_TRAINING = "Approve Captone Training";
 	public final static String STATUS_APPROVE_CAPSTONE_HEAD = "Approve Capstone Head";
-	public final static String STATUS_DOING_CAPSTONE = "Doing Capstone";
-	public final static String STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE = "Not Eligible Defence Capstone";
-	public final static String STATUS_ELIGIBLE_DEFENCE_CAPSTONE = "Eligible Defence Capstone";
-	public final static String STATUS_REJECT_CAPSTONE = "Reject Capstone";
-	public final static String STATUS_CHANGING_NAME_CAPSTONE = "Changing Name Capstone";
-	public final static String STATUS_PENDING_CAPSTONE = "Pending Capstone";
+	public final static String STATUS_DOING_CAPSTONE = "Doing";
+	public final static String STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE = "Not Eligible Defence";
+	public final static String STATUS_ELIGIBLE_DEFENCE_CAPSTONE = "Eligible Defence";
+	public final static String STATUS_REJECT_CAPSTONE = "Rejected";
+	public final static String STATUS_CHANGING_NAME_CAPSTONE = "Changing Name";
+	public final static String STATUS_PENDING_CAPSTONE = "Pending";
 
 	public final static String STATUS_NOT_ELIGIBLE_CAPSTONE_DB = "not_eligible_capstone";
 	public final static String STATUS_ELIGIBLE_CAPSTONE_DB = "eligible_capstone";

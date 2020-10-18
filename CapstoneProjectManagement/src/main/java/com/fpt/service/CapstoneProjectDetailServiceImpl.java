@@ -3,12 +3,11 @@ package com.fpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fpt.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.CapstoneProjectDetails;
-import com.fpt.entity.Status;
-import com.fpt.entity.Users;
 import com.fpt.repository.CapstoneProjectDetailRepository;
 
 @Service
@@ -29,8 +28,8 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     }
 
     @Override
-    public List<CapstoneProjectDetails> getUserByCapstoneProjectDetailId(Integer id) {
-        return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
+    public List<CapstoneProjectDetails> getDetailByCapstoneProjectId(Integer id) {
+        return capstoneProjectDetailRepository.getDetailByCapstoneProjectId(id);
     }
 
     @Override
@@ -40,21 +39,17 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     }
 
     @Override
-
     public Integer getProjectIdByUserId(String id) {
         return capstoneProjectDetailRepository.getIdProjectByUserID(id);
 
-//	public List<Users> getUserByCapstoneProjectDetailId(Integer id) {
-//		return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
-//
-//	}
+    }
+    @Override
+    public Integer getStatuByCapstoneProjectDetailIdAndUserId(Integer cpId, Integer userId) {
+        return capstoneProjectDetailRepository.getStatuByCapstoneProjectDetailIdAndUserId(cpId, userId);
+    }
 
-//	@Override
-//	public List<Status> getStatusByCapStoneProjrectDeatailId(Integer id) {
-//		
-//		return capstoneProjectDetailRepository.getStatusByCapStoneProjrectDeatailId(id);
-//	}
-
-
+    @Override
+    public List<Users> getUserByCapstoneProjectDetailId(Integer id) {
+        return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
     }
 }

@@ -7,9 +7,14 @@ body button :hover{
     border-color: #63c76a !important;
 }
 
-.btn {
+.btn .btn-success{
     background-color: #63c76a !important;
     border-color: #63c76a !important;
+}
+
+.btn .btn-danger{
+    background-color: red !important;
+    border-color: red !important;
 }
 
 .pagination .page-link {

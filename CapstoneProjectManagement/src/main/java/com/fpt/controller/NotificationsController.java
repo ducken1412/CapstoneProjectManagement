@@ -122,7 +122,7 @@ public class NotificationsController {
 			notificationsService.addNotification(notifications);
 			int project_id = dto.getProject_id();
 			int noti_id = notifications.getId();
-			List<CapstoneProjectDetails> capstoneProjectDetails = capstoneProjectDetailService.getUserByCapstoneProjectDetailId(project_id);
+			List<CapstoneProjectDetails> capstoneProjectDetails = capstoneProjectDetailService.getDetailByCapstoneProjectId(project_id);
 			NotificationDetails notificationDetails;
 			for (int i = 0; i < capstoneProjectDetails.size(); i++) {
 				notificationDetails = new NotificationDetails();
