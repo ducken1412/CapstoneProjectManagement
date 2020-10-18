@@ -50,6 +50,11 @@ public class UserRoleServiceImpl implements UserRoleService {
 	}
 
 	@Override
+	public List<String> getRoleNamesByEmail(String email) {
+		return userRolesRepository.getRoleNamesByEmail(email);
+	}
+
+	@Override
 	public List<String> getRoleNamesByUserId(String userId) {
 		return userRolesRepository.getRoleNamesByUserId(userId);
 	}
