@@ -20,78 +20,84 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="overview-wrap">
-								<h2 class="title-1">Title</h2>
+								<h2 class="title-1">User Information</h2>
 							</div>
 						</div>
 					</div>
 					<div class="row m-t-25">
 						<div class="w-75" id="content-body">
 							<div id="post-container">
-								<div class="mb-2 au-card recent-report">
+								<div class="mb-2 au-card recent-report" style="padding: 50px 0 50px 0;">
 									<div class="row">
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<div class="profile-img">
 												<img
-														th:src="${user.image}" style="width: 245px"
+														th:src="${user.image}" style="width: 295px; padding-left: 50px;"
 														alt="" class="img-rounded" >
 											</div>
 										</div>
-										<div class="col-md-6">
+										<div class="col-md-7">
 											<div class="profile-head">
 												<div class="row">
-													<div class="col-md-0">
+													<div class="col-md-0" style="padding-left: 12px;">
 														<h1 th:text=${user.firstName}></h1>
 													</div>
 													<div class="col-md-2">
 														<h1 th:text=${user.lastName}></h1>
 													</div>
 												</div>
-													<span>Role:</span> <span th:text=${roleView}></span>
+											</div>
+											<div class="profile-head">
+												<span>Role:</span>
+												<th:block th:each="role,index :${roleView}">
+													<span  th:text="${role}" ></span>
+													<span th:if="${index.index < roleView.size()-1}" th:text="','" ></span>
+												</th:block>
 											</div>
 										</div>
 									</div>
 									<div class="row mx-5 mt-4">
 										<div class="col-md-6">
 											<div class="tab-content profile-tab" id="myTabContent">
-												<div class="row">
-													<div class="col-md-4">
-														<label>Birth Date :</label>
+												<div class="row m-t-25">
+													<div class="col-md-4 ">
+														<label  class="boldLabel"> Birth Date :</label>
 													</div>
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-8 col-md-6">
 														<p th:text=${dob}></p>
 													</div>
 												</div>
 
-												<div class="row">
+												<div class="row m-t-7">
 													<div class="col-md-4">
-														<label>Description :</label>
+														<label class="boldLabel">Description :</label>
 													</div>
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-8 col-md-6">
 														<p th:text=${user.description}></p>
 													</div>
 												</div>
-												<div class="row">
+												<div class="row m-t-10">
 													<div class="col-md-4">
-														<label>Email :</label>
+														<label class="boldLabel">Email :</label>
 													</div>
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-8 col-md-6">
 														<p th:text=${user.email}></p>
 													</div>
 												</div>
 
-												<div class="row">
+												<div class="row m-t-7">
 													<div class="col-md-4">
-														<label>Gender :</label>
+														<label class="boldLabel">Gender :</label>
 													</div>
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-8 col-md-6">
 														<p th:text=${gender}></p>
 													</div>
 												</div>
-												<div class="row">
+												<div class="row m-t-7">
 													<div class="col-md-4">
-														<label>Phone :</label>
+														<label class="boldLabel">Phone :</label>
 													</div>
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-8 col-md-6">
 														<p th:text=${user.phone}></p>
 													</div>
 												</div>
@@ -105,40 +111,39 @@
 												<div class="tab-pane fade active show" id="profile"
 													 role="tabpanel" aria-labelledby="profile-tab">
 
-													<div class="row">
+													<div class="row m-t-25">
 														<div class="col-md-4">
-															<label>User Name :</label>
+															<label class="boldLabel">User Name :</label>
 														</div>
-														<div class="col-md-6">
+														<div class="col-xs-12 col-sm-8 col-md-6">
 															<p th:text=${user.username}></p>
 														</div>
 													</div>
-													<div class="row">
+													<div class="row m-t-7">
 														<div class="col-md-4">
-															<label>Capstone Project : </label>
-															<p th:if="${capstone.size() != 0}" th:text=${capstone}></p>
-														</div>
-														<div class="col-md-4">
-															<p ></p>
+															<label class="boldLabel">Capstone Project : </label>
 
 														</div>
-													</div>
-													<div class="row">
-														<div class="col-md-4">
-															<label>Address :</label>
+														<div class="col-xs-12 col-sm-8 col-md-6">
+															<p   th:each="capstone :${capstone}" th:text=${capstone}></p>
 														</div>
+													</div>
+													<div class="row m-t-7">
 														<div class="col-md-4">
+															<label class="boldLabel">Address :</label>
+														</div>
+														<div class="col-xs-12 col-sm-8 col-md-6">
 															<p th:text=${location}></p>
 
 
 														</div>
 													</div>
 
-													<div class="row">
+													<div class="row m-t-10">
 														<div class="col-md-4">
-															<label>Status :</label>
+															<label class="boldLabel">Status :</label>
 														</div>
-														<div class="col-md-4">
+														<div class="col-xs-12 col-sm-8 col-md-6">
 															<p th:text=${status}></p>
 
 														</div>

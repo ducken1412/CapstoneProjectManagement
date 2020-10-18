@@ -87,7 +87,7 @@
 																					<th:block th:each="pageNumber : ${pageNumbers}">
 																						<li
 																							th:class="${pageNumber==lecturersPage.number + 1} ? active + ' ' + page-item : page-item"><a
-																							th:href="@{/listlecturersproject(size=${lecturersPage.size}, page=${pageNumber})}"
+																							th:href="@{/lecturers(size=${lecturersPage.size}, page=${pageNumber})}"
 																							th:text=${pageNumber} th:class="page-link"></a></li>
 																					</th:block>
 																				</ul>

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class UserRoleDTO {
 
+	private String id;
 	private String username;
 	private List<String> role;
 
@@ -12,8 +13,9 @@ public class UserRoleDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserRoleDTO(String username, List<String> role) {
+	public UserRoleDTO(String id,String username, List<String> role) {
 		super();
+		this.id = id;
 		this.username = username;
 		this.role = role;
 	}
@@ -32,6 +34,14 @@ public class UserRoleDTO {
 
 	public void setRole(List<String> role) {
 		this.role = role;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override

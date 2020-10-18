@@ -91,7 +91,8 @@
 													</thead>
 													<tbody>
 													<tr th:each="u: ${userRolesDTOs}">
-														<td><a th:text=${u.username}></a></td>
+														<td>
+															<a th:href="@{'/user/' + ${u.id}}" th:text=${u.username}></a></td>
 														<td th:each="r: ${u.role}"><p th:text=${r}></p></td>
 													</tr>
 

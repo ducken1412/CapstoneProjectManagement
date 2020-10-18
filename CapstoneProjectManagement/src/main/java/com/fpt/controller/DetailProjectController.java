@@ -116,6 +116,7 @@ public class DetailProjectController {
 		for (Users users : userproject) {
 			String user_id = users.getId();
 			UserRoleDTO userRoleDTO = new UserRoleDTO();
+			userRoleDTO.setId(user_id);
 			userRoleDTO.setUsername(users.getUsername());
 			List<String> role = userRoleService.getRoleNamesByUserId(user_id);
 			for (String string : role) {

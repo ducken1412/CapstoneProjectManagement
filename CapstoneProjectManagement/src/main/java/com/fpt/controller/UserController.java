@@ -127,7 +127,7 @@ public class UserController {
 		model.addAttribute("capstone", capstone);
 		List<Locations> location = locationService.getLocationByUserId(id);
 		if (location.size() > 0) {
-			model.addAttribute("location", location.get(0).getCity() + "," + location.get(0).getStreet());
+			model.addAttribute("location",  location.get(0).getStreet() +","+ location.get(0).getCity()  );
 		} else {
 			model.addAttribute("location", "");
 		}

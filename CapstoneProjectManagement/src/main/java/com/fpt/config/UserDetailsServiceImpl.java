@@ -49,19 +49,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				switch (role) {
 				case Constant.ROLE_HEAD_DB:
 					role = Constant.ROLE_HEAD;
-					break;
 				case Constant.ROLE_LECTURERS_DB:
 					role = Constant.ROLE_LECTURERS;
-					break;
 				case Constant.ROLE_STUDENT_LEADER_DB:
 					role = Constant.ROLE_STUDENT_LEADER;
-					break;
 				case Constant.ROLE_STUDENT_MEMBER_DB:
 					role = Constant.ROLE_STUDENT_MEMBER;
-					break;
 				case Constant.ROLE_TRAINING_DEP_DB:
 					role = Constant.ROLE_TRAINING_DEP;
-					break;
 				default:
 					break;
 				}
