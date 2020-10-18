@@ -78,10 +78,13 @@ public class LoginController {
 		return "login/loginPage";
 	}
 
-	/*
-	 * @RequestMapping(value = { "/signin" }, method = RequestMethod.GET) public
-	 * String signInPage(Model model) { return "redirect:/login"; }
-	 */
+
+	  @RequestMapping(value = { "/signin" }, method = RequestMethod.GET)
+	  public String signInPage(Model model) {
+
+		return "/userInfo";
+	}
+
 
 
 }
