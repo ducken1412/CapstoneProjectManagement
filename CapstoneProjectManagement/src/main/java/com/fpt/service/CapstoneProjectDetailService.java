@@ -23,4 +23,5 @@ public interface CapstoneProjectDetailService {
 
 	List<Users> getUserByCapstoneProjectDetailId(Integer id);
 
+	Integer countLecturersByProjectId(Integer id);
 }

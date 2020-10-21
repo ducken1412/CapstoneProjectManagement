@@ -1,5 +1,6 @@
 package com.fpt.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,11 +75,11 @@ public class LecturersController {
 		//Id = 4 (role lecturers)
 		List<Users> lecturer = userService.getUserByRoleId(4);
 		model.addAttribute("lecturer", lecturer);
-		
+
 		UserDTO userDTO = new UserDTO();
 		List<Notifications> notifications = notificationService.getAllTitle();
 		model.addAttribute("notifications", notifications);
-		
+
 		//phan trang
 		int currentPage = page.orElse(1);
         int pageSize = size.orElse(6);
@@ -89,21 +90,42 @@ public class LecturersController {
 			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 			model.addAttribute("pageNumbers", pageNumbers);
 		}
+
+		int count = capstoneProjectDetailService.countLecturersByProjectId(1);
+		System.out.println(count);
+		if(count >= 2){
+			model.addAttribute("disable","booking lectuers enough!!!");
+		}else {
+
+		}
+
 		return "home/listlecturers";
 	}
 
 	@RequestMapping(value="/listlecturersproject/{id}", method= RequestMethod.GET)
 	public String bookLecturers(@PathVariable("id") String id,UserDTO dto,Model model, BindingResult bindingResult) {
-		CapstoneProjectDetails cpd = new CapstoneProjectDetails();
-		Users user_id = userService.findById(id);
+		int count = capstoneProjectDetailService.countLecturersByProjectId(1);
+		List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(1);
+		if(listUser.contains(id)){
+			model.addAttribute("disable","lectuers booked!!!");
+			return "home/listlecturers";
+		}
+		if(count >= 2){
+			model.addAttribute("disable","booking lectuers enough!!!");
+			return "home/listlecturers";
+		}else {
+			CapstoneProjectDetails cpd = new CapstoneProjectDetails();
+			Users user_id = userService.findById(id);
 //		String userlogin = "SE05045";
 //		int project_id = capstoneProjectDetailService.getProjectIdByUserId(userlogin);
 //		System.out.println(project_id);
-		cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(1));
-		cpd.setUser(user_id);
-		cpd.setStatus(statusService.getStatusById(4));
-		capstoneProjectDetailService.addCapstonprojectDetail(cpd);
-		return "redirect:";
+			cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(1));
+			cpd.setUser(user_id);
+			cpd.setStatus(statusService.getStatusById(4));
+			capstoneProjectDetailService.addCapstonprojectDetail(cpd);
+			//return "home/listlecturers";
+		}
+		return "home/listlecturers";
 	}
 	
 

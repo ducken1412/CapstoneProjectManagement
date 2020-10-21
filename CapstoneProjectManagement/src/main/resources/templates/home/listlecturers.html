@@ -6,6 +6,11 @@
 
 
 <th:block th:include="home/_css"></th:block>
+<script>
+	function check(){
+			alert("inser du roi");
+	}
+</script>
 
 </head>
 <body>
@@ -20,7 +25,12 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="overview-wrap">
-									<h2 class="title-1">LECTURERS</h2>
+									<h2 class="title-1">LECTURERS</h2> <br/>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="overview-wrap">
+									<h5 class="title-3" style="color: red" th:text="${disable}">asdas</h5> <br/>
 								</div>
 							</div>
 						</div>
@@ -67,7 +77,7 @@
 																										style="white-space: nowrap; width: 100%; overflow: hidden; text-overflow: ellipsis;">
 																										<p class="card-text" th:text=${lecturer.email}></p>
 																									</div>
-																									<a
+																									<a id="btn-booking" sdasdasd
 																										th:href="@{'/listlecturersproject/' + ${lecturer.id}}"
 																										 class="btn btn-success mt-2">Choose</a>
 																									<!-- <button class="btn btn-primary" type="submit" >Choose</button> -->
