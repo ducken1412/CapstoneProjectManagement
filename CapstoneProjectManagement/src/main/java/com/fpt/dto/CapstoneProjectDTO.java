@@ -1,6 +1,7 @@
 package com.fpt.dto;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -23,7 +24,7 @@ public class CapstoneProjectDTO {
     private String program;
     private String description;
     private Integer stautus;
-    private List<String> members;
+    private List<MemberDTO> members;
 
     public CapstoneProjectDTO() {
         // TODO Auto-generated constructor stub
@@ -31,7 +32,7 @@ public class CapstoneProjectDTO {
 
     public CapstoneProjectDTO(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation,
                               Profession profession, String specialty, String document, String program, String description,
-                              Integer stautus, List<String> members) {
+                              Integer stautus, List<MemberDTO> members) {
         super();
         this.id = id;
         this.name = name;
@@ -135,11 +136,11 @@ public class CapstoneProjectDTO {
         this.stautus = stautus;
     }
 
-    public List<String> getMembers() {
+    public List<MemberDTO> getMembers() {
         return members;
     }
 
-    public void setMembers(List<String> members) {
+    public void setMembers(List<MemberDTO> members) {
         this.members = members;
     }
 

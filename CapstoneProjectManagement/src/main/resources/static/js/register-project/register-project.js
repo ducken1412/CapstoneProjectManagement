@@ -1,12 +1,30 @@
+function getDataMember() {
+    let ary = [];
+    $(function () {
+        $('.attrTable tr').each(function (a, b) {
+            let name = $('.attrName', b).text();
+            let value = $('.attrValue', b).find(":selected").text();
+            ary.push({ username: name, role: value });
+
+        });
+    });
+    return ary;
+}
+
 $(document).on("submit", "#register", function (e) {
     e.preventDefault();
+    // console.log(getDataMember())
     $.LoadingOverlay("show", {
         size: 50,
         maxSize: 50,
     });
-    let dataForm = $("#register").serialize();
+    $('#member').prop('disabled', true);
+    let dataForm = $("#register").serializeArray();
+    dataForm.push({"members":getDataMember()});
+    let members = getDataMember();
+    console.log(dataForm)
     $.ajax({
-        url: "/register",
+        url: "/register/" + members,
         type: "POST",
         data: dataForm,
         success: function (data) {
