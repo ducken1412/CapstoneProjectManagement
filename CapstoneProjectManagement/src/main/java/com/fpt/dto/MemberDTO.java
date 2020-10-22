@@ -1,5 +1,7 @@
 package com.fpt.dto;
 
+import com.fpt.entity.Users;
+
 public class MemberDTO {
     private String username;
     private String role;
@@ -26,5 +28,9 @@ public class MemberDTO {
     }
 
     public MemberDTO() {
+    }
+
+    public MemberDTO(Users user) {
+        this.username = user.getUsername();
     }
 }

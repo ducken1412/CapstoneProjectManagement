@@ -1,10 +1,15 @@
 package com.fpt.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import com.fpt.dto.MemberDTO;
+import com.google.gson.Gson;
+import com.sun.codemodel.internal.JForEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,37 +41,65 @@ public class CapstoneProjectController {
 	private ProfessionService professionService;
 
 	@RequestMapping(value = "/registerproject", method = RequestMethod.GET)
-	public String loadDropDown(Model model) {
-		// load all user has role = 2 (student_member)
-		List<Users> user = userService.getUserByRoleId(2);
-		List<Profession> professions = professionService.findAll();
-		model.addAttribute("user", user);
-		model.addAttribute("professions", professions);
+	public String getRegisterProject(Model model) {
+		List<Users> users = userService.findByUsername("ducddse04936");
+		if (!users.isEmpty()) {
+			model.addAttribute("loggedUser", users.get(0));
+		} else {
+			return "error/403Page";
+		}
 		model.addAttribute("capstoneProjectDTO", new CapstoneProjectDTO());
 		return "home/register-project";
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/getMember")
-	public String getMember() {
-
-		return "home/register-project-form";
+	@RequestMapping(value = "/getMember/{username}")
+	public String getMember(@PathVariable String username) {
+		Map<String, Object> result = new HashMap<>();
+		boolean success = true;
+		String message = "";
+		System.out.println(username);
+		List<Users> users = userService.findByUsername(username);
+		MemberDTO dto = new MemberDTO();
+		if (users.isEmpty()) {
+			success = false;
+			message = "Username could not be found";
+		} else {
+			dto = new MemberDTO(users.get(0));
+		}
+		result.put("success", success);
+		result.put("message", message);
+		result.put("user", dto);
+		return new Gson().toJson(result);
 	}
+
 
 	@ResponseBody
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String addRegisterPoject(@Valid @RequestBody CapstoneProjectDTO dataForm, BindingResult result,
+	public String registerProject(@Valid @RequestBody CapstoneProjectDTO dataForm, BindingResult result,
 									Model model) {
+		Map<String, Object> output = new HashMap<>();
+		List<String> errors = new ArrayList<>();
 		if (result.hasErrors()) {
-			// load all user has role = 2 (student_member)
-			List<Users> user = userService.getUserByRoleId(2);
-			model.addAttribute("user", user);
-			model.addAttribute("capstoneProjectDTO", dataForm);
-			return "home/register-project-form";
+			result.getFieldErrors().stream().forEach(f -> errors.add(f.getField() + " " + f.getDefaultMessage()));
+			output.put("hasError", true);
+			output.put("errors", errors);
+			return new Gson().toJson(output);
+		}
+		int count = 0;
+		for (MemberDTO m : dataForm.getMembers()) {
+			if(m.getRole().equalsIgnoreCase("leader")) {
+				count++;
+			}
+			if(count > 1) {
+				errors.add("team just has only one leader");
+				output.put("hasError", true);
+				output.put("errors", errors);
+				return new Gson().toJson(output);
+			}
 		}
 		CapstoneProjects projects = new CapstoneProjects();
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-		System.out.println(dataForm);
+
 //		int statusId = 4;
 //		projects.setName(dto.getName());
 //		projects.setNameOther(dto.getNameOther());
@@ -93,8 +126,8 @@ public class CapstoneProjectController {
 			capstoneProjectDetailService.addCapstonprojectDetail(cpd);
 		}*/
 //		dto.setId(projects.getId());
-		model.addAttribute("capstoneProjectDTO", dataForm);
-		return "home/register-project-form";
+		output.put("hasError", false);
+		return new Gson().toJson(output);
 	}
 
 	@GetMapping("/get-member-form")
