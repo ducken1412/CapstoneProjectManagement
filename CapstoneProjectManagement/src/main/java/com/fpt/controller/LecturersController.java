@@ -37,6 +37,7 @@ import com.fpt.service.NotificationsService;
 import com.fpt.service.StatusService;
 
 @Controller
+@RequestMapping("/user")
 public class LecturersController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LecturersController.class);
