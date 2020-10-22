@@ -1,5 +1,6 @@
 <form th:object="${capstoneProjectDTO}" method="post" id="register"
       class="mx-5">
+    <div id="error-container" class="form-group d-none"></div>
     <div class="form-group row">
         <label for="name" class="text-md-right">Name Project</label> <input
             type="text" id="name" class="form-control" name="name"
@@ -51,53 +52,68 @@
             type="text" id="document" class="form-control" name="document">
     </div>
 
-<!--    <div class="form-group row">-->
-<!--        <label for="member" class="text-md-right">Member</label> <input-->
-<!--            type="text" id="member" class="form-control" name="member">-->
-<!--        <button class="btn btn-success" id="add-member">Add</button>-->
-<!--    </div>-->
-
     <div class="row form-group">
         <label for="member" class="text-md-right">Member</label>
         <div class="input-group">
-            <input type="text" id="member" name="imember" class="form-control">
+            <input type="text" id="member" name="member" class="form-control">
             <div class="input-group-btn">
-                <button class="btn btn-primary">Add</button>
+                <button id="btn-add-member" class="btn btn-primary">Add</button>
             </div>
         </div>
+        <span class="text-danger d-none" id="error-message"></span>
     </div>
-
     <div class="form-group row attrTable">
-        <table class="w-25 members">
+        <table class="members" id="member-table">
+            <thead>
             <tr>
-                <td class="attrName">ducddse04936</td>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="tr-shadow">
                 <td>
-                    <select class="form-control attrValue">
-                        <option value="leader">Leader</option>
-                        <option value="member">Member</option>
-                    </select>
+                    <span class="block-email attrName" th:text="${loggedUser.username}"></span>
+                </td>
+                <td>
+                    <div class="rs-select2--border rs-select2--sm rs-select2--dark2 pl-2">
+                        <select class="attrValue" name="type">
+                            <option value="leader">Leader</option>
+                            <option value="member">Member</option>
+                        </select>
+                        <div class="dropDownSelect2"></div>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="table-data-feature pl-2">
+                        <a href="" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </a>
+
+                    </div>
                 </td>
             </tr>
-            <tr>
-                <td class="attrName">ducddse04936</td>
-                <td>
-                    <select class="form-control attrValue">
-                        <option value="leader">Leader</option>
-                        <option value="member">Member</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td class="attrName">ducddse04936</td>
-                <td>
-                    <select class="form-control attrValue">
-                        <option value="leader">Leader</option>
-                        <option value="member">Member</option>
-                    </select>
-                </td>
-            </tr>
+            </tbody>
         </table>
     </div>
+<!--    <div class="form-group row attrTable">-->
+<!--        <table class="members" id="member-table">-->
+<!--            <tr>-->
+<!--                <td class="attrName" th:text="${loggedUser.username}"></td>-->
+<!--                <td>-->
+<!--                    <select class="form-control attrValue">-->
+<!--                        <option value="leader">Leader</option>-->
+<!--                        <option value="member">Member</option>-->
+<!--                    </select>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </div>-->
 
     <div class="form-group row">
         <label for="description" class="text-md-right">Description
