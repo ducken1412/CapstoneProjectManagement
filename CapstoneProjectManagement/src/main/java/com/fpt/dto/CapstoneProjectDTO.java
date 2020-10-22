@@ -18,7 +18,7 @@ public class CapstoneProjectDTO {
     private String nameOther;
     private String nameVi;
     private String nameAbbreviation;
-    private Profession profession;
+    private String profession;
     private String specialty;
     private String document;
     private String program;
@@ -31,7 +31,7 @@ public class CapstoneProjectDTO {
     }
 
     public CapstoneProjectDTO(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation,
-                              Profession profession, String specialty, String document, String program, String description,
+                              String profession, String specialty, String document, String program, String description,
                               Integer stautus, List<MemberDTO> members) {
         super();
         this.id = id;
@@ -88,11 +88,11 @@ public class CapstoneProjectDTO {
         this.nameAbbreviation = nameAbbreviation;
     }
 
-    public Profession getProfession() {
+    public String getProfession() {
         return profession;
     }
 
-    public void setProfession(Profession profession) {
+    public void setProfession(String profession) {
         this.profession = profession;
     }
 

@@ -46,8 +46,16 @@ public class CapstoneProjectController {
 		return "home/register-project";
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/getMember")
+	public String getMember() {
+
+		return "home/register-project-form";
+	}
+
+	@ResponseBody
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String addRegisterPoject(@Valid CapstoneProjectDTO dataForm, BindingResult result,
+	public String addRegisterPoject(@Valid @RequestBody CapstoneProjectDTO dataForm, BindingResult result,
 									Model model) {
 		if (result.hasErrors()) {
 			// load all user has role = 2 (student_member)

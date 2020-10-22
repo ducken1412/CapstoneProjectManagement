@@ -51,9 +51,20 @@
             type="text" id="document" class="form-control" name="document">
     </div>
 
-    <div class="form-group row">
-        <label for="member" class="text-md-right">Member</label> <input
-            type="text" id="member" class="form-control" name="member">
+<!--    <div class="form-group row">-->
+<!--        <label for="member" class="text-md-right">Member</label> <input-->
+<!--            type="text" id="member" class="form-control" name="member">-->
+<!--        <button class="btn btn-success" id="add-member">Add</button>-->
+<!--    </div>-->
+
+    <div class="row form-group">
+        <label for="member" class="text-md-right">Member</label>
+        <div class="input-group">
+            <input type="text" id="member" name="imember" class="form-control">
+            <div class="input-group-btn">
+                <button class="btn btn-primary">Add</button>
+            </div>
+        </div>
     </div>
 
     <div class="form-group row attrTable">
@@ -103,6 +114,7 @@
 
     <div class="text-md-right">
         <button type="submit" class="btn btn-primary" style="">
-            Register</button>
+            Register
+        </button>
     </div>
 </form>
