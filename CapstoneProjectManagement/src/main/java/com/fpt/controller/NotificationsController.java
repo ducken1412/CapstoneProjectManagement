@@ -138,4 +138,37 @@ public class NotificationsController {
 		}
 		return "home/add-notification";
 	}
+
+	@RequestMapping(value = "/notification-detail/{id}", method = RequestMethod.GET)
+	public String notificationDetail(@PathVariable("id") int id, Model model){
+		Notifications notification = notificationsService.getOneNoification(id);
+		if(notification == null){
+			return "home/error";
+		}
+		System.out.println(notification.getTitle());
+		model.addAttribute("notification", notification);
+		return "home/notification-detail";
+	}
+
+	@RequestMapping(value = "/list-news")
+	public String listNews(Model model){
+		//get notification public
+		List<NotificationDTO> notification = notificationsService.getTitle();
+		model.addAttribute("notifications", notification);
+		return "home/list-news";
+	}
+
+	@RequestMapping(value = "/list-news-user/{id}")
+	public String listNewsUser(@PathVariable("id") String id, Model model){
+		List<NotificationDetails> notificationDetails = notificationDetailService.getIdNotification(id);
+		ArrayList<Notifications> noti = new ArrayList<>();
+		for (NotificationDetails notidetail: notificationDetails
+		) {
+			int noti_id = notidetail.getNotification().getId();
+			Notifications n =  notificationsService.getNotificationById(noti_id);
+			noti.add(n);
+		};
+		model.addAttribute("notificationByUser", noti);
+		return "home/list-news-user";
+	}
 }
