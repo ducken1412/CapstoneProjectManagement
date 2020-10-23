@@ -136,7 +136,7 @@ public class NotificationsController {
 				recordService.save(records);
 			}
 		}
-		return "home/add-notification";
+		return "redirect:/notification";
 	}
 
 	@RequestMapping(value = "/notification-detail/{id}", method = RequestMethod.GET)
