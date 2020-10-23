@@ -18,7 +18,6 @@ import javax.persistence.Table;
 public class Roles implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "INT")
 	private Integer id;
 	@Column(name = "name", columnDefinition = "NVARCHAR(20) NOT NULL UNIQUE")
