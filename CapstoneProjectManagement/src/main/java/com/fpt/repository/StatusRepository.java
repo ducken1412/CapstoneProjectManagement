@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.fpt.entity.Status;
 
 public interface StatusRepository extends JpaRepository<Status, Integer>{
-	public Optional<Status> findById(Integer id);
+	Optional<Status> findById(Integer id);
+
+	Status findByName(String name);
 	
 }

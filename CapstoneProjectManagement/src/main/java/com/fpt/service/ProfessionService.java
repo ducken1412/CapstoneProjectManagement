@@ -8,4 +8,8 @@ public interface ProfessionService {
 
 	List<Profession> findAll();
 
+	Profession findByName(String name);
+
+	Profession findById(Integer id);
+
 }

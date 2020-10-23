@@ -23,4 +23,6 @@ public interface CapstoneProjectDetailService {
 
 	List<Users> getUserByCapstoneProjectDetailId(Integer id);
 
+	Users findUserByStatusRegisted(String id);
+
 }

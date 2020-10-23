@@ -19,9 +19,10 @@ public class StatusServiceImpl implements StatusService{
 		return status;
 	}
 
-	
+	@Override
+	public Status findByName(String name) {
+		return statusRepository.findByName(name);
+	}
 
-	
 
-	
 }

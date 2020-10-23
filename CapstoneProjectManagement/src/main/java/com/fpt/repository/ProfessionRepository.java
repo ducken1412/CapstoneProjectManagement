@@ -7,5 +7,5 @@ import com.fpt.entity.Profession;
 
 @Repository
 public interface ProfessionRepository extends JpaRepository<Profession, Integer> {
-
+    Profession findByName(String name);
 }

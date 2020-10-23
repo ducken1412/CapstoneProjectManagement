@@ -9,5 +9,5 @@ import com.fpt.entity.Status;
 @Service
 public interface StatusService {
 	Status getStatusById(int id);
-	
+	Status findByName(String name);
 }
