@@ -5,21 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Constraint;
 import javax.validation.Valid;
 
 import com.fpt.dto.MemberDTO;
+import com.fpt.entity.*;
+import com.fpt.utils.Constant;
 import com.google.gson.Gson;
-import com.sun.codemodel.internal.JForEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.fpt.dto.CapstoneProjectDTO;
-import com.fpt.entity.CapstoneProjects;
-import com.fpt.entity.Profession;
-import com.fpt.entity.Users;
 import com.fpt.service.CapstoneProjectDetailService;
 import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.ProfessionService;
@@ -29,7 +29,10 @@ import com.fpt.service.UserService;
 @Controller
 public class CapstoneProjectController {
 	@Autowired
-	private CapstoneProjectService projectService;
+	private CapstoneProjectDetailService capstoneProjectDetailService;
+
+	@Autowired
+	private CapstoneProjectService capstoneProjectService;
 
 	@Autowired
 	private StatusService statusService;
@@ -48,6 +51,8 @@ public class CapstoneProjectController {
 		} else {
 			return "error/403Page";
 		}
+		List<Profession> professions = professionService.findAll();
+		model.addAttribute("professions", professions);
 		model.addAttribute("capstoneProjectDTO", new CapstoneProjectDTO());
 		return "home/register-project";
 	}
@@ -58,15 +63,33 @@ public class CapstoneProjectController {
 		Map<String, Object> result = new HashMap<>();
 		boolean success = true;
 		String message = "";
-		System.out.println(username);
 		List<Users> users = userService.findByUsername(username);
 		MemberDTO dto = new MemberDTO();
+		Users tmp = null;
 		if (users.isEmpty()) {
 			success = false;
 			message = "Username could not be found";
 		} else {
 			dto = new MemberDTO(users.get(0));
+			boolean check = false;
+			for (UserRoles userRoles : users.get(0).getRoleUser()) {
+				if(userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+					check = true;
+					break;
+				}
+			}
+			if(!check) {
+				success = false;
+				message = "User is not a student";
+			} else {
+				tmp = capstoneProjectDetailService.findUserByStatusRegisted(users.get(0).getId());
+			}
 		}
+		if(tmp != null) {
+			success = false;
+			message = "The user has joined another group";
+		}
+
 		result.put("success", success);
 		result.put("message", message);
 		result.put("user", dto);
@@ -77,7 +100,7 @@ public class CapstoneProjectController {
 	@ResponseBody
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerProject(@Valid @RequestBody CapstoneProjectDTO dataForm, BindingResult result,
-									Model model) {
+									Model model){
 		Map<String, Object> output = new HashMap<>();
 		List<String> errors = new ArrayList<>();
 		if (result.hasErrors()) {
@@ -86,48 +109,7 @@ public class CapstoneProjectController {
 			output.put("errors", errors);
 			return new Gson().toJson(output);
 		}
-		int count = 0;
-		for (MemberDTO m : dataForm.getMembers()) {
-			if(m.getRole().equalsIgnoreCase("leader")) {
-				count++;
-			}
-			if(count > 1) {
-				errors.add("team just has only one leader");
-				output.put("hasError", true);
-				output.put("errors", errors);
-				return new Gson().toJson(output);
-			}
-		}
-		CapstoneProjects projects = new CapstoneProjects();
-
-//		int statusId = 4;
-//		projects.setName(dto.getName());
-//		projects.setNameOther(dto.getNameOther());
-//		projects.setNameVi(dto.getNameVi());
-//		projects.setNameAbbreviation(dto.getNameAbbreviation());
-//		projects.setDescription(dto.getDescription());
-//		projects.setDocument(dto.getDocument());
-//		projects.setSpecialty(dto.getSpecialty());
-//		projects.setProgram(dto.getProgram());
-//		projects.setStatus(statusService.getStatusById(statusId));
-//		projects.setProfession(dto.getProfession());
-//		projectService.saveRegisterProject(projects);
-
-		/*CapstoneProjectDetails cpd;
-		// lop id by Users Role Student and add capstone project detail
-		for (String idStudent : dto.getMembers()) {
-			cpd = new CapstoneProjectDetails();
-			System.out.println(idStudent);
-			cpd.setUser(userService.findById(idStudent));
-			int capstoneId = projects.getId();
-			cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(capstoneId));
-			//set status id = 4 (registering_capstone)
-			cpd.setStatus(statusService.getStatusById(4));
-			capstoneProjectDetailService.addCapstonprojectDetail(cpd);
-		}*/
-//		dto.setId(projects.getId());
-		output.put("hasError", false);
-		return new Gson().toJson(output);
+		return capstoneProjectService.registerProject(dataForm);
 	}
 
 	@GetMapping("/get-member-form")

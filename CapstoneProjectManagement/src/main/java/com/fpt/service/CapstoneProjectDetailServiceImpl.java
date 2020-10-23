@@ -52,4 +52,9 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     public List<Users> getUserByCapstoneProjectDetailId(Integer id) {
         return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId(id);
     }
+
+    @Override
+    public Users findUserByStatusRegisted(String id) {
+        return capstoneProjectDetailRepository.findUserByStatusRegisted(id);
+    }
 }

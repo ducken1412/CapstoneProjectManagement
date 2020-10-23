@@ -3,8 +3,9 @@ function getDataMember() {
     $('.attrTable tr').each(function (a, b) {
         let name = $('.attrName', b).text();
         let value = $('.attrValue', b).find(":selected").text();
-        ary.push({username: name, role: value});
-
+        if(name !== '' && value !== '') {
+            ary.push({username: name, role: value});
+        }
     });
     return ary;
 }
@@ -27,7 +28,7 @@ $(document).on("click", "#btn-add-member", function (e) {
     let username = $("#member").val();
     let check = true;
     $.map(getDataMember(), function (n, i) {
-        if (n.username === username) {
+        if (n.username.toUpperCase() === username.toUpperCase()) {
             check = false;
             return;
         }
@@ -41,7 +42,7 @@ $(document).on("click", "#btn-add-member", function (e) {
         success: function (data) {
             let obj = JSON.parse(data);
             if (obj.success) {
-                $("#member-table").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">'+obj.user.username+'</span> </td> <td class="pt-2"> <div class="rs-select2--border rs-select2--sm rs-select2--dark2 pl-2"> <select class="attrValue" name="type"> <option value="leader">Leader</option><option value="member">Member</option> </select> <div class="dropDownSelect2"></div> </div> </td><td class="pt-2"> <div class="table-data-feature pl-2"> <a href="" class="item" data-toggle="tooltip" data-placement="top" title="Delete"> <i class="fas fa-trash"></i> </a>\n' +
+                $("#member-table").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">'+obj.user.username+'</span> </td> <td class="pt-2"> <div class="rs-select2--border rs-select2--sm rs-select2--dark2 pl-2"> <select class="btn-sm btn-secondary dropdown-toggle attrValue" name="type"> <option value="leader">Leader</option><option value="member">Member</option> </select> <div class="dropDownSelect2"></div> </div> </td><td class="pt-2"> <div class="table-data-feature pl-2"> <a href="" class="item del-member" data-toggle="tooltip" data-placement="top" title="Delete"> <i class="fas fa-trash fa-xs"></i> </a>\n' +
                     ' </div> </td> </tr>')
             } else {
                 $("#error-message").removeClass("d-none");
@@ -77,8 +78,19 @@ $(document).on("submit", "#register", function (e) {
                 });
                 $("#error-container").removeClass("d-none");
                 $(window).scrollTop(0);
+            } else {
+                $.showNotification({
+                    body: obj.message,
+                    type: "success",
+                    duration: 3000,
+                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    zIndex: 100,
+                    margin: "1rem"
+                });
+                setTimeout(function () {
+                    window.location.href = "/lecturers";
+                }, 3000);
             }
-
             //$("#form-content").html(data);
             $.LoadingOverlay("hide");
         },
@@ -87,3 +99,10 @@ $(document).on("submit", "#register", function (e) {
         },
     });
 });
+
+$(document).on("click", ".del-member", function(e) {
+    e.preventDefault();
+    if (confirm('Do you want to delete this?')) {
+        $(this).closest('tr').remove();
+    }
+})
