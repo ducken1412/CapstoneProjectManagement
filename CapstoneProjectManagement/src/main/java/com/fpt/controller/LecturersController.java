@@ -91,8 +91,7 @@ public class LecturersController {
 			model.addAttribute("pageNumbers", pageNumbers);
 		}
 
-		int count = capstoneProjectDetailService.countLecturersByProjectId(1);
-		System.out.println(count);
+		int count = capstoneProjectDetailService.countLecturersByProjectId(2);
 		if(count >= 2){
 			model.addAttribute("disable","booking lectuers enough!!!");
 		}else {
@@ -104,30 +103,28 @@ public class LecturersController {
 
 	@RequestMapping(value="/listlecturersproject/{id}", method= RequestMethod.GET)
 	public String bookLecturers(@PathVariable("id") String id,UserDTO dto,Model model, BindingResult bindingResult) {
-		int count = capstoneProjectDetailService.countLecturersByProjectId(1);
-		List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(1);
-		if(listUser.contains(id)){
-			model.addAttribute("disable","lectuers booked!!!");
-			return "home/listlecturers";
+		int count = capstoneProjectDetailService.countLecturersByProjectId(2);
+		List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(2);
+		for (int i = 0; i < listUser.size(); i++){
+			if(listUser.get(i).getUser().getId().contains(id)){
+				model.addAttribute("disable","lectuers booked!!!");
+				System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssss");
+				return "redirect:/lecturers";
+			}
 		}
 		if(count >= 2){
-			model.addAttribute("disable","booking lectuers enough!!!");
-			return "home/listlecturers";
+			return "redirect:/lecturers";
 		}else {
 			CapstoneProjectDetails cpd = new CapstoneProjectDetails();
 			Users user_id = userService.findById(id);
 //		String userlogin = "SE05045";
 //		int project_id = capstoneProjectDetailService.getProjectIdByUserId(userlogin);
 //		System.out.println(project_id);
-			cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(1));
+			cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(2));
 			cpd.setUser(user_id);
 			cpd.setStatus(statusService.getStatusById(4));
 			capstoneProjectDetailService.addCapstonprojectDetail(cpd);
-			//return "home/listlecturers";
 		}
-		return "home/listlecturers";
+		return "redirect:/lecturers";
 	}
-	
-
-
 }
