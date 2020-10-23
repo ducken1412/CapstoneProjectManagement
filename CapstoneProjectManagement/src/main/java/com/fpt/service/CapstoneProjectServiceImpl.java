@@ -125,7 +125,7 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 			return new Gson().toJson(output);
 		}
 		output.put("hasError", false);
-		output.put("message", "Project registration is successful. The screen will switch after 3 seconds");
+		output.put("message", "Project registration is successful.");
 		return new Gson().toJson(output);
 	}
 
