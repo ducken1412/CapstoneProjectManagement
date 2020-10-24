@@ -61,43 +61,43 @@
 											<div class="tab-content profile-tab" id="myTabContent">
 												<div class="row m-t-25">
 													<div class="col-md-4 ">
-														<label  class="boldLabel"> Birth Date :</label>
+														<label  class="boldLabel"> Birth Date:</label>
 													</div>
-													<div class="col-xs-12 col-sm-8 col-md-6">
+													<div class="col-md-6">
 														<p th:text=${dob}></p>
 													</div>
 												</div>
 
 												<div class="row m-t-7">
 													<div class="col-md-4">
-														<label class="boldLabel">Description :</label>
+														<label class="boldLabel">Description:</label>
 													</div>
-													<div class="col-xs-12 col-sm-8 col-md-6">
+													<div class="col-md-6">
 														<p th:text=${user.description}></p>
 													</div>
 												</div>
 												<div class="row m-t-10">
 													<div class="col-md-4">
-														<label class="boldLabel">Email :</label>
+														<label class="boldLabel">Email:</label>
 													</div>
-													<div class="col-xs-12 col-sm-8 col-md-6">
+													<div class="col-md-6">
 														<p th:text=${user.email}></p>
 													</div>
 												</div>
 
 												<div class="row m-t-7">
 													<div class="col-md-4">
-														<label class="boldLabel">Gender :</label>
+														<label class="boldLabel">Gender:</label>
 													</div>
-													<div class="col-xs-12 col-sm-8 col-md-6">
+													<div class="col-md-6">
 														<p th:text=${gender}></p>
 													</div>
 												</div>
 												<div class="row m-t-7">
 													<div class="col-md-4">
-														<label class="boldLabel">Phone :</label>
+														<label class="boldLabel">Phone:</label>
 													</div>
-													<div class="col-xs-12 col-sm-8 col-md-6">
+													<div class="col-md-6">
 														<p th:text=${user.phone}></p>
 													</div>
 												</div>
@@ -113,37 +113,35 @@
 
 													<div class="row m-t-25">
 														<div class="col-md-4">
-															<label class="boldLabel">User Name :</label>
+															<label class="boldLabel">User Name:</label>
 														</div>
-														<div class="col-xs-12 col-sm-8 col-md-6">
+														<div class="col-md-6">
 															<p th:text=${user.username}></p>
 														</div>
 													</div>
 													<div class="row m-t-7">
 														<div class="col-md-4">
-															<label class="boldLabel">Capstone Project : </label>
+															<label class="boldLabel">Capstone Project: </label>
 
 														</div>
-														<div class="col-xs-12 col-sm-8 col-md-6">
+														<div class="col-md-6">
 															<p   th:each="capstone :${capstone}" th:text=${capstone}></p>
 														</div>
 													</div>
 													<div class="row m-t-7">
 														<div class="col-md-4">
-															<label class="boldLabel">Address :</label>
+															<label class="boldLabel">Address:</label>
 														</div>
-														<div class="col-xs-12 col-sm-8 col-md-6">
+														<div class="col-md-6">
 															<p th:text=${location}></p>
-
-
 														</div>
 													</div>
 
 													<div class="row m-t-10">
 														<div class="col-md-4">
-															<label class="boldLabel">Status :</label>
+															<label class="boldLabel">Status:</label>
 														</div>
-														<div class="col-xs-12 col-sm-8 col-md-6">
+														<div class="col-md-6">
 															<p th:text=${status}></p>
 
 														</div>

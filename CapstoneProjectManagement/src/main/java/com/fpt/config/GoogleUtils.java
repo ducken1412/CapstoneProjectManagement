@@ -63,13 +63,8 @@ public class GoogleUtils {
         return null;
 
     }
-    public UserDetails buildUser(String email) {
-        boolean enabled = true;
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-
-        Users appUser = this.userService.findByEmail(email);
+    public UserDetails buildUser(String email,Users appUser) {
+       // Users appUser = this.userService.findByEmail(email);
 
         if (appUser == null) {
             System.out.println("User not found! " + email);
@@ -106,8 +101,8 @@ public class GoogleUtils {
                 grantList.add(authority);
             }
         }
-        UserDetails userDetail = new User(email,
-                "", enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantList);
+        UserDetails userDetail =(UserDetails) new User(email,
+                "", grantList);
         return userDetail;
     }
 }

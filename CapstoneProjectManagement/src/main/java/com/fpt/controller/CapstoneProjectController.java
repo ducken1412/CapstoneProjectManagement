@@ -1,21 +1,25 @@
 package com.fpt.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.validation.Constraint;
 import javax.validation.Valid;
 
+import com.fpt.dto.MemberDTO;
+import com.fpt.entity.*;
+import com.fpt.utils.Constant;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import com.fpt.dto.CapstoneProjectDTO;
-import com.fpt.entity.CapstoneProjects;
-import com.fpt.entity.Profession;
-import com.fpt.entity.Users;
 import com.fpt.service.CapstoneProjectDetailService;
 import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.ProfessionService;
@@ -25,7 +29,10 @@ import com.fpt.service.UserService;
 @Controller
 public class CapstoneProjectController {
 	@Autowired
-	private CapstoneProjectService projectService;
+	private CapstoneProjectDetailService capstoneProjectDetailService;
+
+	@Autowired
+	private CapstoneProjectService capstoneProjectService;
 
 	@Autowired
 	private StatusService statusService;
@@ -37,56 +44,72 @@ public class CapstoneProjectController {
 	private ProfessionService professionService;
 
 	@RequestMapping(value = "/registerproject", method = RequestMethod.GET)
-	public String loadDropDown(Model model) {
-		// load all user has role = 2 (student_member)
-		List<Users> user = userService.getUserByRoleId(2);
+	public String getRegisterProject(Model model) {
+		List<Users> users = userService.findByUsername("ducddse04936");
+		if (!users.isEmpty()) {
+			model.addAttribute("loggedUser", users.get(0));
+		} else {
+			return "error/403Page";
+		}
 		List<Profession> professions = professionService.findAll();
-		model.addAttribute("user", user);
 		model.addAttribute("professions", professions);
 		model.addAttribute("capstoneProjectDTO", new CapstoneProjectDTO());
 		return "home/register-project";
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String addRegisterPoject(@Valid CapstoneProjectDTO dto, BindingResult result,
-									Model model) {
-		if (result.hasErrors()) {
-			// load all user has role = 2 (student_member)
-			List<Users> user = userService.getUserByRoleId(2);
-			model.addAttribute("user", user);
-			model.addAttribute("capstoneProjectDTO", dto);
-			return "home/register-project-form";
+	@ResponseBody
+	@RequestMapping(value = "/getMember/{username}")
+	public String getMember(@PathVariable String username) {
+		Map<String, Object> result = new HashMap<>();
+		boolean success = true;
+		String message = "";
+		List<Users> users = userService.findByUsername(username);
+		MemberDTO dto = new MemberDTO();
+		Users tmp = null;
+		if (users.isEmpty()) {
+			success = false;
+			message = "Username could not be found";
+		} else {
+			dto = new MemberDTO(users.get(0));
+			boolean check = false;
+			for (UserRoles userRoles : users.get(0).getRoleUser()) {
+				if(userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+					check = true;
+					break;
+				}
+			}
+			if(!check) {
+				success = false;
+				message = "User is not a student";
+			} else {
+				tmp = capstoneProjectDetailService.findUserByStatusRegisted(users.get(0).getId());
+			}
 		}
-		CapstoneProjects projects = new CapstoneProjects();
-		int statusId = 4;
-		projects.setName(dto.getName());
-		projects.setNameOther(dto.getNameOther());
-		projects.setNameVi(dto.getNameVi());
-		projects.setNameAbbreviation(dto.getNameAbbreviation());
-		projects.setDescription(dto.getDescription());
-		projects.setDocument(dto.getDocument());
-		projects.setSpecialty(dto.getSpecialty());
-		projects.setProgram(dto.getProgram());
-		projects.setStatus(statusService.getStatusById(statusId));
-		projects.setProfession(dto.getProfession());
-		System.out.println("Post: " + dto.getProfession());
-		projectService.saveRegisterProject(projects);
+		if(tmp != null) {
+			success = false;
+			message = "The user has joined another group";
+		}
 
-		/*CapstoneProjectDetails cpd;
-		// lop id by Users Role Student and add capstone project detail
-		for (String idStudent : dto.getMembers()) {
-			cpd = new CapstoneProjectDetails();
-			System.out.println(idStudent);
-			cpd.setUser(userService.findById(idStudent));
-			int capstoneId = projects.getId();
-			cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(capstoneId));
-			//set status id = 4 (registering_capstone)
-			cpd.setStatus(statusService.getStatusById(4));
-			capstoneProjectDetailService.addCapstonprojectDetail(cpd);
-		}*/
-		dto.setId(projects.getId());
-		model.addAttribute("capstoneProjectDTO", dto);
-		return "home/register-project-form";
+		result.put("success", success);
+		result.put("message", message);
+		result.put("user", dto);
+		return new Gson().toJson(result);
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String registerProject(@Valid @RequestBody CapstoneProjectDTO dataForm, BindingResult result,
+									Model model){
+		Map<String, Object> output = new HashMap<>();
+		List<String> errors = new ArrayList<>();
+		if (result.hasErrors()) {
+			result.getFieldErrors().stream().forEach(f -> errors.add(f.getField() + " " + f.getDefaultMessage()));
+			output.put("hasError", true);
+			output.put("errors", errors);
+			return new Gson().toJson(output);
+		}
+		return capstoneProjectService.registerProject(dataForm);
 	}
 
 	@GetMapping("/get-member-form")

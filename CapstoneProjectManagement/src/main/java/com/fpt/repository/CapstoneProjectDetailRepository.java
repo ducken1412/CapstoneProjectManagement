@@ -30,6 +30,7 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1")
 	List<Users> getUserByCapstoneProjectDetailId(Integer id);
 
+
 	//coutn lecturers by project id
 	@Query("SELECT count (u.userRoleKey.role.id) FROM CapstoneProjectDetails ru INNER JOIN ru.user.roleUser as u WHERE u.userRoleKey.user.id = ru.user.id and u.userRoleKey.role.id = 4 and ru.capstoneProject.id = ?1")
 	Integer countLecturersByCapstoneProjectId(Integer id);
@@ -42,4 +43,9 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	@Modifying
 	@Query("UPDATE CapstoneProjectDetails c SET c.status.id = 4 WHERE c.user.id = ?1 and c.capstoneProject.id = ?2")
 	Integer updateStatusUserProject(String uid, Integer pid);
+
+	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 AND ru.status.name = 'registed_capstone'")
+	Users findUserByStatusRegisted(String id);
+	
+
 }

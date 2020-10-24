@@ -1,4 +1,4 @@
-<header class="header-desktop">
+<header class="header-desktop" xmlns:th="http://www.w3.org/1999/xhtml">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
@@ -118,33 +118,34 @@
                                             <div class="notifi__footer">
                                                 <a href="#">All notifications</a>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="https://i.pinimg.com/originals/30/24/f8/3024f8d283b734bd6b7e4fc5531fe2e9.png" alt="John Doe" />
+                                            <img id="imageCockiee" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">john doe</a>
+                                            <a class="js-acc-btn" href="#" id="user-name"></a>
                                             <i class="fas fa-angle-down"></i>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                        <img id="image-dropdown" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">john doe</a>
+                                                        <a href="#" id="username-dropdown"></a>
                                                     </h5>
-                                                    <span class="email">johndoe@example.com</span>
+                                                    <span class="email"><h5 th:utext="${#request.userPrincipal.name}"></h5></span>
                                                 </div>
                                             </div>
-                                            <div class="account-dropdown__body">
+                                            <!--<div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
                                                     <a href="#">
                                                         <i class="zmdi zmdi-account"></i>Account</a>
@@ -157,9 +158,9 @@
                                                     <a href="#">
                                                         <i class="zmdi zmdi-money-box"></i>Billing</a>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <div class="account-dropdown__footer">
-                                                <a href="#">
+                                                <a th:if="${#request.userPrincipal != null}" th:href="@{/j_spring_security_logout}">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
@@ -172,8 +173,31 @@
                 <div id="notification-container" class="w-25 float-right position-absolute" style="height: 85vh"></div>
             </header>
 <th:block th:include="home/_script"></th:block>
+<th:block th:include="home/_css"></th:block>
 <script>
     $().ready(function () {
+        var userName ="userFullName=";
+        var path ="userImage=" ;
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+
+            }
+            if (c.indexOf(userName) == 0) {
+                var nameArray = c.substring(userName.length, c.length).split('_');
+                var name = nameArray[0] + " "+ nameArray[1];
+                $("#user-name").text(name);
+                $("#imageCockiee").attr("alt",name);
+                $("#username-dropdown").text(name);
+            }
+            if (c.indexOf(path) == 0) {
+                $("#imageCockiee").attr("src",c.substring(path.length, c.length));
+                $("#image-dropdown").attr("src",c.substring(path.length, c.length));
+            }
+        }
         $.ajax({
             url: "/notifications",
             type: "GET",
@@ -187,4 +211,6 @@
             },
         });
     })
+
+
 </script>

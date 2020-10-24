@@ -19,4 +19,14 @@ public class ProfessionServiceImpl implements ProfessionService {
 		return professionRepository.findAll();
 	}
 
+	@Override
+	public Profession findByName(String name) {
+		return professionRepository.findByName(name);
+	}
+
+	@Override
+	public Profession findById(Integer id) {
+		return professionRepository.findById(id).orElse(null);
+	}
+
 }
