@@ -16,7 +16,7 @@ public interface NotificationsRepository extends JpaRepository<Notifications, In
 	//get notification by user id
 
 //	List<Notifications> findByReceivers_Id(String id);
-    @Query("select new com.fpt.dto.NotificationDTO(n) from Notifications n where n.type = 'all'")
+    @Query("select new com.fpt.dto.NotificationDTO(n) from Notifications n where n.type = 'all' order by n.created_date")
     List<NotificationDTO> getAllTitle();
 
     Notifications findAllById(Integer id);
