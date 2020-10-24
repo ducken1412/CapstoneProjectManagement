@@ -3,12 +3,15 @@ package com.fpt.controller;
 import java.security.Principal;
 
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import java.io.IOException;
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fpt.service.UserService;
 import com.fpt.utils.WebUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +32,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @Transactional
 public class LoginController {
-
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private GoogleUtils googleUtils;
@@ -38,7 +42,7 @@ public class LoginController {
 		return "login/loginPage";
 	}
 	@RequestMapping("/login-google")
-	public String loginGoogle(HttpServletRequest request) throws ClientProtocolException, IOException {
+	public String loginGoogle(HttpServletRequest request , HttpServletResponse response) throws ClientProtocolException, IOException {
 		String code = request.getParameter("code");
 
 		if (code == null || code.isEmpty()) {
@@ -48,11 +52,31 @@ public class LoginController {
 
 		String email = googleUtils.getUserInfo(accessToken);
 		UserDetails userDetail ;
+		Users appUser;
 		if(email != null ){
-			userDetail = googleUtils.buildUser(email);
+			appUser = this.userService.findByEmail(email);
+			userDetail = googleUtils.buildUser(email,appUser);
 		} else {
 			return "redirect:/login?google=error";
 		}
+		String userFullName ;
+		if(appUser.getFirstName()!= null && appUser.getLastName() !=null){
+			userFullName = appUser.getFirstName()+"_"+ appUser.getLastName();
+		}else if (appUser.getFirstName()!= null && appUser.getLastName() ==null){
+			userFullName = appUser.getFirstName();
+		}else {
+			userFullName = appUser.getFirstName();
+		}
+		Cookie cookie = new Cookie("userFullName",userFullName);
+		cookie.setMaxAge(1 * 24 * 60 * 60);
+		response.addCookie(cookie);
+		if(appUser.getImage()!= null){
+			Cookie cookieImage = new Cookie("userImage",appUser.getImage());
+			cookie.setMaxAge(1 * 24 * 60 * 60);
+			// add cookie to response
+			response.addCookie(cookieImage);
+		}
+
 		if(userDetail !=null){
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
 					userDetail.getAuthorities());

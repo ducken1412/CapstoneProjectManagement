@@ -63,8 +63,8 @@ public class GoogleUtils {
         return null;
 
     }
-    public UserDetails buildUser(String email) {
-        Users appUser = this.userService.findByEmail(email);
+    public UserDetails buildUser(String email,Users appUser) {
+       // Users appUser = this.userService.findByEmail(email);
 
         if (appUser == null) {
             System.out.println("User not found! " + email);
