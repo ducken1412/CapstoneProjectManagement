@@ -6,7 +6,7 @@ import com.fpt.entity.Files;
 import com.fpt.entity.Posts;
 import com.fpt.entity.Users;
 import com.fpt.service.FilesService;
-import com.fpt.service.FilesServiceImpl;
+import com.fpt.service.FilesStorageService;
 import com.fpt.service.PostService;
 
 import org.slf4j.Logger;
@@ -42,15 +42,16 @@ import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@CrossOrigin("http://localhost:8080")
 @Controller
 public class FileUploadController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 	 @Autowired
 	 private FilesService filesService;
-	 
-	 @Autowired
-     private HttpServletRequest request;
+
+	@Autowired
+	FilesStorageService storageService;
 
 	 @GetMapping(value = "/uploadMultipleFiles")
 	public String upload(Model model) {
@@ -61,26 +62,41 @@ public class FileUploadController {
 	 	
 
     @PostMapping("/uploadMultipleFiles")
-    public List<Files> uploadMultipleFiles(@RequestParam("file-multiple-input") MultipartFile[] files) {
-    	logger.info("bbbbbbbb");
+    public String uploadMultipleFiles(@RequestParam("files[]") MultipartFile[] files) {
+    	/*logger.info("uploadMultipleFiles");
+    	String uploadsDir ="src/main/resources/static/uploads/";
         return Arrays.asList(files)
                 .stream()
-                .map(file -> uploadFile(file))
-                .collect(Collectors.toList());
+                .map(file -> uploadFile(file,uploadsDir))
+                .collect(Collectors.toList());*/
+
+		String message = "";
+		try {
+			List<String> fileNames = new ArrayList<>();
+
+			Arrays.asList(files).stream().forEach(file -> {
+				storageService.save(file);
+				fileNames.add(file.getOriginalFilename());
+				/*Files dbFile = new Files();
+				dbFile.setFileName(file.getOriginalFilename());
+				dbFile.setPath(file.);
+				filesService.saveFiles(dbFile);*/
+			});
+			message = "Uploaded the files successfully: " + fileNames;
+			return message;
+		} catch (Exception e) {
+			message = "Fail to upload files!";
+			return message;
+		}
     }
     
     @PostMapping("/uploadFile")
-	public Files uploadFile(@RequestParam("file") MultipartFile file) {
+	public Files uploadFile(@RequestParam("file") MultipartFile file,String uploadsDir) {
 		if (!file.isEmpty()) {
 			try {
-				String uploadsDir = "/uploads/";
-				String realPathtoUploads = request.getServletContext().getRealPath(uploadsDir);
-				if (!new File(realPathtoUploads).exists()) {
-					new File(realPathtoUploads).mkdir();
-				}
-				logger.info("realPathtoUploads = {}", realPathtoUploads);
+
 				String orgName = file.getOriginalFilename();
-				String filePath = realPathtoUploads + orgName;
+				String filePath = uploadsDir + orgName;
 				String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 				Files dbFile = new Files();
 				dbFile.setFileName(fileName);
@@ -101,27 +117,27 @@ public class FileUploadController {
     
    
 
-	@RequestMapping("/file/{filePath:.+}")
+	@RequestMapping("/file/{filename:.+}")
 	public void downloadResource(HttpServletRequest request, HttpServletResponse response,
-			@PathVariable("filePath") String filePath) throws IOException {
+								 @PathVariable String filename) throws IOException {
 
-		File file = new File(filePath);
+		Resource file = storageService.load(filename);
 		if (file.exists()) {
 
 			//get the mimetype
-			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+			String mimeType = URLConnection.guessContentTypeFromName(file.getFilename());
 			if (mimeType == null) {
 				//unknown mimetype so set the mimetype to application/octet-stream
 				mimeType = "application/octet-stream";
 			}
 
 			response.setContentType(mimeType);
-			response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
-			response.setContentLength((int) file.length());
+			//response.setHeader("Content-Disposition", String.format("inline; filename=" + file.getFilename()));
 
-			InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+			InputStream inputStream = new BufferedInputStream(new FileInputStream(file.getFile()));
 
 			FileCopyUtils.copy(inputStream, response.getOutputStream());
+			response.getOutputStream().flush();
 
 		}
 	}

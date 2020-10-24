@@ -7,9 +7,10 @@ import org.springframework.cache.annotation.EnableCaching;
 @SpringBootApplication
 @EnableCaching
 public class CapstoneProjectManagementApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(CapstoneProjectManagementApplication.class, args);
 	}
+
+
 
 }
