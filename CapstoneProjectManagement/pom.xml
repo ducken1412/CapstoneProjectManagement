@@ -130,6 +130,10 @@
 			<version>1.5.0</version>
 		</dependency>
 		<!-- config social end -->
+		<!--send email-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		<!-- org.apache.httpcomponents -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
