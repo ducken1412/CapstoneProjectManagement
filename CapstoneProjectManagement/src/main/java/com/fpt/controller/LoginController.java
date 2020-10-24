@@ -37,12 +37,14 @@ public class LoginController {
 
 	@Autowired
 	private GoogleUtils googleUtils;
-	@RequestMapping(value = { "/", "/login" })
+
+	@RequestMapping(value = {"/", "/login"})
 	public String login() {
 		return "login/loginPage";
 	}
+
 	@RequestMapping("/login-google")
-	public String loginGoogle(HttpServletRequest request , HttpServletResponse response) throws ClientProtocolException, IOException {
+	public String loginGoogle(HttpServletRequest request, HttpServletResponse response) throws ClientProtocolException, IOException {
 		String code = request.getParameter("code");
 
 		if (code == null || code.isEmpty()) {
@@ -51,33 +53,33 @@ public class LoginController {
 		String accessToken = googleUtils.getToken(code);
 
 		String email = googleUtils.getUserInfo(accessToken);
-		UserDetails userDetail ;
+		UserDetails userDetail;
 		Users appUser;
-		if(email != null ){
+		if (email != null) {
 			appUser = this.userService.findByEmail(email);
-			userDetail = googleUtils.buildUser(email,appUser);
+			userDetail = googleUtils.buildUser(email, appUser);
 		} else {
 			return "redirect:/login?google=error";
 		}
-		String userFullName ;
-		if(appUser.getFirstName()!= null && appUser.getLastName() !=null){
-			userFullName = appUser.getFirstName()+"_"+ appUser.getLastName();
-		}else if (appUser.getFirstName()!= null && appUser.getLastName() ==null){
+		String userFullName;
+		if (appUser.getFirstName() != null && appUser.getLastName() != null) {
+			userFullName = appUser.getFirstName() + "_" + appUser.getLastName();
+		} else if (appUser.getFirstName() != null && appUser.getLastName() == null) {
 			userFullName = appUser.getFirstName();
-		}else {
+		} else {
 			userFullName = appUser.getFirstName();
 		}
-		Cookie cookie = new Cookie("userFullName",userFullName);
+		Cookie cookie = new Cookie("userFullName", userFullName);
 		cookie.setMaxAge(1 * 24 * 60 * 60);
 		response.addCookie(cookie);
-		if(appUser.getImage()!= null){
-			Cookie cookieImage = new Cookie("userImage",appUser.getImage());
+		if (appUser.getImage() != null) {
+			Cookie cookieImage = new Cookie("userImage", appUser.getImage());
 			cookie.setMaxAge(1 * 24 * 60 * 60);
 			// add cookie to response
 			response.addCookie(cookieImage);
 		}
 
-		if(userDetail !=null){
+		if (userDetail != null) {
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
 					userDetail.getAuthorities());
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -98,14 +100,14 @@ public class LoginController {
 		model.addAttribute("userInfo", userInfo);
 		return "login/userInfoPage";
 	}
+
 	@RequestMapping("/admin")
 	public String admin() {
 		return "login/adminPage";
 	}
+
 	@RequestMapping("/403")
 	public String accessDenied() {
 		return "error/403Page";
 	}
-
-
 }

@@ -8,10 +8,9 @@ import javax.mail.internet.MimeMessage;
 
 public class SendingMail {
 
+    private static JavaMailSender javaMailSender;
 
-    private JavaMailSender javaMailSender;
-
-    public  void sendEmailWithAttachment(String sendTo, String subject,String content,String path) throws MessagingException {
+    public static void sendEmailWithAttachment(String sendTo, String subject,String content,String path) throws MessagingException {
 
         MimeMessage msg = javaMailSender.createMimeMessage();
 
@@ -25,11 +24,9 @@ public class SendingMail {
         //helper.setText("Check attachment for image!");
         // true = text/html
         helper.setText(content, true);
-
         // hard coded a file path
         //FileSystemResource file = new FileSystemResource(new File("path/android.png"));
         helper.addAttachment("my_photo.png", new ClassPathResource("android.png"));
-
         javaMailSender.send(msg);
     }
 }
