@@ -43,4 +43,9 @@ public class HistoryRecordServiceImpl implements HistoryRecordService {
 		return historyRecordsRepository.findAll();
 	}
 
+	@Override
+	public List<HistoryRecords> getHistoryRecordsByUserId(String id) {
+		return historyRecordsRepository.getHistoryRecordsByUserId(id);
+	}
+
 }

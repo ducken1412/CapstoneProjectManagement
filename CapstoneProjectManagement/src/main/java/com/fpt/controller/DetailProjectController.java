@@ -14,11 +14,7 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import com.fpt.dto.UserRoleDTO;
 import com.fpt.entity.CapstoneProjectDetails;
@@ -144,9 +140,28 @@ public class DetailProjectController {
 		return "home/detail_project";
 	}
 
-	@PostMapping("/projectDetail/{id}/approve")
-	public String approveProject(@PathVariable("id") Integer id, Model model ) {
+//	@PostMapping("/projectDetail/{id}/approve")
+//	public String approveProject(@PathVariable("id") Integer id, Model model ) {
+//		String user_login = "SE05046";
+//		CapstoneProjectDetails capstoneProjectDetails = new CapstoneProjectDetails();
+//		//capstoneProjectDetails.setStatus();
+//		return "home/detail_project";
+//	}
 
-		return "home/detail_project";
+	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "approve")
+	public String approve(@RequestParam Integer id, Model model){
+		//int id_project = Integer.parseInt(id);
+
+		String user_login = "SE05046";
+		int project_id = 2;
+		capstoneProjectDetailService.updateStatusUserProject(user_login, project_id);
+		return "redirect:/lecturers";
+	}
+
+	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "reject")
+	public String reject(@PathVariable("id") String id, Model model){
+		String user_login = "SE05046";
+
+		return "redirect:/lecturers";
 	}
 }
