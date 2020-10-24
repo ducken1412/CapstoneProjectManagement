@@ -1,6 +1,59 @@
+let sizeComment;
+const sizeDefault = 5;
+let currentPost = null;
+let postContainer;
+
 $(document).ready(function () {
+    sizeComment = sizeDefault;
     getListPostInit();
+
 });
+
+function loadCommentContainer(size, postId) {
+    let id;
+    let s;
+    $(".list-post-container").each(function (i) {
+        id = $(this).find("#post-id").val();
+        let arr = $(this).find(".comment-container");
+        let viewMoreElement = $(this).find("#view-more-comments");
+        // check post selected
+        if (postId.toString() !== id) {
+            s = sizeDefault
+        } else {
+            s = size
+        }
+        let arrSize = arr.length;
+        // check and set display for div comment
+        if (arrSize >= s) {
+            arr.each(function (j) {
+                if (j < (arrSize - s)) {
+                    $(this).addClass("d-none");
+                } else {
+                    $(this).removeClass("d-none");
+                }
+
+            })
+        }
+        if ((arrSize - s) < sizeDefault) {
+            arr.each(function (j) {
+                $(this).removeClass("d-none");
+            })
+            viewMoreElement.addClass("d-none");
+        }
+    })
+}
+
+$(document).on("click", ".view-more-comments", function (e) {
+    e.preventDefault()
+    const postId = $(this).attr("postId");
+    //check click another post
+    if(currentPost !== postId) {
+        currentPost = postId;
+        sizeComment = sizeDefault;
+    }
+    sizeComment += sizeDefault;
+    loadCommentContainer(sizeComment, postId)
+})
 
 function getListPostInit() {
     $.LoadingOverlay("show", {
@@ -15,6 +68,7 @@ function getListPostInit() {
         type: "GET",
         success: function (data) {
             $("#post-container").html(data);
+            loadCommentContainer(sizeDefault, -1);
             $.LoadingOverlay("hide");
             if (!(size === null || page === null)) {
                 window.history.pushState("", "", "/forum" + rewriteUrl(size, page));
@@ -37,6 +91,7 @@ function getListPost() {
         type: "GET",
         success: function (data) {
             $("#post-container").html(data);
+            loadCommentContainer(sizeDefault, -1);
             if (!(size === null || page === null)) {
                 window.history.pushState("", "", "/forum" + rewriteUrl(size, page));
             }
@@ -81,6 +136,7 @@ $(document).on("click", ".page-link", function (e) {
         type: "GET",
         success: function (data) {
             $("#post-container").html(data);
+            loadCommentContainer(sizeDefault, -1);
             $.LoadingOverlay("hide");
             if (!(size === null || page === null || page === "Previous")) {
                 window.history.pushState("", "", "/forum" + rewriteUrl(size, page));
@@ -198,6 +254,7 @@ $(document).on("submit", "#post-form", function (e) {
                     if (!(size === null || page === null)) {
                         window.history.pushState("", "", "/forum" + rewriteUrl(size, page));
                     }
+                    loadCommentContainer(sizeDefault, -1);
                 },
                 error: function (xhr) {
                     if (xhr.status == 302 || xhr.status == 200) {
@@ -267,21 +324,24 @@ function rewriteUrl(size, page) {
     return url;
 }
 
-$(document).on("click", "#chat", function (event) {
+$(document).on("click", "#chat", function (e) {
+    e.preventDefault()
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
+    postContainer = $("#content-body").html();
     const postId = $(this).attr("postId");
     $.ajax({
-        url: "/chat",
+        url: "/chat/" + postId,
         type: "GET",
         success: function (data) {
+            $.LoadingOverlay("hide");
             $("#content-body").html(data)
-            $(document).on("submit", "#userJoinForm", function (e) {
-                connect(e,postId)
+            connect(e, postId)
+            $(document).on("submit", "#messagebox", function (e1) {
+                sendMessage(e1, postId)
             })
-            $(document).on("submit", "#messagebox", function (e) {
-                sendMessage(e,postId)
-            })
-            // userJoinForm.addEventListener('submit', connect(e,postId), true);
-            // messagebox.addEventListener('submit', sendMessage(e,postId), true);
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {
@@ -289,6 +349,10 @@ $(document).on("click", "#chat", function (event) {
             }
         },
     });
+})
+
+$(document).on("click", "#back-to-forum", function (e) {
+    $("#content-body").html(postContainer);
 })
 
 

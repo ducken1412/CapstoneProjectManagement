@@ -53,7 +53,7 @@ public class Users implements Serializable {
     private Locations location;
     @Column(name = "description", columnDefinition = "NVARCHAR(256)")
     private String description;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     private Status status;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userRoleKey.user")
@@ -67,13 +67,13 @@ public class Users implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id", referencedColumnName = "id", columnDefinition = "INT")
     private Reports reportSend;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Reports reportReceive;
     @ManyToMany(mappedBy = "reportRecipients")
     private List<Reports> reportReceives;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sender")
     private List<Comments> comments;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_detail_id")
     private ReportDetails reportDetail;
     @OneToOne(cascade = CascadeType.ALL)
@@ -81,11 +81,13 @@ public class Users implements Serializable {
     private EvaluationDetails evaluationDetail;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Posts> posts;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Chat> chats;
 
     public Users() {
     }
 
-    public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts) {
+    public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats) {
         this.id = id;
         this.username = username;
         this.encrytedPassword = encrytedPassword;
@@ -111,6 +113,15 @@ public class Users implements Serializable {
         this.reportDetail = reportDetail;
         this.evaluationDetail = evaluationDetail;
         this.posts = posts;
+        this.chats = chats;
+    }
+
+    public List<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
     }
 
     public String getId() {

@@ -1,55 +1,33 @@
 
-<div id="userJoin" class="container">
-    <div class="card">
-    </div>
-    <form id="userJoinForm" name="userJoinForm">
-        <div class="form-group">
-            <label for="name">Enter Name:</label>
-            <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="Enter name">
+<div id="chat-page" class="container">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Chatroom [<span id="room-id-display"></span>]</h2>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-
-</div>
-<div id="chatPage" class="container d-none">
-    <div class="chat-header">
-        <h2>Chatroom [<span id="room-id-display"></span>]</h2>
-    </div>
-    <div class="waiting">
-        We are waiting to enter the room.
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <ul id="messageArea">
+        <ul id="messageArea">
+            <th:block th:each="chat :${chats}">
                 <div class="card">
                     <div class="card-body">
                         <li class="chat-message">
-                            <span>hihi</span>
-                            <p>haha</p>
+                            <i class="far fa-user" style="background-color: #a9b3c9;"></i>
+                            <span th:text="${chat.user.username}"></span>
+                            <p th:text="${chat.content}"></p>
                         </li>
                     </div>
                 </div>
-            </ul>
-        </div>
+            </th:block>
+        </ul>
+        <input type="text" id="userLogged" th:value="${loggedUser}" hidden/>
+        <form id="messagebox" name="messagebox">
+            <div class="form-group">
+                <div class="input-group mx-4" style="width: 95%">
+                    <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
+                    <button type="submit" class="btn btn-success ml-2">Send</button>
+                </div>
+            </div>
+        </form>
+        <a href="" id="back-to-forum" class="ml-4"><i class="fas fa-caret-left"></i>Forum</a>
     </div>
-
-    </ul>
-    <form id="messagebox" name="messagebox">
-        <div class="form-group">
-            <label for="message">Enter Message:</label>
-            <input type="text" class="form-control" id="message" aria-describedby="name" placeholder="Enter message to chat ....">
-        </div>
-        <button type="submit" class="btn btn-primary">Send</button>
-    </form>
 </div>
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <th:block th:include="home/_script"></th:block>
-
-</body>
-</html>
+<script th:src="@{/js/chatting/mychat.js}"></script>

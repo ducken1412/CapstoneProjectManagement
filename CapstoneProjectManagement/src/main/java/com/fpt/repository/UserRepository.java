@@ -1,6 +1,7 @@
 package com.fpt.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 //			"where ur.role_id = r.id and ur.user_id = u.id and r.id = 2")
 	//List<UserDTO> getAllUserStudent;
 	List<Users> findByUsername(String username);
+	Optional<Users> findByEmail(String email);
 	
 	//List<UserDTO> getAllUserStudent;
 		@Query("SELECT ru.userRoleKey.user FROM UserRoles ru WHERE ru.userRoleKey.role.id = ?1")

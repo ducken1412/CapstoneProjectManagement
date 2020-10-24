@@ -73,10 +73,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public Users findByEmail(String email) {
+		return userRepository.findByEmail(email).orElse(null);
+	}
+
+	@Override
 	public Page<Users> findPaginated(Pageable pageable) {
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
-		return userRepository.getUserByRoleId(secondPageWithFiveElements, 3);
+		return userRepository.getUserByRoleId(secondPageWithFiveElements, 4);
 	}
+
+
 }

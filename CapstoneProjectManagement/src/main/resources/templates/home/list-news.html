@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Template</title>
+
+
+    <th:block th:include="home/_css"></th:block>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <th:block th:include="home/_header-mobile"></th:block>
+    <th:block th:include="home/_menu"></th:block>
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">News</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-75" id="content-body">
+                            <div id="post-container">
+<!--                                Content Here-->
+                                <div class="row" style="width: 90%; margin-left: auto;margin-right: auto;">
+                                    <div class="col-md-12">
+                                        <table>
+                                            <tbody>
+                                            <tr style="border-bottom: 0 none">
+                                                <td>
+                                                    <div>
+                                                        <div id="ctl00_mainContent_divOther"><br>
+                                                            <hr>
+                                                            <ul>
+                                                                <div class="single-popular-post pt-2"
+                                                                     th:each="notifications : ${notifications}">
+                                                                    <a th:href="@{'/notification-detail/' + ${notifications.id}}">
+                                                                        <h5>
+                                                                            <span style="color: rgb(74, 137, 191)" th:text="${notifications.title}"></span>
+                                                                        </h5>
+                                                                    </a>
+                                                                    <p th:text="${notifications.created_date}" style="font-size: 14px"></p>
+                                                                </div>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <th:block th:include="home/_footer"></th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="topic-container" data-toggle="modal"
+                 tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" id="modal-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+</body>
+</html>

@@ -20,6 +20,9 @@ public interface UserRolesRepository  extends JpaRepository<UserRoles, UserRoleK
 	
 	@Query("SELECT ru.userRoleKey.user FROM UserRoles ru WHERE ru.userRoleKey.role.id = ?1")
 	List<Users> getUserByRoleId(Integer id);
+
+	@Query("SELECT ru.userRoleKey.role.name FROM UserRoles ru WHERE ru.userRoleKey.user.email = ?1")
+	List<String> getRoleNamesByEmail(String email);
 	
 
 }

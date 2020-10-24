@@ -18,7 +18,6 @@ import javax.persistence.Table;
 @Table(name = "[Status]")
 public class Status {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "INT")
 	private Integer id;
 	@Column(name = "name", columnDefinition = "NVARCHAR(50) NOT NULL")

@@ -2,11 +2,12 @@ package com.fpt.service;
 
 import java.util.List;
 
+import com.fpt.dto.CapstoneProjectDTO;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.CapstoneProjects;
+import com.fpt.entity.Status;
 
-@Service
 public interface CapstoneProjectService {
 	List<String> getCapstoneProjectNameByUserId(String UserId);
 
@@ -15,4 +16,10 @@ public interface CapstoneProjectService {
 
 	// get project by Id
 	CapstoneProjects getCapstonProjectById(Integer id);
+
+	//get all project
+	List<CapstoneProjects> getAllProject();
+
+	String registerProject(CapstoneProjectDTO dataForm);
+
 }

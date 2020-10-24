@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Template</title>
+
+    <script>
+        $(document).ready(function(){
+            $( "user_id" ).prop( "disabled", true );
+            $( "project_id" ).prop( "disabled", true );
+        });
+
+        function disableAll(){
+            let input = document.getElementById("user_id");
+            let dropdown = document.getElementById("project_id");
+            if(input){
+                input.disabled = "disabled";
+                $("user_id").text("");
+            }
+            if(dropdown){
+                dropdown.disabled = "disabled";
+                $("project_id").text("");
+            }
+        }
+
+        function disableTeamSelect(){
+            let input = document.getElementById("user_id");
+            let dropdown = document.getElementById("project_id");
+            input.disabled = "";
+            dropdown.disabled = "disabled";
+            $("project_id").text("");
+        }
+
+        function disableUserInput(){
+            let input = document.getElementById("user_id");
+            let dropdown = document.getElementById("project_id");
+            input.disabled = "disabled";
+            dropdown.disabled = "";
+            $("user_id").text("");
+        }
+    </script>
+    <th:block th:include="home/_css"></th:block>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <th:block th:include="home/_header-mobile"></th:block>
+    <th:block th:include="home/_menu"></th:block>
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Notification</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-75" id="content-body">
+                            <!-- content here -->
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    <form th:action="@{/add-notification}" th:object="${notificationsDTO}"
+                                           method="POST">
+
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="textarea-input" class=" form-control-label" style="font-size: 24px;width: 90%; text-transform: uppercase;">Title</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+													<textarea name="title" id="title" rows="2"
+                                                              placeholder="Title..." class="form-control" th:field="*{title}"></textarea>
+                                                <span class="bg-danger pull-right error-mess" th:errors="*{title}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="textarea-input" class=" form-control-label" style="font-size: 24px;width: 90%; text-transform: uppercase;">Content</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+													<textarea name="content" id="content" rows="40"
+                                                              placeholder="Content..." class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="textarea-input" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Subject of application</label>
+                                            </div>
+                                            <style>
+                                                .radio{
+                                                    padding: 10px;
+                                                    height: 50px;
+                                                }
+                                            </style>
+                                            <div class="col col-md-6">
+                                                <div class="form-check">
+                                                    <div class="radio">
+                                                        <label for="radio1" class="form-check-label " onclick="disableAll()">
+                                                            <input type="radio" id="radio1" name="radios" value="option1" class="form-check-input" checked="true">All
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <div class="row">
+                                                            <div class="col col-lg-6">
+                                                                <label for="radio2" class="form-check-label " onclick="disableTeamSelect()">
+                                                                    <input type="radio" id="radio2" name="radios" value="option2" class="form-check-input">Post a user
+                                                                </label>
+                                                            </div>
+                                                            <div class="col col-lg-6">
+                                                                <input style="width: 300px" type="text" id="user_id" name="user_id"  class="form-control" disabled="true">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <div class="row">
+                                                            <div class="col col-lg-6">
+                                                                <label for="radio3" class="form-check-label " onclick="disableUserInput()">
+                                                                    <input type="radio" id="radio3" name="radios" value="option3" class="form-check-input">Post a team
+                                                                </label>
+                                                            </div>
+                                                            <div class="col col-lg-6">
+                                                                <select th:object="${capstoneProjectDTO}" style="width: 300px" name="project_id" id="project_id" class="form-control" disabled="true">
+                                                                    <th:block th:each="cp: ${capstoneProjects}">
+                                                                        <option th:value="${cp.id}" th:text="${cp.getName()}"></option>
+                                                                    </th:block>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-lg btn-info btn-block">
+                                            <i class="fa fa-dot-circle-o"></i> Post
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- content here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <th:block th:include="home/_footer"></th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="topic-container" data-toggle="modal"
+             tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" id="modal-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<script th:src="@{/ckeditor/ckeditor.js}"></script>
+<!-- <script th:src="@{/admin/js/lib/chosen/chosen.jquery.min.js}"></script> -->
+<script type="text/javascript">
+    //  	$("#category").chosen();
+    CKEDITOR.replace("content");
+    // 	 $("#product_slide" ).sortable();
+</script>
+</body>
+</html>

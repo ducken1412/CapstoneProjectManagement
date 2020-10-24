@@ -11,13 +11,6 @@
 }
 
 .frontside .card .card-body img {
-<<<<<<< HEAD
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    
-}   
-=======
 	width: 150px;
 	height: 150px;
 	border-radius: 50%;
@@ -89,4 +82,4 @@
 .mb-30 {
 	margin-bottom: 30px !important;
 }
->>>>>>> no message
+

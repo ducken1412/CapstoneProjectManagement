@@ -1,252 +1,132 @@
-<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Detail</title>
-<meta name="description" content="Ela Admin - HTML5 Admin Template">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<title>Forum</title>
 
 
-<th:block th:include="home/_css"></th:block>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<th:block th:include="home/_css"></th:block>
 
-<meta name="robots" content="noindex, nofollow">
-
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-
-</head>
 <body>
-	<div
-		class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
-		<th:block th:include="home/_header"></th:block>
-		<div class="app-main">
-			<div class="app-sidebar sidebar-shadow">
-				<th:blocAk th:include="home/_menu">
-					</th:block>
-			</div>
-			<div class="app-main__outer">
-				<div class="app-main__inner">
-					<div class="app-page-title">
-						<div class="page-title-wrapper">
-							<div class="page-title-heading">
-								<div class="page-title-icon">
-									<i class="fas fa-home icon-gradient bg-mean-fruit"> </i>
+<div class="body">
+	<div class="page-wrapper">
+		<th:block th:include="home/_header-mobile"></th:block>
+		<th:block th:include="home/_menu"></th:block>
+		<div class="page-container">
+			<th:block th:include="home/_header"></th:block>
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="overview-wrap">
+									<h2 class="title-1">Project Information</h2>
 								</div>
-								<div>Title</div>
 							</div>
 						</div>
-					</div>
-					<div class="row h-auto">
-						<div class="container emp-profile w-75 ml-2 mt-0">
-							<div class="app-main__inner">
-								<div class="app-page-title">
-									<div class="page-title-wrapper">
-										<div class="page-title-heading">
-											<div class="page-title-icon">
-												<i class="pe-7s-glasses icon-gradient bg-love-kiss"> </i>
-											</div>
-											<div>
-												<h1>View detail project</h1>
-												<div class="page-title-subheading"></div>
-											</div>
+						<div class="row m-t-25">
+							<div class="w-75 p-4" id="content-body">
+								<form th:action="@{/approve}" th:object="${detail}" method="post">
+									<!-- TOP CAMPAIGN-->
+									<input th:value="${detail.id}" name="id" id="id" hidden>
+									<div class="top-campaign py-2" style="border-radius: 10px">
+										<div class="table-responsive">
+											<table class="table table-top-campaign">
+												<tbody>
+												<tr>
+													<td>NAME PROJECT</td>
+													<td th:text=${detail.name}></td>
+												</tr>
+												<tr>
+													<td>Name Project Other language</td>
+													<td th:text=${detail.nameOther}></td>
+												</tr>
+												<tr>
+													<td>Name Project VietNamese</td>
+													<td th:text=${detail.nameVi}></td>
+												</tr>
+												<tr>
+													<td>Name Project Abbreviation</td>
+													<td th:text=${detail.nameAbbreviation}></td>
+												</tr>
+												<tr>
+													<td>Profession</td>
+													<td th:text=${detail.profession.name}></td>
+												</tr>
+												<tr>
+													<td>Program</td>
+													<td th:text=${detail.program}></td>
+												</tr>
+												<tr>
+													<td>Specialty</td>
+													<td th:text=${detail.specialty}></td>
+												</tr>
+												<tr>
+													<td>Document</td>
+													<td th:text=${detail.document}></td>
+												</tr>
+												<tr>
+													<td>Description</td>
+													<td th:text=${detail.description}></td>
+												</tr>
+												<tr>
+													<td>Status</td>
+													<td th:text=${status}></td>
+												</tr>
+												</tbody>
+											</table>
 										</div>
 									</div>
-								</div>
-								<div class="tab-content">
-									<div class="tab-pane tabs-animation fade show active"
-										id="tab-content-0" role="tabpanel">
-										<div class="main-card mb-3 card">
-											<div class="card-body">
 
-												<div class="row">
-													<div class="col-md-6">
-														<form method="post">
-															<div class="row">
-																<div class="col-md-6">
-																	<div class="tab-content profile-tab" id="myTabContent">
-																		<div class="row">
-																			<div class="col-md-12">
-																				<h1>User</h1>
-																			</div>
-
-																		</div>
-
-																		<div class="row">
-																			<div class="col-md-4">
-																				<label>1</label>
-
-																			</div>
-																			<div class="col-md-4">
-																				<!-- <a th:text=${user.description}></a> -->
-																				<a>1</a>
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="table-responsive table--no-card">
+												<table
+														class="table table-borderless table-striped table-earning">
+													<thead>
+													<tr>
+														<th>User</th>
+														<th>Role</th>
 
 
-																			</div>
-																		</div>
-																		<div class="row">
-																			<div class="col-md-4">
-																				<label>2</label>
-																			</div>
-																			<div class="col-md-4">
-																				<!-- <p th:text=${user.email}></p> -->
-																			</div>
-																		</div>
+													</tr>
+													</thead>
+													<tbody>
+													<tr th:each="u: ${userRolesDTOs}">
+														<td>
+															<a th:href="@{'/user/' + ${u.id}}" th:text=${u.username}></a></td>
+														<td th:each="r: ${u.role}"><p th:text=${r}></p></td>
+													</tr>
 
-																		<div class="row">
-																			<div class="col-md-4">
-																				<label>3</label>
-																			</div>
-																			<div class="col-md-4">
-																				<!-- <p th:text=${gender}></p> -->
-																			</div>
-																		</div>
-																		<div class="row">
-																			<div class="col-md-4">
-																				<label>4</label>
-																			</div>
-																			<div class="col-md-4">
-																				<!-- <p th:text=${user.phone}></p> -->
-																			</div>
-																		</div>
-																		<div class="row">
-																			<div class="col-md-4">
-																				<label>4</label>
-																			</div>
-																			<div class="col-md-4">
-																			<!-- 	<p th:text=${user.phone}></p> -->
-																			</div>
-																		</div>
-																	</div>
-																</div>
-
-
-
-															</div>
-														</form>
-													</div>
-													<div class="col-md-6">
-														<form method="post">
-															<div class="row">
-																<div class="col-md-12">
-																	<div class="tab-content profile-tab" id="myTabContent">
-																		<div class="row">
-																			<div class="col-md-12">
-																				<h1>Detail Project</h1>
-																			</div>
-
-																		</div>
-
-																		<div class="row">
-																			<div class="col-md-6">
-																				<label>Program Project :</label>
-
-																			</div>
-																			<div class="col-md-6">
-																				<!-- <a th:text=${user.description}></a> -->
-																				<!-- <label th:text=${detail.program}></label> -->
-
-																			</div>
-																		</div>
-																		<div class="row">
-																			<div class="col-md-6">
-																				<label>Specialty Project :</label>
-																			</div>
-																			<div class="col-md-6">
-																				<!-- <p th:text=${user.email}></p> -->
-																			</div>
-																		</div>
-
-																		<div class="row">
-																			<div class="col-md-6">
-																				<label>Document Project :</label>
-																			</div>
-																			<div class="col-md-6">
-																				<!-- <p th:text=${gender}></p> -->
-																			</div>
-																		</div>
-																		<div class="row">
-																			<div class="col-md-6">
-																				<label>Description
-															Projec :</label>
-																			</div>
-																			<div class="col-md-6">
-																				<!-- <p th:text=${user.phone}></p> -->
-																			</div>
-																		</div>
-																		<div class="row">
-																			<div class="col-md-6">
-																				<label>4</label>
-																			</div>
-																			<div class="col-md-6">
-																			<!-- 	<p th:text=${user.phone}></p> -->
-																			</div>
-																		</div>
-																	</div>
-																</div>
-
-
-
-															</div>
-														</form>
-													</div>
-
-													<!-- <div class="col-md-3">
-														<div class="form-group">
-															<h1>Detail Project</h1>
-															<h4></h4>
-
-														</div>
-														<div class="form-group">
-															<lable for="hideEasing">Program Project</lable>
-															<h4></h4>
-														</div>
-														<div class="form-group">
-															<lable for="showMethod">Specialty Project</lable>
-															<lable</lable>
-														</div>
-
-													</div>
-
-													<div class="col-md-3">
-													<div class="form-group"></div>
-
-													<div class="form-group">
-														<lable for="hideMethod">Document Project</lable>
-														<lable></lable>
-													</div>
-													<div class="form-group">
-														<lable class="form-label" for="hideDuration">Description
-															Project</lable>
-														<lable></lable>
-													</div>
-
-												</div> -->
+													</tbody>
+												</table>
 											</div>
 										</div>
 
 									</div>
-								</div>
+									<div class="row mt-2">
+											<div class="ml-auto mr-3">
+												<input class="btn btn-success" name="approve" type="submit" value="Approve">
+												<input class="btn btn-danger" name="reject" type="submit" value="Reject">
+											</div>
+									</div>
 
+							</form>
 							</div>
 						</div>
 					</div>
-					<script type="text/javascript">
-
-					</script>
-
-
 				</div>
+
+				<script type="text/javascript">
+
+				</script>
 			</div>
 		</div>
 	</div>
-	<th:block th:include="home/_footer"></th:block>
+</div>
 
-	<th:block th:include="home/_script"></th:block>
+<th:block th:include="home/_footer"></th:block>
 
+<th:block th:include="home/_script"></th:block>
 
 </body>
 </html>
