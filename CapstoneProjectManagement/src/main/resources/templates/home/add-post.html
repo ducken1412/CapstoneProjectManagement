@@ -34,12 +34,14 @@
 			</div>
 			<div class="row form-group">
 				<div class="col col-md-3">
-					<label for="file-multiple-input" class=" form-control-label">Files</label>
+					<label for="uploadFile" class=" form-control-label">Files</label>
 				</div>
 				<div class="col-12 col-md-9">
 					<input type="file"  multiple class="form-control-file" onchange="getFileSizeAndName(this);">
-					<div id="file-multiple-input"
-						 name="file-multiple-input" id="uploadFile"></div>
+					<div id="uploadFile">
+						<input type="file" name="file-multiple-input" id="uploadFile"/>
+					</div>
+
 				</div>
 			</div>
 			<div class="float-right">

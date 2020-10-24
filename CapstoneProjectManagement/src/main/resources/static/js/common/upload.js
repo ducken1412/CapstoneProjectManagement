@@ -1,4 +1,4 @@
-var totalsizeOfUploadFiles = 0;
+
 function getFileSizeAndName(input)
 {
     debugger;
