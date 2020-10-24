@@ -13,6 +13,7 @@ public interface HistoryRecordService {
 	boolean save(HistoryRecords historyRecords);
 
 	List<HistoryRecords> findAll();
-	
+
+	List<HistoryRecords> getHistoryRecordsByUserId(String id);
 
 }

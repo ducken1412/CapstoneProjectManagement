@@ -24,4 +24,6 @@ public interface CapstoneProjectDetailService {
 	List<Users> getUserByCapstoneProjectDetailId(Integer id);
 
 	Integer countLecturersByProjectId(Integer id);
+
+	Integer updateStatusUserProject(String uid,Integer pid);
 }

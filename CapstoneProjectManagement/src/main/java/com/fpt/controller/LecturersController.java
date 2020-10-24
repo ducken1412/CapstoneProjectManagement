@@ -1,11 +1,14 @@
 package com.fpt.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.fpt.entity.*;
+import com.fpt.service.*;
 import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,17 +28,9 @@ import com.fpt.controller.LecturersController;
 import com.fpt.dto.CapstoneProjectDetailDTO;
 import com.fpt.dto.ListLecturersDTO;
 import com.fpt.dto.UserDTO;
-import com.fpt.entity.CapstoneProjectDetails;
-import com.fpt.entity.Notifications;
-import com.fpt.entity.Posts;
-import com.fpt.entity.Users;
-import com.fpt.service.UserRoleService;
-import com.fpt.service.UserService;
 import com.fpt.dto.ListLecturersDTO;
-import com.fpt.service.CapstoneProjectDetailService;
-import com.fpt.service.CapstoneProjectService;
-import com.fpt.service.NotificationsService;
-import com.fpt.service.StatusService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class LecturersController {
@@ -56,6 +51,9 @@ public class LecturersController {
 	
 	@Autowired
 	private CapstoneProjectDetailService capstoneProjectDetailService;
+
+	@Autowired
+	private HistoryRecordService historyRecordService;
 	
 //	@RequestMapping(value = "/listlecturersproject", method = RequestMethod.GET)
 //	public String getListLecturers(Model model) {
@@ -72,6 +70,28 @@ public class LecturersController {
 	public String getListLecturers(Model model, @RequestParam("page") Optional<Integer> page, 
 		      @RequestParam("size") Optional<Integer> size) {
 		LOGGER.info("Running on getListLecturers method of UserController");
+		String user_id_login = "SE05045";
+		List<HistoryRecords> historyRecords = historyRecordService.getHistoryRecordsByUserId(user_id_login);
+		if(historyRecords != null){
+			for (int i = 0; i < historyRecords.size(); i++){
+				if(historyRecords.get(i).getContent().equals("Register Capstone")){
+					//check booking
+					boolean check_user_register = true;
+					model.addAttribute("check_user_register", check_user_register);
+					int project_id = capstoneProjectDetailService.getProjectIdByUserId(user_id_login);
+					//check total lecture bookded
+					int count = capstoneProjectDetailService.countLecturersByProjectId(project_id);
+					if(count >= 2){
+						model.addAttribute("disable","booking lectuers enough!!!");
+					}
+				}
+			}
+		}else {
+			boolean check_user_register = false;
+			model.addAttribute("check_user_register", check_user_register);
+		}
+
+
 		//Id = 4 (role lecturers)
 		List<Users> lecturer = userService.getUserByRoleId(4);
 		model.addAttribute("lecturer", lecturer);
@@ -91,39 +111,42 @@ public class LecturersController {
 			model.addAttribute("pageNumbers", pageNumbers);
 		}
 
-		int count = capstoneProjectDetailService.countLecturersByProjectId(2);
-		if(count >= 2){
-			model.addAttribute("disable","booking lectuers enough!!!");
-		}else {
-
-		}
 
 		return "home/listlecturers";
 	}
 
 	@RequestMapping(value="/listlecturersproject/{id}", method= RequestMethod.GET)
-	public String bookLecturers(@PathVariable("id") String id,UserDTO dto,Model model, BindingResult bindingResult) {
-		int count = capstoneProjectDetailService.countLecturersByProjectId(2);
-		List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(2);
+	public String bookLecturers(@PathVariable("id") String id, UserDTO dto, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		String user_id_login = "SE05045";
+		int project_id = capstoneProjectDetailService.getProjectIdByUserId(user_id_login);
+		int count = capstoneProjectDetailService.countLecturersByProjectId(project_id);
+		List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(project_id);
 		for (int i = 0; i < listUser.size(); i++){
-			if(listUser.get(i).getUser().getId().contains(id)){
-				model.addAttribute("disable","lectuers booked!!!");
-				System.out.println("sssssssssssssssssssssssssssssssssssssssssssssssss");
+			if(listUser.get(i).getUser().getId().equals(id)){
+				redirectAttributes.addFlashAttribute("disable","lectuers booked!!!");
 				return "redirect:/lecturers";
 			}
 		}
 		if(count >= 2){
+			redirectAttributes.addFlashAttribute("disable","booking lectuers enough!!!");
 			return "redirect:/lecturers";
 		}else {
+			//booking lecture
 			CapstoneProjectDetails cpd = new CapstoneProjectDetails();
 			Users user_id = userService.findById(id);
-//		String userlogin = "SE05045";
-//		int project_id = capstoneProjectDetailService.getProjectIdByUserId(userlogin);
-//		System.out.println(project_id);
-			cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(2));
+			cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(project_id));
 			cpd.setUser(user_id);
+			cpd.setDesAction("booking lecturers");
 			cpd.setStatus(statusService.getStatusById(4));
 			capstoneProjectDetailService.addCapstonprojectDetail(cpd);
+			//save history records
+			HistoryRecords records = new HistoryRecords();
+			Date date = new Date();
+			records.setContent("Booking Lecture");
+			records.setCreatedDate(date);
+			records.setUser(userService.findById(user_id_login));
+			records.setCapstoneProject(capstoneProjectService.getCapstonProjectById(project_id));
+			historyRecordService.save(records);
 		}
 		return "redirect:/lecturers";
 	}

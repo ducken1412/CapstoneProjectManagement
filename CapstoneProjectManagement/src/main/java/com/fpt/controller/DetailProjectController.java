@@ -144,9 +144,27 @@ public class DetailProjectController {
 		return "home/detail_project";
 	}
 
-	@PostMapping("/projectDetail/{id}/approve")
-	public String approveProject(@PathVariable("id") Integer id, Model model ) {
+//	@PostMapping("/projectDetail/{id}/approve")
+//	public String approveProject(@PathVariable("id") Integer id, Model model ) {
+//		String user_login = "SE05046";
+//		CapstoneProjectDetails capstoneProjectDetails = new CapstoneProjectDetails();
+//		//capstoneProjectDetails.setStatus();
+//		return "home/detail_project";
+//	}
 
-		return "home/detail_project";
+	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "approve")
+	public String approve(Model model){
+		//int id_project = Integer.parseInt(id);
+		String user_login = "SE05046";
+		int project_id = 2;
+		capstoneProjectDetailService.updateStatusUserProject(user_login, project_id);
+		return "redirect:/lecturers";
+	}
+
+	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "reject")
+	public String reject(@PathVariable("id") String id, Model model){
+		String user_login = "SE05046";
+
+		return "redirect:/lecturers";
 	}
 }
