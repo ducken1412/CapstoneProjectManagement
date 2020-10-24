@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -72,7 +73,7 @@ public class ForumController {
 
     @ResponseBody
     @PostMapping("/add-post")
-    public String addPost(@ModelAttribute PostDTO dto) {
+    public String addPost(@RequestParam("files[]") MultipartFile[] files ,@ModelAttribute PostDTO dto) {
         System.out.println();
         Posts post;
         Date date = new Date();

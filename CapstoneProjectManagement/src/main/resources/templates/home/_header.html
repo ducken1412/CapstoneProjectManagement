@@ -142,7 +142,7 @@
                                                     <h5 class="name">
                                                         <a href="#" id="username-dropdown"></a>
                                                     </h5>
-                                                    <span class="email"><h5 th:utext="${#request.userPrincipal.name}"></h5></span>
+                                                    <span class="email"><h5 th:if="${#request.userPrincipal != null}" th:utext="${#request.userPrincipal.name}"></h5></span>
                                                 </div>
                                             </div>
                                             <!--<div class="account-dropdown__body">
