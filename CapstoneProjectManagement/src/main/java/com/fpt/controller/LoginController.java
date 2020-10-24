@@ -110,5 +110,4 @@ public class LoginController {
 	public String accessDenied() {
 		return "error/403Page";
 	}
-
 }
