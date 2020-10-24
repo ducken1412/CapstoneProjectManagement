@@ -25,8 +25,9 @@
 						</div>
 						<div class="row m-t-25">
 							<div class="w-75 p-4" id="content-body">
-								<form th:action="@{/approve}" method="post">
+								<form th:action="@{/approve}" th:object="${detail}" method="post">
 									<!-- TOP CAMPAIGN-->
+									<input th:value="${detail.id}" name="id" id="id" hidden>
 									<div class="top-campaign py-2" style="border-radius: 10px">
 										<div class="table-responsive">
 											<table class="table table-top-campaign">

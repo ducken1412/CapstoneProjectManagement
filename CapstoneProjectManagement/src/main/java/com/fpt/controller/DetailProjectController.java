@@ -14,11 +14,7 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import com.fpt.dto.UserRoleDTO;
 import com.fpt.entity.CapstoneProjectDetails;
@@ -153,8 +149,9 @@ public class DetailProjectController {
 //	}
 
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "approve")
-	public String approve(Model model){
+	public String approve(@RequestParam Integer id, Model model){
 		//int id_project = Integer.parseInt(id);
+
 		String user_login = "SE05046";
 		int project_id = 2;
 		capstoneProjectDetailService.updateStatusUserProject(user_login, project_id);
