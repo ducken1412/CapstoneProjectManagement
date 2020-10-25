@@ -128,6 +128,18 @@ public class DetailProjectController {
 			}
 			userRolesDTOs.add(userRoleDTO);
 		}
+		
+		Users user = userService.findByEmail(principal.getName());
+		String user_login = user.getId();
+		boolean check_capstone = false;
+		//check user login = user project
+		List<Integer> capstone_id = capstoneProjectDetailService.getIdProjectByUserIDCheckApprove(user_login);
+		for (int i = 0; i < capstone_id.size(); i++){
+			if(capstone_id.get(i) == id){
+				check_capstone = true;
+			}
+		}
+		model.addAttribute("check_capstone", check_capstone);
 		model.addAttribute("userRolesDTOs", userRolesDTOs);
 		return "home/detail_project";
 	}
@@ -146,16 +158,9 @@ public class DetailProjectController {
 		boolean check = false;
 		Users user = userService.findByEmail(principal.getName());
 		String user_login = user.getId();
-		boolean check_capstone = false;
+		
 		try {
-			//check user login = user project
-			List<Integer> capstone_id = capstoneProjectDetailService.getProjectIdByUserId(user_login);
-			for (int i = 0; i < capstone_id.size(); i++){
-				if(capstone_id.get(i) == id){
-					check_capstone = true;
-				}
-			}
-
+			
 			Date date = new Date();
 			HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
 			if(historyRecords != null) {
@@ -173,7 +178,6 @@ public class DetailProjectController {
 		if(check){
 			//capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login);
 		}
-		model.addAttribute("check_capstone", check_capstone);
 		return "redirect:/lecturers";
 	}
 

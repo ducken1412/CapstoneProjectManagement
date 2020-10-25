@@ -18,6 +18,8 @@ public interface CapstoneProjectDetailService {
 	List<CapstoneProjectDetails> getUserByCapstioneID(Integer id);
 
 	List<Integer> getProjectIdByUserId(String id);
+	
+	List<Integer> getIdProjectByUserIDCheckApprove(String id);
 
 	Integer getStatuByCapstoneProjectDetailIdAndUserId(Integer cpId, Integer userId);
 

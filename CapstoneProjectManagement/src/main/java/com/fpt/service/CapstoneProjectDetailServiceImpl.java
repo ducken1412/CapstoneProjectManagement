@@ -69,6 +69,12 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
         return capstoneProjectDetailRepository.findUserByStatusRegisted(id);
     }
 
+	@Override
+	public List<Integer> getIdProjectByUserIDCheckApprove(String id) {
+		// TODO Auto-generated method stub
+		return capstoneProjectDetailRepository.getIdProjectByUserIDCheckApprove(id);
+	}
+
 //    @Override
 //    public Integer deleteCapstoneProjectDetailsByUserId(String id) {
 //        return capstoneProjectDetailRepository.deleteCapstoneProjectDetailsByUserId(id);
