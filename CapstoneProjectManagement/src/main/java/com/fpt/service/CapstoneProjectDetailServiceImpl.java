@@ -39,7 +39,7 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     }
 
     @Override
-    public Integer getProjectIdByUserId(String id) {
+    public List<Integer> getProjectIdByUserId(String id) {
         return capstoneProjectDetailRepository.getIdProjectByUserID(id);
 
     }
@@ -68,5 +68,10 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     public Users findUserByStatusRegisted(String id) {
         return capstoneProjectDetailRepository.findUserByStatusRegisted(id);
     }
+
+//    @Override
+//    public Integer deleteCapstoneProjectDetailsByUserId(String id) {
+//        return capstoneProjectDetailRepository.deleteCapstoneProjectDetailsByUserId(id);
+//    }
 
 }

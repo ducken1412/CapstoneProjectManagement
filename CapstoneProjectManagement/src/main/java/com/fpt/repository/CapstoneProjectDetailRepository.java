@@ -22,12 +22,12 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 
 	//get id project by user id
 	@Query("SELECT ru.capstoneProject.id FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1")
-	Integer getIdProjectByUserID(String id);
+	List<Integer> getIdProjectByUserID(String id);
 
 	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.user.id = ?1")
 	Integer getStatuByCapstoneProjectDetailIdAndUserId(Integer cpId, Integer userId);
 
-	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1")
+	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.status.name = 'registed_capstone'")
 	List<Users> getUserByCapstoneProjectDetailId(Integer id);
 
 
@@ -41,11 +41,16 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	//update status user approve capstone table capstone project detail
 	@Transactional
 	@Modifying
-	@Query("UPDATE CapstoneProjectDetails c SET c.status.id = 4 WHERE c.user.id = ?1 and c.capstoneProject.id = ?2")
+	@Query("UPDATE CapstoneProjectDetails c SET c.status.id = 5, c.desAction = 'registing' WHERE c.user.id = ?1 and c.capstoneProject.id = ?2")
 	Integer updateStatusUserProject(String uid, Integer pid);
 
 	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 AND ru.status.name = 'registed_capstone'")
 	Users findUserByStatusRegisted(String id);
-	
+
+
+//	@Transactional
+//	@Modifying
+//	@Query("DELETE FROM CapstoneProjectDetails c WHERE c.id in (SELECT c1.id FROM CapstoneProjectDetails c1 WHERE c1.user.id = ?1) and c.status.name <> 'registed_capstone'")
+//	Integer deleteCapstoneProjectDetailsByUserId(String id);
 
 }

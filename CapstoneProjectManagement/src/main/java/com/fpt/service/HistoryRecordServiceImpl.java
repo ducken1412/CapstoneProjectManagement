@@ -48,4 +48,15 @@ public class HistoryRecordServiceImpl implements HistoryRecordService {
 		return historyRecordsRepository.getHistoryRecordsByUserId(id);
 	}
 
+	@Override
+	public HistoryRecords findHistoryByProjectId(Integer id) {
+		return historyRecordsRepository.findHistoryByProjectId(id);
+	}
+
+	@Override
+	public HistoryRecords findHistoryByUserId(String id) {
+		return historyRecordsRepository.findHistoryByUserId(id);
+	}
+
+
 }
