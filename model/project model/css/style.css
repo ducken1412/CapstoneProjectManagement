@@ -1,0 +1,20 @@
+#header {
+  background: url(../image/header.jpg) center center / cover no-repeat ;
+}
+p{
+	color: #d68f28;
+}
+h5{
+	color: #81a983;
+}
+img{
+	height: 250px;
+}
+.card-body{
+	height: 400px;
+}
+.detal{
+	margin-top: 26%;
+  
+    margin-left: -12%;
+}
