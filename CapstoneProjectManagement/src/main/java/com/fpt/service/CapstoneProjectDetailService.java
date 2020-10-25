@@ -17,7 +17,9 @@ public interface CapstoneProjectDetailService {
 	
 	List<CapstoneProjectDetails> getUserByCapstioneID(Integer id);
 
-	Integer getProjectIdByUserId(String id);
+	List<Integer> getProjectIdByUserId(String id);
+	
+	List<Integer> getIdProjectByUserIDCheckApprove(String id);
 
 	Integer getStatuByCapstoneProjectDetailIdAndUserId(Integer cpId, Integer userId);
 
@@ -30,5 +32,6 @@ public interface CapstoneProjectDetailService {
 
 	Users findUserByStatusRegisted(String id);
 
+	//Integer deleteCapstoneProjectDetailsByUserId(String id);
 
 }

@@ -16,4 +16,7 @@ public interface HistoryRecordService {
 
 	List<HistoryRecords> getHistoryRecordsByUserId(String id);
 
+	HistoryRecords findHistoryByProjectId(Integer id);
+
+	HistoryRecords findHistoryByUserId(String id);
 }

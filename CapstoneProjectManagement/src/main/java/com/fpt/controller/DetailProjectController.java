@@ -2,31 +2,19 @@ package com.fpt.controller;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.fpt.common.NotificationCommon;
+import com.fpt.entity.*;
+import com.fpt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.fpt.dto.UserRoleDTO;
-import com.fpt.entity.CapstoneProjectDetails;
-import com.fpt.entity.CapstoneProjects;
-import com.fpt.entity.Locations;
-import com.fpt.entity.Status;
-import com.fpt.entity.Users;
-import com.fpt.service.CapstoneProjectDetailService;
-import com.fpt.service.CapstoneProjectService;
-import com.fpt.service.StatusService;
-import com.fpt.service.UserRoleService;
-import com.fpt.service.UserService;
 import com.fpt.utils.Constant;
 
 @Controller
@@ -44,6 +32,9 @@ public class DetailProjectController {
 	private UserRoleService userRoleService;
 	@Autowired
 	private StatusService statusService;
+
+	@Autowired
+	private HistoryRecordService historyRecordService;
 
 	@GetMapping("/detailproject")
 	public String detailProject() {
@@ -66,6 +57,7 @@ public class DetailProjectController {
 
 	@RequestMapping(value = "/project-detail/{id}", method = RequestMethod.GET)
 	public String detailProject(@PathVariable("id") Integer id, Model model, Principal principal) {
+
 		// chưa có userId lấy từ request
 //		Integer stauts = capstoneProjectDetailService.getStatuByCapstoneProjectDetailIdAndUserId(id, "SE04936");
 		CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
@@ -136,6 +128,18 @@ public class DetailProjectController {
 			}
 			userRolesDTOs.add(userRoleDTO);
 		}
+		
+		Users user = userService.findByEmail(principal.getName());
+		String user_login = user.getId();
+		boolean check_capstone = false;
+		//check user login = user project
+		List<Integer> capstone_id = capstoneProjectDetailService.getIdProjectByUserIDCheckApprove(user_login);
+		for (int i = 0; i < capstone_id.size(); i++){
+			if(capstone_id.get(i) == id){
+				check_capstone = true;
+			}
+		}
+		model.addAttribute("check_capstone", check_capstone);
 		model.addAttribute("userRolesDTOs", userRolesDTOs);
 		return "home/detail_project";
 	}
@@ -149,18 +153,37 @@ public class DetailProjectController {
 //	}
 
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "approve")
-	public String approve(@RequestParam Integer id, Model model){
+	public String approve(@RequestParam Integer id, Model model, Principal principal){
 		//int id_project = Integer.parseInt(id);
+		boolean check = false;
+		Users user = userService.findByEmail(principal.getName());
+		String user_login = user.getId();
+		
+		try {
+			
+			Date date = new Date();
+			HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
+			if(historyRecords != null) {
+				String user_booking_id = historyRecords.getUser().getId();
+				capstoneProjectDetailService.updateStatusUserProject(user_login, id);
+				String title = user_login + " has joined your team";
+				String content = user_login + " has joined your team " + date;
+				NotificationCommon.sendNotification(user, title, content, user_booking_id);
+				check = true;
+			}
+		}
+		catch (Exception e){
 
-		String user_login = "SE05046";
-		int project_id = 2;
-		capstoneProjectDetailService.updateStatusUserProject(user_login, project_id);
+		}
+		if(check){
+			//capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login);
+		}
 		return "redirect:/lecturers";
 	}
 
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "reject")
 	public String reject(@PathVariable("id") String id, Model model){
-		String user_login = "SE05046";
+
 
 		return "redirect:/lecturers";
 	}
