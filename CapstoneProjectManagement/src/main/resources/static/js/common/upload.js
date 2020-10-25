@@ -12,7 +12,6 @@ function getFileSizeAndName(input)
         var filename = input.files[i].name;
         //alert("File name is : "+filename+" || size : "+filesizeInMB+" MB || size : "+filesizeInBytes+" Bytes");
             select.append($('<label id=file'+i+'>'+filename+'</label><br>'));
-
     }
 }
 
