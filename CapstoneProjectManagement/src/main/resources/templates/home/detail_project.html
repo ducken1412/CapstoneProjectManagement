@@ -105,7 +105,7 @@
 									</div>
 									<div class="row mt-2">
 											<div class="ml-auto mr-3">
-												<input th:if= "${check_capstone ==true}" class="btn btn-success" name="approve" type="submit" value="Approve">
+												<input th:if= "${check_capstone ==true}" class="btn btn-success" name="approve" type="submit" value="Approve" id="approve">
 												<input th:if= "${check_capstone ==true}" class="btn btn-danger" name="reject" type="submit" value="Reject">
 											</div>
 									</div>
@@ -124,8 +124,6 @@
 		</div>
 	</div>
 </div>
-
-
 
 <th:block th:include="home/_script"></th:block>
 

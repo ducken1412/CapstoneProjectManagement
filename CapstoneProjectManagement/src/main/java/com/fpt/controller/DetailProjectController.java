@@ -169,6 +169,7 @@ public class DetailProjectController {
 				String title = user_login + " has joined your team";
 				String content = user_login + " has joined your team " + date;
 				NotificationCommon.sendNotification(user, title, content, user_booking_id);
+				capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login,id);
 				check = true;
 			}
 		}
@@ -182,9 +183,10 @@ public class DetailProjectController {
 	}
 
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "reject")
-	public String reject(@PathVariable("id") String id, Model model){
-
-
+	public String reject(@RequestParam("id") Integer id, Model model, Principal principal){
+		Users user = userService.findByEmail(principal.getName());
+		String user_login = user.getId();
+		capstoneProjectDetailService.deleteRejectCapstoneProjectDetailsByUserId(user_login, id);
 		return "redirect:/lecturers";
 	}
 }

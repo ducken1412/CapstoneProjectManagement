@@ -69,7 +69,17 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
         return capstoneProjectDetailRepository.findUserByStatusRegisted(id);
     }
 
-	@Override
+    @Override
+    public Integer deleteCapstoneProjectDetailsByUserId(String uid, Integer pid) {
+        return capstoneProjectDetailRepository.deleteCapstoneProjectDetailsByUserId(uid,pid);
+    }
+
+    @Override
+    public Integer deleteRejectCapstoneProjectDetailsByUserId(String uid, Integer pid) {
+        return capstoneProjectDetailRepository.deleteRejectCapstoneProjectDetailsByUserId(uid, pid);
+    }
+
+    @Override
 	public List<Integer> getIdProjectByUserIDCheckApprove(String id) {
 		// TODO Auto-generated method stub
 		return capstoneProjectDetailRepository.getIdProjectByUserIDCheckApprove(id);
