@@ -3,6 +3,7 @@ package com.fpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,11 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     @Override
     public Integer deleteRejectCapstoneProjectDetailsByUserId(String uid, Integer pid) {
         return capstoneProjectDetailRepository.deleteRejectCapstoneProjectDetailsByUserId(uid, pid);
+    }
+
+    @Override
+    public CapstoneProjects findCapstoneProjectByUserId(String id) {
+        return capstoneProjectDetailRepository.findCapstoneProjectByUserId(id);
     }
 
     @Override

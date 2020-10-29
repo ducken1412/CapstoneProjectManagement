@@ -56,6 +56,8 @@ $(document).on("click", "#btn-add-member", function (e) {
 
 $(document).on("submit", "#register", function (e) {
     e.preventDefault();
+    $("#loading-add").attr("hidden", false);
+    $("#btn-register-project").attr("disabled", true);
     $.LoadingOverlay("show", {
         size: 50,
         maxSize: 50,
@@ -78,6 +80,8 @@ $(document).on("submit", "#register", function (e) {
                 });
                 $("#error-container").removeClass("d-none");
                 $(window).scrollTop(0);
+                $("#loading-add").attr("hidden", true);
+                $("#btn-register-project").attr("disabled", false);
             } else {
                 $.showNotification({
                     body: obj.message,
@@ -90,8 +94,10 @@ $(document).on("submit", "#register", function (e) {
                 setTimeout(function () {
                     window.location.href = "/lecturers";
                 }, 3000);
+                $("#loading-add").attr("hidden", true);
             }
             //$("#form-content").html(data);
+
             $.LoadingOverlay("hide");
         },
         error: function (xhr) {
