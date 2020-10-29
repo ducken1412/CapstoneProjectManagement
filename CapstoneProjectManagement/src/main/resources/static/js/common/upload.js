@@ -1,7 +1,6 @@
 
 function getFileSizeAndName(input)
 {
-    debugger;
     var select = $('#uploadFile');
 
 
@@ -11,9 +10,12 @@ function getFileSizeAndName(input)
         var filesizeInMB = (filesizeInBytes / (1024*1024)).toFixed(2);
         var filename = input.files[i].name;
         //alert("File name is : "+filename+" || size : "+filesizeInMB+" MB || size : "+filesizeInBytes+" Bytes");
-            select.append($('<label id=file'+i+'>'+filename+'</label><br>'));
+            select.append($('<label >'+filename+'</label><br>'));
     }
+
+
 }
+
 
 function CloseAndRefresh()
 {

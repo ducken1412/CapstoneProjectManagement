@@ -1,0 +1,228 @@
+
+entity Users{
+  UserID String,
+  UserName String,
+  Password String,
+  Name String,
+  Phone String,
+  DOB Instant,
+  Gender String,
+  Email String,
+  LocationID Integer,
+  Description String,
+  Status String
+}
+
+entity Locations{
+  LocationID Integer,
+  LocationDetail String
+}
+
+entity UserRole{
+  UserRoleID Integer,
+  UserID String,
+  RoleID Integer
+}
+entity Roles{
+  RoleID Integer,
+  RoleName String 
+}
+
+entity HistoryRecords{
+  HistoryRecordsID Integer,
+  UserID String ,
+  CreatedDate Instant,
+  LastModifiedDate Instant,
+  Content String
+}
+
+entity CapstoneProject{
+  CapstoneProjectID Integer,
+  CapstoneProjectName String,
+  Profession String,
+  Specialy String,
+  Document String, 
+  Program String,
+  Description String,
+  HistoryRecordsID Integer,
+  StatusID Integer
+}
+
+entity Stauts{
+  StautsID Integer,
+  StautsName String,
+  Description String
+}
+
+entity Files {
+  FileID Integer,
+  CapstoneProjectID Integer,
+  HistoryRecordsID Integer,
+  Description String
+}
+
+entity Notifications{
+  NotificationsID Integer,
+  Content String,
+  SenderID String,
+  ReceiverID String,
+  Type String
+}
+
+entity CapstoneProjectDetail{
+  CapstoneProjectDetailID Integer,
+  UserID String,
+  CapstoneProjectID Integer
+}
+
+entity Reports{
+  ReportID Integer,
+  ReportName String,
+  CapstoneProjectID Integer,
+  AnnunciatorID String,
+  HistoryRecordsID Integer,
+  Type Integer
+}
+
+entity Comments{
+  CommentID Integer,
+  Content String,
+  UserID Integer,
+  CreatedDate Instant,
+  Status Boolean
+}
+
+entity ReportDetail {
+  ReportDetailID Integer,
+  ReportID Integer,
+  FileID Integer,
+  MemberID String,
+  CommentID Integer,
+  CreatedDate Instant,
+  LastModifiedDate Instant,
+  Contents String
+}
+
+entity Evaluations {
+  EvaluationID Integer,
+  EvaluationName String,
+  FileID String,
+  HistoryRecordsID Integer,
+  CapstoneProjectID Integer,
+  HistoryRecordsID Integer,
+  Type Integer
+}
+
+entity EvaluationDetail {
+  EvaluationDetailID Integer,
+  EvaluationID Integer,
+  Grade Integer,
+  Contents String,
+  AssessorID String,
+  Type Integer
+}
+
+entity Post {
+	PostID Integer,
+    Title String,
+    Description String,
+    PostDetailID Int
+}
+entity PostDetail {
+	PostDetailID Integer,
+    Title String,
+    Description String,
+    CommentID Integer,
+    FileID Integer
+}
+
+relationship OneToMany{
+	Users{LocationID} to Locations{LocationID}
+}
+
+relationship OneToMany{
+	UserRole{UserID} to Users{UserID}
+}
+
+relationship OneToOne{
+	Roles{RoleID} to UserRole{RoleID}
+}
+
+relationship OneToMany{
+	HistoryRecords{UserID} to Users{UserID}
+}
+
+relationship ManyToMany{
+	Files{HistoryRecordsID} to HistoryRecords{HistoryRecordsID}
+}
+relationship ManyToMany{
+	Files{CapstoneProjectID} to CapstoneProject{CapstoneProjectID}
+}
+
+relationship OneToMany{
+	Notifications{SenderID} to Users{UserID}
+}
+
+relationship OneToMany{
+	ReportDetail{CommentID} to Comments{CommentID}
+}
+
+
+relationship OneToMany{
+	CapstoneProject{HistoryRecordsID} to HistoryRecords{HistoryRecordsID}
+}
+
+relationship ManyToMany{
+	CapstoneProjectDetail{CapstoneProjectID} to CapstoneProject{CapstoneProjectID}
+}
+
+relationship ManyToMany{
+	CapstoneProjectDetail{UserID} to Users{UserID}
+}
+
+relationship OneToOne{
+	CapstoneProject{UserID} to Stauts{UserID}
+}
+
+relationship OneToOne{
+	Reports{CapstoneProjectID} to CapstoneProject{CapstoneProjectID}
+}
+relationship OneToOne{
+	Reports{AnnunciatorID} to Users{UserID}
+}
+
+relationship OneToOne{
+	ReportDetail{ReportID} to Reports{ReportID}
+}
+
+relationship OneToOne{
+	ReportDetail{MemberID} to Users{UserID}
+}
+
+relationship OneToOne{
+	ReportDetail{FileID} to Files{FileID}
+}
+
+relationship OneToOne{
+	Evaluations{FileID} to Files{FileID}
+}
+
+relationship OneToOne{
+	Reports{HistoryRecordsID} to HistoryRecords{HistoryRecordsID}
+}
+
+relationship OneToOne{
+	Evaluations{HistoryRecordsID} to HistoryRecords{HistoryRecordsID}
+}
+
+relationship OneToOne{
+	Evaluations{CapstoneProjectID} to CapstoneProject{CapstoneProjectID}
+}
+
+relationship OneToOne{
+	EvaluationDetail{EvaluationID} to Evaluations{EvaluationID}
+}
+relationship OneToOne{
+	EvaluationDetail{MemberID} to Users{MemberID}
+}
+

@@ -89,8 +89,9 @@ public class FileUploadController {
 			return message;
 		}
     }
-    
-    @PostMapping("/uploadFile")
+
+
+    @PostMapping(value = "/uploadFile",consumes = { "multipart/form-data" })
 	public Files uploadFile(@RequestParam("file") MultipartFile file,String uploadsDir) {
 		if (!file.isEmpty()) {
 			try {
