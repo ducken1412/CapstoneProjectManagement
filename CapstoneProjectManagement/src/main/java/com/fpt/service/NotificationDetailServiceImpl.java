@@ -28,4 +28,9 @@ public class NotificationDetailServiceImpl implements NotificationDetailService{
         }
         return false;
     }
+
+    @Override
+    public List<NotificationDetails> getIdNotificationByTop5(String id) {
+        return notificationDetailRepository.getIdNotificationByTop5(id);
+    }
 }

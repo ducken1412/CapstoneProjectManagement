@@ -144,14 +144,6 @@ public class DetailProjectController {
 		return "home/detail_project";
 	}
 
-//	@PostMapping("/projectDetail/{id}/approve")
-//	public String approveProject(@PathVariable("id") Integer id, Model model ) {
-//		String user_login = "SE05046";
-//		CapstoneProjectDetails capstoneProjectDetails = new CapstoneProjectDetails();
-//		//capstoneProjectDetails.setStatus();
-//		return "home/detail_project";
-//	}
-
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "approve")
 	public String approve(@RequestParam Integer id, Model model, Principal principal){
 		//int id_project = Integer.parseInt(id);

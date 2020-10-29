@@ -3,7 +3,16 @@
 <head>
 <meta charset="utf-8">
 <title>Template</title>
-
+	<script>
+		function ConfirmChoose()
+		{
+			var x = confirm("Are you sure you want to choose?");
+			if (x)
+				return true;
+			else
+				return false;
+		}
+	</script>
 
 <th:block th:include="home/_css"></th:block>
 
@@ -24,9 +33,9 @@
 								</div>
 							</div>
 							<div class="col-md-12">
-								<div class="overview-wrap">
-									<h5 class="title-3" style="color: #ff0000" th:text="${disable}"></h5> <br/>
-								</div>
+<!--								<div class="overview-wrap">-->
+<!--									<h5 class="title-3" style="color: #ff0000" th:text="${disable}"></h5> <br/>-->
+<!--								</div>-->
 							</div>
 						</div>
 						<div class="row m-t-25">
@@ -45,8 +54,12 @@
 															th:object="${UserDTO}" method="GET" id="booklecturers"> -->
 															<div class="container">
 																<div class="row">
+
 																	<!-- Team member -->
 																	<div class="container">
+																		<div class="overview-wrap">
+																			<h4 class="title" style="color: #ff0000" th:text="${disable}"></h4> <br/>
+																		</div>
 																		<div class="row">
 																			<!-- Team member -->
 																			<div class="col-xs-12 col-sm-6 col-md-4"
@@ -74,7 +87,7 @@
 																									</div>
 																									<a th:if="${check_user_register == true}" id="btn-booking"
 																										th:href="@{'/listlecturersproject/' + ${lecturer.id}}"
-																										 class="btn btn-success mt-2">Choose</a>
+																										 class="btn btn-success mt-2" onclick="ConfirmChoose()">Choose</a>
 																									<!-- <button class="btn btn-primary" type="submit" >Choose</button> -->
 																								</div>
 																							</div>

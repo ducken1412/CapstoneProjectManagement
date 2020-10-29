@@ -22,4 +22,6 @@ public interface NotificationsService {
 
 	//get notification by id
 	Notifications getNotificationById(Integer id);
+
+	List<Notifications> getTop5NotificationsByCreatedDate();
 }
