@@ -144,14 +144,6 @@ public class DetailProjectController {
 		return "home/detail_project";
 	}
 
-//	@PostMapping("/projectDetail/{id}/approve")
-//	public String approveProject(@PathVariable("id") Integer id, Model model ) {
-//		String user_login = "SE05046";
-//		CapstoneProjectDetails capstoneProjectDetails = new CapstoneProjectDetails();
-//		//capstoneProjectDetails.setStatus();
-//		return "home/detail_project";
-//	}
-
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "approve")
 	public String approve(@RequestParam Integer id, Model model, Principal principal){
 		//int id_project = Integer.parseInt(id);
@@ -169,6 +161,7 @@ public class DetailProjectController {
 				String title = user_login + " has joined your team";
 				String content = user_login + " has joined your team " + date;
 				NotificationCommon.sendNotification(user, title, content, user_booking_id);
+				capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login,id);
 				check = true;
 			}
 		}
@@ -182,9 +175,10 @@ public class DetailProjectController {
 	}
 
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "reject")
-	public String reject(@PathVariable("id") String id, Model model){
-
-
+	public String reject(@RequestParam("id") Integer id, Model model, Principal principal){
+		Users user = userService.findByEmail(principal.getName());
+		String user_login = user.getId();
+		capstoneProjectDetailService.deleteRejectCapstoneProjectDetailsByUserId(user_login, id);
 		return "redirect:/lecturers";
 	}
 }

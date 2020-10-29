@@ -12,4 +12,7 @@ public interface NotificationDetailService {
 
     //add notificationdetail table
     boolean addNotificationDetail(NotificationDetails notificationDetails);
+
+    //get top 5 title private
+    List<NotificationDetails> getIdNotificationByTop5(String id);
 }

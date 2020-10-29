@@ -32,6 +32,8 @@ public interface CapstoneProjectDetailService {
 
 	Users findUserByStatusRegisted(String id);
 
-	//Integer deleteCapstoneProjectDetailsByUserId(String id);
+	Integer deleteCapstoneProjectDetailsByUserId(String uid, Integer pid);
+
+	Integer deleteRejectCapstoneProjectDetailsByUserId(String uid, Integer pid);
 
 }

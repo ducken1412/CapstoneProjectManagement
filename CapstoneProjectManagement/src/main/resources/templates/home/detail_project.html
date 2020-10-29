@@ -2,7 +2,24 @@
 <head>
 	<meta charset="utf-8">
 	<title>Forum</title>
-
+	<script>
+		function ConfirmApprove()
+		{
+			var x = confirm("Are you sure you want to approve?");
+			if (x)
+				return true;
+			else
+				return false;
+		}
+		function ConfirmReject()
+		{
+			var x = confirm("Are you sure you want to reject?");
+			if (x)
+				return true;
+			else
+				return false;
+		}
+	</script>
 
 	<th:block th:include="home/_css"></th:block>
 
@@ -105,8 +122,8 @@
 									</div>
 									<div class="row mt-2">
 											<div class="ml-auto mr-3">
-												<input th:if= "${check_capstone ==true}" class="btn btn-success" name="approve" type="submit" value="Approve">
-												<input th:if= "${check_capstone ==true}" class="btn btn-danger" name="reject" type="submit" value="Reject">
+												<input th:if= "${check_capstone ==true}" class="btn btn-success" name="approve" type="submit" value="Approve" id="approve" onclick="ConfirmApprove()">
+												<input th:if= "${check_capstone ==true}" class="btn btn-danger" name="reject" type="submit" value="Reject" onclick="ConfirmReject()">
 											</div>
 									</div>
 
@@ -124,8 +141,6 @@
 		</div>
 	</div>
 </div>
-
-
 
 <th:block th:include="home/_script"></th:block>
 

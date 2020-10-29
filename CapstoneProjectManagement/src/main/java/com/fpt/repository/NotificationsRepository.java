@@ -20,4 +20,8 @@ public interface NotificationsRepository extends JpaRepository<Notifications, In
     List<NotificationDTO> getAllTitle();
 
     Notifications findAllById(Integer id);
+
+    //get top 6
+    @Query(value = "SELECT * FROM notifications AS n  WHERE n.type = 'all' ORDER BY n.created_date DESC LIMIT 6", nativeQuery = true)
+    List<Notifications> getTop5NotificationsByCreatedDate();
 }

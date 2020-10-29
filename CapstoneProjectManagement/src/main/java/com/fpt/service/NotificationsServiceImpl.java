@@ -47,6 +47,11 @@ public class NotificationsServiceImpl implements NotificationsService {
 		return notificationsRepository.findAllById(id);
 	}
 
+	@Override
+	public List<Notifications> getTop5NotificationsByCreatedDate() {
+		return notificationsRepository.getTop5NotificationsByCreatedDate();
+	}
+
 
 //	@Override
 //	public List<Notifications> getTitleByUserId(String id) {

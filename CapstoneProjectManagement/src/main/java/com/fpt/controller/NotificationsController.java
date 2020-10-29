@@ -40,13 +40,15 @@ public class NotificationsController {
 	@RequestMapping(value = "/notifications")
 	public String getAllNotications(Model model, Principal principal) {
 		//get notification public
-		List<NotificationDTO> notification = notificationsService.getTitle();
+		//List<NotificationDTO> notification = notificationsService.getTitle();
+		List<Notifications> notification = notificationsService.getTop5NotificationsByCreatedDate();
 		model.addAttribute("notifications", notification);
 		Users user = userService.findByEmail(principal.getName());
 		String user_id_login = user.getId();
-		//fix cung id user
+
 		//load notification by user id
-		List<NotificationDetails> notificationDetails = notificationDetailService.getIdNotification(user_id_login);
+		//List<NotificationDetails> notificationDetails = notificationDetailService.getIdNotification(user_id_login);
+		List<NotificationDetails> notificationDetails = notificationDetailService.getIdNotificationByTop5(user_id_login);
 		ArrayList<Notifications> noti = new ArrayList<>();
 		for (NotificationDetails notidetail: notificationDetails
 			 ) {
@@ -181,6 +183,12 @@ public class NotificationsController {
 			Notifications n =  notificationsService.getNotificationById(noti_id);
 			noti.add(n);
 		};
+		Collections.sort(noti, new Comparator<Notifications>() {
+			@Override
+			public int compare(Notifications o1, Notifications o2) {
+				return o2.getId()-o1.getId();
+			}
+		});
 		model.addAttribute("notificationByUser", noti);
 		return "home/list-news-user";
 	}

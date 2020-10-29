@@ -57,4 +57,14 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 //	@Query("DELETE FROM CapstoneProjectDetails c WHERE c.id in (SELECT c1.id FROM CapstoneProjectDetails c1 WHERE c1.user.id = ?1) and c.status.name <> 'registed_capstone'")
 //	Integer deleteCapstoneProjectDetailsByUserId(String id);
 
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM capstone_project_details AS a WHERE a.user_id = ?1 AND a.capstone_project_id <> ?2", nativeQuery = true)
+	Integer deleteCapstoneProjectDetailsByUserId(String uid, Integer cid);
+
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM capstone_project_details AS a WHERE a.user_id = ?1 AND a.capstone_project_id = ?2", nativeQuery = true)
+	Integer deleteRejectCapstoneProjectDetailsByUserId(String uid, Integer cid);
+
 }
