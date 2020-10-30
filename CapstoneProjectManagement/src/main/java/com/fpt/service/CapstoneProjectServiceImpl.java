@@ -1,20 +1,16 @@
 package com.fpt.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.security.Principal;
 
+import com.fpt.common.NotificationCommon;
 import com.fpt.dto.CapstoneProjectDTO;
 import com.fpt.dto.MemberDTO;
-import com.fpt.entity.CapstoneProjectDetails;
+import com.fpt.entity.*;
 import com.fpt.utils.Constant;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fpt.entity.CapstoneProjects;
-import com.fpt.entity.Status;
 import com.fpt.repository.CapstoneProjectRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -41,7 +37,10 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 	private UserService userService;
 
 	@Autowired
-	private CapstoneProjectService capstoneProjectService;
+	private HistoryRecordService recordService;
+
+	@Autowired
+	private CapstoneProjectDetailService capstoneProjectDetailService;
 
 	@Override
 	public List<String> getCapstoneProjectNameByUserId(String userId) {
@@ -72,9 +71,17 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 	}
 
 	@Transactional(rollbackFor=Exception.class)
-	public String registerProject(CapstoneProjectDTO dataForm){
+	public String registerProject(CapstoneProjectDTO dataForm,Principal principal, String baseUrl){
 		Map<String, Object> output = new HashMap<>();
 		List<String> errors = new ArrayList<>();
+		Users user = userService.findByEmail(principal.getName());
+		CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(user.getId());
+		if(capstoneProject != null) {
+			errors.add("You already have a project");
+			output.put("hasError", true);
+			output.put("errors", errors);
+			return new Gson().toJson(output);
+		}
 		int count = 0;
 		for (MemberDTO m : dataForm.getMembers()) {
 			if(m.getRole().equals("Leader")) {
@@ -94,8 +101,10 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 			return new Gson().toJson(output);
 		}
 		CapstoneProjects projects = new CapstoneProjects();
+		List<MemberDTO> members = new ArrayList<>();
 		try {
 			Status status = statusService.findByName(Constant.STATUS_REGISTERING_CAPSTONE_DB);
+			Status registedStatus = statusService.findByName(Constant.STATUS_REGISTED_CAPSTONE_DB);
 			projects.setName(dataForm.getName());
 			projects.setNameOther(dataForm.getNameOther());
 			projects.setNameVi(dataForm.getNameVi());
@@ -109,20 +118,40 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 
 			List<CapstoneProjectDetails> cpds = new ArrayList<>();
 			CapstoneProjectDetails cpd = null;
-			for (MemberDTO member : dataForm.getMembers()) {
+			members = dataForm.getMembers();
+			for (MemberDTO member : members) {
 				cpd = new CapstoneProjectDetails();
 				cpd.setUser(userService.findByUsername(member.getUsername()).get(0));
 				cpd.setCapstoneProject(projects);
-				cpd.setStatus(status);
+				if(member.getUsername().equalsIgnoreCase(user.getUsername())) {
+					cpd.setStatus(registedStatus);
+				} else  {
+					cpd.setStatus(status);
+				}
 				cpds.add(cpd);
 			}
 			projects.setCapstoneProjectDetails(cpds);
-			capstoneProjectService.saveRegisterProject(projects);
+			HistoryRecords records = new HistoryRecords();
+			Date date = new Date();
+			records.setCreatedDate(date);
+			records.setContent("Register Capstone");
+			records.setCapstoneProject(projects);
+			records.setUser(user);
+			if (saveRegisterProject(projects)) {
+				recordService.save(records);
+			}
 		}catch (Exception ex) {
 			errors.add("Registration failed");
 			output.put("hasError", true);
 			output.put("errors", errors);
 			return new Gson().toJson(output);
+		}
+		String title = user.getUsername() + " invites you to participate in a capstone project";
+		String content =  user.getUsername() + " invites you to participate in a capstone project. Click " + "<a href=\"" + baseUrl + "project-detail/" + projects.getId() + "\">view</a>";
+		for (MemberDTO member : members){
+			if(!member.getUsername().equalsIgnoreCase(user.getUsername())) {
+				NotificationCommon.sendNotificationByUsername(user, title, content, member.getUsername());
+			}
 		}
 		output.put("hasError", false);
 		output.put("message", "Project registration is successful.");

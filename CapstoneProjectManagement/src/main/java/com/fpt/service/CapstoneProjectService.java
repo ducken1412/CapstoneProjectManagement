@@ -1,5 +1,6 @@
 package com.fpt.service;
 
+import java.security.Principal;
 import java.util.List;
 
 import com.fpt.dto.CapstoneProjectDTO;
@@ -20,6 +21,6 @@ public interface CapstoneProjectService {
 	//get all project
 	List<CapstoneProjects> getAllProject();
 
-	String registerProject(CapstoneProjectDTO dataForm);
+	String registerProject(CapstoneProjectDTO dataForm, Principal principal, String baseUrl);
 
 }

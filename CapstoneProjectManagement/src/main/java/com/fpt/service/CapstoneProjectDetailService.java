@@ -2,6 +2,7 @@ package com.fpt.service;
 
 import java.util.List;
 
+import com.fpt.entity.CapstoneProjects;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.CapstoneProjectDetails;
@@ -35,5 +36,7 @@ public interface CapstoneProjectDetailService {
 	Integer deleteCapstoneProjectDetailsByUserId(String uid, Integer pid);
 
 	Integer deleteRejectCapstoneProjectDetailsByUserId(String uid, Integer pid);
+
+	CapstoneProjects findCapstoneProjectByUserId(String id);
 
 }
