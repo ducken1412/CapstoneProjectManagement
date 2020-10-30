@@ -19,10 +19,9 @@
 </head>
 <body>
 	<div class="page-wrapper">
-		<th:block th:include="home/_header-mobile"></th:block>
-		<th:block th:include="home/_menu"></th:block>
 		<div class="page-container">
 			<th:block th:include="home/_header"></th:block>
+			<th:block th:include="home/_header-mobile"></th:block>
 			<div class="main-content">
 				<div class="section__content section__content--p30">
 					<div class="container-fluid">
@@ -39,13 +38,11 @@
 							</div>
 						</div>
 						<div class="row m-t-25">
-							<div class="w-75" id="content-body">
+							<div class="w-80" id="content-body">
 								<div id="post-container">
 									<div class="row w-100">
 										<div class="app-main">
-											<div class="">
-												<th:block th:include="home/_menu"></th:block>
-											</div>
+
 											<div class="app-main__outer">
 												<div class="row h-auto">
 
