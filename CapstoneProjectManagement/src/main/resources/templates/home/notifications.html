@@ -16,7 +16,7 @@
 			</a>
 		</div>
 	</div>
-	<div class="p-2">
+	<div class="p-2" th:if="${check_noti_detail == true}">
 		<h2>Notification</h2>
 		<div class="single-popular-post pt-2"
 			 th:each="notifications : ${notificationByUser}">

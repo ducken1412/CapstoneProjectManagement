@@ -46,6 +46,11 @@ public class NotificationsController {
 		Users user = userService.findByEmail(principal.getName());
 		String user_id_login = user.getId();
 
+		int count_noti_detail = notificationDetailService.countNotificationDetailByUserId(user_id_login);
+		boolean check_noti_detail = false;
+		if(count_noti_detail != 0){
+			check_noti_detail = true;
+		}
 		//load notification by user id
 		//List<NotificationDetails> notificationDetails = notificationDetailService.getIdNotification(user_id_login);
 		List<NotificationDetails> notificationDetails = notificationDetailService.getIdNotificationByTop5(user_id_login);
@@ -65,6 +70,7 @@ public class NotificationsController {
 		});
 			model.addAttribute("notificationByUser", noti);
 			model.addAttribute("user_id",user_id_login);
+			model.addAttribute("check_noti_detail",check_noti_detail);
 		return "home/notifications";
 	}
 

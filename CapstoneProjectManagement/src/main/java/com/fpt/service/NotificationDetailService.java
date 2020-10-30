@@ -15,4 +15,7 @@ public interface NotificationDetailService {
 
     //get top 5 title private
     List<NotificationDetails> getIdNotificationByTop5(String id);
+
+    //count notification detail by user id
+    Integer countNotificationDetailByUserId(String id);
 }

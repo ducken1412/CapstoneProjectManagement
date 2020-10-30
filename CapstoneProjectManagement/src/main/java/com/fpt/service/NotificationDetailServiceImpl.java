@@ -33,4 +33,9 @@ public class NotificationDetailServiceImpl implements NotificationDetailService{
     public List<NotificationDetails> getIdNotificationByTop5(String id) {
         return notificationDetailRepository.getIdNotificationByTop5(id);
     }
+
+    @Override
+    public Integer countNotificationDetailByUserId(String id) {
+        return notificationDetailRepository.countNotificationDetailByUserId(id);
+    }
 }
