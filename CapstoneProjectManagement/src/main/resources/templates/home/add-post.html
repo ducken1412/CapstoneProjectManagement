@@ -9,7 +9,7 @@
 	</div>
 	<div class="card-body card-block">
 		<form id="post-form" method="post" class="form-horizontal"
-			th:object="${post}">
+			th:object="${post}" enctype="multipart/form-data" >
 			<input type="text" id="id" name="id" th:value="${post.id}"
 				hidden="true">
 			<div class="row form-group">
@@ -37,9 +37,8 @@
 					<label for="uploadFile" class=" form-control-label">Files</label>
 				</div>
 				<div class="col-12 col-md-9">
-					<input type="file"  multiple class="form-control-file" onchange="getFileSizeAndName(this);">
+					<input type="file" id="fileInputUpload" name="file[]" class="fileUploadClass"  multiple="multiple"  onchange="getFileSizeAndName(this);">
 					<div id="uploadFile">
-						<input type="file" name="file-multiple-input" id="uploadFile"/>
 					</div>
 
 				</div>

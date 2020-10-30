@@ -2,14 +2,8 @@ package com.fpt.controller;
 
 import com.fpt.dto.CommentDTO;
 import com.fpt.dto.PostDTO;
-import com.fpt.entity.Comments;
-import com.fpt.entity.HistoryRecords;
-import com.fpt.entity.Posts;
-import com.fpt.entity.Users;
-import com.fpt.service.CommentService;
-import com.fpt.service.HistoryRecordService;
-import com.fpt.service.PostService;
-import com.fpt.service.UserService;
+import com.fpt.entity.*;
+import com.fpt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,12 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.util.Date;
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@CrossOrigin("http://localhost:8080")
 @Controller
 public class ForumController {
 
@@ -38,6 +34,10 @@ public class ForumController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    FilesStorageService storageService;
+    @Autowired
+    private FilesService filesService;
     @GetMapping("/forum")
     public String forum() {
         return "home/forum";
@@ -73,7 +73,7 @@ public class ForumController {
 
     @ResponseBody
     @PostMapping("/add-post")
-    public String addPost(@RequestParam("files[]") MultipartFile[] files ,@ModelAttribute PostDTO dto) {
+    public String addPost(@ModelAttribute PostDTO dto) {
         System.out.println();
         Posts post;
         Date date = new Date();
@@ -115,6 +115,30 @@ public class ForumController {
         } else {
             return "error/403Page";
         }
+        return  String.valueOf(post.getId());
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/add-file-post/{postId}", produces = {"application/json"})
+    public String addFilesPost(MultipartHttpServletRequest request,
+                               HttpServletResponse response, @PathVariable Integer postId) throws Exception {
+        Map< String, MultipartFile > filesMap = new HashMap< String, MultipartFile >();
+        filesMap = request.getFileMap();
+        for(MultipartFile file : filesMap.values()){
+            List<String> fileNames = new ArrayList<>();
+            storageService.save(file);
+            fileNames.add(file.getOriginalFilename());
+            Files dbFile = new Files();
+            String fileName = file.getOriginalFilename() + "-" + String.valueOf(Calendar.getInstance().getTime());
+            dbFile.setFileName(fileName);
+            Posts post = postService.findById(postId);
+            if (post!= null){
+                dbFile.setPost(post);
+                filesService.saveFiles(dbFile);
+            }
+        }
+        System.out.println();
+
         return "The post has been added successfully";
     }
 

@@ -236,25 +236,47 @@ $(document).on("submit", "#post-form", function (e) {
             const params = new URL(location.href).searchParams;
             const size = params.get("size");
             const page = params.get("page");
+            var formData = new FormData();
+            $.each($("input[type=file]"), function(i, obj) {
+                $.each(obj.files, function(j, file) {
+                    formData.append('file[' + j + ']', file);
+                    console.log(file);
+                })
+            });
             $.ajax({
-                url: "/list-post?size=" + size + "&page=" + page,
-                type: "GET",
-                success: function (data1) {
-                    $("#post-container").html(data1);
-                    $.showNotification({
-                        body: data,
-                        type: "success",
-                        duration: 3000,
-                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
-                        zIndex: 100,
-                        margin: "1rem"
-                    })
-                    $("#topic-container").trigger("click");
-                    $("#loading-add").attr("hidden", true);
-                    if (!(size === null || page === null)) {
-                        window.history.pushState("", "", "/forum" + rewriteUrl(size, page));
-                    }
-                    loadCommentContainer(sizeDefault, -1);
+                url: "/add-file-post/"+data,
+                type: "POST",
+                enctype: 'multipart/form-data',
+                data :formData,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                success: function (data2) {
+                    $.ajax({
+                        url: "/list-post?size=" + size + "&page=" + page,
+                        type: "GET",
+                        success: function (data1) {
+                            $("#post-container").html(data1);
+                            $.showNotification({
+                                body: data2,
+                                type: "success",
+                                duration: 3000,
+                                shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                                zIndex: 100,
+                                margin: "1rem"
+                            })
+                            $("#topic-container").trigger("click");
+                            $("#loading-add").attr("hidden", true);
+                            if (!(size === null || page === null)) {
+                                window.history.pushState("", "", "/forum" + rewriteUrl(size, page));
+                            }
+                            loadCommentContainer(sizeDefault, -1);
+                        },
+                        error: function (xhr) {
+                            if (xhr.status == 302 || xhr.status == 200) {
+                                window.location.href = "/forum";
+                            }
+                        },
+                    });
                 },
                 error: function (xhr) {
                     if (xhr.status == 302 || xhr.status == 200) {
@@ -262,6 +284,8 @@ $(document).on("submit", "#post-form", function (e) {
                     }
                 },
             });
+
+
 
         },
         error: function (xhr) {
