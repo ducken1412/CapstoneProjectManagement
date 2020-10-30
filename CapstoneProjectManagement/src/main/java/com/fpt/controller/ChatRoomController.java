@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.security.Principal;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -32,10 +33,13 @@ public class ChatRoomController {
     private SimpMessageSendingOperations messagingTemplate;
 
     @GetMapping("/chat/{postId}")
-    public String chat(@PathVariable String postId, Model model) {
-        List<Users> users = userService.findByUsername("ducddse04936");
-        if (!users.isEmpty()) {
-            model.addAttribute("loggedUser", users.get(0).getUsername());
+    public String chat(@PathVariable String postId, Model model, Principal principal) {
+        if(principal == null) {
+            return "redirect:/login";
+        }
+        Users users = userService.findByEmail(principal.getName());
+        if (users != null) {
+            model.addAttribute("loggedUser", users.getUsername());
         } else {
             return "error/403Page";
         }
@@ -45,14 +49,15 @@ public class ChatRoomController {
     }
 
     @MessageMapping("/chat/{roomId}/sendMessage")
-    public void sendMessage(@DestinationVariable String roomId, @Payload Message chatMessage) {
+    public void sendMessage(@DestinationVariable String roomId, @Payload Message chatMessage, Principal principal) {
+
         messagingTemplate.convertAndSend(format("/chat-room/%s", roomId), chatMessage);
-        List<Users> users = userService.findByUsername("ducddse04936");
+        Users users = userService.findByEmail(principal.getName());
         Chat chat = new Chat();
         chat.setRoomId(roomId);
         chat.setContent(chatMessage.getContent());
-        if (!users.isEmpty()) {
-            chat.setUser(users.get(0));
+        if (users != null) {
+            chat.setUser(users);
         }
         chatService.save(chat);
     }
@@ -60,6 +65,7 @@ public class ChatRoomController {
     @MessageMapping("/chat/{roomId}/addUser")
     public void addUser(@DestinationVariable String roomId, @Payload Message chatMessage,
                         SimpMessageHeaderAccessor headerAccessor) {
+
         String currentRoomId = (String) headerAccessor.getSessionAttributes().put("room_id", roomId);
         if (currentRoomId != null) {
             Message leaveMessage = new Message();

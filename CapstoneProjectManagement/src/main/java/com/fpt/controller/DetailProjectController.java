@@ -36,30 +36,14 @@ public class DetailProjectController {
 	@Autowired
 	private HistoryRecordService historyRecordService;
 
-	@GetMapping("/detailproject")
-	public String detailProject() {
-		// CapstoneProjectDetails capstoneProjectDetails =
-		// capstoneProjectDetailService.getUserByCapstoneProjectDetailId(id);
-		// load capstone project detail
-//		CapstoneProjects cp = capstoneProjectService.getCapstonProjectById();
 
-//		System.out.println(cp.getName());
-//		System.out.println(cp.getDescription());
-//		System.out.println(cp.getDocument());
-//		System.out.println(cp.getNameVi());
-//		System.out.println(cp.getSpecialty());
-
-		// load user thuoc project
-
-		return "home/detail_project";
-
-	}
 
 	@RequestMapping(value = "/project-detail/{id}", method = RequestMethod.GET)
 	public String detailProject(@PathVariable("id") Integer id, Model model, Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
 
-		// chưa có userId lấy từ request
-//		Integer stauts = capstoneProjectDetailService.getStatuByCapstoneProjectDetailIdAndUserId(id, "SE04936");
 		CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
 		model.addAttribute("detail", cp);
 		List<Users> userproject = capstoneProjectDetailService.getUserByCapstoneProjectDetailId(id);
@@ -146,6 +130,9 @@ public class DetailProjectController {
 
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "approve")
 	public String approve(@RequestParam Integer id, Model model, Principal principal){
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		//int id_project = Integer.parseInt(id);
 		boolean check = false;
 		Users user = userService.findByEmail(principal.getName());
@@ -176,6 +163,9 @@ public class DetailProjectController {
 
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "reject")
 	public String reject(@RequestParam("id") Integer id, Model model, Principal principal){
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		Users user = userService.findByEmail(principal.getName());
 		String user_login = user.getId();
 		capstoneProjectDetailService.deleteRejectCapstoneProjectDetailsByUserId(user_login, id);

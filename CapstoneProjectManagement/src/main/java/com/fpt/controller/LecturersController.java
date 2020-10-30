@@ -59,6 +59,9 @@ public class LecturersController {
     @RequestMapping(value = "/lecturers", method = RequestMethod.GET)
     public String getListLecturers(Model model, @RequestParam("page") Optional<Integer> page,
                                    @RequestParam("size") Optional<Integer> size, Principal principal) {
+        if(principal == null) {
+			return "redirect:/login";
+		}
         LOGGER.info("Running on getListLecturers method of UserController");
         Users user = userService.findByEmail(principal.getName());
         String user_id_login = user.getId();
@@ -101,6 +104,10 @@ public class LecturersController {
 
     @RequestMapping(value = "/listlecturersproject/{id}", method = RequestMethod.GET)
     public String bookLecturers(@PathVariable("id") String id, UserDTO dto, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+        if(principal == null) {
+			return "redirect:/login";
+		}
+
         Users user = userService.findByEmail(principal.getName());
         String user_id_login = user.getId();
         HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(user_id_login);

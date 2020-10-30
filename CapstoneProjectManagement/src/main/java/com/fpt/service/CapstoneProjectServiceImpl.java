@@ -72,8 +72,15 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 
 	@Transactional(rollbackFor=Exception.class)
 	public String registerProject(CapstoneProjectDTO dataForm,Principal principal, String baseUrl){
+
 		Map<String, Object> output = new HashMap<>();
 		List<String> errors = new ArrayList<>();
+		if(principal == null) {
+			errors.add("You must login to register Project");
+			output.put("hasError", true);
+			output.put("errors", errors);
+			return new Gson().toJson(output);
+		}
 		Users user = userService.findByEmail(principal.getName());
 		CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(user.getId());
 		if(capstoneProject != null) {

@@ -39,6 +39,9 @@ public class NotificationsController {
 
 	@RequestMapping(value = "/notifications")
 	public String getAllNotications(Model model, Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		//get notification public
 		//List<NotificationDTO> notification = notificationsService.getTitle();
 		List<Notifications> notification = notificationsService.getTop5NotificationsByCreatedDate();
@@ -69,7 +72,10 @@ public class NotificationsController {
 	}
 
 	@RequestMapping(value = "/notification", method = RequestMethod.GET)
-	public String notification(Model model) {
+	public String notification(Model model,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		model.addAttribute("notificationsDTO", new NotificationDTO());
 		Notifications notifications = new Notifications();
 		List<CapstoneProjects> capstoneProjects = capstoneProjectService.getAllProject();
@@ -79,6 +85,10 @@ public class NotificationsController {
 
 	@RequestMapping(value = "/add-notification", method = RequestMethod.POST)
 	public String saveNotification(@Valid NotificationDTO dto , BindingResult result, Model model, Principal principal) {
+
+		if(principal == null) {
+			return "redirect:/login";
+		}
 			if(result.hasErrors()) {
 				model.addAttribute("notificationsDTO", new NotificationDTO());
 				model.addAttribute("notificationsDTO",dto);
@@ -155,7 +165,10 @@ public class NotificationsController {
 	}
 
 	@RequestMapping(value = "/notification-detail/{id}", method = RequestMethod.GET)
-	public String notificationDetail(@PathVariable("id") int id, Model model){
+	public String notificationDetail(@PathVariable("id") int id, Model model,Principal principal){
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		Notifications notification = notificationsService.getOneNoification(id);
 		if(notification == null){
 			return "home/error";
@@ -166,7 +179,10 @@ public class NotificationsController {
 	}
 
 	@RequestMapping(value = "/list-news")
-	public String listNews(Model model){
+	public String listNews(Model model,Principal principal){
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		//get notification public
 		List<NotificationDTO> notification = notificationsService.getTitle();
 		model.addAttribute("notifications", notification);
@@ -174,7 +190,10 @@ public class NotificationsController {
 	}
 
 	@RequestMapping(value = "/list-news-user/{id}")
-	public String listNewsUser(@PathVariable("id") String id, Model model){
+	public String listNewsUser(@PathVariable("id") String id, Model model,Principal principal){
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		List<NotificationDetails> notificationDetails = notificationDetailService.getIdNotification(id);
 		ArrayList<Notifications> noti = new ArrayList<>();
 		for (NotificationDetails notidetail: notificationDetails

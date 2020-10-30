@@ -47,6 +47,9 @@ public class CapstoneProjectController {
 
 	@RequestMapping(value = "/registerproject", method = RequestMethod.GET)
 	public String getRegisterProject(Model model, Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		Users user = userService.findByEmail(principal.getName());
 		model.addAttribute("loggedUser", user);
 		List<Profession> professions = professionService.findAll();
@@ -99,6 +102,9 @@ public class CapstoneProjectController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerProject(@Valid @RequestBody CapstoneProjectDTO dataForm, BindingResult result,
 								  Model model, Principal principal, HttpServletRequest request){
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
 		Map<String, Object> output = new HashMap<>();
 		List<String> errors = new ArrayList<>();
@@ -112,7 +118,10 @@ public class CapstoneProjectController {
 	}
 
 	@GetMapping("/get-member-form")
-	public String getForm() {
+	public String getForm(Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		return "home/add-member";
 	}
 }

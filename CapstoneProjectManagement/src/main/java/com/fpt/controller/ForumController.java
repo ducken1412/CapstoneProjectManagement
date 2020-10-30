@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -39,16 +40,22 @@ public class ForumController {
     @Autowired
     private FilesService filesService;
     @GetMapping("/forum")
-    public String forum() {
+    public String forum(Principal principal) {
+        if(principal == null) {
+			return "redirect:/login";
+		}
         return "home/forum";
     }
 
     @GetMapping("/list-post")
-    public String getPosts(Model model, @RequestParam("page") String page, @RequestParam("size") String size) {
+    public String getPosts(Model model, @RequestParam("page") String page, @RequestParam("size") String size, Principal principal) {
+        if(principal == null) {
+			return "redirect:/login";
+		}
         // get user logged
-        List<Users> users = userService.findByUsername("ducddse04936");
-        if (!users.isEmpty()) {
-            model.addAttribute("loggedUser", users.get(0).getId());
+        Users users = userService.findByEmail(principal.getName());
+        if (users != null) {
+            model.addAttribute("loggedUser", users.getId());
         } else {
             return "error/403Page";
         }
@@ -73,7 +80,10 @@ public class ForumController {
 
     @ResponseBody
     @PostMapping("/add-post")
-    public String addPost(@ModelAttribute PostDTO dto) {
+    public String addPost(@ModelAttribute PostDTO dto ,Principal principal) {
+        if(principal == null) {
+            return "redirect:/login";
+        }
         System.out.println();
         Posts post;
         Date date = new Date();
@@ -96,10 +106,10 @@ public class ForumController {
         post = new Posts();
         HistoryRecords records = new HistoryRecords();
         // get user logged
-        List<Users> author = userService.findByUsername("ducddse04936");
-        if (!author.isEmpty()) {
-            post.setAuthor(author.get(0));
-            records.setUser(author.get(0));
+        Users author = userService.findByEmail(principal.getName());
+        if (author != null) {
+            post.setAuthor(author);
+            records.setUser(author);
         } else {
             return "error/403Page";
         }
@@ -121,7 +131,10 @@ public class ForumController {
     @ResponseBody
     @PostMapping(value = "/add-file-post/{postId}", produces = {"application/json"})
     public String addFilesPost(MultipartHttpServletRequest request,
-                               HttpServletResponse response, @PathVariable Integer postId) throws Exception {
+                               HttpServletResponse response, @PathVariable Integer postId ,Principal principal) throws Exception {
+        if(principal == null) {
+            return "redirect:/login";
+        }
         Map< String, MultipartFile > filesMap = new HashMap< String, MultipartFile >();
         filesMap = request.getFileMap();
         for(MultipartFile file : filesMap.values()){
@@ -144,13 +157,16 @@ public class ForumController {
 
     @ResponseBody
     @PostMapping("/add-comment")
-    public String addComment(@ModelAttribute CommentDTO dto) {
+    public String addComment(@ModelAttribute CommentDTO dto,Principal principal) {
+        if(principal == null) {
+            return "redirect:/login";
+        }
         Date date = new Date();
         Posts post = postService.findById(dto.getPostId());
         Comments comment = new Comments();
-        List<Users> author = userService.findByUsername("ducddse04936");
-        if (!author.isEmpty()) {
-            comment.setSender(author.get(0));
+        Users author = userService.findByEmail(principal.getName());
+        if (author != null) {
+            comment.setSender(author);
         } else {
             return "error/403Page";
         }
@@ -165,13 +181,19 @@ public class ForumController {
     }
 
     @GetMapping("/add-post")
-    public String addPost(Model model) {
+    public String addPost(Model model ,Principal principal) {
+        if(principal == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("post", new Posts());
         return "home/add-post";
     }
 
     @GetMapping("/edit-post/{postId}")
-    public String editPost(@PathVariable Integer postId, Model model) {
+    public String editPost(@PathVariable Integer postId, Model model,Principal principal) {
+        if(principal == null) {
+            return "redirect:/login";
+        }
         Posts post = postService.findById(postId);
         if (post != null) {
             model.addAttribute("post", post);
@@ -183,7 +205,10 @@ public class ForumController {
 
     @ResponseBody
     @GetMapping("/delete-post/{postId}")
-    public String deletePost(@PathVariable Integer postId, Model model) {
+    public String deletePost(@PathVariable Integer postId, Model model,Principal principal) {
+        if(principal == null) {
+            return "redirect:/login";
+        }
         if(postService.deletePost(postId)) {
             return "The post has been successfully deleted";
         }

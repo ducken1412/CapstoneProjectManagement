@@ -46,7 +46,9 @@ public class UserController {
 	private CapstoneProjectService capstoneProjectService;
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
 	public String userProfile(@PathVariable("id") String id, Model model, Principal principal) {
-
+		if(principal == null) {
+			return "redirect:/login";
+		}
 
 		Users user = userService.findById(id);
 		if (user == null) {
