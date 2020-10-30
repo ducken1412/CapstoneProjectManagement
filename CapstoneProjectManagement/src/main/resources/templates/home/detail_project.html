@@ -26,10 +26,9 @@
 <body>
 <div class="body">
 	<div class="page-wrapper">
-		<th:block th:include="home/_header-mobile"></th:block>
-		<th:block th:include="home/_menu"></th:block>
 		<div class="page-container">
 			<th:block th:include="home/_header"></th:block>
+			<th:block th:include="home/_header-mobile"></th:block>
 			<div class="main-content">
 				<div class="section__content section__content--p30">
 					<div class="container-fluid">
@@ -41,7 +40,7 @@
 							</div>
 						</div>
 						<div class="row m-t-25">
-							<div class="w-75 p-4" id="content-body">
+							<div class="w-80 p-1" id="content-body">
 								<form th:action="@{/approve}" th:object="${detail}" method="post">
 									<!-- TOP CAMPAIGN-->
 									<input th:value="${detail.id}" name="id" id="id" hidden>
