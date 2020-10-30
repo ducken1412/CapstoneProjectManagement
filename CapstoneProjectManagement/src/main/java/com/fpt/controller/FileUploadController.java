@@ -73,9 +73,9 @@ public class FileUploadController {
 		String message = "";
 		try {
 			List<String> fileNames = new ArrayList<>();
-
+			String a ="";
 			Arrays.asList(files).stream().forEach(file -> {
-				storageService.save(file);
+				storageService.save(file,a);
 				fileNames.add(file.getOriginalFilename());
 				/*Files dbFile = new Files();
 				dbFile.setFileName(file.getOriginalFilename());

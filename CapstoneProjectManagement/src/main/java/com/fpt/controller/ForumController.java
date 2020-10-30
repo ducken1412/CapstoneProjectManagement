@@ -138,11 +138,12 @@ public class ForumController {
         Map< String, MultipartFile > filesMap = new HashMap< String, MultipartFile >();
         filesMap = request.getFileMap();
         for(MultipartFile file : filesMap.values()){
+            long date = new Date().getTime();
             List<String> fileNames = new ArrayList<>();
-            storageService.save(file);
+            String fileName = file.getOriginalFilename() + "-" + String.valueOf(date) + postId;
+            storageService.save(file,fileName);
             fileNames.add(file.getOriginalFilename());
             Files dbFile = new Files();
-            String fileName = file.getOriginalFilename() + "-" + String.valueOf(Calendar.getInstance().getTime());
             dbFile.setFileName(fileName);
             Posts post = postService.findById(postId);
             if (post!= null){
