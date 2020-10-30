@@ -1,10 +1,12 @@
 package com.fpt.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Constraint;
 import javax.validation.Valid;
 
@@ -44,13 +46,9 @@ public class CapstoneProjectController {
 	private ProfessionService professionService;
 
 	@RequestMapping(value = "/registerproject", method = RequestMethod.GET)
-	public String getRegisterProject(Model model) {
-		List<Users> users = userService.findByUsername("ducddse04936");
-		if (!users.isEmpty()) {
-			model.addAttribute("loggedUser", users.get(0));
-		} else {
-			return "error/403Page";
-		}
+	public String getRegisterProject(Model model, Principal principal) {
+		Users user = userService.findByEmail(principal.getName());
+		model.addAttribute("loggedUser", user);
 		List<Profession> professions = professionService.findAll();
 		model.addAttribute("professions", professions);
 		model.addAttribute("capstoneProjectDTO", new CapstoneProjectDTO());
@@ -100,7 +98,8 @@ public class CapstoneProjectController {
 	@ResponseBody
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerProject(@Valid @RequestBody CapstoneProjectDTO dataForm, BindingResult result,
-									Model model){
+								  Model model, Principal principal, HttpServletRequest request){
+		String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
 		Map<String, Object> output = new HashMap<>();
 		List<String> errors = new ArrayList<>();
 		if (result.hasErrors()) {
@@ -109,7 +108,7 @@ public class CapstoneProjectController {
 			output.put("errors", errors);
 			return new Gson().toJson(output);
 		}
-		return capstoneProjectService.registerProject(dataForm);
+		return capstoneProjectService.registerProject(dataForm,principal,baseUrl);
 	}
 
 	@GetMapping("/get-member-form")
