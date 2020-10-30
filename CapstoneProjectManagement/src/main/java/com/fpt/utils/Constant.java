@@ -42,7 +42,13 @@ public class Constant {
 	public final static String STATUS_REJECT_CAPSTONE_DB = "reject_capstone";
 	public final static String STATUS_CHANGING_NAME_CAPSTONE_DB = "changing_name_capstone";
 	public final static String STATUS_PENDING_CAPSTONE_DB = "pending_capstone";
-	
+
+
+	public final static String ROLE_STUDENT_LEADER_AUTHEN = "Role_Leader";
+	public final static String ROLE_STUDENT_MEMBER_AUTHEN = "Role_Member";
+	public final static String ROLE_HEAD_AUTHEN = "Role_Head";
+	public final static String ROLE_LECTURERS_AUTHEN = "Role_Lecturer";
+	public final static String ROLE_TRAINING_DEP_AUTHEN = "Role_TrainingDep";
 	
 	
 		

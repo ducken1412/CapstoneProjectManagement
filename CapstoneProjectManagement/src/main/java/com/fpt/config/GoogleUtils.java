@@ -79,19 +79,19 @@ public class GoogleUtils {
             for (String role : roleNames) {
                 switch (role) {
                     case Constant.ROLE_HEAD_DB:
-                        role = Constant.ROLE_HEAD;
+                        role = Constant.ROLE_HEAD_AUTHEN;
                         break;
                     case Constant.ROLE_LECTURERS_DB:
-                        role = Constant.ROLE_LECTURERS;
+                        role = Constant.ROLE_LECTURERS_AUTHEN;
                         break;
                     case Constant.ROLE_STUDENT_LEADER_DB:
-                        role = Constant.ROLE_STUDENT_LEADER;
+                        role = Constant.ROLE_STUDENT_LEADER_AUTHEN;
                         break;
                     case Constant.ROLE_STUDENT_MEMBER_DB:
-                        role = Constant.ROLE_STUDENT_MEMBER;
+                        role = Constant.ROLE_STUDENT_MEMBER_AUTHEN;
                         break;
                     case Constant.ROLE_TRAINING_DEP_DB:
-                        role = Constant.ROLE_TRAINING_DEP;
+                        role = Constant.ROLE_TRAINING_DEP_AUTHEN;
                         break;
                     default:
                         break;
