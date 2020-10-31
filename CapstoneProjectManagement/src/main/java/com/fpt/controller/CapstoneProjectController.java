@@ -71,6 +71,15 @@ public class CapstoneProjectController {
 			success = false;
 			message = "Username could not be found";
 		} else {
+			//check status user
+			Status status = users.get(0).getStatus();
+			if(status.getName().equals(Constant.STATUS_INACTIVE_USER_DB) || status.getName().equals(Constant.STATUS_NOT_ELIGIBLE_CAPSTONE_DB)){
+				success = false;
+				message = "User is inactive or not eligible";
+				result.put("success", success);
+				result.put("message", message);
+				return new Gson().toJson(result);
+			}
 			dto = new MemberDTO(users.get(0));
 			boolean check = false;
 			for (UserRoles userRoles : users.get(0).getRoleUser()) {
@@ -109,7 +118,7 @@ public class CapstoneProjectController {
 		Map<String, Object> output = new HashMap<>();
 		List<String> errors = new ArrayList<>();
 		if (result.hasErrors()) {
-			result.getFieldErrors().stream().forEach(f -> errors.add(f.getField() + " " + f.getDefaultMessage()));
+			result.getFieldErrors().stream().forEach(f -> errors.add(f.getDefaultMessage()));
 			output.put("hasError", true);
 			output.put("errors", errors);
 			return new Gson().toJson(output);
