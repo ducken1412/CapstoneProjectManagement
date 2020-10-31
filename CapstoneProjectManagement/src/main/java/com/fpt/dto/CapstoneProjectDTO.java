@@ -10,17 +10,20 @@ import com.fpt.entity.Profession;
 
 public class CapstoneProjectDTO {
     private Integer id;
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "Name Project must not blank")
     private String name;
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "Name Project Other language must not blank")
     private String nameOther;
+    @NotBlank(message = "Name Project VietNamese")
     private String nameVi;
+    @NotBlank(message = "Name Project Abbreviation must not blank")
     private String nameAbbreviation;
     private String profession;
+    @NotBlank(message = "Specialty Project must not blank")
     private String specialty;
+    @NotBlank(message = "Document Project must not blank")
     private String document;
+    @NotBlank(message = "Name Project must not blank")
     private String program;
     private String description;
     private Integer stautus;

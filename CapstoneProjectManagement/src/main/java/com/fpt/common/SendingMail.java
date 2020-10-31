@@ -3,16 +3,30 @@ package com.fpt.common;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+@Component
 public class SendingMail {
 
-    private static JavaMailSender javaMailSender;
+    @Resource
+    private JavaMailSender javaMailSender;
 
-    public static void sendEmailWithAttachment(String sendTo, String subject,String content,String path) throws MessagingException {
+    private static  SendingMail sendingMail;
 
-        MimeMessage msg = javaMailSender.createMimeMessage();
+    @PostConstruct
+    public  void  init(){
+        sendingMail = this;
+        sendingMail.javaMailSender = this.javaMailSender;
+    }
+
+    public static void sendEmail(String sendTo, String subject,String content) throws MessagingException {
+
+        MimeMessage msg = sendingMail.javaMailSender.createMimeMessage();
 
         // true = multipart message
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
@@ -26,7 +40,7 @@ public class SendingMail {
         helper.setText(content, true);
         // hard coded a file path
         //FileSystemResource file = new FileSystemResource(new File("path/android.png"));
-        helper.addAttachment("my_photo.png", new ClassPathResource("android.png"));
-        javaMailSender.send(msg);
+        //helper.addAttachment("my_photo.png", new ClassPathResource("android.png"));
+        sendingMail.javaMailSender.send(msg);
     }
 }

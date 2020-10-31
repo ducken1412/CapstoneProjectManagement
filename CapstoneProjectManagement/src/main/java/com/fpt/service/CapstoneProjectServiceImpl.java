@@ -4,6 +4,7 @@ import java.util.*;
 import java.security.Principal;
 
 import com.fpt.common.NotificationCommon;
+import com.fpt.common.SendingMail;
 import com.fpt.dto.CapstoneProjectDTO;
 import com.fpt.dto.MemberDTO;
 import com.fpt.entity.*;
@@ -155,9 +156,16 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 		}
 		String title = user.getUsername() + " invites you to participate in a capstone project";
 		String content =  user.getUsername() + " invites you to participate in a capstone project. Click " + "<a href=\"" + baseUrl + "project-detail/" + projects.getId() + "\">view</a>";
+		Users userTmp = null;
 		for (MemberDTO member : members){
 			if(!member.getUsername().equalsIgnoreCase(user.getUsername())) {
 				NotificationCommon.sendNotificationByUsername(user, title, content, member.getUsername());
+				userTmp = userService.findByUsername(member.getUsername()).get(0);
+				try{
+					SendingMail.sendEmail(userTmp.getEmail(),"[FPTU Capstone Project] Invite to participate capstone project", content);
+				}catch (Exception ex) {
+					System.out.println(ex);
+				}
 			}
 		}
 		output.put("hasError", false);
