@@ -34,12 +34,12 @@ public class UserRoleServiceImpl implements UserRoleService {
 	}
 	
 	@Override
-	public boolean removeAllRoleOfUserByUserId(Integer userId) {
+	public boolean removeAllRoleOfUserByUserId(String userId) {
 		try {
 			userRolesRepository.removeByUserId(userId);
 			return true;
 		}catch (Exception e) {
-			LOGGER.error("Remove all role of user " + userId.intValue() + " fail : ", e);
+			LOGGER.error("Remove all role of user " + userId + " fail : ", e);
 			return false;
 		}
 	}
