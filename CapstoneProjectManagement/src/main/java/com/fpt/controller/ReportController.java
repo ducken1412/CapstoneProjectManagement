@@ -16,11 +16,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import com.fpt.entity.Reports;
+import com.fpt.entity.Users;
+import com.fpt.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.security.Principal;
+
 
 @Controller
 public class ReportController {
     @Autowired
     private UserService userService;
+
 
     @Autowired
     private ReportService reportService;
@@ -104,6 +115,7 @@ public class ReportController {
             }
             reportService.addReportUserTable(reports.getId(),user_by_project.get(i));
         }
+        model.addAttribute("report", new Reports());
         return "home/add-report";
     }
 }
