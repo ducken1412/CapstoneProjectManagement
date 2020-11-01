@@ -46,6 +46,7 @@ public class CapstoneProjectController {
 	@Autowired
 	private HistoryRecordService historyRecordService;
 
+	//KienBT4 add capstone start
 	@GetMapping("/capstoneproject")
 	public String forum(Model model) {
 		List<Users> user = userService.getUserByRoleId(2);
@@ -609,7 +610,7 @@ public class CapstoneProjectController {
 		result.put("user", dto);
 		return new Gson().toJson(result);
 	}
-	//endregion
+	//KienBT4 add capstone end
 
 	@RequestMapping(value = "/st/registerproject", method = RequestMethod.GET)
 	public String getRegisterProject(Model model, Principal principal) {

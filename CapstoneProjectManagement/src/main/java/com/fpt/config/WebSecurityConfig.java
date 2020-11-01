@@ -26,12 +26,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests().antMatchers("/", "/login","/_menu", "/logout").permitAll();
-		http.authorizeRequests().antMatchers("/pl","/pl/", "/pl/**").access("hasAnyRole('Role_Leader','MemberAuthen','HeadAuthen','LecturerAuthen','TrainingDepAuthen')");
-		http.authorizeRequests().antMatchers("/st","/st/", "/st/**").access("hasRole('MemberAuthen')");
-		http.authorizeRequests().antMatchers("/hd","/hd/", "/hd/**").access("hasRole('HeadAuthen')");
-		http.authorizeRequests().antMatchers("/lt","/lt/", "/lt/**").access("hasRole('LecturerAuthen')");
+		http.authorizeRequests().antMatchers("/pl","/pl/", "/pl/**").access("hasAnyAuthority('LeaderAuthen','MemberAuthen','HeadAuthen','LecturerAuthen','TrainingDepAuthen')");
+		http.authorizeRequests().antMatchers("/st","/st/", "/st/**").access("hasAuthority('MemberAuthen')");
+		http.authorizeRequests().antMatchers("/hd","/hd/", "/hd/**").access("hasAuthority('HeadAuthen')");
+		http.authorizeRequests().antMatchers("/lt","/lt/", "/lt/**").access("hasAuthority('LecturerAuthen')");
 		http.authorizeRequests().antMatchers("/td","/td/", "/td/**").access("hasAuthority('TrainingDepAuthen')");
-		http.authorizeRequests().antMatchers("/ad","/ad/", "/ad/**").access("hasAnyRole('HeadAuthen','LecturerAuthen','TrainingDepAuthen')");
+		http.authorizeRequests().antMatchers("/ad","/ad/", "/ad/**").access("hasAnyAuthority('HeadAuthen','LecturerAuthen','TrainingDepAuthen')");
 
 
 		/*
