@@ -38,6 +38,12 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 	private UserService userService;
 
 	@Autowired
+	private UserRoleService userRoleService;
+
+	@Autowired
+	private RoleService roleService;
+
+	@Autowired
 	private HistoryRecordService recordService;
 
 	@Autowired
@@ -127,7 +133,13 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 			List<CapstoneProjectDetails> cpds = new ArrayList<>();
 			CapstoneProjectDetails cpd = null;
 			members = dataForm.getMembers();
+			Users tmp = null;
+			UserRoles userRoles= null;
+			UserRoleKey roleKey = null;
+			Roles role = null;
 			for (MemberDTO member : members) {
+				userRoles = new UserRoles();
+				roleKey = new UserRoleKey();
 				cpd = new CapstoneProjectDetails();
 				cpd.setUser(userService.findByUsername(member.getUsername()).get(0));
 				cpd.setCapstoneProject(projects);
@@ -137,6 +149,15 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 					cpd.setStatus(status);
 				}
 				cpds.add(cpd);
+				tmp = userService.findByUsername(member.getUsername()).get(0);
+				if(member.getRole().equals("Leader")) {
+					userRoleService.removeAllRoleOfUserByUserId(tmp.getId());
+					role = roleService.findByName(Constant.ROLE_STUDENT_LEADER_DB);
+					roleKey.setRole(role);
+					roleKey.setUser(tmp);
+					userRoles.setUserRoleKey(roleKey);
+					userRoleService.saveRoleUser(userRoles);
+				}
 			}
 			projects.setCapstoneProjectDetails(cpds);
 			HistoryRecords records = new HistoryRecords();

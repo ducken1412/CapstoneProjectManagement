@@ -13,7 +13,7 @@ public interface UserRoleService {
 
 	boolean saveRoleUser(UserRoles roleUser);
 
-	boolean removeAllRoleOfUserByUserId(Integer userId);
+	boolean removeAllRoleOfUserByUserId(String userId);
 
 	UserRoles isExists(UserRoleKey roleUserKey);
 	List<String> getRoleNamesByEmail(String email);
