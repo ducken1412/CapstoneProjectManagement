@@ -10,4 +10,5 @@ import com.fpt.entity.Status;
 public interface StatusService {
 	Status getStatusById(int id);
 	Status findByName(String name);
+	List<Status> getAll();
 }

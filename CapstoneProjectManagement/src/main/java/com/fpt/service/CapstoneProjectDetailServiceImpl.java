@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fpt.entity.CapstoneProjects;
+import com.fpt.entity.Status;
 import com.fpt.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,5 +106,40 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
 //    public Integer deleteCapstoneProjectDetailsByUserId(String id) {
 //        return capstoneProjectDetailRepository.deleteCapstoneProjectDetailsByUserId(id);
 //    }
+    //kienbt4 add code capstone start
+
+    @Override
+    public List<Users> getUserById(Integer id) {
+        return capstoneProjectDetailRepository.getUserById(id);
+    }
+
+    @Override
+    public List<Status> getStatusById(Integer id) {
+        return capstoneProjectDetailRepository.getStatusById(id);
+    }
+    @Override
+    public List<Object[]> getByProjectId(Integer id) {
+        return capstoneProjectDetailRepository.getByProjectId(id);
+    }
+
+    @Override
+    public CapstoneProjectDetails findById(Integer id) {
+        return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId1(id);
+    }
+
+    @Override
+    public boolean save(CapstoneProjectDetails capstoneProjectDetails) {
+        try {
+            capstoneProjectDetailRepository.save(capstoneProjectDetails);
+            return true;
+        }
+        catch (Exception e) {
+            System.out.println("eror save capstone project detail");
+        }
+        return false;
+    }
+
+    //kienbt4 add code capstone end
+
 
 }

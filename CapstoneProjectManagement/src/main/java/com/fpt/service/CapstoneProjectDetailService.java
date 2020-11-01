@@ -42,4 +42,13 @@ public interface CapstoneProjectDetailService {
 	List<String> getUserStudentMemberByProjectId(Integer id);
 
 	Integer getOneProjectIdByUserId(String id);
+
+	//kienbt4 add code capstone start
+	List<Users> getUserById(Integer id);
+	List<Status> getStatusById(Integer id);
+	List<Object[]> getByProjectId(Integer id);
+
+	CapstoneProjectDetails findById(Integer id);
+	boolean save(CapstoneProjectDetails capstoneProjectDetails);
+	//kienbt4 add code capstone end
 }

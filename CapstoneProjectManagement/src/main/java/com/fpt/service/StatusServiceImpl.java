@@ -24,5 +24,12 @@ public class StatusServiceImpl implements StatusService{
 		return statusRepository.findByName(name);
 	}
 
+	@Override
+	public List<Status> getAll() {
+		List<Status>  status = statusRepository.findAll();
+		return  status;
+	}
+
+
 
 }

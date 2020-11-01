@@ -172,5 +172,20 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 		output.put("message", "Project registration is successful.");
 		return new Gson().toJson(output);
 	}
+	@Override
+	public List<Object[]> getAllByUserId(String UserId, Integer PageIndex, Integer PageSize,Integer status,Integer profession,String nameSearch) {
+		PageIndex = PageIndex * PageSize;
+		nameSearch = '%' + nameSearch + '%';
+		return capstoneProjectRepository.getAll(UserId,PageIndex,PageSize,status,profession,nameSearch);
+	}
+	@Override
+	public CapstoneProjects findById(Integer id) {
+		return capstoneProjectRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public Integer getCountStudent(Integer id) {
+		return capstoneProjectRepository.getCountStudent(id);
+	}
 
 }
