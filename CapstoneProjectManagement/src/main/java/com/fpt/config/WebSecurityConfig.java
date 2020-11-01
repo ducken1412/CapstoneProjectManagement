@@ -26,12 +26,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests().antMatchers("/", "/login","/_menu", "/logout").permitAll();
-		http.authorizeRequests().antMatchers("/pl","/pl/", "pl/**").access("hasAnyRole('Role_Leader','Role_Member','Role_Head','Role_Lecturer','Role_TrainingDep')");
-		http.authorizeRequests().antMatchers("/st","/st/", "st/**").access("hasRole('Role_Member')");
-		http.authorizeRequests().antMatchers("/hd","/hd/", "hd/**").access("hasRole('Role_Head')");
-		http.authorizeRequests().antMatchers("/lt","/lt/", "lt/**").access("hasRole('Role_Lecturer')");
-		http.authorizeRequests().antMatchers("/td","/td/", "td/**").access("hasRole('Role_TrainingDep')");
-		http.authorizeRequests().antMatchers("/ad","/ad/", "ad/**").access("hasAnyRole('Role_Head','Role_Lecturer','Role_TrainingDep')");
+		http.authorizeRequests().antMatchers("/pl","/pl/", "/pl/**").access("hasAnyRole('Role_Leader','Role_Member','Role_Head','Role_Lecturer','Role_TrainingDep')");
+		http.authorizeRequests().antMatchers("/st","/st/", "/st/**").access("hasAnyRole('Role_Member')");
+		http.authorizeRequests().antMatchers("/hd","/hd/", "/hd/**").access("hasRole('Role_Head')");
+		http.authorizeRequests().antMatchers("/lt","/lt/", "/lt/**").access("hasRole('Role_Lecturer')");
+		http.authorizeRequests().antMatchers("/td","/td/", "/td/**").access("hasRole('Role_TrainingDep')");
+		http.authorizeRequests().antMatchers("/ad","/ad/", "/ad/**").access("hasAnyRole('Role_Head','Role_Lecturer','Role_TrainingDep')");
 
 
 		/*

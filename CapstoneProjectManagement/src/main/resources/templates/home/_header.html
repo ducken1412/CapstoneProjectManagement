@@ -38,11 +38,11 @@
                             <i class="fas fa-copy"></i>
                             <span class="bot-line"></span>Capstone Project</a>
                         <ul class="header3-sub-list list-unstyled">
-                            <li sec:authorize="hasRole('Role_Member')">
-                                <a th:href="@{/registerproject}">Create Capstone</a>
-
+                            <li th:each="authority : ${#authentication.getPrincipal().authorities}"
+                                th:if="${authority.getAuthority() == 'Role_Member'}">
+                                <a th:href="@{/st/registerproject}">Create Capstone</a>
                             </li>
-                            <div sec:authentication="principal.authorities"></div>
+
                             <!--<li>
                                 <a th:href="@{/lecturers}">List Lecture</a>
                             </li>-->
@@ -56,19 +56,37 @@
 
                     <li class="has-sub">
                         <a href="#">
-                            <i class="fas fa-copy"></i>
+                            <i class="fas fa-globe"></i>
                             <span class="bot-line"></span>Notification</a>
                         <ul class="header3-sub-list list-unstyled">
-                            <li>
+
+                            <li >
                                 <a th:href="@{/list-news}">Global news</a>
                             </li>
 
-                            <li sec:authorize="hasRole('Role_TrainingDep')" >
-                                <a th:href="@{/notification}">Create Notification</a>
+                            <li th:each="authority : ${#authentication.getPrincipal().authorities}"
+                                th:if="${authority.getAuthority() == ('Role_TrainingDep')}" >
+                                <a th:href="@{/td/notification}">Create Notification</a>
                             </li>
                         </ul>
                     </li>
 
+                    <li class="has-sub">
+                        <a href="#">
+                            <i class="fas  fa-bullhorn"></i>
+                            <span class="bot-line"></span>Reports</a>
+                        <ul class="header3-sub-list list-unstyled">
+
+                            <li >
+                                <a href="#">Report news</a>
+                            </li>
+
+                            <li th:each="authority : ${#authentication.getPrincipal().authorities}"
+                                th:if="${authority.getAuthority() == 'Role_Member' || authority.getAuthority() == 'Role_Leader'}" >
+                                <a href="#">Create Report</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
                 <div class="account-wrap">

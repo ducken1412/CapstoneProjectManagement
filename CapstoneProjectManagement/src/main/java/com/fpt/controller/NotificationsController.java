@@ -77,7 +77,7 @@ public class NotificationsController {
 		return "home/notifications";
 	}
 
-	@RequestMapping(value = "/notification", method = RequestMethod.GET)
+	@RequestMapping(value = "/td/notification", method = RequestMethod.GET)
 	public String notification(Model model,Principal principal) {
 		if(principal == null) {
 			return "redirect:/login";

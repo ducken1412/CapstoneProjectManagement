@@ -45,7 +45,7 @@ public class CapstoneProjectController {
 	@Autowired
 	private ProfessionService professionService;
 
-	@RequestMapping(value = "/registerproject", method = RequestMethod.GET)
+	@RequestMapping(value = "/st/registerproject", method = RequestMethod.GET)
 	public String getRegisterProject(Model model, Principal principal) {
 		if(principal == null) {
 			return "redirect:/login";
