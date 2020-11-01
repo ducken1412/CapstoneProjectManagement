@@ -47,7 +47,7 @@ public class CapstoneProjectController {
 	private HistoryRecordService historyRecordService;
 
 	//KienBT4 add capstone start
-	@GetMapping("/capstoneproject")
+	@GetMapping("/ad/capstoneproject")
 	public String forum(Model model) {
 		List<Users> user = userService.getUserByRoleId(2);
 		model.addAttribute("user", user);
@@ -66,12 +66,15 @@ public class CapstoneProjectController {
 		//UserDetails loginedUser = (UserDetails) ((Authentication) principal).getPrincipal();
 		//return loginedUser.getUsername();
 		// get user logged
-		List<Users> users = userService.findByUsername("minhdtse0001");
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
 		int roleid = -1;
 		String userid = "-1";
-		if (!users.isEmpty()) {
-			roleid = users.get(0).getRoleUser().get(0).getUserRoleKey().getRole().getId();
-			userid = users.get(0).getId();
+		if (users !=  null) {
+			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
+			userid = users.getId();
 			model.addAttribute("loggedUser", userid);
 			model.addAttribute("role", roleid);
 		} else {
@@ -130,11 +133,14 @@ public class CapstoneProjectController {
 	}
 
 	@GetMapping("/list-StudentProject")
-	public String listStudentProject(Model model, @RequestParam("projectid") String projectid) {
-		List<Users> users = userService.findByUsername("minhdtse0001");
+	public String listStudentProject(Model model, @RequestParam("projectid") String projectid,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
 		int roleid = -1;
-		if (!users.isEmpty()) {
-			roleid = users.get(0).getRoleUser().get(0).getUserRoleKey().getRole().getId();
+		if (users != null) {
+			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
 		} else {
 			return "error/403Page";
 		}
@@ -179,14 +185,16 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/update-Status-Detail")
-	public String updateStatusDetail( @RequestParam("id") String id, @RequestParam("des") String des) {
-
-		List<Users> users = userService.findByUsername("minhdtse0001");
+	public String updateStatusDetail( @RequestParam("id") String id, @RequestParam("des") String des,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
 		int roleid = -1;
 		String userid = "-1";
-		if (!users.isEmpty()) {
-			roleid = users.get(0).getRoleUser().get(0).getUserRoleKey().getRole().getId();
-			userid = users.get(0).getId();;
+		if (users !=  null) {
+			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
+			userid = users.getId();;
 		} else {
 			return "error/403Page";
 		}
@@ -247,14 +255,17 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/update-Status")
-	public String updateStatus( @RequestParam("id") String id, @RequestParam("des") String des) {
+	public String updateStatus( @RequestParam("id") String id, @RequestParam("des") String des,Principal principal) {
 
-		List<Users> users = userService.findByUsername("minhdtse0001");
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
 		int roleid = -1;
 		String userid = "-1";
-		if (!users.isEmpty()) {
-			roleid = users.get(0).getRoleUser().get(0).getUserRoleKey().getRole().getId();
-			userid = users.get(0).getId();;
+		if (users != null) {
+			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
+			userid = users.getId();;
 		} else {
 			return "error/403Page";
 		}
@@ -265,15 +276,15 @@ public class CapstoneProjectController {
 		Integer countstudent = capstoneProjectService.getCountStudent(currentProduct.getId());
 
 		if(countstudent > currentProduct.getProfession().getMaxMember()){
-			return "Đã quá số học sinh.";
+			return "Over student to can approve.";
 		}
 
 		if(countstudent < currentProduct.getProfession().getMinMember()){
-			return "Chưa đủ số học sinh.";
+			return "Deficient student to can approve.";
 		}
 
 		if (currentProduct == null) {
-			return "Không tìm thấy project.";
+			return "Not found project.";
 		}
 		int statusId = -1;
 		int statusIdOld = currentProduct.getStatus().getId();
@@ -339,12 +350,14 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/reject")
-	public String reject( @RequestParam("id") String id, @RequestParam("des") String des) {
-
-		List<Users> users = userService.findByUsername("minhdtse0001");
+	public String reject( @RequestParam("id") String id, @RequestParam("des") String des,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
 		String userid = "-1";
-		if (!users.isEmpty()) {
-			userid = users.get(0).getId();;
+		if (users !=  null) {
+			userid = users.getId();;
 		} else {
 			return "error/403Page";
 		}
@@ -352,7 +365,7 @@ public class CapstoneProjectController {
 				.findById(Integer.parseInt(id));
 
 		if (currentProduct == null) {
-			return "Không tìm thấy project.";
+			return "Not found project.";
 		}
 		currentProduct.setStatus(statusService.getStatusById(12));
 		currentProduct.setDesAction(des);
@@ -377,12 +390,14 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/rejectDetail")
-	public String rejectDetail( @RequestParam("id") String id, @RequestParam("des") String des) {
-
-		List<Users> users = userService.findByUsername("minhdtse0001");
+	public String rejectDetail( @RequestParam("id") String id, @RequestParam("des") String des,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
 		String userid = "-1";
-		if (!users.isEmpty()) {
-			userid = users.get(0).getId();;
+		if (users !=  null) {
+			userid = users.getId();;
 		} else {
 			return "error/403Page";
 		}
@@ -409,14 +424,16 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/update-StatusList")
-	public String updateStatusList( @RequestParam("id") String id, @RequestParam("des") String des) {
-
-		List<Users> users = userService.findByUsername("minhdtse0001");
+	public String updateStatusList( @RequestParam("id") String id, @RequestParam("des") String des,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
 		int roleid = -1;
 		String userid = "-1";
-		if (!users.isEmpty()) {
-			roleid = users.get(0).getRoleUser().get(0).getUserRoleKey().getRole().getId();
-			userid = users.get(0).getId();;
+		if (users != null) {
+			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
+			userid = users.getId();;
 		} else {
 			return "error/403Page";
 		}
@@ -487,11 +504,14 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/rejectList")
-	public String rejectList( @RequestParam("id") String id, @RequestParam("des") String des) {
-		List<Users> users = userService.findByUsername("minhdtse0001");
+	public String rejectList( @RequestParam("id") String id, @RequestParam("des") String des,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
 		String userid = "-1";
-		if (!users.isEmpty()) {
-			userid = users.get(0).getId();;
+		if (users != null) {
+			userid = users.getId();;
 		} else {
 			return "error/403Page";
 		}
@@ -501,7 +521,7 @@ public class CapstoneProjectController {
 					.findById(Integer.parseInt(st[i]));
 
 			if (currentProduct == null) {
-				return "Không tìm thấy project.";
+				return "Not found project.";
 			}
 			currentProduct.setStatus(statusService.getStatusById(12));
 			currentProduct.setDesAction(des);
@@ -526,18 +546,21 @@ public class CapstoneProjectController {
 	}
 	@ResponseBody
 	@GetMapping("/insertDetail")
-	public String insertDetail( @RequestParam("id") String id, @RequestParam("capstoneProject") String capstoneProject) {
-		List<Users> users = userService.findByUsername("minhdtse0001");
+	public String insertDetail( @RequestParam("id") String id, @RequestParam("capstoneProject") String capstoneProject,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
 		String userid = "-1";
-		if (!users.isEmpty()) {
-			userid = users.get(0).getId();;
+		if (users !=  null) {
+			userid = users.getId();;
 		} else {
 			return "error/403Page";
 		}
 		CapstoneProjects mas = capstoneProjectService.findById(Integer.parseInt(capstoneProject));
 		Integer countstudent = capstoneProjectService.getCountStudent(mas.getId());
 		if(countstudent > mas.getProfession().getMaxMember()){
-			return "Đã quá số học sinh.";
+			return "Over student to can approve project.";
 		}
 		String[] st = id.split(",");
 		for(int i = 0;i < st.length; i++ ) {
@@ -562,8 +585,10 @@ public class CapstoneProjectController {
 	}
 	@ResponseBody
 	@RequestMapping(value = "/getMemberProject")
-	public String getMemberProject(@RequestParam("username") String username, @RequestParam("capstoneProject") String capstoneProject) {
-
+	public String getMemberProject(@RequestParam("username") String username, @RequestParam("capstoneProject") String capstoneProject,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
 		Map<String, Object> result = new HashMap<>();
 		boolean success = true;
 		String message = "";

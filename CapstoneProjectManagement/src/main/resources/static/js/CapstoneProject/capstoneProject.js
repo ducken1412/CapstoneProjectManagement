@@ -4,8 +4,6 @@ let currentPost = null;
 let postContainer;
 
 $(document).ready(function () {
-
-
     sizeComment = sizeDefault;
     getListPostInit();
 
@@ -60,14 +58,14 @@ function getListPostInit() {
             loadCommentContainer(sizeDefault, -1);
             $.LoadingOverlay("hide");
             if (!(size === null || page === null)) {
-                window.history.pushState("", "", "/capstoneproject" + rewriteUrl(size, page));
+                window.history.pushState("", "", "/ad/capstoneproject" + rewriteUrl(size, page));
             }
             loadScrip();
 
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {
-                window.location.href = "/capstoneproject";
+                window.location.href = "/ad/capstoneproject";
             }
         },
     });
@@ -123,7 +121,7 @@ function getListPost() {
             $("#Capstone-container").html(data);
             loadCommentContainer(sizeDefault, -1);
             if (!(size === null || page === null)) {
-                window.history.pushState("", "", "/capstoneproject" + rewriteUrl(size, page));
+                window.history.pushState("", "", "/ad/capstoneproject" + rewriteUrl(size, page));
             }
             loadScrip();
         },
@@ -212,7 +210,7 @@ $(document).on("click", "#btn-deleteProject", function () {
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
-                    window.location.href = "/capstoneproject";
+                    window.location.href = "/ad/capstoneproject";
                 }
             },
         });
@@ -247,7 +245,7 @@ $(document).on("click", "#btn-RejectProject", function () {
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
-                    window.location.href = "/capstoneproject";
+                    window.location.href = "/ad/capstoneproject";
                 }
             },
         });
@@ -292,7 +290,7 @@ $(document).on("click", ".page-link", function (e) {
             loadCommentContainer(sizeDefault, -1);
             $.LoadingOverlay("hide");
             if (!(size === null || page === null || page === "Previous")) {
-                window.history.pushState("", "", "/capstoneproject" + rewriteUrl(size, page));
+                window.history.pushState("", "", "/ad/capstoneproject" + rewriteUrl(size, page));
             }
             loadScrip();
         },
@@ -354,7 +352,7 @@ $(document).on("click", "#btn-addApprove", function () {
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
-                    window.location.href = "/capstoneproject";
+                    window.location.href = "/ad/capstoneproject";
                 }
             },
         });
@@ -396,7 +394,7 @@ $(document).on("click", "#btn-addReject", function () {
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
-                    window.location.href = "/capstoneproject";
+                    window.location.href = "/ad/capstoneproject";
                 }
             },
         });
@@ -438,7 +436,7 @@ function ProjectDetailApp(postId) {
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
-                    window.location.href = "/capstoneproject";
+                    window.location.href = "/ad/capstoneproject";
                 }
             },
         });
@@ -477,7 +475,7 @@ function ProjectDetailReject(postId) {
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
-                    window.location.href = "/capstoneproject";
+                    window.location.href = "/ad/capstoneproject";
                 }
             },
         });
@@ -515,7 +513,7 @@ $(document).on("click", "#btn-AddDetail", function () {
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
-                    window.location.href = "/capstoneproject";
+                    window.location.href = "/ad/capstoneproject";
                 }
             },
         });

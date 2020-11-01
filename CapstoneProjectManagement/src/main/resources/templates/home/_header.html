@@ -43,9 +43,10 @@
                                 <a th:href="@{/st/registerproject}">Create Capstone</a>
                             </li>
 
-                            <!--<li>
-                                <a th:href="@{/lecturers}">List Lecture</a>
-                            </li>-->
+                            <li th:each="authority : ${#authentication.getPrincipal().authorities}"
+                                th:if="${authority.getAuthority() == 'HeadAuthen' || authority.getAuthority() == 'LecturerAuthen' || authority.getAuthority() == 'TrainingDepAuthen' }">
+                                <a th:href="@{/ad/capstoneproject}">Management Capstone</a>
+                            </li>
                         </ul>
                     </li>
                     <li>
