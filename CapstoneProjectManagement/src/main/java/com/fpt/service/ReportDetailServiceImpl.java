@@ -20,4 +20,9 @@ public class ReportDetailServiceImpl implements ReportDetailService{
         }
         return false;
     }
+
+    @Override
+    public ReportDetails getReportDetailsById(Integer id) {
+        return reportDetailRepository.getReportDetailById(id);
+    }
 }

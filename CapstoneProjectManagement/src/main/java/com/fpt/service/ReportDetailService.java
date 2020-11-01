@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 public interface ReportDetailService {
     boolean addReportDetail(ReportDetails reportDetails);
 
+    ReportDetails getReportDetailsById(Integer id);
 }

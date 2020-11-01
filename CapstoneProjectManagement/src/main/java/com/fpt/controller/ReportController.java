@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -22,6 +23,7 @@ import com.fpt.entity.Reports;
 import com.fpt.entity.Users;
 import com.fpt.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -55,8 +57,21 @@ public class ReportController {
         return "home/add-report";
     }
 
+    @RequestMapping(value = "/report-detail/{id}", method = RequestMethod.GET)
+    public String viewRoport(@PathVariable("id") int id, Model model, Principal principal){
+        if(principal == null) {
+            return "redirect:/login";
+        }
+        ReportDetails details = reportDetailService.getReportDetailsById(id);
+        String title =  details.getReport().getName();
+        String content = details.getContent();
+        model.addAttribute("title", title);
+        model.addAttribute("content", content);
+        return "home/report-detail";
+    }
+
     @RequestMapping(value = "/add-report", method = RequestMethod.POST)
-    public String addReport(ReportDTO dto, Model model, BindingResult result, Principal principal){
+    public String addReport(ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request){
         if(principal == null) {
             return "redirect:/login";
         }
@@ -100,14 +115,15 @@ public class ReportController {
         int project_id_user_login = capstoneProjectDetailService.getOneProjectIdByUserId(user_id_login);
         List<Users> user_by_project = capstoneProjectDetailService.getUserStudentMemberByProjectId(project_id_user_login);
 
+        String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
         for (int i = 0; i < user_by_project.size(); i++){
-            if(user_by_project.get(i).equals(user_id_login)){
+            if(user_by_project.get(i).equals(user)){
                 String title = "You report success.";
                 String content = "report by " + user_id_login + " at " +date;
                     NotificationCommon.sendNotification(user,title,content,user_id_login);
             }else {
                 String title = user_id_login + " report at " + date;
-                String content = "Report by " + user_id_login + " at " +date;
+                String content = "Report by " + user_id_login + " at " + date + " Click " + "<a href=\"" + baseUrl + "report-detail/" + reportDetails.getId() + "\">view</a>";
                 NotificationCommon.sendNotification(user,title,content,user_by_project.get(i).getId());
                 try{
                     SendingMail.sendEmail(user_by_project.get(i).getEmail(),"[FPTU Capstone Project] " + title, content);
@@ -117,6 +133,6 @@ public class ReportController {
             }
             reportService.addReportUserTable(reports.getId(),user_by_project.get(i).getId());
         }
-        return "home/add-report";
+        return "redirect:/report-detail/" + reportDetails.getId();
     }
 }
