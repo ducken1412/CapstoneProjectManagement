@@ -1,5 +1,6 @@
 package com.fpt.controller;
 
+
 import com.fpt.common.NotificationCommon;
 import com.fpt.dto.NotificationDTO;
 import com.fpt.dto.ReportDTO;
@@ -19,6 +20,7 @@ import java.util.List;
 import com.fpt.entity.Reports;
 import com.fpt.entity.Users;
 import com.fpt.service.UserService;
+
 
 
 @Controller
@@ -46,6 +48,7 @@ public class ReportController {
         if(principal == null) {
             return "redirect:/login";
         }
+
         model.addAttribute("reportDetail", new ReportDTO());
         Users user = userService.findByEmail(principal.getName());
         return "home/add-report";

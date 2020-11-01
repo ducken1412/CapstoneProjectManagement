@@ -11,4 +11,5 @@ public interface ReportService {
     Reports getReportsById(Integer id);
 
     void addReportUserTable(Integer rid, String uid);
+
 }
