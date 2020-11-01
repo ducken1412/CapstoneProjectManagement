@@ -87,7 +87,7 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     }
 
     @Override
-    public List<String> getUserStudentMemberByProjectId(Integer id) {
+    public List<Users> getUserStudentMemberByProjectId(Integer id) {
         return capstoneProjectDetailRepository.getUserStudentMemberByProjectId(id);
     }
 
