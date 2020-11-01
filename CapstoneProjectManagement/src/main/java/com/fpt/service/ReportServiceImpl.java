@@ -20,4 +20,14 @@ public class ReportServiceImpl implements  ReportService{
         }
         return false;
     }
+
+    @Override
+    public Reports getReportsById(Integer id) {
+        return reportRepository.getReportsById(id);
+    }
+
+    @Override
+    public void addReportUserTable(Integer rid, String uid) {
+        reportRepository.addReportUserTable(rid,uid);
+    }
 }

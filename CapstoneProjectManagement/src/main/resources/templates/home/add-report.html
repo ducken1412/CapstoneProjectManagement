@@ -26,14 +26,14 @@
                             <!-- content here -->
                             <div class="card">
                                 <div class="card-body card-block">
-                                    <form th:action="@{/add-report}" th:object="${report}" method="post">
+                                    <form th:action="@{/add-report}" th:object="${reportDetail}" method="post">
 
                                         <div class="row form-group">
                                             <div class="col col-md-3">
                                                 <label for="title" class=" form-control-label" style="font-size: 24px;width: 90%; text-transform: uppercase;">Title</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-													<textarea name="title" id="title" rows="2"
+													<textarea name="name" id="name" rows="2"
                                                               placeholder="Title..." class="form-control" ></textarea>
 <!--                                                th:field="*{title}"-->
                                                 <span class="bg-danger pull-right error-mess" ></span>

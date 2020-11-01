@@ -7,4 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ReportService {
     boolean addReport(Reports reports);
+
+    Reports getReportsById(Integer id);
+
+    void addReportUserTable(Integer rid, String uid);
 }
