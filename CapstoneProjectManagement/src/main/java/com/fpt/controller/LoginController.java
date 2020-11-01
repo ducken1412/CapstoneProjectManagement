@@ -84,7 +84,7 @@ public class LoginController {
 					userDetail.getAuthorities());
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			return "redirect:/userInfo";
+			return "redirect:/forum";
 		} else {
 			return "redirect:/login?google=error";
 		}

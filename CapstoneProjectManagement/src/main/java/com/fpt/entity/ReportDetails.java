@@ -35,7 +35,7 @@ public class ReportDetails {
 	private Date createdDate;
 	@Column(name = "last_modified_date", columnDefinition = "DATETIME NOT NULL")
 	private Date lastModifiedDate;
-	@Column(name = "content", columnDefinition = "NVARCHAR(256) NOT NULL")
+	@Column(name = "content", columnDefinition = "longtext NOT NULL")
 	private String content;
 
 	public ReportDetails() {
