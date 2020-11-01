@@ -39,7 +39,7 @@ public interface CapstoneProjectDetailService {
 
 	CapstoneProjects findCapstoneProjectByUserId(String id);
 
-	List<String> getUserStudentMemberByProjectId(Integer id);
+	List<Users> getUserStudentMemberByProjectId(Integer id);
 
 	Integer getOneProjectIdByUserId(String id);
 
