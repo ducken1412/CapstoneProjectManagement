@@ -2,6 +2,7 @@ package com.fpt.controller;
 
 
 import com.fpt.common.NotificationCommon;
+import com.fpt.common.SendingMail;
 import com.fpt.dto.NotificationDTO;
 import com.fpt.dto.ReportDTO;
 import com.fpt.entity.*;
@@ -97,7 +98,7 @@ public class ReportController {
 
         //send notification to member project team
         int project_id_user_login = capstoneProjectDetailService.getOneProjectIdByUserId(user_id_login);
-        List<String> user_by_project = capstoneProjectDetailService.getUserStudentMemberByProjectId(project_id_user_login);
+        List<Users> user_by_project = capstoneProjectDetailService.getUserStudentMemberByProjectId(project_id_user_login);
 
         for (int i = 0; i < user_by_project.size(); i++){
             if(user_by_project.get(i).equals(user_id_login)){
@@ -107,9 +108,14 @@ public class ReportController {
             }else {
                 String title = user_id_login + " report at " + date;
                 String content = "Report by " + user_id_login + " at " +date;
-                NotificationCommon.sendNotification(user,title,content,user_by_project.get(i));
+                NotificationCommon.sendNotification(user,title,content,user_by_project.get(i).getId());
+                try{
+                    SendingMail.sendEmail(user_by_project.get(i).getEmail(),"[FPTU Capstone Project] " + title, content);
+                }catch (Exception ex) {
+                    System.out.println(ex);
+                }
             }
-            reportService.addReportUserTable(reports.getId(),user_by_project.get(i));
+            reportService.addReportUserTable(reports.getId(),user_by_project.get(i).getId());
         }
         return "home/add-report";
     }
