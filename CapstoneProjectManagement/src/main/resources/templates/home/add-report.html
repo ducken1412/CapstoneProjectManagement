@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Template</title>
+    <th:block th:include="home/_css"></th:block>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <th:block th:include="home/_header-mobile"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Report</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-80" id="content-body">
+                            <!-- content here -->
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    <form th:action="@{/add-report}" th:object="${reportDetail}" method="post">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="title" class=" form-control-label" style="font-size: 24px;width: 90%; text-transform: uppercase;">Title</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+													<textarea name="name" id="name" rows="2"
+                                                              placeholder="Title..." class="form-control" ></textarea>
+<!--                                                th:field="*{title}"-->
+                                                <span class="bg-danger pull-right error-mess" ></span>
+<!--                                                th:errors="*{title}"-->
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="content" class=" form-control-label" style="font-size: 24px;width: 90%; text-transform: uppercase;">Content</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+													<textarea name="content" id="content" rows="40"
+                                                              placeholder="Content..." class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="content" class=" form-control-label" style="font-size: 24px;width: 90%; text-transform: uppercase;">Add a
+                                                    files</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="file" id="file-multiple-input"
+                                                name="file-multiple-input" multiple class="form-control-file">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-lg btn-info btn-block">
+                                            <i class="fa fa-dot-circle-o"></i> Post
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- content here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <th:block th:include="home/_footer"></th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="topic-container" data-toggle="modal"
+             tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" id="modal-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<script th:src="@{/ckeditor/ckeditor.js}"></script>
+<!-- <script th:src="@{/admin/js/lib/chosen/chosen.jquery.min.js}"></script> -->
+<script type="text/javascript">
+    //  	$("#category").chosen();
+    CKEDITOR.replace("content");
+    // 	 $("#product_slide" ).sortable();
+    $(document).ready(function (){
+        const html_table = '<table cellspacing="0" class="Table" style="background:white; border-collapse:collapse; border:undefined; width:494.6pt">\n' +
+            '\t<tbody>\n' +
+            '\t\t<tr>\n' +
+            '\t\t\t<td style="background-color:#f8cbad; height:45.0pt; width:50.95pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in; text-align:center"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><strong><span style="font-size:10.0pt"><span style="font-family:&quot;inherit&quot;,serif"><span style="color:black">Item Name</span></span></span></strong></span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:#bdd7ee; height:45.0pt; width:97.9pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in; text-align:center"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:10.0pt"><span style="font-family:&quot;inherit&quot;,serif"><span style="color:black">Plan</span></span></span></span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:#bdd7ee; height:45.0pt; width:91.25pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in; text-align:center"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:10.0pt"><span style="font-family:&quot;inherit&quot;,serif"><span style="color:black">Actual</span></span></span></span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:#bdd7ee; height:45.0pt; width:88.0pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in; text-align:center"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:10.0pt"><span style="font-family:&quot;inherit&quot;,serif"><span style="color:black">Progress</span></span></span></span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:#bdd7ee; height:45.0pt; width:85.5pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in; text-align:center"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:10.0pt"><span style="font-family:&quot;inherit&quot;,serif"><span style="color:black">Issue</span></span></span></span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:#bdd7ee; height:45.0pt; width:81.0pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in; text-align:center"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:10.0pt"><span style="font-family:&quot;inherit&quot;,serif"><span style="color:black">Cover plan</span></span></span></span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t</tr>\n' +
+            '\t\t<tr>\n' +
+            '\t\t\t<td style="background-color:#f8cbad; height:78.75pt; width:50.95pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><strong><span style="font-size:10.0pt"><span style="font-family:&quot;inherit&quot;,serif"><span style="color:black">Today Task</span></span></span></strong></span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:white; height:78.75pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in">&nbsp;</p>\n' +
+            '\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in">&nbsp;</p>\n' +
+            '\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in">&nbsp;</p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:white; height:78.75pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in">&nbsp;</p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:white; height:78.75pt; width:88.0pt">&nbsp;</td>\n' +
+            '\t\t\t<td style="background-color:white; height:78.75pt; width:85.5pt">&nbsp;</td>\n' +
+            '\t\t\t<td style="background-color:white; height:78.75pt; width:81.0pt">&nbsp;</td>\n' +
+            '\t\t</tr>\n' +
+            '\t\t<tr>\n' +
+            '\t\t\t<td style="background-color:#f8cbad; height:77.25pt; width:50.95pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><strong><span style="font-size:10.0pt"><span style="color:black">Next Task</span></span></strong></span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:white; height:77.25pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in">&nbsp;</p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:white; height:77.25pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:white; height:77.25pt; width:88.0pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:white; height:77.25pt; width:85.5pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t\t<td style="background-color:white; height:77.25pt; width:81.0pt">\n' +
+            '\t\t\t<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></p>\n' +
+            '\t\t\t</td>\n' +
+            '\t\t</tr>\n' +
+            '\t</tbody>\n' +
+            '</table>\n';
+        $("#content").val(html_table)
+    })
+</script>
+</body>
+</html>

@@ -86,6 +86,16 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     }
 
     @Override
+    public List<String> getUserStudentMemberByProjectId(Integer id) {
+        return capstoneProjectDetailRepository.getUserStudentMemberByProjectId(id);
+    }
+
+    @Override
+    public Integer getOneProjectIdByUserId(String id) {
+        return capstoneProjectDetailRepository.getOneProjectIdByUserId(id);
+    }
+
+    @Override
 	public List<Integer> getIdProjectByUserIDCheckApprove(String id) {
 		// TODO Auto-generated method stub
 		return capstoneProjectDetailRepository.getIdProjectByUserIDCheckApprove(id);
