@@ -38,9 +38,11 @@
                             <i class="fas fa-copy"></i>
                             <span class="bot-line"></span>Capstone Project</a>
                         <ul class="header3-sub-list list-unstyled">
-                            <li>
+                            <li sec:authorize="hasRole('Role_Member')">
                                 <a th:href="@{/registerproject}">Create Capstone</a>
+
                             </li>
+                            <div sec:authentication="principal.authorities"></div>
                             <!--<li>
                                 <a th:href="@{/lecturers}">List Lecture</a>
                             </li>-->
@@ -60,15 +62,10 @@
                             <li>
                                 <a th:href="@{/list-news}">Global news</a>
                             </li>
-                            <div sec:authorize="hasRole('Role_TrainingDep')">
-                                <li th:if="@{/add-notification}">
-                                    <a th:href="@{/add-notification}">Create Notification</a>
-                                </li>
-                            </div>
 
-                            <!--<li>
-                                <a th:href="@{'/list-news-user/' + ${user_id}}">My Notification</a>
-                            </li>-->
+                            <li sec:authorize="hasRole('Role_TrainingDep')" >
+                                <a th:href="@{/notification}">Create Notification</a>
+                            </li>
                         </ul>
                     </li>
 
