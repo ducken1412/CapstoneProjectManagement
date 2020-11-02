@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>Template</title>
+
+
+	<th:block th:include="home/_css"></th:block>
+
+</head>
+<body>
+<div class="page-wrapper">
+	<div class="page-container">
+		<th:block th:include="home/_header"></th:block>
+		<th:block th:include="home/_header-mobile"></th:block>
+		<div class="main-content">
+			<div class="section__content section__content--p30">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="overview-wrap">
+								<h2 class="title-1">User Information</h2>
+							</div>
+						</div>
+					</div>
+					<div class="row m-t-25">
+						<div class="w-80" id="content-body">
+							<div id="post-container">
+								<div class="mb-2 au-card recent-report" style="padding: 50px 0 50px 0;">
+									<div class="row">
+										<div class="col-md-3">
+											<div class="profile-img">
+												<img
+														th:src="${user.image}" style="width: 295px; padding-left: 50px;"
+														alt="" class="img-rounded" >
+											</div>
+										</div>
+										<div class="col-md-7">
+											<div class="profile-head">
+												<div class="row">
+													<div class="col-md-0" style="padding-left: 12px;">
+														<h1 th:text=${user.firstName}></h1>
+													</div>
+													<div class="col-md-2">
+														<h1 th:text=${user.lastName}></h1>
+													</div>
+												</div>
+											</div>
+											<div class="profile-head">
+												<span>Role:</span>
+												<th:block th:each="role,index :${roleView}">
+													<span  th:text="${role}" ></span>
+													<span th:if="${index.index < roleView.size()-1}" th:text="','" ></span>
+												</th:block>
+											</div>
+										</div>
+									</div>
+									<div class="row mx-5 mt-4">
+										<div class="col-md-6">
+											<div class="tab-content profile-tab" id="myTabContent">
+												<div class="row m-t-25">
+													<div class="col-md-4 ">
+														<label  class="boldLabel"> Birth Date:</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${dob}></p>
+													</div>
+												</div>
+
+												<div class="row m-t-7">
+													<div class="col-md-4">
+														<label class="boldLabel">Description:</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${user.description}></p>
+													</div>
+												</div>
+												<div class="row m-t-10">
+													<div class="col-md-4">
+														<label class="boldLabel">Email:</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${user.email}></p>
+													</div>
+												</div>
+
+												<div class="row m-t-7">
+													<div class="col-md-4">
+														<label class="boldLabel">Gender:</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${gender}></p>
+													</div>
+												</div>
+												<div class="row m-t-7">
+													<div class="col-md-4">
+														<label class="boldLabel">Phone:</label>
+													</div>
+													<div class="col-md-6">
+														<p th:text=${user.phone}></p>
+													</div>
+												</div>
+
+
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="tab-content profile-tab" id="myTabContent">
+
+												<div class="tab-pane fade active show" id="profile"
+													 role="tabpanel" aria-labelledby="profile-tab">
+
+													<div class="row m-t-25">
+														<div class="col-md-4">
+															<label class="boldLabel">User Name:</label>
+														</div>
+														<div class="col-md-6">
+															<p th:text=${user.username}></p>
+														</div>
+													</div>
+													<div class="row m-t-7">
+														<div class="col-md-4">
+															<label class="boldLabel">Capstone Project: </label>
+
+														</div>
+														<div class="col-md-6">
+															<p   th:each="capstone :${capstone}" th:text=${capstone}></p>
+														</div>
+													</div>
+													<div class="row m-t-7">
+														<div class="col-md-4">
+															<label class="boldLabel">Address:</label>
+														</div>
+														<div class="col-md-6">
+															<p th:text=${location}></p>
+														</div>
+													</div>
+
+													<div class="row m-t-10">
+														<div class="col-md-4">
+															<label class="boldLabel">Status:</label>
+														</div>
+														<div class="col-md-6">
+															<p th:text=${status}></p>
+
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+							</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<th:block th:include="home/_footer"></th:block>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="topic-container" data-toggle="modal"
+				 tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+				 aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content" id="modal-content"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<th:block th:include="home/_script"></th:block>
+</body>
+</html>
+

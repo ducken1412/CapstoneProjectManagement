@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content" id="modal-content">
+				<div class="card-header">
+					<strong id="title-modal">Add Category</strong>
+					<div class="card-body card-block">
+						<form id="addCategory" th:action="@{/admin/add-category}"
+						th:object="${category}"
+						 method="post"
+							enctype="multipart/form-data" class="form-horizontal">
+							<div class="row form-group">
+								<div class="col col-md-3">
+									<label for="name" class=" form-control-label">Name</label>
+								</div>
+								<div class="col-12 col-md-9">
+									<input type="text" id="name" 
+										placeholder="Enter Name" class="form-control"
+										th:field="*{name}">
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col col-md-3">
+									<label for="price" class=" form-control-label">Description</label>
+								</div>
+								<div class="col-12 col-md-9">
+									<input type="text" id="description" 
+										placeholder="Enter description" class="form-control"
+										th:field="*{description}">
+								</div>
+							</div>
+							<div class="float-right">
+								<button type="submit" class="btn btn-outline-success">
+									Submit</button>
+								<button type="reset" class="btn btn-outline-warning">
+									Reset</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+<script th:src="@{/admin/js/categoryValidate.js}"></script>
+	

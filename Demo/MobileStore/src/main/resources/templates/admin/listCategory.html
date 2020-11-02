@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Admin - List Category</title>
+<meta name="description" content="Ela Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<th:block th:include="admin/_css"></th:block>
+<link rel="stylesheet"
+	th:href="@{/admin/css/lib/datatable/dataTables.bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/admin/css/category.css}">
+<style>
+.modal-backdrop {
+	opacity: 0.5;
+}
+</style>
+</head>
+
+<body>
+	<th:block th:include="admin/_header"></th:block>
+	<!-- Content -->
+
+	<div class="content content-main">
+		<!-- Animated -->
+		<div class="animated fadeIn">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<button class="card-title btn aBtn btn-primary"
+								id="btn-addCategory" data-toggle="modal"
+								data-target="#edit-category">Add Category</button>
+
+							<strong class="card-title" style="float: right">List
+								Category</strong>
+
+						</div>
+						<div class="card-body">
+							<table id="bootstrap-data-table"
+								class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th>No</th>
+										<th>Name</th>
+										<th>Created date</th>
+										<th>Update time</th>
+										<th>Created by</th>
+										<th>Update by</th>
+										<th>Status</th>
+										<th style="width: 120px">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="category,state :${listCategory}">
+										<td th:text="${state.index+1}"></td>
+										<td th:text=${category.name}></td>
+										<td th:text=${category.createDate}></td>
+										<td th:text="${category.updateTime}"></td>
+										<td th:text="${category.createdBy?.userName}"></td>
+										<td th:text="${category.updatedBy?.userName}"></td>
+										<td th:text="${category.status}"></td>
+										<td><a class="btn btn-warning eBtn"
+											th:categoryId="${category.id}" data-target="#edit-category">Edit</a>
+											<a class="btn btn-danger dBtn "
+											th:categoryId="${category.id}"
+											th:categoryName="${category.name}">Delete</a></td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .animated -->
+	</div>
+
+	<!-- /.content -->
+
+	<div id="category-modal" class="modal" role="dialog"></div>
+
+	<th:block th:include="admin/_footer"></th:block>
+	<th:block th:include="admin/_script"></th:block>
+
+
+	<script th:src="@{/admin/js/lib/data-table/datatables.min.js}"></script>
+	<script
+		th:src="@{/admin/js/lib/data-table/dataTables.bootstrap.min.js}"></script>
+	<script th:src="@{/admin/js/lib/data-table/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/admin/js/lib/data-table/buttons.bootstrap.min.js}"></script>
+	<script th:src="@{/admin/js/lib/data-table/jszip.min.js}"></script>
+	<script th:src="@{/admin/js/lib/data-table/vfs_fonts.js}"></script>
+	<script th:src="@{/admin/js/lib/data-table/buttons.html5.min.js}"></script>
+	<script th:src="@{/admin/js/lib/data-table/buttons.print.min.js}"></script>
+	<script th:src="@{/admin/js/lib/data-table/buttons.colVis.min.js}"></script>
+	<script th:src="@{/admin/js/init/datatables-init.js}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<script th:src="@{/admin/js/category.js}"></script>
+	
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#bootstrap-data-table-export').DataTable();			
+		});
+	</script>
+	<script th:inline="javascript">
+var message = [[${categoryMessage}]];
+if (message!="")
+{
+	Swal.fire(message)	
+}
+</script>
+
+</body>
+</html>

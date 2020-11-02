@@ -1,0 +1,74 @@
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<div class="shop_bar clearfix">
+							<div class="shop_product_count"><span th:text="${total} + ' '"></span>products found 
+							<th:block th:if="${search.name != null && search.name != ''}">
+								<span id="spanKeyword">, by keyword</span>
+								<a id="removeKeyword" title="Remove keyword" href="#">
+								<th:block th:text="${'&quot;' + search.name + '&quot; '}">
+								</th:block><i class="fa fa-times" aria-hidden="true"></i>
+								</a>
+							</th:block>
+							</div>
+							<div class="shop_sorting">
+								<span>Sort by:</span>
+								<ul>
+									<li>
+										<span class="sorting_text" th:text="${search.sortedBy==0||search.sortedBy==null?'Newest':search.sortedBy==2?'Price Descending':'Price Increasing'}">Newest<i class="fas fa-chevron-down"></span></i>
+										<input type="number" id="sorting" th:value="${search.sortedBy}" hidden="hidden">
+										<ul>
+											<li class="shop_sorting_button">Newest</li>
+											<li class="shop_sorting_button">Price Descending</li>
+											<li class="shop_sorting_button">Price Increasing</li>
+										</ul>
+									</li>	
+								</ul>
+							</div>
+						</div>
+
+						<div class="product_grid">
+							<div class="product_grid_border"></div>
+
+							<!-- Product Item -->
+							
+							
+							<div th:class="'product_item'+ ${product.createdDate.after(checkDate) ? ' is_new':''} +  ${product.discount > 0 ? ' discount':''}" th:each="product :${products}">
+								<div class="product_border"></div>
+								<div class="product_image d-flex flex-column align-items-center justify-content-center"><a th:href="@{'/detail/' + ${product.id}}" tabindex="0" th:title="${product.name}"><img th:src="${product.imageMain}" alt=""></a></div>
+								<div class="product_content">
+								<th:block  th:if="${product.discount>0}">
+													<div class="product_price discount" th:inline="text"
+													th:with="discountPrice='$'+${T(com.fa.utils.FormatMoney).formartToUS(T(com.fa.utils.FormatMoney).round(product.price*(100-product.discount)/100.0))}"
+													>																																																			
+													[[${discountPrice}]]										 												
+													<span th:text="${'$'+T(com.fa.utils.FormatMoney).formartToUS(product.price)}"></span></div>
+												</th:block>
+												
+												<th:block  th:if="${product.discount<=0}">
+													<div class="product_price" th:inline="text"
+													th:with="discountPrice='$'+${T(com.fa.utils.FormatMoney).formartToUS(T(com.fa.utils.FormatMoney).round(product.price*(100-product.discount)/100.0))}"
+													>																																																			
+													[[${discountPrice}]]										 												
+													</div>
+												</th:block>
+<!-- 									<div class="product_price" th:text="${'$'+T(com.fa.utils.FormatMoney).formartToUS(product.price)}"></div> -->
+									<div class="product_name"><div><a th:href="@{'/detail/' + ${product.id}}" tabindex="0" th:text="${T(com.fa.utils.Word).getChars(product.name,15)}" th:title="${product.name}"></a></div></div>
+								</div>
+								<ul class="product_marks">
+									<li class="product_mark product_new">new</li>
+									<li class="product_mark product_discount" th:text="${'-' + product.discount + '%'}"></li>
+								</ul>
+							</div>
+							<div class="panel-footer text-center">
+    							<span th:if="${message != null}" th:text="${message}"></span>
+							</div>
+							
+						</div>
+
+						<!-- Shop Page Navigation -->
+						<div class="shop_page_nav d-flex flex-row" th:if="${message == null}" th:utext="${pagination}">
+							
+						</div>
+						<script th:src="@{/home/js/shop_custom.js}"></script>
+<!-- 						<script th:src="@{/home/js/getValueShop.js}"></script> -->
+						<script th:src="@{/home/js/shop.js}"></script>
+						

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Access Denied</title>
+<style>
+	.gallery img {
+		width: 33%;
+		height: auto;
+		padding: 10px;
+	}
+	
+	#output {
+		width: 33%;
+		height: auto;
+	}
+	
+	.error {
+		font-style: italic !important;
+		font-size: 14px !important;
+		color: red !important;
+	}
+	
+	.obligatory::after {
+		content: " *";
+		color: red;
+	}
+	
+	.form-control{
+		color: #495057 !important;
+	}
+</style>
+
+</head>
+
+<body>
+	<th:block th:include="/home/_css"></th:block>
+	<th:block th:include="/home/_header"></th:block>
+	<div class="breadcrumbs">
+		<div class="container">
+			<a th:href="@{/}">Home</a>
+			<i class="fa fa-angle-right"></i>
+			<a th:href="@{/user/user-profile}">My profile</a>
+		</div>
+	</div>
+	
+	<div style="width: 35%; margin: 0px auto;">
+		<div class="card-body card-block">
+			<form id="form-edit-user" class="form-horizontal" method="post" th:object="${user}">
+				<input type="hidden" id="id" name="id" th:value="${user.id}" />
+				<div class="row form-group">
+					<div class="col col-md-3">
+						<label for="name" class=" form-control-label obligatory">User
+							name</label>
+					</div>
+					<div class="col-12 col-md-9">
+						<input type="hidden" id="userName" name="userName"
+							placeholder="Enter User name" class="form-control"
+							th:value="${user.userName}">
+						<p th:text="${user.userName}"></p>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col col-md-3">
+						<label for="name" class=" form-control-label obligatory">First Name</label>
+					</div>
+					<div class="col-12 col-md-9">
+						<input  id="firstName" name="firstName"
+							placeholder="First Name" class="form-control"
+							th:value="${user.firstName}">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col col-md-3">
+						<label for="name" class=" form-control-label obligatory">Last Name</label>
+					</div>
+					<div class="col-12 col-md-9">
+						<input  id="lastName" name="lastName"
+							placeholder="Last Name" class="form-control"
+							th:value="${user.lastName}">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col col-md-3">
+						<label for="name" class=" form-control-label">Birth Date</label>
+					</div>
+					<div class="col-12 col-md-9">
+						<input type="date" class="form-control" id="birthDate" name="birthDate" th:value="${#dates.format(user.birthDate, 'yyyy-MM-dd')}"/>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col col-md-3">
+						<label for="name" class=" form-control-label">Gender</label>
+					</div>
+					<div class="col-12 col-md-9">
+						<div class="form-check-inline">
+							<label class="form-check-label" for="radio1"> 
+								<input type="radio" class="form-check-input" name="gender" value="1" th:checked="${user.gender==1}">Male
+							</label>
+						</div>
+						<div class="form-check-inline">
+							<label class="form-check-label" for="radio2"> 
+								<input type="radio" class="form-check-input" name="gender" value="0" th:checked="${user.gender==0}">Female
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col col-md-3">
+						<label for="name" class=" form-control-label obligatory">Phone</label>
+					</div>
+					<div class="col-12 col-md-9">
+						<input  id="phone" name="phone" placeholder="Phone"
+							class="form-control" th:value="${user.phone}">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col col-md-3">
+						<label for="name" class=" form-control-label obligatory">Email</label>
+					</div>
+					<div class="col-12 col-md-9">
+						<input type="hidden" id="email" name="email" placeholder="Email"
+							class="form-control" th:value="${user.email}">
+						<p th:text="${user.email}"></p>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col col-md-3">
+						<label for="name" class=" form-control-label obligatory">Address</label>
+					</div>
+					<div class="col-12 col-md-9">
+						<input  id="address" name="address"
+							placeholder="Adress" class="form-control"
+							th:value="${user.address}">
+					</div>
+				</div>
+				<div class="form-group" style="text-align: center;">
+					<span id="errorMessage" class="error"></span>
+				</div>
+				<div class="float-right">
+					<button type="submit" class="btn btn-outline-success">
+						Submit</button>
+					<button type="reset" class="btn btn-outline-warning">
+						Reset</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<th:block th:include="/home/_footer"></th:block>	
+	<th:block th:include="/home/_js"></th:block>
+	<script th:src="@{/home/js/modal.js}"></script>
+	<script th:src="@{/user/editProfile.js}"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

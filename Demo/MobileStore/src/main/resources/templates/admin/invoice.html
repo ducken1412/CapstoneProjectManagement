@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head >
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:if="${orders==null}">Invoice not found</title>
+    <title th:if="${orders!=null}">Invoice#[[${orders.id}]]</title>
+    <meta name="description" content="Ela Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+ 
+	<th:block th:include="admin/_css"></th:block>
+	<link rel="stylesheet" type="text/css" th:href="@{/home/styles/invoice_style.css}">
+ 
+</head>
+
+<body>
+        <th:block th:include="admin/_header"></th:block>
+        <!-- Content -->
+        <div class="content content-main">
+            <!-- Animated -->
+            <div class="animated fadeIn">
+                <!--  Traffic  -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body ">
+                                <h4 class="box-title">Invoice </h4>
+                            </div>
+                            <div class="card-body">
+                            <div class="unix-invoice">
+        <div class="container-fluid">
+            <div class="row">
+				<p  th:if="${orders==null}">Order not found</p>            
+                <div class="col-lg-12 invoice-container" th:if="${orders!=null}">
+                    <div id="invoice" class="effect2 m-t-120">
+                        <div id="invoice-top">
+                            <div class="invoice-logo"></div>
+                            <div class="invoice-info">
+                                <h2 th:text="${orders.customerName}"></h2>
+                                <p>[[${orders.email}]] <br> [[${orders.phone}]]
+                                <br> [[${orders.address}]]
+                                </p>
+                            </div>
+                            <!--End Info-->
+                            <div class="title">
+                                <h4>Invoice #[[${orders.id}]]</h4>
+                                <p>Order at: [[${orders.createdDate}]]
+                                <th:block th:if="${orders.updatedTime!=null}">
+                               	 <br>
+                                	Modifiled at: [[${orders.updatedTime}]]
+                                </th:block>
+                                </p>
+                                <p>Status:<b>[[${T(com.fa.common.OrderContant).STATUS[orders.status]}]]</b></p>
+                            </div>
+                            <!--End Title-->
+                        </div>
+                        <!--End InvoiceTop-->
+
+
+
+                        <div id="invoice-bot">
+
+                            <div id="invoice-table">
+                                <div >
+                                    <table class="table">
+                                        <tr class="tabletitle">
+                                         	<td class="Rate">
+                                                <h2>ID</h2>
+                                            </td>
+                                            <td class="table-item">
+                                                <h2>NAME</h2>
+                                            </td>
+                                            <td class="Hours">
+                                                <h2>PRICE</h2>
+                                            </td>
+                                            <td class="Rate">
+                                                <h2>DISCOUNT</h2>
+                                            </td>
+                                            <td class="subtotal">
+                                                <h2>QUANTITY</h2>
+                                            </td>
+                                            <td class="subtotal">
+                                                <h2>TOTAL</h2>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="service" th:each="item:${orders.orderDetailList}">
+                                        <td class="tableitem">
+                                                <p class="itemtext" th:text="${item.orderDetailKey.product.id}"></p>
+                                            </td>
+                                            <td class="tableitem">
+                                                <p class="itemtext" th:text="${item.orderDetailKey.product.name}"></p>
+                                            </td>
+                                            <td class="tableitem">
+                                                <p class="itemtext" th:text="${item.price}"></p>
+                                            </td>
+                                            <td class="tableitem">
+                                                <p class="itemtext" th:text="${item.discount}+'%'"></p>
+                                            </td>
+                                              <td class="tableitem">
+                                                <p class="itemtext" th:text="${item.quantity}"></p>
+                                            </td>
+                                            <td class="tableitem">
+                                                <p class="itemtext" th:text="'$'+${T(com.fa.utils.FormatMoney).formartToUS(T(com.fa.utils.FormatMoney).round(item.price*(100-item.discount)/100.0)*item.quantity)}"></p>
+                                            </td>
+                                        </tr>
+
+
+                                        <tr class="tabletitle">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="Rate">
+                                                <h2>Total</h2>
+                                            </td>
+                                            <td class="payment">
+                                                <h2 th:text="'$'+${T(com.fa.utils.FormatMoney).formartToUS(T(com.fa.utils.FormatMoney).round(#aggregates.sum(orders.orderDetailList.![price*(100-discount)*0.01*quantity])))}"></h2>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <!--End Table-->
+
+                        </div>
+                        <!--End InvoiceBot-->
+                    </div>
+                    <!--End Invoice-->
+                </div>
+            </div>
+        </div>
+    </div>
+                            </div>
+                        </div>
+                    </div><!-- /# column -->
+                </div>
+                <!--  /Traffic -->
+                <div class="clearfix"></div>
+            </div>
+            <!-- .animated -->
+        </div>
+        <!-- /.content -->
+       
+      <th:block th:include="admin/_footer"></th:block>
+	  <th:block th:include="admin/_script"></th:block>	
+
+
+</body>
+</html>
