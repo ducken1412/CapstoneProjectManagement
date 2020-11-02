@@ -1,0 +1,13 @@
+#notification-container {
+    right: 0;
+    overflow-y: auto;
+    margin-top: 20px;
+    z-index: 30;
+}
+
+@media (max-width: 992px) {
+    #notification-container {
+        margin-top: 115px;
+        z-index: 30;
+    }
+}
