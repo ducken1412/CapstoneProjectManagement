@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@master
@@ -28,5 +28,5 @@ jobs:
       with:
         app-name: 'fcpm'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_e575e3b7023d4c72b417e93a7cc56de2 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_914daa89221a417f971f81cb1b103aa2 }}
         package: '${{ github.workspace }}/target/*.war'
