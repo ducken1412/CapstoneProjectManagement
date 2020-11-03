@@ -1,0 +1,238 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Forum</title>
+    <th:block th:include="home/_css"></th:block>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/forum/forum.css}">
+    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
+<body>
+<div class="page-wrapper">
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <th:block th:include="home/_header-mobile"></th:block>
+        <div class="main-content">
+
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Capstone Project</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-75 p-4" id="content-body">
+                            <div class="mb-2 au-card recent-report">
+                                <div class="table-data__tool">
+                                    <div class="table-data__tool-left d-flex">
+                                        <select  class="form-control ml-3 mr-3" style="width: auto;"
+                                                 id="SearchProfession" name="SearchProfession" >
+                                            <option value="-1">All Profession</option>
+                                            <option th:each="item : ${profession}" th:value="${item.id}"
+                                                    th:text="${item.name}"></option>
+                                        </select>
+                                        <select  class="form-control mr-3"  style="width: auto;"
+                                                 id="SearchStatus" name="SearchStatus" >
+                                            <option value="-1">All Status</option>
+                                            <option th:each="item : ${status}" th:value="${item.id}"
+                                                    th:text="${item.name}"></option>
+                                        </select>
+                                        <input type="text" placeholder="Name Project" class="form-control mr-2" id="nameSearch"  value="">
+                                        <button
+                                                class="btn btn-primary mr-3" onclick="getListPostSearch()"
+                                                >Search
+                                        </button>
+                                    </div>
+                                    <div class="table-data__tool-right">
+                                        <button
+                                                class="btn btn-success mr-3" id="btn-addApprove"
+                                                data-toggle="modal" data-target="#confirm-Approvelist">Approve
+                                        </button>
+                                        <button
+                                                class="btn btn-success" id="btn-addReject"
+                                                data-toggle="modal" data-target="#confirm-Rejectlist">Reject
+
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="Capstone-container">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <th:block th:include="home/_footer"></th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="topic-container" data-toggle="modal"
+                 tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" id="modal-content"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<script th:src="@{/vendor/select2/select2.min.js}"></script>
+<script th:src="@{/js/CapstoneProject/capstoneProject.js}"></script>
+<div class="modal fade" id="confirm-Approve" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Do you want to Approve this?</h3>
+                <p style="margin-top: 20px;">Description</p>
+                <input type="text" class="form-control" id="ApproveDes" name="ApproveDes"/> <input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary btn-ok"><span id="loading-Approve" class="spinner-border spinner-border-sm mr-1"
+                                                       role="status" aria-hidden="true" hidden="true"></span>Approve</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirm-Reject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Do you want to Reject this?</h3>
+                <p style="margin-top: 20px;">Description</p>
+                <input type="text" class="form-control" id="RejectDes" name="ApproveDes"/> <input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok"><span id="loading-Reject" class="spinner-border spinner-border-sm mr-1"
+                                                       role="status" aria-hidden="true" hidden="true"></span>Reject</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-Approvelist" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Do you want to Approve this?</h3>
+                <p style="margin-top: 20px;">Description</p>
+                <input type="text" class="form-control" id="ApproveDeslist" name="ApproveDes"/> <input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary btn-ok"><span id="loading-Approvelist" class="spinner-border spinner-border-sm mr-1"
+                                                        role="status" aria-hidden="true" hidden="true"></span>Approve</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirm-Rejectlist" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Do you want to Reject this?</h3>
+                <p style="margin-top: 20px;">Description</p>
+                <input type="text" class="form-control" id="RejectDeslist" name="ApproveDes"/> <input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok"><span id="loading-Rejectlist" class="spinner-border spinner-border-sm mr-1"
+                                                       role="status" aria-hidden="true" hidden="true"></span>Reject</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-ApproveDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Do you want to Approve this?</h3>
+                <p style="margin-top: 20px;">Description</p>
+                <input type="text" class="form-control" id="ApproveDesDetail" name="ApproveDes"/> <input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary btn-ok"><span id="loading-ApproveDetail" class="spinner-border spinner-border-sm mr-1"
+                                                        role="status" aria-hidden="true" hidden="true"></span>Approve</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirm-RejectDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Do you want to Reject this?</h3>
+                <p style="margin-top: 20px;">Description</p>
+                <input type="text" class="form-control" id="RejectDesDetail" name="ApproveDes"/> <input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-okRejectDetail"><span id="loading-RejectDetail" class="spinner-border spinner-border-sm mr-1"
+                                                       role="status" aria-hidden="true" hidden="true"></span>Reject</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Add-ProjectDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Add Student</h3>
+                <div class="input-group">
+                    <input type="text" id="member" name="member" class="form-control">
+                    <div class="input-group-btn">
+                        <button id="btn-add-member" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+                <span class="text-danger d-none" id="error-message"></span>
+                <div class="form-group row attrTable">
+                    <table class="members" id="member-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary btn-ok"><span id="loading-AddDetail" class="spinner-border spinner-border-sm mr-1"
+                                                       role="status" aria-hidden="true" hidden="true"></span>Add</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="confirm-View" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 70% !important;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Project Detail</h3>
+                <div id="CapstoneDetail-container">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

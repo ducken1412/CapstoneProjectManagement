@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Login</title>
+<meta name="description" content="Ela Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link th:href="@{/css/login/login.css}" rel="stylesheet">
+<body>
+	<div class="jumbotron jumbotron-fluid">
+		<div class="container">
+					<img src= "/image/logo2.png"/>
+		</div>
+	</div>
+	<div class="container" style="padding-left: 254px;padding-top: 85px;">
+		<h1>Capstone Project Management Login</h1>
+		<p>
+			Helping the school to have the tools to register and manage project
+			making and grading while <br />making it as easy, convenient and
+			fast as possible for students, teachers, and training rooms.
+		</p>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-4"  > </div>
+				<div class="col-sm-4" style="padding-top: 30px; padding-left: 60px;">
+					<div>
+						<a      class="btn btn-block btn-social btn-google customBtn"
+								href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/login-google&response_type=code
+    					&client_id=129727949930-69qmp90rob83tsnqvqnekmkhb9qpat54.apps.googleusercontent.com&approval_prompt=force">
+							<span
+								class="fa fa-google width42px"></span> Sign in with Google
+						</a>
+					</div>
+				</div>
+			<div class="col-sm-4">
+			</div>
+
+		
+		</div>
+
+	</div>
+
+</body>
+</html>
+
