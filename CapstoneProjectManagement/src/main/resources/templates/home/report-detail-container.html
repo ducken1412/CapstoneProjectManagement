@@ -1,0 +1,73 @@
+<div id="post-container" style="margin-top: 20px;">
+    <!--Content Here-->
+    <div class="row" style="width: 90%; margin-left: auto;margin-right: auto;">
+        <div class="col-md-12">
+            <table>
+                <tbody>
+                <tr style="border-bottom: 0 none">
+                    <td>
+                        <div>
+                            <div id="ctl00_mainContent_divContent"><span
+                                    class="title-1"><p th:text=${title}></p></span>
+                                <hr>
+                                <br/>
+                                <th:block th:utext="${content}"></th:block>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 0 none">
+                    <td>
+                        <br>
+
+                        <table width="100%" style="border: 1px solid transparent;"
+                               id="cssTable">
+                            <tbody>
+                            <tr>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <!--Content Here-->
+</div>
+<div class="card-body pt-2">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <a class="text-secondary"
+               style="font-size: 14px"></a>
+            <p class="text-secondary" style="font-size: 14px"></p>
+            <hr>
+            <div class="mx-5">
+                <form class="form-comment mb-0 mt-4" id="comment-form">
+                    <input id="postId" name="postId" th:value="${id}" hidden/>
+                    <div class="input-group">
+                        <input class="form-control" name="content"
+                               placeholder="Write a comment.." type="text"
+                               style="border-radius: 15px"/>
+                        <button id="" type="submit"
+                                class="btn btn-success ml-2 btn-comment">
+								<span class="loading-send spinner-border spinner-border-sm mr-2"
+                                      role="status" id="loading-send" aria-hidden="true" hidden="true"></span>Send
+                        </button>
+                    </div>
+                </form>
+                <div class="my-2 p-2 comment-container"
+                     style="background-color: #e5e5e5; width: fit-content; border-radius: 15px"
+                     th:each="comment :${comments}">
+                    <a th:href="@{'/user/' + ${comment.sender.id}}" class=""
+                       th:text="${comment.sender.username}"
+                       style="color: #666; font-weight: bold"></a> <br> <span
+                        th:text=${comment.content}></span>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

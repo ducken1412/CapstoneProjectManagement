@@ -60,8 +60,8 @@ public class ReportController {
         return "home/add-report";
     }
 
-    @RequestMapping(value = "/report-detail/{id}", method = RequestMethod.GET)
-    public String viewRoport(@PathVariable("id") Integer id, Model model, Principal principal){
+    @RequestMapping(value = "/report/{id}", method = RequestMethod.GET)
+    public String viewRoport(@PathVariable("id") Integer id, Model model,Principal principal){
         if(principal == null) {
             return "redirect:/login";
         }
@@ -74,6 +74,22 @@ public class ReportController {
         model.addAttribute("content", content);
         model.addAttribute("comments", comments);
         return "home/report-detail";
+    }
+
+    @RequestMapping(value = "/report-detail/{id}", method = RequestMethod.GET)
+    public String viewRoportDetails(@PathVariable("id") Integer id, Model model, Principal principal){
+        if(principal == null) {
+            return "redirect:/login";
+        }
+        ReportDetails details = reportDetailService.getReportDetailByReportId(id);
+        List<Comments> comments = commentService.getCommentsByReportDetatilId(details.getId());
+        model.addAttribute("report_id", id);
+        String title =  details.getReport().getName();
+        String content = details.getContent();
+        model.addAttribute("title", title);
+        model.addAttribute("content", content);
+        model.addAttribute("comments", comments);
+        return "home/report-detail-container";
     }
 
     @RequestMapping(value = "/add-report", method = RequestMethod.POST)

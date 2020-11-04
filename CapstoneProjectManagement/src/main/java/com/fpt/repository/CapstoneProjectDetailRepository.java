@@ -40,11 +40,11 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	Integer countLecturersByCapstoneProjectId(Integer id);
 
 	//count lecture option 1
-	@Query("SELECT count (c.user.id) from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.description = 'Main Lecture'")
+	@Query("SELECT count (c.user.id) from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Main Lecture'")
 	Integer countLecturersIdAndCapstoneProjectIdOP1(Integer cid);
 
 	//count lecture option 2
-	@Query("SELECT count (c.user.id) from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.description = 'Assistant Lecture'")
+	@Query("SELECT count (c.user.id) from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Assistant Lecture'")
 	Integer countLecturersIdAndCapstoneProjectIdOP2(Integer cid);
 
 	@Query("SELECT ru FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1")

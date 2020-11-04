@@ -143,7 +143,7 @@ public class LecturersController {
                 Users user_id = userService.findById(id);
                 cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(project_id));
                 cpd.setUser(user_id);
-                cpd.setDescription("Main Lecture");
+                cpd.setSupType("Main Lecture");
                 cpd.setDesAction("booking lecturers");
                 cpd.setStatus(statusService.getStatusById(4));
                 capstoneProjectDetailService.addCapstonprojectDetail(cpd);
@@ -189,7 +189,7 @@ public class LecturersController {
                 Users user_id = userService.findById(id);
                 cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(project_id));
                 cpd.setUser(user_id);
-                cpd.setDescription("Assistant Lecture");
+                cpd.setSupType("Assistant Lecture");
                 cpd.setDesAction("booking lecturers");
                 cpd.setStatus(statusService.getStatusById(4));
                 capstoneProjectDetailService.addCapstonprojectDetail(cpd);
