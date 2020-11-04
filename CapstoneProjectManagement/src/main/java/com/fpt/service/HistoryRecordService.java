@@ -19,4 +19,6 @@ public interface HistoryRecordService {
 	HistoryRecords findHistoryByProjectId(Integer id);
 
 	HistoryRecords findHistoryByUserId(String id);
+
+	HistoryRecords getByReportId(Integer id);
 }

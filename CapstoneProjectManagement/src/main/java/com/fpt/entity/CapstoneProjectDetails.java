@@ -36,16 +36,28 @@ public class CapstoneProjectDetails {
     @Column(name = "description_action", columnDefinition = "longtext")
     private String desAction;
 
+    @Column(name = "description", columnDefinition = "NVARCHAR(256) NOT NULL")
+    private String description;
+
     public CapstoneProjectDetails() {
         // TODO Auto-generated constructor stub
     }
 
-    public CapstoneProjectDetails(Integer id, CapstoneProjects capstoneProject, Users user, Status status, String desAction) {
+    public CapstoneProjectDetails(Integer id, CapstoneProjects capstoneProject, Users user, Status status, String desAction, String description) {
         this.id = id;
         this.capstoneProject = capstoneProject;
         this.user = user;
         this.status = status;
         this.desAction = desAction;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDesAction() {
