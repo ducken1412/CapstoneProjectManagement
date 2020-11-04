@@ -56,6 +56,16 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     }
 
     @Override
+    public Integer countLecturersIdAndCapstoneProjectIdOP1(Integer cid) {
+        return capstoneProjectDetailRepository.countLecturersIdAndCapstoneProjectIdOP1(cid);
+    }
+
+    @Override
+    public Integer countLecturersIdAndCapstoneProjectIdOP2(Integer cid) {
+        return capstoneProjectDetailRepository.countLecturersIdAndCapstoneProjectIdOP2(cid);
+    }
+
+    @Override
 
     public Integer countLecturersByProjectId(Integer id) {
         return capstoneProjectDetailRepository.countLecturersByCapstoneProjectId(id);

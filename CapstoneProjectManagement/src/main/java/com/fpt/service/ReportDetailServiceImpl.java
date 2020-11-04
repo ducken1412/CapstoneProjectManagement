@@ -5,6 +5,8 @@ import com.fpt.repository.ReportDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReportDetailServiceImpl implements ReportDetailService{
     @Autowired
@@ -22,7 +24,12 @@ public class ReportDetailServiceImpl implements ReportDetailService{
     }
 
     @Override
-    public ReportDetails getReportDetailsById(Integer id) {
-        return reportDetailRepository.getReportDetailById(id);
+    public ReportDetails getReportDetailByReportId(Integer id) {
+        return reportDetailRepository.getReportDetailByReportId(id);
+    }
+
+    @Override
+    public List<Integer> getListReportIdByUserId(String id) {
+        return reportDetailRepository.getListReportIdByUserId(id);
     }
 }

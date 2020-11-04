@@ -25,34 +25,48 @@
                     </div>
                     <div class="row m-t-25">
                         <div class="w-75" id="content-body">
-                            <div id="post-container">
-                                <!--                                Content Here-->
-                                <div class="row" style="width: 90%; margin-left: auto;margin-right: auto;">
-                                    <div class="col-md-12">
-                                        <table>
-                                            <tbody>
-                                            <tr style="border-bottom: 0 none">
-                                                <td>
-                                                    <div>
-                                                        <div id="ctl00_mainContent_divOther"><br>
-                                                            <hr>
-                                                            <ul>
-                                                                <div class="single-popular-post pt-2"
-                                                                     th:each="notifications : ${notificationByUser}">
-                                                                    <a th:href="@{'/notification-detail/' + ${notifications.id}}">
-                                                                        <h5>
-                                                                            <span style="color: rgb(74, 137, 191)" th:text="${notifications.title}"></span>
-                                                                        </h5>
-                                                                    </a>
-                                                                    <p th:text="${notifications.created_date}" style="font-size: 14px"></p>
-                                                                </div>
-                                                            </ul>
+                            <div class="card">
+                                <div id="post-container">
+                                    <!--                                Content Here-->
+                                    <div class="row" style="width: 90%; margin-left: auto;margin-right: auto;">
+                                        <div class="col-md-12">
+                                            <table>
+                                                <tbody>
+                                                <tr style="border-bottom: 0 none">
+                                                    <td>
+                                                        <div>
+                                                            <div id="ctl00_mainContent_divOther"><br>
+                                                                <ul>
+                                                                    <div class="single-popular-post pt-2"
+                                                                         th:each="notifications : ${notificationByUser}">
+                                                                        <a th:href="@{'/notification-detail/' + ${notifications.id}}">
+                                                                            <h5>
+                                                                                <span style="color: rgb(74, 137, 191)" th:text="${notifications.title}"></span>
+                                                                            </h5>
+                                                                        </a>
+                                                                        <p th:text="${notifications.created_date}" style="font-size: 14px; margin-bottom: 10px;"></p>
+                                                                    </div>
+                                                                </ul>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom: 0 none">
+                                                    <td>
+                                                        <br>
+
+                                                        <table width="100%" style="border: 1px solid transparent;"
+                                                               id="cssTable">
+                                                            <tbody>
+                                                            <tr>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

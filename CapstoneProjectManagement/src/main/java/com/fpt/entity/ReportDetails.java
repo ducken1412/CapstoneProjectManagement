@@ -3,17 +3,7 @@ package com.fpt.entity;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "[ReportDetails]")
@@ -37,14 +27,16 @@ public class ReportDetails {
 	private Date lastModifiedDate;
 	@Column(name = "content", columnDefinition = "longtext NOT NULL")
 	private String content;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "Created_by")
+	private Users user;
 
 	public ReportDetails() {
 		super();
 	}
 
-	public ReportDetails(Reports report, List<Files> files, List<Comments> comments, List<Users> members,
-			Date createdDate, Date lastModifiedDate, String content) {
-		super();
+	public ReportDetails(Integer id, Reports report, List<Files> files, List<Comments> comments, List<Users> members, Date createdDate, Date lastModifiedDate, String content, Users user) {
+		this.id = id;
 		this.report = report;
 		this.files = files;
 		this.comments = comments;
@@ -52,6 +44,15 @@ public class ReportDetails {
 		this.createdDate = createdDate;
 		this.lastModifiedDate = lastModifiedDate;
 		this.content = content;
+		this.user = user;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
 	}
 
 	public Integer getId() {

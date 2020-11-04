@@ -45,7 +45,7 @@
 
                             <li th:each="authority : ${#authentication.getPrincipal().authorities}"
                                 th:if="${authority.getAuthority() == 'HeadAuthen' || authority.getAuthority() == 'LecturerAuthen' || authority.getAuthority() == 'TrainingDepAuthen' }">
-                                <a th:href="@{/ad/capstoneproject}">Management Capstone</a>
+                                <a th:href="@{/ad/capstoneproject}">Manage Capstone</a>
                             </li>
                         </ul>
                     </li>
@@ -84,7 +84,7 @@
 
                             <li th:each="authority : ${#authentication.getPrincipal().authorities}"
                                 th:if="${authority.getAuthority() == 'MemberAuthen' || authority.getAuthority() == 'LeaderAuthen'}" >
-                                <a href="#">Create Report</a>
+                                <a th:href="@{/report}">Create Report</a>
                             </li>
                         </ul>
                     </li>
