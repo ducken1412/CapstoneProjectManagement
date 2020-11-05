@@ -16,7 +16,7 @@ public interface UserRolesRepository  extends JpaRepository<UserRoles, UserRoleK
 	List<String> getRoleNamesByUserId(String userId);
 	@Modifying
 	@Query("DELETE FROM UserRoles ru WHERE ru.userRoleKey.user.id = ?1")
-	void removeByUserId(Integer id);
+	void removeByUserId(String id);
 	
 	@Query("SELECT ru.userRoleKey.user FROM UserRoles ru WHERE ru.userRoleKey.role.id = ?1")
 	List<Users> getUserByRoleId(Integer id);

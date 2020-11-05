@@ -23,7 +23,7 @@ public class Reports {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "INT")
 	private Integer id;
-	@Column(name = "name", columnDefinition = "NVARCHAR(50) NOT NULL")
+	@Column(name = "name", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String name;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "report")
 	private List<HistoryRecords> historyRecords;

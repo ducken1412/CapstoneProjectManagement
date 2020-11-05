@@ -23,4 +23,9 @@ public interface CapstoneProjectService {
 
 	String registerProject(CapstoneProjectDTO dataForm, Principal principal, String baseUrl);
 
+	// get all
+	List<Object[]> getAllByUserId(String UserId, Integer PageIndex, Integer PageSize,Integer status,Integer profession,String nameSearch);
+	CapstoneProjects findById(Integer id);
+	Integer getCountStudent (Integer id);
+
 }

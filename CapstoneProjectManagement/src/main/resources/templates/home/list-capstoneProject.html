@@ -1,0 +1,72 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="table-responsive table-responsive-data2">
+
+    <table id="myTable" class="table table-data2">
+        <thead>
+        <tr>
+            <th>
+                <label class="au-checkbox">
+                    <input type="checkbox" id="checkall">
+                    <span class="au-checkmark"></span>
+                </label>
+            </th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Name_Vi</th>
+            <th>Name_Abbreviation</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+<tr class="tr-shadow list-post-container" th:each="post :${capstoneProjectPage.content}" th:data-id="${post.countDetail}" th:id="${post.id}">
+    <td>
+        <label th:if="${(post.status_id == 7 && role == 3) ||(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 6 || post.status_id == 8 || post.status_id == 13))}" class="au-checkbox">
+            <input th:postId=${post.id}  type="checkbox">
+            <span class="au-checkmark"></span>
+        </label>
+        <input type="text" id="post-id" th:value="${post.id}"hidden="true">
+    </td>
+    <td th:text="${post.name}"></td>
+    <td th:text="${post.description}"></td>
+    <td th:text="${post.name_vi}"></td>
+    <td th:text="${post.name_abbreviation}"></td>
+    <td th:text="${post.nameStatus}"></td>
+    <td>
+        <div class="table-data-feature">
+            <button th:if="${(post.status_id > 4 && role == 4) || (role == 5 ) || (role == 3 )} " class="item" id="btn-ViewProject"  th:postId=${post.id} data-toggle="modal" data-target="#confirm-View" >
+                <i class="fas fa-eye"></i>
+            </button>
+            <button th:if="${(post.status_id == 7 && role == 3) ||(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 6 || post.status_id == 8 || post.status_id == 13))}" class="item" id="btn-deleteProject"  th:postId=${post.id} data-toggle="modal" data-target="#confirm-Approve" >
+                <i class="fas fa-check"></i>
+            </button>
+            <button th:if="${(post.status_id == 7 && role == 3) ||(post.status_id == 5 && role == 4)|| (role == 5 && ( post.status_id == 6 || post.status_id == 8 || post.status_id == 13))}" class="item" id="btn-RejectProject"  th:postId=${post.id} data-toggle="modal" data-target="#confirm-Reject" >
+                <i class="fas fa-times"></i>l
+            </button>
+        </div>
+    </td>
+
+</tr>
+        </tbody>
+    </table>
+    <div class="table-data__tool">
+        <div class="table-data__tool-right mx-auto">
+            <nav aria-label="Page navigation">
+                <ul th:if="${capstoneProjectPage.totalPages > 0}"
+                    class="pagination w-75">
+                    <input type="text" id="page-size" name="page-size"
+                           th:value="${capstoneProjectPage.size}" hidden="true"/>
+                    <input type="text" id="total-page" name="total-page"
+                           th:value="${capstoneProjectPage.totalPages}" hidden="true"/>
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <th:block th:each="pageNumber : ${pageNumbers}">
+                        <li th:class="${pageNumber==capstoneProjectPage.number + 1} ? active + ' ' + page-item : page-item"><a
+                                href="#" th:text=${pageNumber} th:class="page-link"></a></li>
+                    </th:block>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+

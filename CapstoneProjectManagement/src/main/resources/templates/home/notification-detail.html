@@ -25,18 +25,19 @@
                     </div>
                     <div class="row m-t-25">
                         <div class="w-80" id="content-body">
-                            <div id="post-container">
-                                <!--Content Here-->
-                                <div class="row" style="width: 90%; margin-left: auto;margin-right: auto;">
-                                    <div class="col-md-12">
+                            <div class="card">
+                                <div id="post-container">
+                                    <!--Content Here-->
+                                    <div class="row" style="width: 90%; margin-left: auto;margin-right: auto;">
+                                        <div class="col-md-12">
                                             <table>
                                                 <tbody>
                                                 <tr style="border-bottom: 0 none">
                                                     <td>
-                                                        <div>
+                                                        <div style="margin-top: 20px;">
                                                             <div id="ctl00_mainContent_divContent"><span
                                                                     class="title-1"><p th:text=${notification.title}></p></span>
-                                                                <hr>
+                                                                <hr><br/>
                                                                 <th:block th:utext="${notification.content}"></th:block>
                                                             </div>
                                                         </div>
@@ -58,9 +59,10 @@
                                                 </tbody>
                                             </table>
 
+                                        </div>
                                     </div>
+                                    <!--Content Here-->
                                 </div>
-                                <!--Content Here-->
                             </div>
                         </div>
                     </div>

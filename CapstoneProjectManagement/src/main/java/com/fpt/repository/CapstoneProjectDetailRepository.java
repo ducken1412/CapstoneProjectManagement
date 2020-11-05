@@ -35,9 +35,17 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	List<Users> getUserByCapstoneProjectDetailId(Integer id);
 
 
-	//coutn lecturers by project id
+	//count lecturers by project id
 	@Query("SELECT count (u.userRoleKey.role.id) FROM CapstoneProjectDetails ru INNER JOIN ru.user.roleUser as u WHERE u.userRoleKey.user.id = ru.user.id and u.userRoleKey.role.id = 4 and ru.capstoneProject.id = ?1")
 	Integer countLecturersByCapstoneProjectId(Integer id);
+
+	//count lecture option 1
+	@Query("SELECT count (c.user.id) from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Main Lecture'")
+	Integer countLecturersIdAndCapstoneProjectIdOP1(Integer cid);
+
+	//count lecture option 2
+	@Query("SELECT count (c.user.id) from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Assistant Lecture'")
+	Integer countLecturersIdAndCapstoneProjectIdOP2(Integer cid);
 
 	@Query("SELECT ru FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1")
 	List<CapstoneProjectDetails> getUserIdByCapstoneProjectDetailId(Integer id);
@@ -70,10 +78,24 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1")
 	CapstoneProjects findCapstoneProjectByUserId(String id);
 
-	@Query("select c.user.id from CapstoneProjectDetails c where c.user.roleUser.size = 1 or c.user.roleUser.size = 2 and c.capstoneProject.id = ?1")
-	List<String> getUserStudentMemberByProjectId(Integer id);
+	@Query("select c.user from CapstoneProjectDetails c where c.user.roleUser.size = 1 or c.user.roleUser.size = 2 and c.capstoneProject.id = ?1")
+	List<Users> getUserStudentMemberByProjectId(Integer id);
 
 	@Query("select c.capstoneProject.id from CapstoneProjectDetails c where c.user.id = ?1")
 	Integer getOneProjectIdByUserId(String id);
+
+	//KienBT4 add code start
+	@Query(value = "SELECT distinct ru.id,ru.description_action,ru.capstone_project_id,ru.status_id,ru.user_id,de.email,de.first_name,de.gender,de.image,de.last_name,de.phone,de.user_name,ro.id as roleid,ro.name as rolename,st.name as nameStatus FROM CapstoneProject.capstone_project_details ru LEFT JOIN CapstoneProject.users de ON de.id = ru.user_id LEFT JOIN CapstoneProject.user_roles deRole ON de.id = deRole.user_id LEFT JOIN CapstoneProject.roles ro ON ro.id = deRole.role_id   LEFT JOIN CapstoneProject.status st ON st.id = ru.status_id  WHERE ru.capstone_project_id = ?1  ORDER BY ro.id DESC", nativeQuery = true)
+	List<Object[]> getByProjectId(Integer id);
+
+	@Query("SELECT ru FROM CapstoneProjectDetails ru WHERE ru.id = ?1")
+	CapstoneProjectDetails getUserByCapstoneProjectDetailId1(Integer id);
+
+	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.id = ?1")
+	List<Users> getUserById(Integer id);
+
+	@Query("SELECT ru.status FROM CapstoneProjectDetails ru WHERE ru.id = ?1")
+	List<Status> getStatusById(Integer id);
+	//KienBT4 add code end
 
 }

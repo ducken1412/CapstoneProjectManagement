@@ -44,11 +44,11 @@ public class Constant {
 	public final static String STATUS_PENDING_CAPSTONE_DB = "pending_capstone";
 
 
-	public final static String ROLE_STUDENT_LEADER_AUTHEN = "Role_Leader";
-	public final static String ROLE_STUDENT_MEMBER_AUTHEN = "Role_Member";
-	public final static String ROLE_HEAD_AUTHEN = "Role_Head";
-	public final static String ROLE_LECTURERS_AUTHEN = "Role_Lecturer";
-	public final static String ROLE_TRAINING_DEP_AUTHEN = "Role_TrainingDep";
+	public final static String ROLE_STUDENT_LEADER_AUTHEN = "LeaderAuthen";
+	public final static String ROLE_STUDENT_MEMBER_AUTHEN = "MemberAuthen";
+	public final static String ROLE_HEAD_AUTHEN = "HeadAuthen";
+	public final static String ROLE_LECTURERS_AUTHEN = "LecturerAuthen";
+	public final static String ROLE_TRAINING_DEP_AUTHEN = "TrainingDepAuthen";
 	
 	
 		

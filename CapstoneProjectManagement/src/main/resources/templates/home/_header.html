@@ -39,13 +39,14 @@
                             <span class="bot-line"></span>Capstone Project</a>
                         <ul class="header3-sub-list list-unstyled">
                             <li th:each="authority : ${#authentication.getPrincipal().authorities}"
-                                th:if="${authority.getAuthority() == 'Role_Member'}">
+                                th:if="${authority.getAuthority() == 'MemberAuthen'}">
                                 <a th:href="@{/st/registerproject}">Create Capstone</a>
                             </li>
 
-                            <!--<li>
-                                <a th:href="@{/lecturers}">List Lecture</a>
-                            </li>-->
+                            <li th:each="authority : ${#authentication.getPrincipal().authorities}"
+                                th:if="${authority.getAuthority() == 'HeadAuthen' || authority.getAuthority() == 'LecturerAuthen' || authority.getAuthority() == 'TrainingDepAuthen' }">
+                                <a th:href="@{/ad/capstoneproject}">Manage Capstone</a>
+                            </li>
                         </ul>
                     </li>
                     <li>
@@ -65,7 +66,7 @@
                             </li>
 
                             <li th:each="authority : ${#authentication.getPrincipal().authorities}"
-                                th:if="${authority.getAuthority() == ('Role_TrainingDep')}" >
+                                th:if="${authority.getAuthority() == ('TrainingDepAuthen')}" >
                                 <a th:href="@{/td/notification}">Create Notification</a>
                             </li>
                         </ul>
@@ -82,8 +83,8 @@
                             </li>
 
                             <li th:each="authority : ${#authentication.getPrincipal().authorities}"
-                                th:if="${authority.getAuthority() == 'Role_Member' || authority.getAuthority() == 'Role_Leader'}" >
-                                <a href="#">Create Report</a>
+                                th:if="${authority.getAuthority() == 'MemberAuthen' || authority.getAuthority() == 'LeaderAuthen'}" >
+                                <a th:href="@{/report}">Create Report</a>
                             </li>
                         </ul>
                     </li>

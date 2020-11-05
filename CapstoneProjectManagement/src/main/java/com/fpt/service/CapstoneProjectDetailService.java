@@ -26,6 +26,9 @@ public interface CapstoneProjectDetailService {
 
 	List<Users> getUserByCapstoneProjectDetailId(Integer id);
 
+	Integer countLecturersIdAndCapstoneProjectIdOP1(Integer cid);
+
+	Integer countLecturersIdAndCapstoneProjectIdOP2(Integer cid);
 
 	Integer countLecturersByProjectId(Integer id);
 
@@ -39,7 +42,16 @@ public interface CapstoneProjectDetailService {
 
 	CapstoneProjects findCapstoneProjectByUserId(String id);
 
-	List<String> getUserStudentMemberByProjectId(Integer id);
+	List<Users> getUserStudentMemberByProjectId(Integer id);
 
 	Integer getOneProjectIdByUserId(String id);
+
+	//kienbt4 add code capstone start
+	List<Users> getUserById(Integer id);
+	List<Status> getStatusById(Integer id);
+	List<Object[]> getByProjectId(Integer id);
+
+	CapstoneProjectDetails findById(Integer id);
+	boolean save(CapstoneProjectDetails capstoneProjectDetails);
+	//kienbt4 add code capstone end
 }

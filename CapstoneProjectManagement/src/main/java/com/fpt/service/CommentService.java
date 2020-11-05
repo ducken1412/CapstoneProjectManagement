@@ -3,7 +3,9 @@ package com.fpt.service;
 import java.util.List;
 
 import com.fpt.entity.Comments;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface CommentService {
 
 	Comments findById(Integer id);
@@ -16,4 +18,5 @@ public interface CommentService {
 
 	List<Comments> findByPostId(Integer id);
 
+	List<Comments> getCommentsByReportDetatilId(Integer id);
 }
