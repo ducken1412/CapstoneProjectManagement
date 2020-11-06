@@ -16,7 +16,6 @@ public class UserDTO {
 
 	private String userName;
 
-	private String encrytedPassword;
 
 	private String firstName;
 
@@ -33,12 +32,6 @@ public class UserDTO {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-	public String getEncrytedPassword() {
-		return encrytedPassword;
-	}
-	public void setEncrytedPassword(String encrytedPassword) {
-		this.encrytedPassword = encrytedPassword;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -131,7 +124,6 @@ public class UserDTO {
 		super();
 		this.id = id;
 		this.userName = userName;
-		this.encrytedPassword = encrytedPassword;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthDate = birthDate;
@@ -147,13 +139,10 @@ public class UserDTO {
 		this.reportReceives = reportReceives;
 		this.reportDetail = reportDetail;
 	}
-	public UserDTO(String userName, String encrytedPassword, String firstName, String lastName,
-			Date birthDate, Integer gender, String phone, String email, Date createdDate, Locations location,
-			String description, Status status, CapstoneProjects capstoneProject, Reports reportReceive,
-			List<Reports> reportReceives, ReportDetails reportDetail) {
-		super();
+
+	public UserDTO(String id, String userName, String firstName, String lastName, Date birthDate, Integer gender, String phone, String email, Date createdDate, Locations location, String description, Status status, CapstoneProjects capstoneProject, Reports reportReceive, List<Reports> reportReceives, ReportDetails reportDetail) {
+		this.id = id;
 		this.userName = userName;
-		this.encrytedPassword = encrytedPassword;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthDate = birthDate;
@@ -169,7 +158,7 @@ public class UserDTO {
 		this.reportReceives = reportReceives;
 		this.reportDetail = reportDetail;
 	}
-	
+
 	private Date birthDate;
 
 	private Integer gender;

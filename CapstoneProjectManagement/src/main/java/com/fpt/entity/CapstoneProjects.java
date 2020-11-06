@@ -46,6 +46,8 @@ public class CapstoneProjects {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<HistoryRecords> historyRecords;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
+	private List<Statistics> statistics;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<Files> files;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "capstoneProject")
 	private List<CapstoneProjectDetails> capstoneProjectDetails;
@@ -58,7 +60,7 @@ public class CapstoneProjects {
 		super();
 	}
 
-	public CapstoneProjects(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation, Profession profession, String specialty, String document, String program, String description, Status status, List<HistoryRecords> historyRecords, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails, List<Evaluations> evaluations, String desAction) {
+	public CapstoneProjects(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation, Profession profession, String specialty, String document, String program, String description, Status status, List<HistoryRecords> historyRecords, List<Statistics> statistics, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails, List<Evaluations> evaluations, String desAction) {
 		this.id = id;
 		this.name = name;
 		this.nameOther = nameOther;
@@ -71,10 +73,19 @@ public class CapstoneProjects {
 		this.description = description;
 		this.status = status;
 		this.historyRecords = historyRecords;
+		this.statistics = statistics;
 		this.files = files;
 		this.capstoneProjectDetails = capstoneProjectDetails;
 		this.evaluations = evaluations;
 		this.desAction = desAction;
+	}
+
+	public List<Statistics> getStatistics() {
+		return statistics;
+	}
+
+	public void setStatistics(List<Statistics> statistics) {
+		this.statistics = statistics;
 	}
 
 	public String getDesAction() {

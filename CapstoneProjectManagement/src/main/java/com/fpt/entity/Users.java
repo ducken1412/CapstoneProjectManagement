@@ -30,8 +30,6 @@ public class Users implements Serializable {
     private String id;
     @Column(name = "user_name", columnDefinition = "NVARCHAR(50) NOT NULL")
     private String username;
-    @Column(name = "encryted_password", columnDefinition = "NVARCHAR(256) NOT NULL")
-    private String encrytedPassword;
     @Column(name = "first_name", columnDefinition = "NVARCHAR(30) NOT NULL")
     private String firstName;
     @Column(name = "last_name", columnDefinition = "NVARCHAR(30) NOT NULL")
@@ -49,7 +47,7 @@ public class Users implements Serializable {
     @Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
     private Date createdDate;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "locations_id", referencedColumnName = "id", columnDefinition = "INT")
+    @JoinColumn(name = "locations_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
     private Locations location;
     @Column(name = "description", columnDefinition = "NVARCHAR(256)")
     private String description;
@@ -87,10 +85,9 @@ public class Users implements Serializable {
     public Users() {
     }
 
-    public Users(String id, String username, String encrytedPassword, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats) {
+    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats) {
         this.id = id;
         this.username = username;
-        this.encrytedPassword = encrytedPassword;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -138,14 +135,6 @@ public class Users implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getEncrytedPassword() {
-        return encrytedPassword;
-    }
-
-    public void setEncrytedPassword(String encrytedPassword) {
-        this.encrytedPassword = encrytedPassword;
     }
 
     public String getFirstName() {
