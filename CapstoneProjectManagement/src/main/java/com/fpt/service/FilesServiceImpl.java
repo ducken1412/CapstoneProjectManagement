@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.fpt.entity.Files;
 import com.fpt.repository.FilesRepository;
 
+import java.util.List;
 
 
 @Service
@@ -32,5 +33,7 @@ public class FilesServiceImpl implements FilesService {
 	@Override
 	public Integer deleteAllByPostId(Integer postId) {
 		return filesRepository.deleteAllByPostId(postId);
+	public List<Files> getFileByPostId(Integer id) {
+		return filesRepository.getFileByPostId(id);
 	}
 }

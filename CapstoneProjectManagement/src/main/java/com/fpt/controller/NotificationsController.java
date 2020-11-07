@@ -2,17 +2,22 @@ package com.fpt.controller;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.fpt.dto.NotificationDTO;
 import com.fpt.entity.*;
 import com.fpt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -185,36 +190,44 @@ public class NotificationsController {
 	}
 
 	@RequestMapping(value = "/list-news")
-	public String listNews(Model model,Principal principal){
+	public String listNews(Model model, @RequestParam("page") Optional<Integer> page,
+						   @RequestParam("size") Optional<Integer> size, Principal principal){
 		if(principal == null) {
 			return "redirect:/login";
 		}
-		//get notification public
-		List<NotificationDTO> notification = notificationsService.getTitle();
-		model.addAttribute("notifications", notification);
+		//phan trang
+		int currentPage = page.orElse(1);
+		int pageSize = size.orElse(20);
+		Page<Notifications> notificationsPage = notificationsService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+		model.addAttribute("notificationsPage", notificationsPage);
+		int totalPages = notificationsPage.getTotalPages();
+		if (totalPages > 0) {
+			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+			model.addAttribute("pageNumbers", pageNumbers);
+		}
 		return "home/list-news";
 	}
 
 	@RequestMapping(value = "/list-news-user/{id}")
-	public String listNewsUser(@PathVariable("id") String id, Model model,Principal principal){
+	public String listNewsUser(@PathVariable("id") String id, Model model, @RequestParam("page") Optional<Integer> page,
+							   @RequestParam("size") Optional<Integer> size, Principal principal){
 		if(principal == null) {
 			return "redirect:/login";
 		}
-		List<NotificationDetails> notificationDetails = notificationDetailService.getIdNotification(id);
-		ArrayList<Notifications> noti = new ArrayList<>();
-		for (NotificationDetails notidetail: notificationDetails
-		) {
-			int noti_id = notidetail.getNotification().getId();
-			Notifications n =  notificationsService.getNotificationById(noti_id);
-			noti.add(n);
-		};
-		Collections.sort(noti, new Comparator<Notifications>() {
-			@Override
-			public int compare(Notifications o1, Notifications o2) {
-				return o2.getId()-o1.getId();
-			}
-		});
-		model.addAttribute("notificationByUser", noti);
+		Users user = userService.findByEmail(principal.getName());
+		String userId = user.getId();
+
+		//phan trang
+		int currentPage = page.orElse(1);
+		int pageSize = size.orElse(20);
+		Page<Notifications> notificationsPage = notificationsService.getAllTitlePagginByUserId(PageRequest.of(currentPage - 1, pageSize),userId);
+		model.addAttribute("notificationsPage", notificationsPage);
+		int totalPages = notificationsPage.getTotalPages();
+		if (totalPages > 0) {
+			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+			model.addAttribute("pageNumbers", pageNumbers);
+		}
+		model.addAttribute("userId",userId);
 		return "home/list-news-user";
 	}
 }

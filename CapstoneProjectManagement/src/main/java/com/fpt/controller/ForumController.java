@@ -4,6 +4,7 @@ import com.fpt.dto.CommentDTO;
 import com.fpt.dto.PostDTO;
 import com.fpt.entity.*;
 import com.fpt.service.*;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -140,7 +141,8 @@ public class ForumController {
         for(MultipartFile file : filesMap.values()){
             long date = new Date().getTime();
             List<String> fileNames = new ArrayList<>();
-            String fileName = file.getOriginalFilename() + "-" + String.valueOf(date) + postId;
+            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+            String fileName = FilenameUtils.removeExtension(file.getOriginalFilename()) + "-" + String.valueOf(date) + postId + "." +extension;
             storageService.save(file,fileName);
             fileNames.add(file.getOriginalFilename());
             Files dbFile = new Files();
