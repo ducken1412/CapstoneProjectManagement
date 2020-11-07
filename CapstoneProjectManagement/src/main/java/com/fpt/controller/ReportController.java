@@ -12,6 +12,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.google.api.tasks.TaskList;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,12 +23,17 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import com.fpt.entity.Reports;
 import com.fpt.entity.Users;
 import com.fpt.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 
 @Controller
@@ -278,7 +285,8 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/list-reports", method = RequestMethod.GET)
-    public String listRoport(Model model, Principal principal){
+    public String listRoport(Model model, @RequestParam("page") Optional<Integer> page,
+                             @RequestParam("size") Optional<Integer> size,Principal principal){
         if(principal == null) {
             return "redirect:/login";
         }
@@ -291,6 +299,17 @@ public class ReportController {
             reportDetails.add(details);
         }
         model.addAttribute("reportDetails",reportDetails);
+
+        //phan trang
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(20);
+        Page<ReportDetails> reportsPage = reportDetailService.getTitlePagginByUserId(PageRequest.of(currentPage - 1, pageSize),user_id_login);
+        model.addAttribute("reportsPage", reportsPage);
+        int totalPages = reportsPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         return "home/list-reports";
     }
 

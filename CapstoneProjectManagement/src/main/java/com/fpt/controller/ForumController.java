@@ -4,6 +4,7 @@ import com.fpt.dto.CommentDTO;
 import com.fpt.dto.PostDTO;
 import com.fpt.entity.*;
 import com.fpt.service.*;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -84,7 +85,6 @@ public class ForumController {
         if(principal == null) {
             return "redirect:/login";
         }
-        System.out.println();
         Posts post;
         Date date = new Date();
         if (dto.getId() != null) {
@@ -97,7 +97,7 @@ public class ForumController {
             records.setPost(post);
             if (postService.save(post)) {
                 recordService.save(records);
-                return "The post has been successfully updated";
+                return String.valueOf(dto.getId());
             } else {
                 return "error/403Page";
             }
@@ -129,18 +129,20 @@ public class ForumController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/add-file-post/{postId}", produces = {"application/json"})
+    @PostMapping(value = "/add-file-post/{postId}")
     public String addFilesPost(MultipartHttpServletRequest request,
                                HttpServletResponse response, @PathVariable Integer postId ,Principal principal) throws Exception {
         if(principal == null) {
             return "redirect:/login";
         }
+        filesService.deleteAllByPostId(postId);
         Map< String, MultipartFile > filesMap = new HashMap< String, MultipartFile >();
         filesMap = request.getFileMap();
         for(MultipartFile file : filesMap.values()){
             long date = new Date().getTime();
             List<String> fileNames = new ArrayList<>();
-            String fileName = file.getOriginalFilename() + "-" + String.valueOf(date) + postId;
+            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+            String fileName = FilenameUtils.removeExtension(file.getOriginalFilename()) + "-" + String.valueOf(date) + postId + "." +extension;
             storageService.save(file,fileName);
             fileNames.add(file.getOriginalFilename());
             Files dbFile = new Files();
@@ -151,7 +153,6 @@ public class ForumController {
                 filesService.saveFiles(dbFile);
             }
         }
-        System.out.println();
 
         return "The post has been added successfully";
     }

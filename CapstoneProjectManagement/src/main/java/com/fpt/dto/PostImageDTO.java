@@ -1,15 +1,15 @@
 package com.fpt.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fpt.entity.Comments;
 import com.fpt.entity.Files;
 import com.fpt.entity.HistoryRecords;
 import com.fpt.entity.Users;
 
-public class PostDTO {
-	@JsonProperty("id")
+import java.util.List;
+
+public class PostImageDTO {
+
 	private Integer id;
 	private String title;
 	private String description;
@@ -18,8 +18,8 @@ public class PostDTO {
 	private List<String> files;
 	private Users author;
 
-	public PostDTO(Integer id, String title, String description, List<Comments> comments,
-			List<HistoryRecords> historyRecords, List<String> files, Users author) {
+	public PostImageDTO(Integer id, String title, String description, List<Comments> comments,
+                        List<HistoryRecords> historyRecords, List<String> files, Users author) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -30,7 +30,7 @@ public class PostDTO {
 		this.author = author;
 	}
 
-	public PostDTO() {
+	public PostImageDTO() {
 		super();
 	}
 
