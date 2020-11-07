@@ -4216,6 +4216,10 @@ section {
 	background: #fa4251;
 }
 
+.dot--yellow {
+	background: yellow;
+}
+
 .chart-note-wrap {
 	margin-top: 20px;
 }
@@ -5100,6 +5104,10 @@ section {
 
 .statistic__item--red {
 	background: #fa4251;
+}
+
+.statistic__item--yellow {
+	background: yellow;
 }
 
 /* ----- Statistic 2 ----- */

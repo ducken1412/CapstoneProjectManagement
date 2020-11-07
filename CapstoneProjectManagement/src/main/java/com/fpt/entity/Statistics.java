@@ -10,18 +10,12 @@ public class Statistics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "INT")
     private Integer id;
-    @Column(name = "summary", columnDefinition = "longtext")
-    public String summary;
-    @Column(name = "assignee", columnDefinition = "NVARCHAR(256)")
-    public String assignee;
-    @Column(name = "time_tracking", columnDefinition = "INT")
-    public int timeTracking;
-    @Column(name = "status", columnDefinition = "NVARCHAR(100)")
-    public String status;
-    @Column(name = "time_spent", columnDefinition = "NVARCHAR(100)")
-    public String timeSpent;
-    @Column(name = "issue_type", columnDefinition = "NVARCHAR(20)")
-    public String issueType;
+    @Column(name = "time_tracking_current", columnDefinition = "INT")
+    public int timeTrackingCurrent;
+    @Column(name = "time_tracking_progress", columnDefinition = "INT")
+    public int timeTrackingProgress;
+    @Column(name = "time_tracking_todo", columnDefinition = "INT")
+    public int timeTrackingTodo;
     @Column(name = "start_date", columnDefinition = "DATE")
     public Date startDate;
     @Column(name = "end_date", columnDefinition = "DATE")
@@ -35,14 +29,11 @@ public class Statistics {
     public Statistics() {
     }
 
-    public Statistics(Integer id, String summary, String assignee, int timeTracking, String status, String timeSpent, String issueType, Date startDate, Date endDate, int week, CapstoneProjects capstoneProject) {
+    public Statistics(Integer id, int timeTrackingCurrent, int timeTrackingProgress, int timeTrackingTodo, Date startDate, Date endDate, int week, CapstoneProjects capstoneProject) {
         this.id = id;
-        this.summary = summary;
-        this.assignee = assignee;
-        this.timeTracking = timeTracking;
-        this.status = status;
-        this.timeSpent = timeSpent;
-        this.issueType = issueType;
+        this.timeTrackingCurrent = timeTrackingCurrent;
+        this.timeTrackingProgress = timeTrackingProgress;
+        this.timeTrackingTodo = timeTrackingTodo;
         this.startDate = startDate;
         this.endDate = endDate;
         this.week = week;
@@ -57,52 +48,28 @@ public class Statistics {
         this.id = id;
     }
 
-    public String getSummary() {
-        return summary;
+    public int getTimeTrackingCurrent() {
+        return timeTrackingCurrent;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setTimeTrackingCurrent(int timeTrackingCurrent) {
+        this.timeTrackingCurrent = timeTrackingCurrent;
     }
 
-    public String getAssignee() {
-        return assignee;
+    public int getTimeTrackingProgress() {
+        return timeTrackingProgress;
     }
 
-    public void setAssignee(String assignee) {
-        this.assignee = assignee;
+    public void setTimeTrackingProgress(int timeTrackingProgress) {
+        this.timeTrackingProgress = timeTrackingProgress;
     }
 
-    public int getTimeTracking() {
-        return timeTracking;
+    public int getTimeTrackingTodo() {
+        return timeTrackingTodo;
     }
 
-    public void setTimeTracking(int timeTracking) {
-        this.timeTracking = timeTracking;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTimeSpent() {
-        return timeSpent;
-    }
-
-    public void setTimeSpent(String timeSpent) {
-        this.timeSpent = timeSpent;
-    }
-
-    public String getIssueType() {
-        return issueType;
-    }
-
-    public void setIssueType(String issueType) {
-        this.issueType = issueType;
+    public void setTimeTrackingTodo(int timeTrackingTodo) {
+        this.timeTrackingTodo = timeTrackingTodo;
     }
 
     public Date getStartDate() {

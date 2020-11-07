@@ -341,14 +341,16 @@
           datasets: [
             {
               label: "My First dataset",
-              data: [60, 40],
+              data: [50, 20, 30],
               backgroundColor: [
-                '#00b5e9',
-                '#fa4251'
+                'yellow',
+                'Green',
+                'red'
               ],
               hoverBackgroundColor: [
-                '#00b5e9',
-                '#fa4251'
+                'yellow',
+                'Green',
+                'red'
               ],
               borderWidth: [
                 0, 0
@@ -389,6 +391,7 @@
   } catch (error) {
     console.log(error);
   }
+
 
 
 

@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/lt","/lt/", "/lt/**").access("hasAuthority('LecturerAuthen')");
 		http.authorizeRequests().antMatchers("/td","/td/", "/td/**").access("hasAuthority('TrainingDepAuthen')");
 		http.authorizeRequests().antMatchers("/ad","/ad/", "/ad/**").access("hasAnyAuthority('HeadAuthen','LecturerAuthen','TrainingDepAuthen')");
+		http.authorizeRequests().antMatchers("/db","/db/", "/db/**").access("hasAnyAuthority('LecturerAuthen','HeadAuthen')");
 
 
 		/*
