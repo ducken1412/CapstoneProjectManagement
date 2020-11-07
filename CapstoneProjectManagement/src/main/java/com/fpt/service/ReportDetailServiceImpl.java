@@ -1,8 +1,13 @@
 package com.fpt.service;
 
 import com.fpt.entity.ReportDetails;
+import com.fpt.entity.Reports;
 import com.fpt.repository.ReportDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,5 +36,13 @@ public class ReportDetailServiceImpl implements ReportDetailService{
     @Override
     public List<Integer> getListReportIdByUserId(String id) {
         return reportDetailRepository.getListReportIdByUserId(id);
+    }
+
+    @Override
+    public Page<ReportDetails> getTitlePagginByUserId(Pageable pageable, String id) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+        return reportDetailRepository.getTitlePagginByUserId(secondPageWithFiveElements, id);
     }
 }

@@ -3,6 +3,10 @@ package com.fpt.service;
 import com.fpt.entity.Reports;
 import com.fpt.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,4 +41,5 @@ public class ReportServiceImpl implements  ReportService{
     public Reports finReportsById(Integer id) {
         return reportRepository.findAllById(id);
     }
+
 }

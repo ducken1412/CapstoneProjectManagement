@@ -20,19 +20,19 @@ public class Files {
 	@Column(name = "path", columnDefinition = "NVARCHAR(256)")
 	private String path;
 	@Column(name = "file_name", columnDefinition = "NVARCHAR(256)")
-	private String file_name;
+	private String fileName;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
 	private String description;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "capstone_project_id")
 	private CapstoneProjects capstoneProject;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "report_detail_id")
 	private ReportDetails reportDetail;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "evaluation_id")
 	private Evaluations evaluation;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Posts post;
 
@@ -49,15 +49,15 @@ public class Files {
 		this.reportDetail = reportDetail;
 		this.evaluation = evaluation;
 		this.post = post;
-		this.file_name = fileName;
+		this.fileName = fileName;
 	}
 
 	public String getFileName() {
-		return file_name;
+		return fileName;
 	}
 
 	public void setFileName(String fileName) {
-		this.file_name = fileName;
+		this.fileName = fileName;
 	}
 
 	public int getId() {
