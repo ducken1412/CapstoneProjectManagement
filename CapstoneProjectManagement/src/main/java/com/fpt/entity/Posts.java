@@ -29,7 +29,7 @@ public class Posts {
     private List<Comments> comments;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
     private List<HistoryRecords> historyRecords;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "post")
     private List<Files> files;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")

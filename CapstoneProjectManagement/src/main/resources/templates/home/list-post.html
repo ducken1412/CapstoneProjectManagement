@@ -22,11 +22,18 @@
                     <div class="p-2"
                          style="max-height: 400px; overflow-y: auto; border-radius: 15px"
                          th:utext=${post.description}></div>
-                    <div>
-                        <p>File attachment: </p>
-                        
+                    <div >
+
                     </div>
                     <hr>
+                    <div th:each="file : ${post.files}" class="d-flex">
+                            <div class="" th:if="${file.fileName != null}">
+                                <p>File attachment: </p>
+                                <a th:href="@{'/file/' + ${file.fileName}}"><p th:text="${file.fileName}"></p></a>
+                                <hr>
+                            </div>
+                    </div>
+
                     <a href="#" id="view-more-comments" class="view-more-comments" th:postId=${post.id}>View more comments</a>
                     <div class="my-2 p-2 comment-container"
                          style="background-color: #e5e5e5; width: fit-content; border-radius: 15px"
