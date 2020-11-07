@@ -18,4 +18,5 @@ public interface NotificationDetailRepository extends JpaRepository<Notification
     //count notification by user id
     @Query("select count (n) from NotificationDetails n where n.user.id = ?1")
     Integer countNotificationDetailByUserId(String id);
+
 }

@@ -5,6 +5,9 @@ import java.util.List;
 import com.fpt.dto.NotificationDTO;
 
 import com.fpt.entity.Notifications;
+import com.fpt.entity.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 public interface NotificationsService {
@@ -24,4 +27,10 @@ public interface NotificationsService {
 	Notifications getNotificationById(Integer id);
 
 	List<Notifications> getTop5NotificationsByCreatedDate();
+
+	//pagination Notifications
+	Page<Notifications> findPaginated(Pageable pageable);
+
+	//pagination Notifications by user id login
+	Page<Notifications> getAllTitlePagginByUserId(Pageable pageable, String id);
 }

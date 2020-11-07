@@ -1,6 +1,9 @@
 package com.fpt.repository;
 
+import com.fpt.entity.Notifications;
 import com.fpt.entity.Reports;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +25,5 @@ public interface ReportRepository extends JpaRepository<Reports, Integer> {
     void addReportUserTable(Integer rid, String uid);
 
     Reports findAllById(Integer id);
+
 }
