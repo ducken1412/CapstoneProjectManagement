@@ -8,6 +8,6 @@ import com.fpt.entity.Files;
 
 public interface FilesService {
 	Files saveFiles(Files file);
-
+	Integer deleteAllByPostId(Integer postId);
 	List<Files> getFileByPostId(Integer id);
 }
