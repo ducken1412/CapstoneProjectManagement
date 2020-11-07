@@ -3,6 +3,7 @@ package com.fpt.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.Files;
@@ -19,6 +20,7 @@ public class FilesServiceImpl implements FilesService {
 	private FilesRepository filesRepository;
 	
 	@Override
+	@CacheEvict(value="postCache",allEntries = true)
 	public Files saveFiles(Files file) {
 		// Normalize file name
 		try {
@@ -31,6 +33,7 @@ public class FilesServiceImpl implements FilesService {
 	}
 
 	@Override
+	@CacheEvict(value="postCache",allEntries = true)
 	public Integer deleteAllByPostId(Integer postId) {
 		return filesRepository.deleteAllByPostId(postId);
 	}
