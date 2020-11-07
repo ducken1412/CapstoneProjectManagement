@@ -68,7 +68,7 @@ public class NotificationsServiceImpl implements NotificationsService {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
-        return notificationsRepository.g2etAllTitlePagginByUserId(secondPageWithFiveElements, id);
+        return notificationsRepository.getAllTitlePagginByUserId(secondPageWithFiveElements, id);
     }
 
 

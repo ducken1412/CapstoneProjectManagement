@@ -31,10 +31,6 @@ public interface NotificationsRepository extends JpaRepository<Notifications, In
     @Query("select n from Notifications n where n.type = 'all' order by n.created_date desc")
     Page<Notifications> getAllTitlePaggin(Pageable pageable);
 
-    //paggin notification by user id
-    @Query(value = "SELECT * FROM notifications AS n, notification_details AS nd WHERE n.id = nd.notification_id AND nd.user_id = ?1 ORDER BY n.created_date DESC", nativeQuery = true)
-    Page<Notifications> getAllTitlePagginByUserId(Pageable pageable, String id);
-
     @Query("select n from Notifications n , NotificationDetails no where n.id = no.notification.id and no.user.id = ?1 order by n.created_date desc")
-    Page<Notifications> g2etAllTitlePagginByUserId(Pageable pageable, String id);
+    Page<Notifications> getAllTitlePagginByUserId(Pageable pageable, String id);
 }
