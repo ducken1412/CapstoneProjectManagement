@@ -3,12 +3,15 @@ package com.fpt.controller;
 
 import com.fpt.common.NotificationCommon;
 import com.fpt.common.SendingMail;
-import com.fpt.dto.CommentDTO;
-import com.fpt.dto.NotificationDTO;
-import com.fpt.dto.ReportDTO;
+import com.fpt.dto.*;
 import com.fpt.entity.*;
 import com.fpt.service.*;
+import com.fpt.utils.ExcelHelper;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.google.api.tasks.TaskList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -27,6 +30,7 @@ import java.util.stream.IntStream;
 import com.fpt.entity.Reports;
 import com.fpt.entity.Users;
 import com.fpt.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -54,6 +58,12 @@ public class ReportController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private TaskDetailsService taskDetailsService;
+    @Autowired
+    private StatisticsService statisticsService;
+
 
     @GetMapping("/report")
     public String report(Model model, Principal principal) {
@@ -100,7 +110,7 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/add-report", method = RequestMethod.POST)
-    public String addReport(ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request){
+    public String addReport(@RequestParam("file") MultipartFile file, ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request){
         if(principal == null) {
             return "redirect:/login";
         }
@@ -109,6 +119,7 @@ public class ReportController {
             return "home/add-report";
         }
         Users user = userService.findByEmail(principal.getName());
+
         String user_id_login = user.getId();
         String type = "daily report";
         List<String> role = userRoleService.getRoleNamesByEmail(principal.getName());
@@ -141,6 +152,113 @@ public class ReportController {
             records.setReport(reports);
             records.setCreatedDate(date);
             recordService.save(records);
+
+
+            //Import Excel
+            if(file != null) {
+                String message = "";
+
+                Workbook workbook = new XSSFWorkbook(file.getInputStream());
+                String SHEET = "Sheet1";
+                Sheet sheet = workbook.getSheet(SHEET);
+                if (ExcelHelper.hasExcelFormat(file)) {
+                    List<String> errorList = ExcelHelper.checkErrorExcelImport(sheet);
+                    if (errorList == null) {
+                        workbook.close();
+                        return "home/add-report";
+                    }
+                    List<TaskDetails> taskDetailsList = ExcelHelper.excelToStatistics(sheet);
+
+                    Integer week = taskDetailsService.findMaxWeek();
+                    CapstoneProjects capstoneProjects = capstoneProjectDetailService.findCapstoneProjectByUserId(user_id_login);
+                    List<TaskDetails> taskDetailsListAddDB = new ArrayList<>();
+                    int timeTrackingCurrent = 0;
+                    int timeTrackingProcess = 0;
+                    int timeTrackingTodo = 0;
+                    int timeTrackingDone = 0;
+                    //count to div %
+                    int countTrackingCurrent = 0;
+                    int countTrackingProcess = 0;
+                    int countTrackingTodo = 0;
+                    int countTrackingDone = 0;
+                    int countTask =0;
+
+                    Date startDate = taskDetailsList.get(0).getStartDate();
+                    Date endDate = taskDetailsList.get(0).getEndDate();
+
+                    for (TaskDetails taskDetails : taskDetailsList) {
+                        if (week != null) {
+                            taskDetails.setWeek(week + 1);
+                        } else {
+                            taskDetails.setWeek(1);
+                        }
+
+                        if (startDate.compareTo(taskDetails.getStartDate()) < 0) {
+                            startDate = taskDetails.getStartDate();
+                        }
+                        if (endDate.compareTo(taskDetails.getEndDate()) < 0) {
+                            endDate = taskDetails.getEndDate();
+                        }
+                        taskDetails.setCapstoneProject(capstoneProjects);
+                        taskDetailsListAddDB.add(taskDetails);
+                        Date dateCurrent = new Date();
+                        if (taskDetails.getEndDate().compareTo(dateCurrent) <= 0) {
+                            timeTrackingCurrent = timeTrackingCurrent + taskDetails.getTimeTracking();
+                            countTrackingCurrent = countTrackingCurrent + 1;
+                        }
+                        if (taskDetails.getStatus().equalsIgnoreCase("To Do")) {
+                            timeTrackingTodo = timeTrackingTodo + taskDetails.getTimeTracking();
+                            countTrackingTodo = countTrackingTodo + 1;
+                        }
+                        if (taskDetails.getStatus().equalsIgnoreCase("Done")) {
+                            timeTrackingDone = timeTrackingDone + taskDetails.getTimeTracking();
+                            countTrackingDone = countTrackingDone + 1;
+                        }
+                        if (taskDetails.getStatus().equalsIgnoreCase("In Progress")) {
+                            timeTrackingProcess = timeTrackingProcess + taskDetails.getTimeTracking();
+                            countTrackingProcess = countTrackingProcess + 1;
+                        }
+                        countTask = countTask +1;
+
+                    }
+                    if (countTrackingCurrent != 0) {
+                        timeTrackingCurrent = timeTrackingCurrent / countTrackingCurrent;
+                    }
+
+                    if (countTrackingDone != 0 && countTask != 0) {
+                        timeTrackingDone = (int) (Double.valueOf(countTrackingDone) / Double.valueOf(countTask) * 100);
+                    }
+
+                    if (countTrackingProcess != 0 && countTask != 0) {
+                        timeTrackingProcess = (int) (Double.valueOf(countTrackingProcess) / Double.valueOf(countTask) * 100);
+                    }
+
+                    if (countTrackingTodo != 0 && countTask != 0) {
+                        timeTrackingTodo = (int) (Double.valueOf(countTrackingTodo) / Double.valueOf(countTask) * 100);
+                    }
+                    if (taskDetailsListAddDB != null) {
+                        taskDetailsService.saveTaskDetails(taskDetailsListAddDB);
+                        Statistics statistics = new Statistics();
+                        statistics.setStartDate(startDate);
+                        statistics.setEndDate(endDate);
+                        statistics.setTimeTrackingCurrent(timeTrackingCurrent);
+                        statistics.setTimeTrackingTodo(timeTrackingTodo);
+                        statistics.setTimeTrackingProgress(timeTrackingProcess);
+                        statistics.setTimeTrackingDone(timeTrackingDone);
+                        if (week != null) {
+                            statistics.setWeek(week + 1);
+                        } else {
+                            statistics.setWeek(1);
+                        }
+                        statistics.setCapstoneProject(capstoneProjects);
+                        statisticsService.saveStatistics(statistics);
+                    }
+
+                } else {
+                    workbook.close();
+                    return "home/add-report";
+                }
+            }
         }catch (Exception e){
             System.out.println(e);
         }
