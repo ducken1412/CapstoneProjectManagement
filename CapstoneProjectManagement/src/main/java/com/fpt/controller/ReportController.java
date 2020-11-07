@@ -3,12 +3,15 @@ package com.fpt.controller;
 
 import com.fpt.common.NotificationCommon;
 import com.fpt.common.SendingMail;
-import com.fpt.dto.CommentDTO;
-import com.fpt.dto.NotificationDTO;
-import com.fpt.dto.ReportDTO;
+import com.fpt.dto.*;
 import com.fpt.entity.*;
 import com.fpt.service.*;
+import com.fpt.utils.ExcelHelper;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.google.api.tasks.TaskList;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +24,7 @@ import java.util.List;
 import com.fpt.entity.Reports;
 import com.fpt.entity.Users;
 import com.fpt.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,6 +51,10 @@ public class ReportController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private TaskDetailsService taskDetailsService;
+
 
     @GetMapping("/report")
     public String report(Model model, Principal principal) {
@@ -93,7 +101,7 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/add-report", method = RequestMethod.POST)
-    public String addReport(ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request){
+    public String addReport(@RequestParam("file") MultipartFile file, ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request){
         if(principal == null) {
             return "redirect:/login";
         }
@@ -102,6 +110,7 @@ public class ReportController {
             return "home/add-report";
         }
         Users user = userService.findByEmail(principal.getName());
+
         String user_id_login = user.getId();
         String type = "daily report";
         List<String> role = userRoleService.getRoleNamesByEmail(principal.getName());
@@ -134,6 +143,50 @@ public class ReportController {
             records.setReport(reports);
             records.setCreatedDate(date);
             recordService.save(records);
+
+            //Import Excel
+            String message = "";
+
+            Workbook workbook = new XSSFWorkbook(file.getInputStream());
+            String SHEET = "Sheet1";
+            Sheet sheet = workbook.getSheet(SHEET);
+            if (ExcelHelper.hasExcelFormat(file)) {
+                List<String> errorList = ExcelHelper.checkErrorExcelImport(sheet);
+                if(errorList == null) {
+                    workbook.close();
+                    return "home/add-report";
+                }
+                List<TaskDetails>  taskDetailsList = ExcelHelper.excelToStatistics(sheet);
+
+                Integer week =taskDetailsService.findMaxWeek();
+                CapstoneProjects capstoneProjects = capstoneProjectDetailService.findCapstoneProjectByUserId(user_id_login);
+                List<TaskDetails>  taskDetailsListAddDB = new ArrayList<>();
+                int timeTrackingCurrent = 0;
+                int timeTrackingProcess = 0;
+                int timeTrackingTodo = 0;
+                for (TaskDetails taskDetails : taskDetailsList){
+                    if(week != null){
+                        taskDetails.setWeek(week);
+                    }
+                    taskDetails.setCapstoneProject(capstoneProjects);
+                    taskDetailsListAddDB.add(taskDetails);
+                    Date dateCurrent = new Date();
+                    if(taskDetails.getEndDate().compareTo(dateCurrent) <= 0){
+                        timeTrackingCurrent = timeTrackingCurrent + taskDetails.getTimeTracking();
+                    }
+                    if (taskDetails.getStatus().equalsIgnoreCase("To Do")){
+
+                    }
+                }
+                if(taskDetailsListAddDB != null){
+                    taskDetailsService.saveTaskDetails(taskDetailsListAddDB);
+                }
+
+
+            } else {
+                workbook.close();
+                return "home/add-report";
+            }
         }catch (Exception e){
             System.out.println(e);
         }
