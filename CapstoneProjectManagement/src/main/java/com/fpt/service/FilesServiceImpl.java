@@ -28,4 +28,9 @@ public class FilesServiceImpl implements FilesService {
 		}
 		return null;
 	}
+
+	@Override
+	public Integer deleteAllByPostId(Integer postId) {
+		return filesRepository.deleteAllByPostId(postId);
+	}
 }

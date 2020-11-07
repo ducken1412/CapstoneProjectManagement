@@ -1,6 +1,5 @@
 function getFileSizeAndName(input)
 {
-    debugger;
     var select = $('#uploadFile');
 
 
@@ -13,6 +12,7 @@ function getFileSizeAndName(input)
         select.append($('<label >'+filename+'</label><br>'));
     }
 
+    $('#file-container').remove();
 
 }
 

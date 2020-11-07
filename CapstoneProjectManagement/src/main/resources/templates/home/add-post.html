@@ -40,7 +40,9 @@
 					<input type="file" id="fileInputUpload" name="file[]" class="fileUploadClass"  multiple="multiple"  onchange="getFileSizeAndName(this);">
 					<div id="uploadFile">
 					</div>
-
+					<div id="file-container" th:each="file : ${post.files}">
+						<p th:text="${file.fileName}"></p>
+					</div>
 				</div>
 			</div>
 			<div class="float-right">

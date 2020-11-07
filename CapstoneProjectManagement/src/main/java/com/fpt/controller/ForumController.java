@@ -84,7 +84,6 @@ public class ForumController {
         if(principal == null) {
             return "redirect:/login";
         }
-        System.out.println();
         Posts post;
         Date date = new Date();
         if (dto.getId() != null) {
@@ -97,7 +96,7 @@ public class ForumController {
             records.setPost(post);
             if (postService.save(post)) {
                 recordService.save(records);
-                return "The post has been successfully updated";
+                return String.valueOf(dto.getId());
             } else {
                 return "error/403Page";
             }
@@ -129,12 +128,13 @@ public class ForumController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/add-file-post/{postId}", produces = {"application/json"})
+    @PostMapping(value = "/add-file-post/{postId}")
     public String addFilesPost(MultipartHttpServletRequest request,
                                HttpServletResponse response, @PathVariable Integer postId ,Principal principal) throws Exception {
         if(principal == null) {
             return "redirect:/login";
         }
+        filesService.deleteAllByPostId(postId);
         Map< String, MultipartFile > filesMap = new HashMap< String, MultipartFile >();
         filesMap = request.getFileMap();
         for(MultipartFile file : filesMap.values()){
@@ -151,7 +151,6 @@ public class ForumController {
                 filesService.saveFiles(dbFile);
             }
         }
-        System.out.println();
 
         return "The post has been added successfully";
     }
