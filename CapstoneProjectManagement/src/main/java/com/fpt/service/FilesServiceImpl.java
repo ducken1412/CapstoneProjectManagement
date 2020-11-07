@@ -33,6 +33,7 @@ public class FilesServiceImpl implements FilesService {
 	@Override
 	public Integer deleteAllByPostId(Integer postId) {
 		return filesRepository.deleteAllByPostId(postId);
+	}
 	public List<Files> getFileByPostId(Integer id) {
 		return filesRepository.getFileByPostId(id);
 	}
