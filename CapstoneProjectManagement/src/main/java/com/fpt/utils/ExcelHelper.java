@@ -6,11 +6,13 @@ import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 import com.fpt.dto.TaskDetailsDTO;
 import com.fpt.entity.TaskDetails;
 import com.fpt.service.TaskDetailsService;
+import org.apache.http.client.utils.DateUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -35,84 +37,88 @@ public class ExcelHelper {
     }
 
     public static List<TaskDetails> excelToStatistics(Sheet sheet) {
-        try {
-            /*Workbook workbook = new XSSFWorkbook(is);
+        /*Workbook workbook = new XSSFWorkbook(is);
 
-            Sheet sheet = workbook.getSheet(SHEET);*/
+        Sheet sheet = workbook.getSheet(SHEET);*/
 
-            Iterator<Row> rows = sheet.iterator();
+        Iterator<Row> rows = sheet.iterator();
 
-            List<TaskDetails> taskDetails = new ArrayList<TaskDetails>();
+        List<TaskDetails> taskDetails = new ArrayList<TaskDetails>();
 
-            int rowNumber = 0;
-            while (rows.hasNext()) {
-                Row currentRow = rows.next();
-                // skip header
-                if (rowNumber == 0) {
-                    rowNumber++;
-                    continue;
-                }
-                boolean checkTask = true;
+        int rowNumber = 0;
+        while (rows.hasNext()) {
+            Row currentRow = rows.next();
+            // skip header
+            if (rowNumber == 0) {
+                rowNumber++;
+                continue;
+            }
+            boolean checkTask = true;
 
-                Iterator<Cell> cellsInRow = currentRow.iterator();
+            Iterator<Cell> cellsInRow = currentRow.iterator();
 
-                TaskDetails taskDetail = new TaskDetails();
-                int cellIdx = 0;
-                while (cellsInRow.hasNext()) {
-                    Cell currentCell = cellsInRow.next();
-                    String header = sheet.getRow(0).getCell(cellIdx).getStringCellValue();
-                    if (header == null) {
-                        checkTask = false;
-                        cellIdx++;
-                        break;
-                    }
-                    switch (header.toLowerCase().trim()) {
-                        case "summary":
-                            taskDetail.setSummary(getDataFromExcel(currentCell));
-                            break;
-
-                        case "assignee":
-                            taskDetail.setAssignee(getDataFromExcel(currentCell));
-                            break;
-
-                        case "timetracking":
-                            taskDetail.setTimeTracking(Integer.parseInt(getDataFromExcel(currentCell).replace("%", "")));
-                            break;
-
-                        case "status":
-                            taskDetail.setStatus(getDataFromExcel(currentCell));
-                            break;
-
-                        case "timespent+remainingestimate":
-                            taskDetail.setTimeSpent(getDataFromExcel(currentCell));
-                            break;
-                        case "issuetype":
-                            checkTask = false;
-                            break;
-                        case "startdate":
-                            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                            taskDetail.setStartDate(df.parse(getDataFromExcel(currentCell)));
-                            break;
-                        case "enddate":
-                            DateFormat df1 = new SimpleDateFormat("dd/MM/yyyy");
-                            taskDetail.setEndDate(df1.parse(getDataFromExcel(currentCell)));
-                            break;
-                        default:
-                            break;
-                    }
+            TaskDetails taskDetail = new TaskDetails();
+            int cellIdx = 0;
+            while (cellsInRow.hasNext()) {
+                Cell currentCell = cellsInRow.next();
+                String header = sheet.getRow(0).getCell(cellIdx).getStringCellValue();
+                if (header == null) {
+                    checkTask = false;
                     cellIdx++;
+                    break;
                 }
-                if (checkTask) {
-                    taskDetails.add(taskDetail);
+                switch (header.toLowerCase().trim()) {
+                    case "summary":
+                        taskDetail.setSummary(getDataFromExcel(currentCell));
+                        break;
 
+                    case "assignee":
+                        taskDetail.setAssignee(getDataFromExcel(currentCell));
+                        break;
+
+                    case "timetracking":
+                        if(getDataFromExcel(currentCell) != null){
+                            taskDetail.setTimeTracking(Integer.parseInt(getDataFromExcel(currentCell).replace("%", "")));
+                        }else {
+                            taskDetail.setTimeTracking(0);
+                        }
+                        break;
+
+                    case "status":
+                        taskDetail.setStatus(getDataFromExcel(currentCell));
+                        break;
+
+                    case "time spent + remaining estimate":
+                        taskDetail.setTimeSpent(getDataFromExcel(currentCell));
+                        break;
+                    case "issue type":
+                        if(!"Task".trim().equalsIgnoreCase(getDataFromExcel(currentCell))){
+                            checkTask = false;
+                        }
+                        break;
+                    case "start date":
+                        Date startDate =  DateUtils.parseDate(getDataFromExcel(currentCell),
+                            new String[] { "yyyy-MM-dd","dd/MM/yyyy","yyyy/MM/dd","dd-MM-yyyy" });
+                        taskDetail.setStartDate(startDate);
+                        break;
+                    case "end date":
+                        Date endDate =  DateUtils.parseDate(getDataFromExcel(currentCell),
+                                new String[] { "yyyy-MM-dd","dd/MM/yyyy","yyyy/MM/dd","dd-MM-yyyy" });
+                        taskDetail.setEndDate(endDate);
+                        break;
+                    default:
+                        break;
                 }
+                cellIdx++;
+            }
+            if (checkTask) {
+                taskDetails.add(taskDetail);
 
             }
-           // workbook.close();
-            return taskDetails;
-        } catch (ParseException e) {
-            throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
+
         }
+        // workbook.close();
+        return taskDetails;
     }
 
     private static String getDataFromExcel(Cell cell) {
@@ -131,9 +137,9 @@ public class ExcelHelper {
                 result = cell.getCellFormula();
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + cell.getCellType());
+                return null;
         }
-        return result.toString();
+        return result.toString().trim();
     }
 
     public static List<String> checkErrorExcelImport(Sheet sheet) {
@@ -174,18 +180,21 @@ public class ExcelHelper {
                         countstatus = countstatus + 1;
                         break;
 
-                    case "timespent+remainingestimate":
+                    case "time spent + remaining estimate":
                         countTimespent = countTimespent + 1;
                         break;
                     case "issuetype":
+                        if(!"Task".trim().equalsIgnoreCase(getDataFromExcel(currentCell))){
+                            checkTask = false;
+                            break;
+                        }
                         countIssueType = countIssueType + 1;
-                        checkTask = false;
                         break;
-                    case "startdate":
 
+                    case "start date":
                         countStartDate = countStartDate + 1;
                         break;
-                    case "enddate":
+                    case "end date":
                         countEndDate = countEndDate + 1;
                         break;
                     default:

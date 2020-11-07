@@ -16,6 +16,8 @@ public class Statistics {
     public int timeTrackingProgress;
     @Column(name = "time_tracking_todo", columnDefinition = "INT")
     public int timeTrackingTodo;
+    @Column(name = "time_tracking_done", columnDefinition = "INT")
+    public int timeTrackingDone;
     @Column(name = "start_date", columnDefinition = "DATE")
     public Date startDate;
     @Column(name = "end_date", columnDefinition = "DATE")
@@ -29,11 +31,12 @@ public class Statistics {
     public Statistics() {
     }
 
-    public Statistics(Integer id, int timeTrackingCurrent, int timeTrackingProgress, int timeTrackingTodo, Date startDate, Date endDate, int week, CapstoneProjects capstoneProject) {
+    public Statistics(Integer id, int timeTrackingCurrent, int timeTrackingProgress, int timeTrackingTodo, int timeTrackingDone,Date startDate, Date endDate, int week, CapstoneProjects capstoneProject) {
         this.id = id;
         this.timeTrackingCurrent = timeTrackingCurrent;
         this.timeTrackingProgress = timeTrackingProgress;
         this.timeTrackingTodo = timeTrackingTodo;
+        this.timeTrackingDone = timeTrackingDone;
         this.startDate = startDate;
         this.endDate = endDate;
         this.week = week;
@@ -70,6 +73,14 @@ public class Statistics {
 
     public void setTimeTrackingTodo(int timeTrackingTodo) {
         this.timeTrackingTodo = timeTrackingTodo;
+    }
+
+    public int getTimeTrackingDone() {
+        return timeTrackingDone;
+    }
+
+    public void setTimeTrackingDone(int timeTrackingDone) {
+        this.timeTrackingDone = timeTrackingDone;
     }
 
     public Date getStartDate() {
