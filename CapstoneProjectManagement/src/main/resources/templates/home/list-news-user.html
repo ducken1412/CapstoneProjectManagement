@@ -56,14 +56,15 @@
                                             </tbody>
                                         </div>
                                     </table>
-
                                     <div style="display: flex; justify-content: center; padding-top: 20px; margin-bottom: 20px">
                                         <nav aria-label="Page navigation">
                                             <ul th:if="${notificationsPage.totalPages > 0}"
                                                 class="pagination w-75 justify-content-end">
                                                 <th:block th:each="pageNumber : ${pageNumbers}">
                                                     <li th:class="${pageNumber==notificationsPage.number + 1} ? active + ' ' + page-item : page-item">
-                                                        <a th:href="@{/list-news-user(size=${notificationsPage.size}, page=${pageNumber})}"
+                                                        <a th:href="@{'/list-news-user/' + ${userId}(size=${notificationsPage.size}, page=${pageNumber})}"
+                                                           th:text=${pageNumber}
+                                                           th:class="page-link">
                                                         </a>
                                                     </li>
                                                 </th:block>

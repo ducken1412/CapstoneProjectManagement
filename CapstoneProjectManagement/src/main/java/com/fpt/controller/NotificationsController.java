@@ -215,19 +215,19 @@ public class NotificationsController {
 			return "redirect:/login";
 		}
 		Users user = userService.findByEmail(principal.getName());
-		String user_id_login = user.getId();
+		String userId = user.getId();
 
 		//phan trang
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(20);
-		Page<Notifications> notificationsPage = notificationsService.getAllTitlePagginByUserId(PageRequest.of(currentPage - 1, pageSize),user_id_login);
+		Page<Notifications> notificationsPage = notificationsService.getAllTitlePagginByUserId(PageRequest.of(currentPage - 1, pageSize),userId);
 		model.addAttribute("notificationsPage", notificationsPage);
 		int totalPages = notificationsPage.getTotalPages();
 		if (totalPages > 0) {
 			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 			model.addAttribute("pageNumbers", pageNumbers);
 		}
-
+		model.addAttribute("userId",userId);
 		return "home/list-news-user";
 	}
 }
