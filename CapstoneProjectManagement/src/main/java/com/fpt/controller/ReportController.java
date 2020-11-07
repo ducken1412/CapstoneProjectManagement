@@ -109,7 +109,7 @@ public class ReportController {
             return "home/add-report";
         }
         Users user = userService.findByEmail(principal.getName());
-        String user_id_login = user.getId();
+        String userId = user.getId();
         String type = "daily report";
         List<String> role = userRoleService.getRoleNamesByEmail(principal.getName());
         for (int i = 0; i < role.size(); i++){
@@ -146,24 +146,41 @@ public class ReportController {
         }
 
         //send notification to member project team
-        int project_id_user_login = capstoneProjectDetailService.getOneProjectIdByUserId(user_id_login);
-        List<Users> user_by_project = capstoneProjectDetailService.getUserStudentMemberByProjectId(project_id_user_login);
-
+        int project_id_user_login = capstoneProjectDetailService.getOneProjectIdByUserId(userId);
+        List<Users> userByProject = capstoneProjectDetailService.getUserStudentMemberByProjectId(project_id_user_login);
+        Integer reportId =  reports.getId();
+        Integer reportDetailId = reportDetails.getReport().getId();
         String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
-        for (int i = 0; i < user_by_project.size(); i++){
-            if(!user_by_project.get(i).equals(user)){
-                String title = user_id_login + " report at " + date;
-                String content = "Report by " + user_id_login + " at " + date + " Click " + "<a href=\"" + baseUrl + "report-detail/" + reportDetails.getReport().getId() + "\">view</a>";
-                NotificationCommon.sendNotification(user,title,content,user_by_project.get(i).getId());
+        String title = "";
+        String content = "";
+//        for (int i = 0; i < userByProject.size(); i++){
+//            if(!userByProject.get(i).equals(user)){
+//                title = userId + " report at " + date;
+//                content = "Report by " + userId + " at " + date + " Click " + "<a href=\"" + baseUrl + "report-detail/" + reportDetailId + "\">view</a>";
+//                NotificationCommon.sendNotification(user,title,content,userByProject.get(i).getId());
+//                try{
+//                    SendingMail.sendEmail(userByProject.get(i).getEmail(),"[FPTU Capstone Project] " + title, content);
+//                }catch (Exception ex) {
+//                    System.out.println(ex);
+//                }
+//            }
+//        }
+        for (Users u : userByProject) {
+            if(!userByProject.equals(user)){
+                title = userId + " report at " + date;
+                content = "Report by " + userId + " at " + date + " Click " + "<a href=\"" + baseUrl + "report/" + reportDetailId + "\">view</a>";
+                NotificationCommon.sendNotification(user,title,content,u.getId());
                 try{
-                    SendingMail.sendEmail(user_by_project.get(i).getEmail(),"[FPTU Capstone Project] " + title, content);
+                    SendingMail.sendEmail(u.getEmail(),"[FPTU Capstone Project] " + title, content);
                 }catch (Exception ex) {
                     System.out.println(ex);
                 }
             }
-            reportService.addReportUserTable(reports.getId(),user_by_project.get(i).getId());
         }
-        return "redirect:/report-detail/" + reports.getId();
+        for (Users u : userByProject) {
+            reportService.addReportUserTable(reportId,u.getId());
+        }
+        return "redirect:/report-detail/" + reportId;
     }
 
     @RequestMapping(value = "/list-reports", method = RequestMethod.GET)
