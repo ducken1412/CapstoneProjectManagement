@@ -79,7 +79,7 @@
                         <ul class="header3-sub-list list-unstyled">
 
                             <li >
-                                <a href="#">Report news</a>
+                                <a th:if="${#request.userPrincipal != null}" th:href="@{/list-reports}">Report news</a>
                             </li>
 
                             <li th:each="authority : ${#authentication.getPrincipal().authorities}"

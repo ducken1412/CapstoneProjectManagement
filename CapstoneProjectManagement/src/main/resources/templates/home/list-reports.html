@@ -27,37 +27,54 @@
                         <div class="w-75" id="content-body">
                             <div class="card">
                                 <div id="post-container">
-                                        <table class="table">
-
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col">Report by</th>
-                                                    <th scope="col">Title</th>
-                                                    <th scope="col">Created date</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <div th:each="list_report : ${reportDetails}">
-                                                <tr>
-                                                    <td><span style="color: rgb(74, 137, 191)"
-                                                              th:text="${list_report.user.lastName}"></span>
-                                                        </h5></td>
-                                                    <td><a th:href="@{'/report-detail/' + ${list_report.report.id}}">
-                                                        <h5>
+                                    <table class="table table-borderless">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th scope="col">Report by</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Created date</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <div th:each="list_report : ${reportsPage}">
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <a th:href="@{'/user/' + ${list_report.user.id}}">
+                                                        <h5><span style="color: rgb(74, 137, 191)"
+                                                                  th:text="${list_report.user.lastName}"></span></h5>
+                                                    </a>
+                                                </td>
+                                                <td><a th:href="@{'/report/' + ${list_report.report.id}}">
+                                                    <h5>
                                                         <span style="color: rgb(74, 137, 191)"
                                                               th:text="${list_report.report.name}"></span>
-                                                        </h5>
-                                                    </a></td>
-                                                    <td><h5>
+                                                    </h5>
+                                                </a></td>
+                                                <td>
                                                         <span style="color: rgb(74, 137, 191)"
                                                               th:text="${list_report.createdDate}"></span>
-                                                    </h5></td>
-                                                </tr>
-                                                </div>
-                                                </tbody>
-
-
-                                        </table>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                        </tbody>
+                                    </table>
+                                    <div style="display: flex; justify-content: center; padding-top: 20px; margin-bottom: 20px">
+                                        <nav aria-label="Page navigation">
+                                            <ul th:if="${reportsPage.totalPages > 0}"
+                                                class="pagination w-75 justify-content-end">
+                                                <th:block th:each="pageNumber : ${pageNumbers}">
+                                                    <li th:class="${pageNumber==reportsPage.number + 1} ? active + ' ' + page-item : page-item">
+                                                        <a th:href="@{/list-reports(size=${reportsPage.size}, page=${pageNumber})}"
+                                                           th:text=${pageNumber}
+                                                           th:class="page-link">
+                                                        </a>
+                                                    </li>
+                                                </th:block>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                     <!--                                Content Here-->
                                     <!--                                    <div class="row" style="width: 90%; margin-left: auto;margin-right: auto;">-->
                                     <!--                                        <div class="col-md-12">-->

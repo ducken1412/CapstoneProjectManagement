@@ -23,10 +23,10 @@ public class ReportDTO {
 
     private Date lastModifiedDate;
 
-    @NotBlank
+    @NotBlank(message = "Content must not blank")
     private String content;
 
-    @NotBlank
+    @NotBlank(message = "Title must not blank")
     private String name;
 
     private String type;

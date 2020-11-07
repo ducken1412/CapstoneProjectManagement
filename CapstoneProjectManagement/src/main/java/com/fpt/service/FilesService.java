@@ -9,4 +9,5 @@ import com.fpt.entity.Files;
 public interface FilesService {
 	Files saveFiles(Files file);
 
+	List<Files> getFileByPostId(Integer id);
 }
