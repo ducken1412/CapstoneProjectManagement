@@ -99,7 +99,7 @@ public class ForumController {
                 recordService.save(records);
                 return String.valueOf(dto.getId());
             } else {
-                return "error/403Page";
+                return "error";
             }
         }
 
@@ -111,7 +111,7 @@ public class ForumController {
             post.setAuthor(author);
             records.setUser(author);
         } else {
-            return "error/403Page";
+            return "error";
         }
         post.setTitle(dto.getTitle());
         post.setDescription(dto.getDescription());
@@ -123,7 +123,7 @@ public class ForumController {
         if (postService.save(post)) {
             recordService.save(records);
         } else {
-            return "error/403Page";
+            return "error";
         }
         return  String.valueOf(post.getId());
     }
@@ -170,15 +170,12 @@ public class ForumController {
         if (author != null) {
             comment.setSender(author);
         } else {
-            return "error/403Page";
+            return "error";
         }
         comment.setCreatedDate(date);
         comment.setContent(dto.getContent());
         comment.setPost(post);
         commentService.save(comment);
-        List<Comments> comments = post.getComments();
-        comments.add(comment);
-        post.setComments(comments);
         return "success";
     }
 

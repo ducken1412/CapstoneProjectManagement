@@ -2,6 +2,7 @@ package com.fpt.entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
         name = "post-entity-graph-with-comment-users",
         attributeNodes = {
                 @NamedAttributeNode("author"),
+                @NamedAttributeNode("files"),
                 @NamedAttributeNode(value = "comments", subgraph = "comments-subgraph"),
         }
 )
@@ -26,11 +28,13 @@ public class Posts {
     @Column(name = "created_date", columnDefinition = "DATETIME")
     private Date created_date;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
-    private List<Comments> comments;
+    @OrderBy
+    private Set<Comments> comments;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
     private List<HistoryRecords> historyRecords;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "post")
-    private List<Files> files;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
+    @OrderBy
+    private Set<Files> files;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Users author;
@@ -39,8 +43,8 @@ public class Posts {
         super();
     }
 
-    public Posts(Integer id, String title, String description, Date created_date, List<Comments> comments,
-                 List<HistoryRecords> historyRecords, List<Files> files, Users author) {
+    public Posts(Integer id, String title, String description, Date created_date, Set<Comments> comments,
+                 List<HistoryRecords> historyRecords, Set<Files> files, Users author) {
         super();
         this.id = id;
         this.title = title;
@@ -84,11 +88,11 @@ public class Posts {
         this.created_date = created_date;
     }
 
-    public List<Comments> getComments() {
+    public Set<Comments> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comments> comments) {
+    public void setComments(Set<Comments> comments) {
         this.comments = comments;
     }
 
@@ -100,11 +104,11 @@ public class Posts {
         this.historyRecords = historyRecords;
     }
 
-    public List<Files> getFiles() {
+    public Set<Files> getFiles() {
         return files;
     }
 
-    public void setFiles(List<Files> files) {
+    public void setFiles(Set<Files> files) {
         this.files = files;
     }
 
