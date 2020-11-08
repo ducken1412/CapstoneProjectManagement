@@ -47,7 +47,7 @@
 <!--                                                    <span class="bg-danger pull-right error-mess" th:errors="*{content}"></span>-->
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div th:if="${check_role == true}" class="row form-group">
                                             <div class="col col-md-2">
                                                 <label for="content" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Add a
                                                     files</label>
@@ -58,7 +58,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-info pull-right">
+                                        <button id="post" type="submit" class="btn btn-info pull-right">
                                             <i class="fa fa-dot-circle-o"></i> Submit
                                         </button>
                                     </form>
@@ -161,6 +161,13 @@
             '</table>\n';
         $("#content").val(html_table)
     })
+</script>
+<script>
+    $(document).on("click", "#post", function (e) {
+        $.LoadingOverlay("show", {
+            size: 50,
+            maxSize: 50,
+        });});
 </script>
 </body>
 </html>

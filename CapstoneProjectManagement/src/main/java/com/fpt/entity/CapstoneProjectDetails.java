@@ -36,7 +36,7 @@ public class CapstoneProjectDetails {
     @Column(name = "description_action", columnDefinition = "longtext")
     private String desAction;
 
-    @Column(name = "sup_type", columnDefinition = "NVARCHAR(50) NOT NULL")
+    @Column(name = "sup_type", columnDefinition = "NVARCHAR(50)")
     private String supType;
 
     public CapstoneProjectDetails() {

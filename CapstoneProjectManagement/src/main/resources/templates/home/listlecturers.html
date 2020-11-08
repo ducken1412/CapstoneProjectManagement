@@ -166,6 +166,20 @@
                 </div>
             </div>
             <th:block th:include="home/_script"></th:block>
+            <script>
+                $(document).on("click", "#btn-booking", function (e) {
+                    $.LoadingOverlay("show", {
+                        size: 50,
+                        maxSize: 50,
+                    });});
+            </script>
+            <script>
+                $(document).on("click", "#btn-booking2", function (e) {
+                    $.LoadingOverlay("show", {
+                        size: 50,
+                        maxSize: 50,
+                    });});
+            </script>
 </body>
 </html>
 

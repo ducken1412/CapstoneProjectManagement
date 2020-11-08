@@ -74,6 +74,14 @@ public class ReportController {
         model.addAttribute("commentDTO", new CommentDTO());
         model.addAttribute("reportDetail", new ReportDTO());
         Users user = userService.findByEmail(principal.getName());
+        boolean check = false;
+        List<String> role = userRoleService.getRoleNamesByEmail(principal.getName());
+        for(int i = 0; i < role.size(); i++){
+            if(role.get(i).equals("student_leader")){
+                check = true;
+            }
+        }
+        model.addAttribute("check_role",check);
         return "home/add-report";
     }
 
