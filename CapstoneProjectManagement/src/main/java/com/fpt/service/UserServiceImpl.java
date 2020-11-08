@@ -2,6 +2,7 @@ package com.fpt.service;
 
 import java.util.List;
 
+import com.fpt.entity.Reports;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
 		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
 		return userRepository.getUserByRoleId(secondPageWithFiveElements, 4);
 	}
+
 
 
 }

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.fpt.common.NotificationCommon;
+import com.fpt.common.SendingMail;
 import com.fpt.entity.*;
 import com.fpt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,11 +145,13 @@ public class DetailProjectController {
 			HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
 			if(historyRecords != null) {
 				String user_booking_id = historyRecords.getUser().getId();
+				Users u = userService.findById(user_booking_id);
 				capstoneProjectDetailService.updateStatusUserProject(user_login, id);
 				String title = user_login + " has joined your team";
 				String content = user_login + " has joined your team " + date;
 				NotificationCommon.sendNotification(user, title, content, user_booking_id);
 				capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login,id);
+				SendingMail.sendEmail(u.getEmail(),"[FPTU Capstone Project] " + title, content);
 				check = true;
 			}
 		}
@@ -166,9 +169,23 @@ public class DetailProjectController {
 		if(principal == null) {
 			return "redirect:/login";
 		}
-		Users user = userService.findByEmail(principal.getName());
-		String user_login = user.getId();
-		capstoneProjectDetailService.deleteRejectCapstoneProjectDetailsByUserId(user_login, id);
+		try {
+			Date date = new Date();
+			HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
+			if(historyRecords != null) {
+				Users user = userService.findByEmail(principal.getName());
+				String user_booking_id = historyRecords.getUser().getId();
+				Users u = userService.findById(user_booking_id);
+				String user_login = user.getId();
+				String title = user_login + " has rejected your team";
+				String content = user_login + " has rejected your team " + date;
+				NotificationCommon.sendNotification(user, title, content, user_booking_id);
+				capstoneProjectDetailService.deleteRejectCapstoneProjectDetailsByUserId(user_login, id);
+				SendingMail.sendEmail(u.getEmail(), "[FPTU Capstone Project] " + title, content);
+			}
+		}catch (Exception e){
+			System.out.println(e);
+		}
 		return "redirect:/lecturers";
 	}
 }

@@ -79,6 +79,25 @@ public class NotificationCommon {
         notificationCommon.recordService.save(records);
     }
 
+    public static void sendNotificationIgnoreHistory(Users user,String title,String content, String userSendTo){
+        Date date = new Date();
+        Notifications notifications = new Notifications();
+        NotificationDetails notificationDetails = new NotificationDetails();
+        notifications.setType("private");
+        notifications.setTitle(title);
+        notifications.setContent(content);
+        notifications.setCreated_date(date);
+        String user_id = userSendTo;
+        List<NotificationDetails> notificationDetail = new ArrayList<>();
+        notificationDetails.setUser(notificationCommon.userService.findById(user_id));
+        String type = "private";
+        notificationDetails.setNotification(notifications);
+        notificationDetails.setType(type);
+        notificationDetail.add(notificationDetails);
+        notifications.setNotificationDetails(notificationDetail);
+        notificationCommon.notificationsService.addNotification(notifications);
+    }
+
     public static void sendNotificationByUsername(Users sender,String title,String content, String recipient){
         HistoryRecords records = new HistoryRecords();
         Date date = new Date();
