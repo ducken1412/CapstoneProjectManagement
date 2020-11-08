@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface TaskDetailsRepository extends JpaRepository<TaskDetails, Integer> {
-    @Query(value = "SELECT MAX(r.week)  FROM task_details", nativeQuery = true)
+    @Query(value = "SELECT MAX(r.week)  FROM task_details as r", nativeQuery = true)
     Integer getMaxWeek();
 }
