@@ -1,0 +1,40 @@
+@charset "ISO-8859-1";
+#header {
+  background: url(/image/about/header.jpg) center center / cover no-repeat ;
+}
+@media (max-width:1043px) and (min-width:992px) {
+ .hide-1043992 {
+   display: none!important;
+ }
+}
+body{
+	font-family: sans-serif;
+	font-size: 20px;
+	font-style: italic;
+	    width: 60%;
+    margin-bottom: initial;
+    margin-left: 20%;
+ line-height: 1.61111em;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+h2{
+	color: green;
+}
+h3{
+	color: #637563;
+}
+h1{
+	color: #dc3908;
+}
+
+strong{
+	color: green;
+
+}
+table{
+	font-size: 10px;
+	width: 50%;
+	float: right;
+}
