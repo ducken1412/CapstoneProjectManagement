@@ -1,0 +1,1 @@
+Vui lòng tat các chuong trình diet virus, tuong lua và windows defender truoc khi chay file KMSpico.exe

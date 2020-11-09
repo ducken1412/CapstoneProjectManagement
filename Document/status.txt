@@ -1,0 +1,17 @@
+user
+-not_eligible_capstone (k du dk lam do an)
+-eligible_capstone (du dk lam do an)
+-inActive_user (disable account)//
+-registering_capstone(dang dang ky )
+-registed_capstone(da dang ky)(user dang ky chuyen trang thai nay luon)
+-approve_capstone_lecturer (gv approve)
+-approve_capstone_trainning (phong dao tao approve)
+-approve_capstone_head (truong bo mon approve)
+-doing_capstone (dang lam do an)
+-not_eligible_defence_capstone (khong du dieu kien bv)
+-eligible_defence_capstone (du dk bv)
+
+capstone
+-reject_capstone (huy)
+-changing_name_capstone (dang doi ten)
+-pending_capstone (capstone gap van de can phai sua)
