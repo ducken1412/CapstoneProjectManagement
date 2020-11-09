@@ -21,18 +21,18 @@ public class CapstoneProjects {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "INT")
 	private Integer id;
-	@Column(name = "name", columnDefinition = "NVARCHAR(100) NOT NULL")
+	@Column(name = "name", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String name;
-	@Column(name = "name_lang_other", columnDefinition = "NVARCHAR(20)")
+	@Column(name = "name_lang_other", columnDefinition = "NVARCHAR(256)")
 	private String nameOther;
-	@Column(name = "name_vi", columnDefinition = "NVARCHAR(20)")
+	@Column(name = "name_vi", columnDefinition = "NVARCHAR(256)")
 	private String nameVi;
-	@Column(name = "name_abbreviation", columnDefinition = "NVARCHAR(20)")
+	@Column(name = "name_abbreviation", columnDefinition = "NVARCHAR(256)")
 	private String nameAbbreviation;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "profession_id")
 	private Profession profession;
-	@Column(name = "specialty", columnDefinition = "NVARCHAR(10) NOT NULL")
+	@Column(name = "specialty", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String specialty;
 	@Column(name = "document", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String document;
