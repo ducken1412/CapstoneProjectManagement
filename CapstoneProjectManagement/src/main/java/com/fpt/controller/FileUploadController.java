@@ -42,7 +42,7 @@ import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin("https://fcpm.herokuapp.com")
 @Controller
 public class FileUploadController {
 
