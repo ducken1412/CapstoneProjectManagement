@@ -1,0 +1,27 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="card">
+    <div class="card-header">
+        <div class="w-100">
+            <strong id="title-modal">Create post</strong>
+            <button type="button" id="close-add-form" class="close"
+                    data-dismiss="modal">&times;</button>
+        </div>
+    </div>
+    <div class="card-body card-block">
+        <form method="post" id="register">
+            <div class="form-group row">
+                <label for="name"
+                       class="col-md-4 col-form-label text-md-right">User</label>
+                <div class="col-md-6">
+                    <input type="text" id="name" class="form-control"
+                           name="name" >
+                </div>
+            </div>
+            <div class="col-md-10  text-md-right">
+                <button type="submit" class="btn btn-primary" style="">
+                    Register</button>
+            </div>
+        </form>
+    </div>
+</div>
