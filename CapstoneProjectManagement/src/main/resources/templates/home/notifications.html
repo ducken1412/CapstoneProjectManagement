@@ -11,7 +11,7 @@
 		</div>
 		<br>
 		<div>
-			<a href="http://localhost:8080/list-news">
+			<a th:href="${linkNews}">
 				<h5 style="color: rgb(74, 137, 191)" >More...</h5>
 			</a>
 		</div>
@@ -29,7 +29,8 @@
 		</div>
 		<br>
 		<div>
-			<a th:href="@{'/list-news-user/' + ${user_id}}" >
+<!--			<a th:href="@{'/list-news-user/' + ${user_id}}" >-->
+				<a th:href="${link_user}" >
 				<h5 style="color: rgb(74, 137, 191)" >More...</h5>
 			</a>
 		</div>

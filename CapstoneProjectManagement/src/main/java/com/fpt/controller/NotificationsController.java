@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -43,17 +44,20 @@ public class NotificationsController {
 	public HistoryRecordService recordService;
 
 	@RequestMapping(value = "/notifications")
-	public String getAllNotications(Model model, Principal principal) {
+	public String getAllNotications(Model model, Principal principal, HttpServletRequest request) {
 		if(principal == null) {
 			return "redirect:/login";
 		}
-		//get notification public
-		//List<NotificationDTO> notification = notificationsService.getTitle();
-		List<Notifications> notification = notificationsService.getTop5NotificationsByCreatedDate();
-		model.addAttribute("notifications", notification);
 		Users user = userService.findByEmail(principal.getName());
 		String user_id_login = user.getId();
 
+		String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
+		//get notification public
+		//List<NotificationDTO> notification = notificationsService.getTitle();
+		String linkNews = baseUrl + "list-news/";
+		List<Notifications> notification = notificationsService.getTop5NotificationsByCreatedDate();
+		model.addAttribute("notifications", notification);
+		model.addAttribute("linkNews",linkNews);
 		int count_noti_detail = notificationDetailService.countNotificationDetailByUserId(user_id_login);
 		boolean check_noti_detail = false;
 		if(count_noti_detail != 0){
@@ -79,6 +83,8 @@ public class NotificationsController {
 			model.addAttribute("notificationByUser", noti);
 			model.addAttribute("user_id",user_id_login);
 		model.addAttribute("check_noti_detail",check_noti_detail);
+		String linkUserNews = baseUrl + "list-news-user/" + user_id_login;
+		model.addAttribute("link_user", linkUserNews);
 		return "home/notifications";
 	}
 
@@ -197,7 +203,7 @@ public class NotificationsController {
 		}
 		//phan trang
 		int currentPage = page.orElse(1);
-		int pageSize = size.orElse(20);
+		int pageSize = size.orElse(1);
 		Page<Notifications> notificationsPage = notificationsService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
 		model.addAttribute("notificationsPage", notificationsPage);
 		int totalPages = notificationsPage.getTotalPages();

@@ -58,7 +58,7 @@
                                     </table>
                                     <div style="display: flex; justify-content: center; padding-top: 20px; margin-bottom: 20px">
                                         <nav aria-label="Page navigation">
-                                            <ul th:if="${notificationsPage.totalPages > 0}"
+                                            <ul th:if="${notificationsPage.totalPages > 1}"
                                                 class="pagination w-75 justify-content-end">
                                                 <th:block th:each="pageNumber : ${pageNumbers}">
                                                     <li th:class="${pageNumber==notificationsPage.number + 1} ? active + ' ' + page-item : page-item">
