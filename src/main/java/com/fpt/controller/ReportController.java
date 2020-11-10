@@ -118,7 +118,7 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/add-report", method = RequestMethod.POST)
-    public String addReport(@RequestParam("file") MultipartFile file, ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request){
+    public String addReport(MultipartFile file, ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request){
         if(principal == null) {
             return "redirect:/login";
         }
@@ -274,12 +274,12 @@ public class ReportController {
         //send notification to member project team
         int project_id_user_login = capstoneProjectDetailService.getOneProjectIdByUserId(user_id_login);
         List<Users> user_by_project = capstoneProjectDetailService.getUserStudentMemberByProjectId(project_id_user_login);
-
+        String userName = user.getUsername();
         String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
         for (int i = 0; i < user_by_project.size(); i++){
             if(!user_by_project.get(i).equals(user)){
-                String title = user_id_login + " report at " + date;
-                String content = "Report by " + user_id_login + " at " + date + " Click " + "<a href=\"" + baseUrl + "report-detail/" + reportDetails.getReport().getId() + "\">view</a>";
+                String title = userName + " report at " + date;
+                String content = "Report by " + userName + " at " + date + " Click " + "<a href=\"" + baseUrl + "report-detail/" + reportDetails.getReport().getId() + "\">view</a>";
                 NotificationCommon.sendNotification(user,title,content,user_by_project.get(i).getId());
                 try{
                     SendingMail.sendEmail(user_by_project.get(i).getEmail(),"[FPTU Capstone Project] " + title, content);
@@ -289,7 +289,7 @@ public class ReportController {
             }
             reportService.addReportUserTable(reports.getId(),user_by_project.get(i).getId());
         }
-        return "redirect:/report-detail/" + reports.getId();
+        return "redirect:/report/" + reports.getId();
     }
 
     @RequestMapping(value = "/list-reports", method = RequestMethod.GET)
