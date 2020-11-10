@@ -9,4 +9,9 @@ public class DashboardController {
     public String getDashboard(){
         return "admin/dashboard-project";
     }
+
+    @GetMapping("/db/statistic/{id}")
+    public String getStatistic() {
+        return "admin/statistics-project";
+    }
 }
