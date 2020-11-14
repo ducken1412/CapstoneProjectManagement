@@ -203,7 +203,7 @@ public class NotificationsController {
 		}
 		//phan trang
 		int currentPage = page.orElse(1);
-		int pageSize = size.orElse(1);
+		int pageSize = size.orElse(20);
 		Page<Notifications> notificationsPage = notificationsService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
 		model.addAttribute("notificationsPage", notificationsPage);
 		int totalPages = notificationsPage.getTotalPages();

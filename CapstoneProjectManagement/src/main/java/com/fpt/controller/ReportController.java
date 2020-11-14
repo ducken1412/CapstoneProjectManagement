@@ -64,10 +64,16 @@ public class ReportController {
     @Autowired
     private StatisticsService statisticsService;
 
+    @Autowired
+    private NotificationsService notificationsService;
+
+    @Autowired
+    private NotificationDetailService notificationDetailService;
+
 
     @GetMapping("/report")
     public String report(Model model, Principal principal) {
-        if(principal == null) {
+        if (principal == null) {
             return "redirect:/login";
         }
 
@@ -76,24 +82,24 @@ public class ReportController {
         Users user = userService.findByEmail(principal.getName());
         boolean check = false;
         List<String> role = userRoleService.getRoleNamesByEmail(principal.getName());
-        for(int i = 0; i < role.size(); i++){
-            if(role.get(i).equals("student_leader")){
+        for (int i = 0; i < role.size(); i++) {
+            if (role.get(i).equals("student_leader")) {
                 check = true;
             }
         }
-        model.addAttribute("check_role",check);
+        model.addAttribute("check_role", check);
         return "home/add-report";
     }
 
     @RequestMapping(value = "/report/{id}", method = RequestMethod.GET)
-    public String viewRoport(@PathVariable("id") Integer id, Model model,Principal principal){
-        if(principal == null) {
+    public String viewRoport(@PathVariable("id") Integer id, Model model, Principal principal) {
+        if (principal == null) {
             return "redirect:/login";
         }
         ReportDetails details = reportDetailService.getReportDetailByReportId(id);
         List<Comments> comments = commentService.getCommentsByReportDetatilId(details.getId());
         model.addAttribute("report_id", id);
-        String title =  details.getReport().getName();
+        String title = details.getReport().getName();
         String content = details.getContent();
         model.addAttribute("title", title);
         model.addAttribute("content", content);
@@ -102,14 +108,14 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/report-detail/{id}", method = RequestMethod.GET)
-    public String viewRoportDetails(@PathVariable("id") Integer id, Model model, Principal principal){
-        if(principal == null) {
+    public String viewRoportDetails(@PathVariable("id") Integer id, Model model, Principal principal) {
+        if (principal == null) {
             return "redirect:/login";
         }
         ReportDetails details = reportDetailService.getReportDetailByReportId(id);
         List<Comments> comments = commentService.getCommentsByReportDetatilId(details.getId());
         model.addAttribute("report_id", id);
-        String title =  details.getReport().getName();
+        String title = details.getReport().getName();
         String content = details.getContent();
         model.addAttribute("title", title);
         model.addAttribute("content", content);
@@ -118,21 +124,21 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/add-report", method = RequestMethod.POST)
-    public String addReport(MultipartFile file, ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request){
-        if(principal == null) {
+    public String addReport(MultipartFile file, ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request) {
+        if (principal == null) {
             return "redirect:/login";
         }
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             model.addAttribute("reportDetail", new ReportDetails());
             return "home/add-report";
         }
         Users user = userService.findByEmail(principal.getName());
 
-        String user_id_login = user.getId();
+        String userId = user.getId();
         String type = "daily report";
         List<String> role = userRoleService.getRoleNamesByEmail(principal.getName());
-        for (int i = 0; i < role.size(); i++){
-            if (role.get(i).equals("student_leader")){
+        for (int i = 0; i < role.size(); i++) {
+            if (role.get(i).equals("student_leader")) {
                 type = "weekly report";
             }
         }
@@ -163,7 +169,7 @@ public class ReportController {
 
 
             //Import Excel
-            if(file != null) {
+            if (file != null) {
                 String message = "";
 
                 Workbook workbook = new XSSFWorkbook(file.getInputStream());
@@ -178,7 +184,7 @@ public class ReportController {
                     List<TaskDetails> taskDetailsList = ExcelHelper.excelToStatistics(sheet);
 
                     Integer week = taskDetailsService.findMaxWeek();
-                    CapstoneProjects capstoneProjects = capstoneProjectDetailService.findCapstoneProjectByUserId(user_id_login);
+                    CapstoneProjects capstoneProjects = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
                     List<TaskDetails> taskDetailsListAddDB = new ArrayList<>();
                     double timeTrackingCurrent = 0;
                     double timeTrackingProcess = 0;
@@ -189,7 +195,7 @@ public class ReportController {
                     int countTrackingProcess = 0;
                     int countTrackingTodo = 0;
                     int countTrackingDone = 0;
-                    int countTask =0;
+                    int countTask = 0;
 
                     Date startDate = taskDetailsList.get(0).getStartDate();
                     Date endDate = taskDetailsList.get(0).getEndDate();
@@ -226,7 +232,7 @@ public class ReportController {
                             timeTrackingProcess = timeTrackingProcess + taskDetails.getTimeTracking();
                             countTrackingProcess = countTrackingProcess + 1;
                         }
-                        countTask = countTask +1;
+                        countTask = countTask + 1;
 
                     }
                     if (countTrackingCurrent != 0) {
@@ -267,51 +273,65 @@ public class ReportController {
                     return "home/add-report";
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
 
         //send notification to member project team
-        int project_id_user_login = capstoneProjectDetailService.getOneProjectIdByUserId(user_id_login);
-        List<Users> user_by_project = capstoneProjectDetailService.getUserStudentMemberByProjectId(project_id_user_login);
+        int projectIdByUserId = capstoneProjectDetailService.getOneProjectIdByUserId(userId);
+        List<Users> userByProject = capstoneProjectDetailService.getUserStudentMemberByProjectId(projectIdByUserId);
         String userName = user.getUsername();
-        String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
-        for (int i = 0; i < user_by_project.size(); i++){
-            if(!user_by_project.get(i).equals(user)){
-                String title = userName + " report at " + date;
-                String content = "Report by " + userName + " at " + date + " Click " + "<a href=\"" + baseUrl + "report-detail/" + reportDetails.getReport().getId() + "\">view</a>";
-                NotificationCommon.sendNotification(user,title,content,user_by_project.get(i).getId());
-                try{
-                    SendingMail.sendEmail(user_by_project.get(i).getEmail(),"[FPTU Capstone Project] " + title, content);
-                }catch (Exception ex) {
+        int reportId = reports.getId();
+        String baseUrl = String.format("%s://%s:%d/", request.getScheme(), request.getServerName(), request.getServerPort());
+        String title = userName + " report at " + date;
+        String content = "Report by " + userName + " at " + date + " Click " + "<a href=\"" + baseUrl + "report/" + reportId + "\">view report detail.</a>";
+        String typeReport = "private";
+        Notifications notifications = new Notifications();
+        //NotificationCommon.addNotification(content, title, date, typeReport);
+        notifications.setContent(content);
+        notifications.setTitle(title);
+        notifications.setCreated_date(date);
+        notifications.setType(type);
+        notificationsService.addNotification(notifications);
+        int notificationId = notifications.getId();
+        NotificationDetails notificationDetails = new NotificationDetails();
+        //List<NotificationDetails> notificationDetail = new ArrayList<>();
+        for (int i = 0; i < userByProject.size(); i++) {
+            reportService.addReportUserTable(reportId, userByProject.get(i).getId());
+        }
+        for (int i = 0; i < userByProject.size(); i++) {
+            if (!userByProject.get(i).equals(user)) {
+                notificationDetailService.addNotificationDetailNativeQuery(typeReport,notificationId,userByProject.get(i).getId());
+                try {
+                    SendingMail.sendEmail(userByProject.get(i).getEmail(), "[FPTU Capstone Project] " + title, content);
+                } catch (Exception ex) {
                     System.out.println(ex);
                 }
             }
-            reportService.addReportUserTable(reports.getId(),user_by_project.get(i).getId());
         }
-        return "redirect:/report/" + reports.getId();
+        return "redirect:/report/" + reportId;
     }
 
     @RequestMapping(value = "/list-reports", method = RequestMethod.GET)
     public String listRoport(Model model, @RequestParam("page") Optional<Integer> page,
-                             @RequestParam("size") Optional<Integer> size,Principal principal){
-        if(principal == null) {
+                             @RequestParam("size") Optional<Integer> size, Principal principal) {
+        if (principal == null) {
             return "redirect:/login";
         }
         Users user = userService.findByEmail(principal.getName());
         String user_id_login = user.getId();
-        List<Integer> list_report_id =  reportDetailService.getListReportIdByUserId(user_id_login);
+        List<Integer> list_report_id = reportDetailService.getListReportIdByUserId(user_id_login);
         List<ReportDetails> reportDetails = new ArrayList<>();
-        for (int i = 0; i < list_report_id.size(); i++){
+        for (int i = 0; i < list_report_id.size(); i++) {
             ReportDetails details = reportDetailService.getReportDetailByReportId(list_report_id.get(i));
             reportDetails.add(details);
         }
-        model.addAttribute("reportDetails",reportDetails);
+        model.addAttribute("reportDetails", reportDetails);
 
         //phan trang
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(20);
-        Page<ReportDetails> reportsPage = reportDetailService.getTitlePagginByUserId(PageRequest.of(currentPage - 1, pageSize),user_id_login);
+        Page<ReportDetails> reportsPage = reportDetailService.getTitlePagginByUserId(PageRequest.of(currentPage - 1, pageSize), user_id_login);
         model.addAttribute("reportsPage", reportsPage);
         int totalPages = reportsPage.getTotalPages();
         if (totalPages > 0) {
@@ -327,7 +347,7 @@ public class ReportController {
             return "redirect:/login";
         }
         Users user = userService.findByEmail(principal.getName());
-        String user_id_login = user.getId();
+        String userId = user.getId();
         int report_detail_id = dto.getPostId();
         Comments comment = new Comments();
         HistoryRecords records = new HistoryRecords();
@@ -344,7 +364,7 @@ public class ReportController {
         records.setCreatedDate(date);
         records.setReport(reports);
         recordService.save(records);
-        return "redirect:/report-detail/" +report_detail_id;
+        return "redirect:/report-detail/" + report_detail_id;
     }
 
 }

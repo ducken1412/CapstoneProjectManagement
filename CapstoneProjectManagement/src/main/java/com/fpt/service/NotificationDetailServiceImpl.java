@@ -38,4 +38,16 @@ public class NotificationDetailServiceImpl implements NotificationDetailService{
     public Integer countNotificationDetailByUserId(String id) {
         return notificationDetailRepository.countNotificationDetailByUserId(id);
     }
+
+    @Override
+    public List<NotificationDetails> saveAllNotificationDetails(List<NotificationDetails> notificationDetails) {
+        return notificationDetailRepository.saveAll(notificationDetails);
+    }
+
+    @Override
+    public void addNotificationDetailNativeQuery(String type, Integer nid, String userId) {
+        notificationDetailRepository.addNotificationDetailNativeQuery(type,nid,userId);
+    }
+
+
 }
