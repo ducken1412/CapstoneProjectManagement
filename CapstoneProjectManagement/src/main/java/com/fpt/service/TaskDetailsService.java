@@ -10,5 +10,6 @@ import java.util.List;
 public interface TaskDetailsService {
     boolean saveTaskDetails(List<TaskDetails> taskDetails);
     Integer findMaxWeek();
-
+    List<TaskDetails> findTaskDetailsByCapstoneProjectId(Integer projectId, int week);
+    List<Integer> findDistinctByWeek();
 }

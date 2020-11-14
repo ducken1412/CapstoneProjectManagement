@@ -1,0 +1,79 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <th:block th:include="home/_css"></th:block>
+<body>
+<div class="page-wrapper">
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <th:block th:include="home/_header-mobile"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Tasks</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-80 p-1" id="content-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="au-card chart-percent-card">
+                                        <div class="au-card-inner px-4" >
+                                            <h3 th:text="${nameProject}" class="mb-4"></h3>
+                                            <div class="rs-select2--dark rs-select2--sm">
+                                                <input id="projectId" th:value="${projectId}" hidden="hidden" />
+                                                <select class="js-select2" id="drd-week" name="week">
+                                                    <option th:each="week : ${weeks}" th:value="${week}" th:text="'Week ' + ${week}" th:selected="${week} == ${weekSelect}"></option>
+                                                </select>
+                                                <div class="dropDownSelect2 mb-4"></div>
+                                            </div>
+                                            <div id="tasks-container">
+                                                <th:block th:include="admin/task-component"></th:block>
+                                            </div>
+                                            <div id="contacts-container" class="mt-4">
+                                                <h4 class="mt-2">Contacts</h4>
+                                                <table class="table table-striped mt-4">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">Username</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Phone</th>
+                                                        <th scope="col">Role</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="contact : ${contacts}">
+                                                        <td th:text="${contact.username}"></td>
+                                                        <td th:text="${contact.email}"></td>
+                                                        <td th:text="${contact.phone}"></td>
+                                                        <td th:text="${contact.role}"></td>
+                                                        <td><a href="#"><i class="fas fa-comment-dots"></i></a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <th:block th:include="home/_footer"></th:block>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<script th:src="@{/js/task/task.js}"></script>
+</body>
+</html>
