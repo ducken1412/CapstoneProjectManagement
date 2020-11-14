@@ -4,7 +4,7 @@ public class Constant {
 	public final static String ROLE_STUDENT_LEADER = "Leader";
 	public final static String ROLE_STUDENT_MEMBER = "Member";
 	public final static String ROLE_HEAD = "Head of Departement";
-	public final static String ROLE_LECTURERS = "Lecturer";
+	public final static String ROLE_LECTURERS = "Supervisor";
 	public final static String ROLE_TRAINING_DEP = "Training Departement";
 
 	public final static String ROLE_STUDENT_LEADER_DB = "student_leader";
