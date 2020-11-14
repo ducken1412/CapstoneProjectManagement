@@ -9,9 +9,12 @@ import javax.transaction.Transactional;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fpt.service.UserRoleService;
 import com.fpt.service.UserService;
+import com.fpt.utils.Constant;
 import com.fpt.utils.WebUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,9 @@ public class LoginController {
 
 	@Autowired
 	private GoogleUtils googleUtils;
+
+	@Autowired
+	private UserRoleService userRoleService;
 
 	@RequestMapping(value = {"/", "/login"})
 	public String login() {
@@ -84,6 +90,12 @@ public class LoginController {
 					userDetail.getAuthorities());
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
+			List<String> roles = userRoleService.getRoleNamesByUserId(appUser.getId());
+			for (String role : roles) {
+				if(role.equals(Constant.ROLE_LECTURERS_DB) || role.equals(Constant.ROLE_HEAD_DB)) {
+					return "redirect:/db/dashboard";
+				}
+			}
 			return "redirect:/forum";
 		} else {
 			return "redirect:/login?google=error";
