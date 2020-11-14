@@ -60,12 +60,9 @@ public class NotificationCommon {
         notifications.setTitle(title);
         notifications.setContent(content);
         notifications.setCreated_date(date);
-
-        //int noti_id = notifications.getId();
-        //notificationDetails.setNotification(notificationsService.getOneNoification(noti_id));
-        String user_id = userSendTo;
+        String userId = userSendTo;
         List<NotificationDetails> notificationDetail = new ArrayList<>();
-        notificationDetails.setUser(notificationCommon.userService.findById(user_id));
+        notificationDetails.setUser(notificationCommon.userService.findById(userId));
         String type = "private";
         notificationDetails.setNotification(notifications);
         notificationDetails.setType(type);
@@ -87,9 +84,9 @@ public class NotificationCommon {
         notifications.setTitle(title);
         notifications.setContent(content);
         notifications.setCreated_date(date);
-        String user_id = userSendTo;
+        String userId = userSendTo;
         List<NotificationDetails> notificationDetail = new ArrayList<>();
-        notificationDetails.setUser(notificationCommon.userService.findById(user_id));
+        notificationDetails.setUser(notificationCommon.userService.findById(userId));
         String type = "private";
         notificationDetails.setNotification(notifications);
         notificationDetails.setType(type);
@@ -123,5 +120,22 @@ public class NotificationCommon {
         notifications.setNotificationDetails(notificationDetail);
         notificationCommon.notificationsService.addNotification(notifications);
         notificationCommon.recordService.save(records);
+    }
+
+    public static void  addNotification(String content, String title, Date date, String type){
+        Notifications notifications = new Notifications();
+        notifications.setContent(content);
+        notifications.setTitle(title);
+        notifications.setCreated_date(date);
+        notifications.setType(type);
+        notificationCommon.notificationsService.addNotification(notifications);
+    }
+
+    public static void addNotificationDetail(String type, Notifications notification, String userId){
+        NotificationDetails notificationDetails = new NotificationDetails();
+        notificationDetails.setNotification(notification);
+        notificationDetails.setUser(notificationCommon.userService.findById(userId));
+        notificationDetails.setType(type);
+        notificationCommon.notificationDetailService.addNotificationDetail(notificationDetails);
     }
 }

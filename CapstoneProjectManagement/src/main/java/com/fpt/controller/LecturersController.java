@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.fpt.common.SendingMail;
 import com.fpt.entity.*;
 import com.fpt.service.*;
 import org.apache.catalina.User;
@@ -32,6 +33,8 @@ import com.fpt.dto.UserDTO;
 import com.fpt.dto.ListLecturersDTO;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class LecturersController {
@@ -94,12 +97,12 @@ public class LecturersController {
         }
 
         //Id = 4 (role lecturers)
-        List<Users> lecturer = userService.getUserByRoleId(4);
-        model.addAttribute("lecturer", lecturer);
+//        List<Users> lecturer = userService.getUserByRoleId(4);
+//        model.addAttribute("lecturer", lecturer);
 
         UserDTO userDTO = new UserDTO();
-        List<Notifications> notifications = notificationService.getAllTitle();
-        model.addAttribute("notifications", notifications);
+//        List<Notifications> notifications = notificationService.getAllTitle();
+//        model.addAttribute("notifications", notifications);
 
         //phan trang
         int currentPage = page.orElse(1);
@@ -115,19 +118,21 @@ public class LecturersController {
     }
 
     @RequestMapping(value = "/listlecturersprojectop1/{id}", method = RequestMethod.GET)
-    public String bookLecturersOp1(@PathVariable("id") String id, UserDTO dto, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+    public String bookLecturersOp1(@PathVariable("id") String id, UserDTO dto, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal, HttpServletRequest request) {
         if (principal == null) {
             return "redirect:/login";
         }
 
         Users user = userService.findByEmail(principal.getName());
-        String user_id_login = user.getId();
-        HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(user_id_login);
-        int project_id;
+        String userId = user.getId();
+        HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
+        int projectId;
+        Users userLecture = userService.findById(id);
+        String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
         if (historyRecords != null) {
-            project_id = historyRecords.getCapstoneProject().getId();
-            int count = capstoneProjectDetailService.countLecturersByProjectId(project_id);
-            List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(project_id);
+            projectId = historyRecords.getCapstoneProject().getId();
+            int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
+            List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(projectId);
             for (int i = 0; i < listUser.size(); i++) {
                 if (listUser.get(i).getUser().getId().equals(id)) {
                     redirectAttributes.addFlashAttribute("disable", "lecture already booked. Please choose another lecture");
@@ -140,9 +145,8 @@ public class LecturersController {
             } else {
                 //booking lecture
                 CapstoneProjectDetails cpd = new CapstoneProjectDetails();
-                Users user_id = userService.findById(id);
-                cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(project_id));
-                cpd.setUser(user_id);
+                cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(projectId));
+                cpd.setUser(userLecture);
                 cpd.setSupType("Main Lecture");
                 cpd.setDesAction("booking lecturers");
                 cpd.setStatus(statusService.getStatusById(4));
@@ -152,28 +156,39 @@ public class LecturersController {
                 Date date = new Date();
                 records.setContent("Booking Lecture");
                 records.setCreatedDate(date);
-                records.setUser(userService.findById(user_id_login));
-                records.setCapstoneProject(capstoneProjectService.getCapstonProjectById(project_id));
+                records.setUser(userService.findById(userId));
+                records.setCapstoneProject(capstoneProjectService.getCapstonProjectById(projectId));
                 historyRecordService.save(records);
+                try{
+                    String title = user.getUsername() + " wants to select you as the project group guide";
+                    String content = "Dear Supervisors, \n" +
+                            "I want to choose the teacher as a guide for our project group in this term. \n"
+                            + "Click " + "<a href=\"" + baseUrl + "project-detail/" + projectId + "\">view project description</a>";
+                    SendingMail.sendEmail(userLecture.getEmail() ,"[FPTU Capstone Project] " + title, content);
+                }catch (Exception e){
+                    System.out.println(e);
+                }
             }
         }
         return "redirect:/lecturers";
     }
 
     @RequestMapping(value = "/listlecturersprojectop2/{id}", method = RequestMethod.GET)
-    public String bookLecturersOp2(@PathVariable("id") String id, UserDTO dto, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+    public String bookLecturersOp2(@PathVariable("id") String id, UserDTO dto, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal, HttpServletRequest request) {
         if (principal == null) {
             return "redirect:/login";
         }
 
         Users user = userService.findByEmail(principal.getName());
-        String user_id_login = user.getId();
-        HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(user_id_login);
-        int project_id;
+        String userId = user.getId();
+        HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
+        int projectId;
+        Users userLecture = userService.findById(id);
+        String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
         if (historyRecords != null) {
-            project_id = historyRecords.getCapstoneProject().getId();
-            int count = capstoneProjectDetailService.countLecturersByProjectId(project_id);
-            List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(project_id);
+            projectId = historyRecords.getCapstoneProject().getId();
+            int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
+            List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(projectId);
             for (int i = 0; i < listUser.size(); i++) {
                 if (listUser.get(i).getUser().getId().equals(id)) {
                     redirectAttributes.addFlashAttribute("disable", "lecture already booked. Please choose another lecture");
@@ -187,7 +202,7 @@ public class LecturersController {
                 //booking lecture
                 CapstoneProjectDetails cpd = new CapstoneProjectDetails();
                 Users user_id = userService.findById(id);
-                cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(project_id));
+                cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(projectId));
                 cpd.setUser(user_id);
                 cpd.setSupType("Assistant Lecture");
                 cpd.setDesAction("booking lecturers");
@@ -198,9 +213,18 @@ public class LecturersController {
                 Date date = new Date();
                 records.setContent("Booking Lecture");
                 records.setCreatedDate(date);
-                records.setUser(userService.findById(user_id_login));
-                records.setCapstoneProject(capstoneProjectService.getCapstonProjectById(project_id));
+                records.setUser(userService.findById(userId));
+                records.setCapstoneProject(capstoneProjectService.getCapstonProjectById(projectId));
                 historyRecordService.save(records);
+                try{
+                    String title = user.getUsername() + " wants to select you as the project group guide";
+                    String content = "Dear Supervisors, \n" +
+                            "I want to choose the teacher as a guide for our project group in this term. \n"
+                            + "Click " + "<a href=\"" + baseUrl + "project-detail/" + projectId + "\">view project description</a>";
+                    SendingMail.sendEmail(userLecture.getEmail() ,"[FPTU Capstone Project] " + title, content);
+                }catch (Exception e){
+                    System.out.println(e);
+                }
             }
         }
         return "redirect:/lecturers";

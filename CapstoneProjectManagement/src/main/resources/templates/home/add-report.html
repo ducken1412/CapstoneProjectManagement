@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Template</title>
+    <title>Report</title>
     <th:block th:include="home/_css"></th:block>
 
 </head>
@@ -33,7 +33,7 @@
                                             </div>
                                             <div class="col-12 col-md-10">
 													<textarea name="name" id="name" rows="2"
-                                                              placeholder="Title..." class="form-control" ></textarea>
+                                                              placeholder="Title..." class="form-control" required></textarea>
 <!--                                                <span class="bg-danger pull-right error-mess" th:errors="*{name}"></span>-->
                                             </div>
                                         </div>
@@ -43,7 +43,7 @@
                                             </div>
                                             <div class="col-12 col-md-10">
 													<textarea name="content" id="content" rows="40"
-                                                              placeholder="Content..." class="form-control"></textarea>
+                                                              placeholder="Content..." class="form-control" required></textarea>
 <!--                                                    <span class="bg-danger pull-right error-mess" th:errors="*{content}"></span>-->
                                             </div>
                                         </div>
