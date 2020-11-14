@@ -38,7 +38,7 @@
                                                         </div>
                                                         <div class="chart-note mr-0 d-block">
                                                             <span class="dot dot--red"></span>
-                                                            <span>Danger</span>
+                                                            <span>Serious</span>
                                                         </div>
                                                     </div>
                                                     <div class="percent-chart">
@@ -54,19 +54,20 @@
                                                                 <tbody>
                                                                 <tr>
                                                                     <td>1. Number of project</td>
-                                                                    <td>50</td>
+                                                                    <td><p th:text="${StatisticsTotalDTO.numProject}"></p></td>
+                                                                </tr>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>2. On schedule</td>
-                                                                    <td>30</td>
+                                                                    <td><p th:text="${StatisticsTotalDTO.totalOnSchedule}"></p></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>3. Warning</td>
-                                                                    <td>15</td>
+                                                                    <td><p th:text="${StatisticsTotalDTO.totalWarning}"></p></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>4. Danger</td>
-                                                                    <td>5</td>
+                                                                    <td>4. Serious</td>
+                                                                    <td><p th:text="${StatisticsTotalDTO.totalSerious}"></p></td>
                                                                 </tr>
                                                                 </tbody>
                                                             </table>
