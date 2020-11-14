@@ -18,6 +18,7 @@ public class DashboardController {
     private TaskDetailsService taskDetailsService;
     @Autowired
     private StatisticsService statisticsService;
+  
     @GetMapping("/db/dashboard")
     public String getDashboard(Model model){
 
