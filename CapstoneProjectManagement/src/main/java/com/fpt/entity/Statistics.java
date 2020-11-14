@@ -10,14 +10,14 @@ public class Statistics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "INT")
     private Integer id;
-    @Column(name = "time_tracking_current", columnDefinition = "INT")
-    public int timeTrackingCurrent;
-    @Column(name = "time_tracking_progress", columnDefinition = "INT")
-    public int timeTrackingProgress;
-    @Column(name = "time_tracking_todo", columnDefinition = "INT")
-    public int timeTrackingTodo;
-    @Column(name = "time_tracking_done", columnDefinition = "INT")
-    public int timeTrackingDone;
+    @Column(name = "time_tracking_current", columnDefinition = "DOUBLE")
+    public double timeTrackingCurrent;
+    @Column(name = "time_tracking_progress", columnDefinition = "DOUBLE")
+    public double timeTrackingProgress;
+    @Column(name = "time_tracking_todo", columnDefinition = "DOUBLE")
+    public double timeTrackingTodo;
+    @Column(name = "time_tracking_done", columnDefinition = "DOUBLE")
+    public double timeTrackingDone;
     @Column(name = "start_date", columnDefinition = "DATE")
     public Date startDate;
     @Column(name = "end_date", columnDefinition = "DATE")
@@ -31,7 +31,7 @@ public class Statistics {
     public Statistics() {
     }
 
-    public Statistics(Integer id, int timeTrackingCurrent, int timeTrackingProgress, int timeTrackingTodo, int timeTrackingDone,Date startDate, Date endDate, int week, CapstoneProjects capstoneProject) {
+    public Statistics(Integer id, double timeTrackingCurrent, double timeTrackingProgress, double timeTrackingTodo, double timeTrackingDone,Date startDate, Date endDate, int week, CapstoneProjects capstoneProject) {
         this.id = id;
         this.timeTrackingCurrent = timeTrackingCurrent;
         this.timeTrackingProgress = timeTrackingProgress;
@@ -51,35 +51,35 @@ public class Statistics {
         this.id = id;
     }
 
-    public int getTimeTrackingCurrent() {
+    public double getTimeTrackingCurrent() {
         return timeTrackingCurrent;
     }
 
-    public void setTimeTrackingCurrent(int timeTrackingCurrent) {
+    public void setTimeTrackingCurrent(double timeTrackingCurrent) {
         this.timeTrackingCurrent = timeTrackingCurrent;
     }
 
-    public int getTimeTrackingProgress() {
+    public double getTimeTrackingProgress() {
         return timeTrackingProgress;
     }
 
-    public void setTimeTrackingProgress(int timeTrackingProgress) {
+    public void setTimeTrackingProgress(double timeTrackingProgress) {
         this.timeTrackingProgress = timeTrackingProgress;
     }
 
-    public int getTimeTrackingTodo() {
+    public double getTimeTrackingTodo() {
         return timeTrackingTodo;
     }
 
-    public void setTimeTrackingTodo(int timeTrackingTodo) {
+    public void setTimeTrackingTodo(double timeTrackingTodo) {
         this.timeTrackingTodo = timeTrackingTodo;
     }
 
-    public int getTimeTrackingDone() {
+    public double getTimeTrackingDone() {
         return timeTrackingDone;
     }
 
-    public void setTimeTrackingDone(int timeTrackingDone) {
+    public void setTimeTrackingDone(double timeTrackingDone) {
         this.timeTrackingDone = timeTrackingDone;
     }
 
