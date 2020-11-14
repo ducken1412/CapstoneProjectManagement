@@ -1,0 +1,32 @@
+<table id="bootstrap-data-table" class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Summary</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Time Spent</th>
+        <th>Time Tracking</th>
+        <th>Status</th>
+        <th>Assignee</th>
+        <th>Week</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${tasks}">
+        <td th:text="${task.summary}"></td>
+        <td th:text="${#dates.format(task.startDate, 'yyyy-MMM-dd')}"></td>
+        <td th:text="${#dates.format(task.endDate, 'yyy-MMM-dd')}"></td>
+        <td th:text="${task.timeSpent}"></td>
+        <td th:text="${task.timeTracking}"></td>
+        <td th:text="${task.status}"></td>
+        <td th:text="${task.assignee}"></td>
+        <td th:text="${task.week}"></td>
+    </tr>
+    </tbody>
+
+</table>
+<script>
+    $(document).ready(function () {
+        $('#bootstrap-data-table').DataTable();
+    });
+</script>
