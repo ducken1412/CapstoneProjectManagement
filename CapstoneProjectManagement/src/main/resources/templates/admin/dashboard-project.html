@@ -136,17 +136,17 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Status : </td>
-                                                            <td>
-                                                                <div  class="sp-tag sp-lozenge" style="background-color: rgb(122, 134, 154);
+                                                            <td class="d-flex justify-content-end">
+                                                                <div  class="sp-tag sp-lozenge px-2" style="background-color: rgb(122, 134, 154);
                                                                     color: rgb(255, 255, 255);">
                                                                     <p th:text="${#numbers.formatDecimal(list_statistic.timeTrackingTodo,0,2)+'%'}"
                                                                        th:title="'To Do'">
                                                                     </p>
                                                                 </div>
-                                                                <div  class="sp-tag sp-lozenge" style="background-color: rgb(0, 82, 204); color: rgb(255, 255, 255);">
+                                                                <div  class="sp-tag sp-lozenge mx-2 px-2" style="background-color: rgb(0, 82, 204); color: rgb(255, 255, 255);">
                                                                     <p th:text="${#numbers.formatDecimal(list_statistic.timeTrackingProgress,0,2)+'%'}" th:title="'In Progress'"></p>
                                                                 </div>
-                                                                <div  class="sp-tag sp-lozenge" style="background-color: rgb(0, 135, 90); color: rgb(255, 255, 255);">
+                                                                <div  class="sp-tag sp-lozenge px-2" style="background-color: rgb(0, 135, 90); color: rgb(255, 255, 255);">
                                                                     <p th:text="${#numbers.formatDecimal(list_statistic.timeTrackingDone,0,2)+'%'}" th:title="'Done'"></p>
                                                                 </div>
                                                             </td>
