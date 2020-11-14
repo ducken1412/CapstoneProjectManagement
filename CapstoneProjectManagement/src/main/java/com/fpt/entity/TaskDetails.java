@@ -14,8 +14,8 @@ public class TaskDetails {
     public String summary;
     @Column(name = "assignee", columnDefinition = "NVARCHAR(256)")
     public String assignee;
-    @Column(name = "time_tracking", columnDefinition = "INT")
-    public int timeTracking;
+    @Column(name = "time_tracking", columnDefinition = "DOUBLE")
+    public double timeTracking;
     @Column(name = "status", columnDefinition = "NVARCHAR(100)")
     public String status;
     @Column(name = "time_spent", columnDefinition = "NVARCHAR(100)")
@@ -33,7 +33,7 @@ public class TaskDetails {
     public TaskDetails() {
     }
 
-    public TaskDetails(Integer id, String summary, String assignee, int timeTracking, String status, String timeSpent, Date startDate, Date endDate, int week, CapstoneProjects capstoneProject) {
+    public TaskDetails(Integer id, String summary, String assignee, double timeTracking, String status, String timeSpent, Date startDate, Date endDate, int week, CapstoneProjects capstoneProject) {
         this.id = id;
         this.summary = summary;
         this.assignee = assignee;
@@ -70,11 +70,11 @@ public class TaskDetails {
         this.assignee = assignee;
     }
 
-    public int getTimeTracking() {
+    public double getTimeTracking() {
         return timeTracking;
     }
 
-    public void setTimeTracking(int timeTracking) {
+    public void setTimeTracking(double timeTracking) {
         this.timeTracking = timeTracking;
     }
 

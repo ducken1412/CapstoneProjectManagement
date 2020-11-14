@@ -10,4 +10,6 @@ import java.util.List;
 public interface StatisticsService {
     boolean saveStatistics(Statistics statistics);
 
+    List<Statistics> getStatisticsWithWeek(int week);
+
 }

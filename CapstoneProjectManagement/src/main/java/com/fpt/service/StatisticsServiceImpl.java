@@ -25,4 +25,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 		}
 		return false;
 	}
+
+	@Override
+	public List<Statistics> getStatisticsWithWeek(int week) {
+		List<Statistics> statistics = statisticsRepository.findByWeek(week);
+		return statistics;
+	}
 }

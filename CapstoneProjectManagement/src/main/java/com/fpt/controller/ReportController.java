@@ -180,10 +180,10 @@ public class ReportController {
                     Integer week = taskDetailsService.findMaxWeek();
                     CapstoneProjects capstoneProjects = capstoneProjectDetailService.findCapstoneProjectByUserId(user_id_login);
                     List<TaskDetails> taskDetailsListAddDB = new ArrayList<>();
-                    int timeTrackingCurrent = 0;
-                    int timeTrackingProcess = 0;
-                    int timeTrackingTodo = 0;
-                    int timeTrackingDone = 0;
+                    double timeTrackingCurrent = 0;
+                    double timeTrackingProcess = 0;
+                    double timeTrackingTodo = 0;
+                    double timeTrackingDone = 0;
                     //count to div %
                     int countTrackingCurrent = 0;
                     int countTrackingProcess = 0;
@@ -234,15 +234,15 @@ public class ReportController {
                     }
 
                     if (countTrackingDone != 0 && countTask != 0) {
-                        timeTrackingDone = (int) (Double.valueOf(countTrackingDone) / Double.valueOf(countTask) * 100);
+                        timeTrackingDone = (Double.valueOf(countTrackingDone) / Double.valueOf(countTask) * 100);
                     }
 
                     if (countTrackingProcess != 0 && countTask != 0) {
-                        timeTrackingProcess = (int) (Double.valueOf(countTrackingProcess) / Double.valueOf(countTask) * 100);
+                        timeTrackingProcess = (Double.valueOf(countTrackingProcess) / Double.valueOf(countTask) * 100);
                     }
 
                     if (countTrackingTodo != 0 && countTask != 0) {
-                        timeTrackingTodo = (int) (Double.valueOf(countTrackingTodo) / Double.valueOf(countTask) * 100);
+                        timeTrackingTodo = (Double.valueOf(countTrackingTodo) / Double.valueOf(countTask) * 100);
                     }
                     if (taskDetailsListAddDB != null) {
                         taskDetailsService.saveTaskDetails(taskDetailsListAddDB);
