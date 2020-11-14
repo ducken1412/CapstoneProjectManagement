@@ -38,12 +38,15 @@
                                                         </div>
                                                         <div class="chart-note mr-0 d-block">
                                                             <span class="dot dot--red"></span>
-                                                            <span>Danger</span>
+                                                            <span>Serious</span>
                                                         </div>
                                                     </div>
                                                     <div class="percent-chart">
                                                         <canvas id="percent-chart"></canvas>
                                                     </div>
+                                                    <input hidden="hidden" id="perOnSchedule" th:value="${StatisticsTotalDTO.totalOnSchedule}">
+                                                    <input hidden="hidden" id="perWarning" th:value="${StatisticsTotalDTO.totalWarning}">
+                                                    <input hidden="hidden" id="perSerious" th:value="${StatisticsTotalDTO.totalSerious}">
                                                 </div>
                                                 <div class="col-xl-7 mb-3">
                                                     <div class="top-campaign w-75 float-right"
@@ -54,19 +57,20 @@
                                                                 <tbody>
                                                                 <tr>
                                                                     <td>1. Number of project</td>
-                                                                    <td>50</td>
+                                                                    <td><p th:text="${StatisticsTotalDTO.numProject}"></p></td>
+                                                                </tr>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>2. On schedule</td>
-                                                                    <td>30</td>
+                                                                    <td><p th:text="${StatisticsTotalDTO.countOnSchedule}"></p></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>3. Warning</td>
-                                                                    <td>15</td>
+                                                                    <td><p th:text="${StatisticsTotalDTO.countWarning}"></p></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>4. Danger</td>
-                                                                    <td>5</td>
+                                                                    <td>4. Serious</td>
+                                                                    <td><p th:text="${StatisticsTotalDTO.countSerious}"></p></td>
                                                                 </tr>
                                                                 </tbody>
                                                             </table>
@@ -78,148 +82,102 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="table-data__tool">
+                                <div class="table-data__tool-left d-flex">
+                                    <div class="rs-select2--light rs-select2--md">
+
+                                        <select class="js-select2" name="property">
+                                            <option selected="selected">All semester</option>
+                                            <option value="">Option 1</option>
+                                            <option value="">Option 2</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                    <div class="rs-select2--light rs-select2--sm">
+                                        <select class="js-select2" name="time">
+                                            <option selected="selected">All Site</option>
+                                            <option value="">3 Days</option>
+                                            <option value="">1 Week</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                </div>
+
+                            </div>
                             <!-- STATISTIC-->
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-4" th:each="list_statistic : ${statisticsPage}">
                                     <div class="card">
                                         <div class="card-header">
-                                            <strong class="card-title">Capstone project 1
-                                                <small>
-                                                    <span class="badge badge-danger float-right mt-1">Danger</span>
+                                            <strong class="card-title"> <p th:text="${list_statistic.capstoneProject.name}"></p>
+                                                <small th:if="${list_statistic.timeTrackingCurrent < 50}">
+                                                    <span class="badge badge-danger float-right mt-1">Serious</span>
                                                 </small>
-                                            </strong>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and
-                                                make up the bulk of the card's
-                                                content.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <strong class="card-title">Capstone project 2
-                                                <small>
-                                                    <span class="badge badge-danger float-right mt-1">Danger</span>
-                                                </small>
-                                            </strong>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and
-                                                make up the bulk of the card's
-                                                content.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <strong class="card-title">Capstone project 3
-                                                <small>
-                                                    <span class="badge badge-danger float-right mt-1">Danger</span>
-                                                </small>
-                                            </strong>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and
-                                                make up the bulk of the card's
-                                                content.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <strong class="card-title">Capstone project 4
-                                                <small>
+                                                <small th:if="${list_statistic.timeTrackingCurrent >= 50 && list_statistic.timeTrackingCurrent <80 }">
                                                     <span class="badge badge-warning float-right mt-1">Warning</span>
                                                 </small>
-                                            </strong>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and
-                                                make up the bulk of the card's
-                                                content.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <strong class="card-title">Capstone project 5
-                                                <small>
-                                                    <span class="badge badge-warning float-right mt-1">Warning</span>
+                                                <small th:if="${list_statistic.timeTrackingCurrent >= 80 }">
+                                                    <span class="badge badge-success float-right mt-1">On Schedule</span>
                                                 </small>
                                             </strong>
                                         </div>
                                         <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and
-                                                make up the bulk of the card's
-                                                content.
+                                            <p class="card-text">
+                                                <table class="table table-top-campaign">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Start Date :</td>
+                                                            <td><p th:text="${#dates.format(list_statistic.startDate, 'yyyy-MMM-dd')}"></p></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>End Date :</td>
+                                                            <td><p th:text="${#dates.format(list_statistic.endDate, 'yyyy-MMM-dd')}"></p></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Status : </td>
+                                                            <td class="d-flex justify-content-end">
+                                                                <div  class="sp-tag sp-lozenge px-2" style="background-color: rgb(122, 134, 154);
+                                                                    color: rgb(255, 255, 255);">
+                                                                    <p th:text="${#numbers.formatDecimal(list_statistic.timeTrackingTodo,0,2)+'%'}"
+                                                                       th:title="'To Do'">
+                                                                    </p>
+                                                                </div>
+                                                                <div  class="sp-tag sp-lozenge mx-2 px-2" style="background-color: rgb(0, 82, 204); color: rgb(255, 255, 255);">
+                                                                    <p th:text="${#numbers.formatDecimal(list_statistic.timeTrackingProgress,0,2)+'%'}" th:title="'In Progress'"></p>
+                                                                </div>
+                                                                <div  class="sp-tag sp-lozenge px-2" style="background-color: rgb(0, 135, 90); color: rgb(255, 255, 255);">
+                                                                    <p th:text="${#numbers.formatDecimal(list_statistic.timeTrackingDone,0,2)+'%'}" th:title="'Done'"></p>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                            </table>
                                             </p>
+                                            <hr>
+                                            <a class="pull-right mr-1 mt-1" th:href="@{'/db/task-detail/' + ${list_statistic.capstoneProject.id}}" target="_blank">Detail</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <strong class="card-title">Capstone project 6
-                                                <small>
-                                                    <span class="badge badge-success float-right mt-1">On schedule</span>
-                                                </small>
-                                            </strong>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and
-                                                make up the bulk of the card's
-                                                content.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <strong class="card-title">Capstone project 7
-                                                <small>
-                                                    <span class="badge badge-success float-right mt-1">On schedule</span>
-                                                </small>
-                                            </strong>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and
-                                                make up the bulk of the card's
-                                                content.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <strong class="card-title">Capstone project 8
-                                                <small>
-                                                    <span class="badge badge-success float-right mt-1">On schedule</span>
-                                                </small>
-                                            </strong>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">Some quick example text to build on the card title and
-                                                make up the bulk of the card's
-                                                content.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+
                     </div>
                     <!-- END STATISTIC-->
+                            <div style="display: flex; justify-content: center; padding-top: 20px; margin-bottom: 20px">
+                                <nav aria-label="Page navigation">
+                                    <ul th:if="${statisticsPage.totalPages > 1}"
+                                        class="pagination w-75 justify-content-end">
+                                        <th:block th:each="pageNumber : ${pageNumbers}">
+                                            <li th:class="${pageNumber==statisticsPage.number + 1} ? active + ' ' + page-item : page-item">
+                                                <a th:href="@{/db/dashboard(size=${statisticsPage.size}, page=${pageNumber})}"
+                                                   th:text=${pageNumber}
+                                                   th:class="page-link">
+                                                </a>
+                                            </li>
+                                        </th:block>
+                                    </ul>
+                                </nav>
+                            </div>
                 </div>
             </div>
             <div class="row">

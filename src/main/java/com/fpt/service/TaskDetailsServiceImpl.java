@@ -34,4 +34,14 @@ public class TaskDetailsServiceImpl implements TaskDetailsService{
         }
         return null;
     }
+
+    @Override
+    public List<TaskDetails> findTaskDetailsByCapstoneProjectId(Integer projectId, int week) {
+        return taskDetailsRepository.findTaskDetailsByCapstoneProjectId(projectId,week);
+    }
+
+    @Override
+    public List<Integer> findDistinctByWeek() {
+        return taskDetailsRepository.findDistinctByWeek();
+    }
 }

@@ -26,3 +26,34 @@ body button :hover{
     background-color: #63c76a !important;
     border-color: #63c76a !important;
 }
+
+.sp-tag.sp-lozenge {
+    height: 16px;
+    max-height: 16px;
+    text-transform: uppercase;
+    padding: 3px 4px 2px 4px;
+    font-weight: 700;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.sp-tag {
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: "Roboto", sans-serif;
+    font-size: 11px;
+    height: 20px;
+    max-height: 20px;
+    overflow: hidden;
+    padding: 4px 4px 2px 4px;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    word-break: break-all;
+    line-height: 1;
+    background: #C1C7D0;
+    color: #091E42;
+}

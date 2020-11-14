@@ -14,7 +14,7 @@ public class ProfessionServiceImpl implements ProfessionService {
 	@Autowired
 	private ProfessionRepository professionRepository;
 
-	@Autowired
+	@Override
 	public List<Profession> findAll() {
 		return professionRepository.findAll();
 	}

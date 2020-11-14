@@ -17,4 +17,8 @@ public interface NotificationDetailService {
     List<NotificationDetails> getIdNotificationByTop5(String id);
 
     Integer countNotificationDetailByUserId(String id);
+
+    List<NotificationDetails> saveAllNotificationDetails(List<NotificationDetails> notificationDetails);
+
+    void addNotificationDetailNativeQuery(String type, Integer nid, String userId);
 }
