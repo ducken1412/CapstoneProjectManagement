@@ -333,6 +333,9 @@
 
     // Percent Chart
     var ctx = document.getElementById("percent-chart");
+    var perOnSchedule = parseInt(document.getElementById("perOnSchedule").value);
+    var perWarning = parseInt(document.getElementById("perWarning").value);
+    var perSerious = parseInt(document.getElementById("perSerious").value);
     if (ctx) {
       ctx.height = 280;
       var myChart = new Chart(ctx, {
@@ -341,15 +344,15 @@
           datasets: [
             {
               label: "My First dataset",
-              data: [50, 20, 30],
+              data: [perWarning,perOnSchedule , perSerious],
               backgroundColor: [
                 'yellow',
-                'Green',
+                'green',
                 'red'
               ],
               hoverBackgroundColor: [
                 'yellow',
-                'Green',
+                'green',
                 'red'
               ],
               borderWidth: [
@@ -362,8 +365,9 @@
             }
           ],
           labels: [
-            'Products',
-            'Services'
+            'Warning',
+            'On Schedule',
+            'Serious'
           ]
         },
         options: {

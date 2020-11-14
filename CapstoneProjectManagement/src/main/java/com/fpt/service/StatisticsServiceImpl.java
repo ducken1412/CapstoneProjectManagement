@@ -5,6 +5,10 @@ import com.fpt.entity.Status;
 import com.fpt.repository.StatisticsRepository;
 import com.fpt.repository.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +32,15 @@ public class StatisticsServiceImpl implements StatisticsService{
 
 	@Override
 	public List<Statistics> getStatisticsWithWeek(int week) {
-		List<Statistics> statistics = statisticsRepository.findByWeek(week);
+		List<Statistics> statistics = statisticsRepository.findByWeekOrderByTimeTrackingCurrentAsc(week);
 		return statistics;
+	}
+
+	@Override
+	public Page<Statistics> getStatisticsWithWeekPage(Pageable pageable, int week) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		Pageable pageStatics = PageRequest.of(currentPage, pageSize);
+		return statisticsRepository.findByWeekOrderByTimeTrackingCurrentAsc(pageStatics, week);
 	}
 }
