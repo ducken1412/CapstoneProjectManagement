@@ -28,6 +28,14 @@
                             </li>
                         </ul>
                     </li>-->
+                    <li  th:each="authority : ${#authentication.getPrincipal().authorities}"
+                         th:if="${authority.getAuthority() == 'HeadAuthen' || authority.getAuthority() == 'LecturerAuthen'}">
+                        <a th:href="@{/db/dashboard}">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="bot-line"></span>DashBoard</a>
+                        </a>
+                    </li>
+
                     <li>
                         <a th:href="@{/forum}">
                             <i class="fas fa-group"></i>
@@ -44,6 +52,11 @@
                             </li>
 
                             <li th:each="authority : ${#authentication.getPrincipal().authorities}"
+                                th:if="${authority.getAuthority() == 'MemberAuthen'|| authority.getAuthority() == 'LeaderAuthen'}">
+                                <a id="linkCap" >My Capstone</a>
+                            </li>
+
+                            <li th:each="authority : ${#authentication.getPrincipal().authorities}"
                                 th:if="${authority.getAuthority() == 'HeadAuthen' || authority.getAuthority() == 'LecturerAuthen' || authority.getAuthority() == 'TrainingDepAuthen' }">
                                 <a th:href="@{/ad/capstoneproject}">Manage Capstone</a>
                             </li>
@@ -57,29 +70,12 @@
 
                     <li class="has-sub">
                         <a href="#">
-                            <i class="fas fa-globe"></i>
-                            <span class="bot-line"></span>Notification</a>
-                        <ul class="header3-sub-list list-unstyled">
-
-                            <li >
-                                <a th:href="@{/list-news}">Global news</a>
-                            </li>
-
-                            <li th:each="authority : ${#authentication.getPrincipal().authorities}"
-                                th:if="${authority.getAuthority() == ('TrainingDepAuthen')}" >
-                                <a th:href="@{/td/notification}">Create Notification</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="has-sub">
-                        <a href="#">
                             <i class="fas  fa-bullhorn"></i>
                             <span class="bot-line"></span>Reports</a>
                         <ul class="header3-sub-list list-unstyled">
 
                             <li >
-                                <a th:if="${#request.userPrincipal != null}" th:href="@{/list-reports}">Report news</a>
+                                <a th:if="${#request.userPrincipal != null}" th:href="@{/list-reports}">Report Lists</a>
                             </li>
 
                             <li th:each="authority : ${#authentication.getPrincipal().authorities}"
@@ -89,13 +85,15 @@
                         </ul>
                     </li>
                      <li class="has-sub">
-                       <a th:href="@{/about}">
+                       <a href="#">
                             <i class="fas fa-american-sign-language-interpreting"></i>
                             <span class="bot-line"></span>Model</a>
                         <ul class="header3-sub-list list-unstyled">
-
                             <li >
-                                <a th:href="@{/model}">Tutorial Model</a>
+                                <a th:href="@{/about}" target="_blank">About</a>
+                            </li>
+                            <li >
+                                <a th:href="@{/model}" target="_blank">Tutorial Model</a>
                             </li>
 
                            
@@ -144,13 +142,15 @@
     $().ready(function () {
         var userName ="userFullName=";
         var path ="userImage=" ;
+        var idDetail ="idDetail=" ;
+        var userId ="userId=" ;
+        debugger;
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
         for(var i = 0; i <ca.length; i++) {
             var c = ca[i];
             while (c.charAt(0) == ' ') {
                 c = c.substring(1);
-
             }
             if (c.indexOf(userName) == 0) {
                 var nameArray = c.substring(userName.length, c.length).split('_');
@@ -163,6 +163,16 @@
                 $("#imageCockiee").attr("src",c.substring(path.length, c.length));
                 $("#image-dropdown").attr("src",c.substring(path.length, c.length));
             }
+            if (c.indexOf(idDetail) == 0) {
+                $("#linkCap").attr("href","/project-detail/"+c.substring(idDetail.length, c.length));
+            }
+
+            if (c.indexOf(userId) == 0) {
+                $("#username-dropdown").attr("href","/user/"+c.substring(userId.length, c.length));
+                $("#user-name").attr("href","/user/"+c.substring(userId.length, c.length));
+            }
+
+
         }
         $.ajax({
             url: "/notifications",

@@ -78,6 +78,14 @@ public class LoginController {
 		Cookie cookie = new Cookie("userFullName", userFullName);
 		cookie.setMaxAge(1 * 24 * 60 * 60);
 		response.addCookie(cookie);
+		Cookie cookieId = new Cookie("userId", appUser.getId());
+		response.addCookie(cookieId);
+		if(appUser.getCapstoneProjectDetails().size() != 0){
+			Cookie cookieDetail = new Cookie("idDetail",
+					appUser.getCapstoneProjectDetails().get(0).getCapstoneProject().getId().toString() );
+			response.addCookie(cookieDetail);
+		}
+
 		if (appUser.getImage() != null) {
 			Cookie cookieImage = new Cookie("userImage", appUser.getImage());
 			cookie.setMaxAge(1 * 24 * 60 * 60);
