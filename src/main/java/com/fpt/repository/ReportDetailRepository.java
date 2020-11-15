@@ -21,4 +21,10 @@ public interface ReportDetailRepository extends JpaRepository<ReportDetails, Int
     @Query(value = "SELECT * FROM reports AS r , report_user AS ru, report_details AS rd WHERE rd.report_id= r.id AND r.id = ru.report_id AND ru.user_id = ?1 ORDER BY r.id DESC", nativeQuery = true)
     Page<ReportDetails> getTitlePagginByUserId(Pageable pageable, String id);
 
+    @Query("select r from ReportDetails r where r.user.id = ?1 order by r.id desc")
+    Page<ReportDetails> getTitlePagginByUserIdSender(Pageable pageable, String id);
+
+    @Query("select r from ReportDetails r , Reports rs where r.user.id = ?1 order by r.id desc")
+    Page<ReportDetails> getTitlePagginByUserId1(Pageable pageable, String id);
+
 }

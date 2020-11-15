@@ -43,4 +43,19 @@ public class StatisticsServiceImpl implements StatisticsService{
 		Pageable pageStatics = PageRequest.of(currentPage, pageSize);
 		return statisticsRepository.findByWeekOrderByTimeTrackingCurrentAsc(pageStatics, week);
 	}
+
+	@Override
+	public List<Statistics> getStatisticsWithWeekByLecture(int week,String email) {
+		List<Statistics> statistics = statisticsRepository.findByWeekOrderByTimeTrackingCurrentAscByLecture(week,email);
+		return statistics;
+	}
+
+
+	@Override
+	public Page<Statistics> getStatisticsWithWeekPageByLecture(int week, String email, Pageable pageable) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		Pageable pageStatics = PageRequest.of(currentPage, pageSize);
+		return statisticsRepository.findByWeekPagingOrderByTimeTrackingCurrentAscByLecture(week,email,pageable);
+	}
 }

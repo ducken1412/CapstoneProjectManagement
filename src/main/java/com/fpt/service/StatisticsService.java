@@ -16,4 +16,8 @@ public interface StatisticsService {
 
     Page<Statistics> getStatisticsWithWeekPage(Pageable pageable,  int week);
 
+    List<Statistics> getStatisticsWithWeekByLecture(int week,String email);
+
+    Page<Statistics> getStatisticsWithWeekPageByLecture(int week,String email,Pageable pageable);
+
 }

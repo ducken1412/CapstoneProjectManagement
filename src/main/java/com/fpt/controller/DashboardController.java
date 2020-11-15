@@ -1,19 +1,23 @@
 package com.fpt.controller;
 
 import com.fpt.dto.StatisticsTotalDTO;
-import com.fpt.entity.ReportDetails;
-import com.fpt.entity.Statistics;
+import com.fpt.entity.*;
 import com.fpt.service.StatisticsService;
 import com.fpt.service.TaskDetailsService;
+import com.fpt.service.UserService;
+import com.fpt.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +30,8 @@ public class DashboardController {
     private TaskDetailsService taskDetailsService;
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private UserService userService;
   
     @GetMapping("/db/dashboard")
     public String getDashboard(Model model, @RequestParam("page") Optional<Integer> page,
@@ -33,8 +39,29 @@ public class DashboardController {
         if(principal == null) {
             return "redirect:/login";
         }
+
         Integer week =  taskDetailsService.findMaxWeek();
-        List<Statistics> statisticsList = statisticsService.getStatisticsWithWeek(week);
+        Users users = userService.findByEmail(principal.getName());
+        //phan trang
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+        List<Statistics>  statisticsList ;
+        Page<Statistics> statisticsPage;
+        boolean roleHead =false;
+        for (UserRoles role : users.getRoleUser()){
+            if(role.getUserRoleKey().getRole().getName().equalsIgnoreCase(Constant.ROLE_HEAD_DB)){
+                roleHead =true;
+                break;
+            }
+        }
+        if (roleHead){
+            statisticsList = statisticsService.getStatisticsWithWeek(week);
+            statisticsPage = statisticsService.getStatisticsWithWeekPage(PageRequest.of(currentPage - 1, pageSize),week);
+        } else{
+            statisticsList = statisticsService.getStatisticsWithWeekByLecture(week, users.getEmail());
+            statisticsPage = statisticsService.getStatisticsWithWeekPageByLecture(week,users.getEmail(),PageRequest.of(currentPage - 1, pageSize));
+        }
+
         StatisticsTotalDTO  statisticsTotalDTO = new StatisticsTotalDTO();
         int countOnSchedule = 0;
         int countWarning= 0;
@@ -48,7 +75,6 @@ public class DashboardController {
             }  else {
                 countSerious = countSerious + 1;
             }
-
             
         }
         
@@ -80,11 +106,6 @@ public class DashboardController {
 
         model.addAttribute("StatisticsTotalDTO", statisticsTotalDTO);
 
-
-        //phan trang
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(10);
-        Page<Statistics> statisticsPage = statisticsService.getStatisticsWithWeekPage(PageRequest.of(currentPage - 1, pageSize),week);
         model.addAttribute("statisticsPage", statisticsPage);
         int totalPages = statisticsPage.getTotalPages();
         if (totalPages > 0) {

@@ -63,7 +63,7 @@
     <div class="table-data__tool">
         <div class="table-data__tool-right mx-auto">
             <nav aria-label="Page navigation">
-                <ul th:if="${postPage.totalPages > 0}"
+                <ul th:if="${postPage.totalPages > 1}"
                     class="pagination w-75">
                     <input type="text" id="page-size" name="page-size"
                            th:value="${postPage.size}" hidden="true"/>
