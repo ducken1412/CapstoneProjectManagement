@@ -45,7 +45,11 @@ public class LoginController {
 	private UserRoleService userRoleService;
 
 	@RequestMapping(value = {"/", "/login"})
-	public String login() {
+	public String login(HttpServletRequest request) {
+		String referer = request.getHeader("Referer"); //Get previous URL before call '/login'
+
+		//save referer URL to session, for later use on CustomAuthenticationSuccesshandler
+		request.getSession().setAttribute(CustomAuthenticationSuccessHandler.REDIRECT_URL_SESSION_ATTRIBUTE_NAME, referer);
 		return "login/loginPage";
 	}
 
@@ -56,6 +60,7 @@ public class LoginController {
 		if (code == null || code.isEmpty()) {
 			return "redirect:/login?google=error";
 		}
+
 		String accessToken = googleUtils.getToken(code);
 
 		String email = googleUtils.getUserInfo(accessToken);
