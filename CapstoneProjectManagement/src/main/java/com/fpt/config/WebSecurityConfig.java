@@ -48,8 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/userInfo")
 				.failureUrl("/login?error=true")
 				.usernameParameter("username")
-				.passwordParameter("password")
-				.successHandler(new CustomAuthenticationSuccessHandler());
+				.passwordParameter("password");
 		http.authorizeRequests().and().logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/login?message=logout").deleteCookies("auth_code", "JSESSIONID").invalidateHttpSession(true);
 
 

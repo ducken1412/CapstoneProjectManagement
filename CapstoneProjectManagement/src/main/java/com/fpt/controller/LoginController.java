@@ -46,10 +46,6 @@ public class LoginController {
 
 	@RequestMapping(value = {"/", "/login"})
 	public String login(HttpServletRequest request) {
-		String referer = request.getHeader("Referer"); //Get previous URL before call '/login'
-
-		//save referer URL to session, for later use on CustomAuthenticationSuccesshandler
-		request.getSession().setAttribute(CustomAuthenticationSuccessHandler.REDIRECT_URL_SESSION_ATTRIBUTE_NAME, referer);
 		return "login/loginPage";
 	}
 
