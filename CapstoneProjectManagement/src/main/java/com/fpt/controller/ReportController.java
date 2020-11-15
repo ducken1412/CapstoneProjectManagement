@@ -294,21 +294,29 @@ public class ReportController {
         notifications.setType(type);
         notificationsService.addNotification(notifications);
         int notificationId = notifications.getId();
-        NotificationDetails notificationDetails = new NotificationDetails();
+
         //List<NotificationDetails> notificationDetail = new ArrayList<>();
         for (int i = 0; i < userByProject.size(); i++) {
             reportService.addReportUserTable(reportId, userByProject.get(i).getId());
         }
-        for (int i = 0; i < userByProject.size(); i++) {
-            if (!userByProject.get(i).equals(user)) {
-                notificationDetailService.addNotificationDetailNativeQuery(typeReport,notificationId,userByProject.get(i).getId());
+        List<NotificationDetails> detailsList = new ArrayList<>();
+        for (Users users : userByProject) {
+            if (!users.equals(user)) {
+                //notificationDetailService.addNotificationDetailNativeQuery(typeReport,notificationId,userByProject.get(i).getId());
+                NotificationDetails notificationDetails = new NotificationDetails();
+                notificationDetails.setType(typeReport);
+                notificationDetails.setNotification(notifications);
+                notificationDetails.setUser(users);
+                detailsList.add(notificationDetails);
+
                 try {
-                    SendingMail.sendEmail(userByProject.get(i).getEmail(), "[FPTU Capstone Project] " + title, content);
+                    SendingMail.sendEmail(users.getEmail(), "[FPTU Capstone Project] " + title, content);
                 } catch (Exception ex) {
                     System.out.println(ex);
                 }
             }
         }
+        notificationDetailService.saveAllNotificationDetails(detailsList);
         return "redirect:/report/" + reportId;
     }
 
@@ -319,19 +327,19 @@ public class ReportController {
             return "redirect:/login";
         }
         Users user = userService.findByEmail(principal.getName());
-        String user_id_login = user.getId();
-        List<Integer> list_report_id = reportDetailService.getListReportIdByUserId(user_id_login);
-        List<ReportDetails> reportDetails = new ArrayList<>();
-        for (int i = 0; i < list_report_id.size(); i++) {
-            ReportDetails details = reportDetailService.getReportDetailByReportId(list_report_id.get(i));
-            reportDetails.add(details);
-        }
-        model.addAttribute("reportDetails", reportDetails);
+        String userId = user.getId();
+//        List<Integer> list_report_id = reportDetailService.getListReportIdByUserId(userId);
+//        List<ReportDetails> reportDetails = new ArrayList<>();
+//        for (int i = 0; i < list_report_id.size(); i++) {
+//            ReportDetails details = reportDetailService.getReportDetailByReportId(list_report_id.get(i));
+//            reportDetails.add(details);
+//        }
+//        model.addAttribute("reportDetails", reportDetails);
 
         //phan trang
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(20);
-        Page<ReportDetails> reportsPage = reportDetailService.getTitlePagginByUserId(PageRequest.of(currentPage - 1, pageSize), user_id_login);
+        Page<ReportDetails> reportsPage = reportDetailService.getTitlePagginByUserId(PageRequest.of(currentPage - 1, pageSize), userId);
         model.addAttribute("reportsPage", reportsPage);
         int totalPages = reportsPage.getTotalPages();
         if (totalPages > 0) {

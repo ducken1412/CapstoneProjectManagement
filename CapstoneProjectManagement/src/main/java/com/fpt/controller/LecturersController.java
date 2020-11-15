@@ -67,8 +67,8 @@ public class LecturersController {
         }
         LOGGER.info("Running on getListLecturers method of UserController");
         Users user = userService.findByEmail(principal.getName());
-        String user_id_login = user.getId();
-        HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(user_id_login);
+        String userId = user.getId();
+        HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
         if (historyRecords != null) {
             //check booking
             boolean check_user_register = true;
@@ -86,10 +86,12 @@ public class LecturersController {
             }
             model.addAttribute("check_lecture_op1", check_lecture_op1);
             model.addAttribute("check_lecture_op2", check_lecture_op2);
+            CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
+            String statusProject = capstoneProject.getStatus().getName();
             //check total lecture bookded
             int count = capstoneProjectDetailService.countLecturersByProjectId(project_id);
-            if (count >= 2) {
-                model.addAttribute("disable", "Can't choose over 2 lecturers.");
+            if (count >= 2 && statusProject.equals("registering_capstone")) {
+                model.addAttribute("disable", "Successful registration, the information is being sent to the training department");
             }
         } else {
             boolean check_user_register = false;
