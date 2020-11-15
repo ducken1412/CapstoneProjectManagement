@@ -91,9 +91,7 @@ $(document).on("submit", "#register", function (e) {
                     zIndex: 100,
                     margin: "1rem"
                 });
-                setTimeout(function () {
-                    window.location.href = "/lecturers";
-                }, 3000);
+                window.location.href = "/lecturers";
                 $("#loading-add").attr("hidden", true);
             }
             //$("#form-content").html(data);
