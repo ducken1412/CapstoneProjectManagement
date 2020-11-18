@@ -45,9 +45,6 @@ public class ReportController {
     private ReportService reportService;
 
     @Autowired
-    private ReportDetailService reportDetailService;
-
-    @Autowired
     private UserRoleService userRoleService;
 
     @Autowired
@@ -76,18 +73,20 @@ public class ReportController {
         if (principal == null) {
             return "redirect:/login";
         }
-
-        model.addAttribute("commentDTO", new CommentDTO());
-        model.addAttribute("reportDetail", new ReportDTO());
-        Users user = userService.findByEmail(principal.getName());
-        boolean check = false;
-        List<String> role = userRoleService.getRoleNamesByEmail(principal.getName());
-        for (int i = 0; i < role.size(); i++) {
-            if (role.get(i).equals("student_leader")) {
-                check = true;
+        try {
+            model.addAttribute("commentDTO", new CommentDTO());
+            model.addAttribute("report", new Reports());
+            Users user = userService.findByEmail(principal.getName());
+            List<String> roles = userRoleService.getRoleNamesByEmail(principal.getName());
+            for (String role : roles) {
+                if (role.equals("student_leader")) {
+                    model.addAttribute("check_role", true);
+                    break;
+                }
             }
+        } catch (Exception e) {
+
         }
-        model.addAttribute("check_role", check);
         return "home/add-report";
     }
 
@@ -96,11 +95,11 @@ public class ReportController {
         if (principal == null) {
             return "redirect:/login";
         }
-        ReportDetails details = reportDetailService.getReportDetailByReportId(id);
-        List<Comments> comments = commentService.getCommentsByReportDetatilId(details.getId());
+        Reports report = reportService.getReportsById(id);
+        List<Comments> comments = commentService.getCommentsByReportId(id);
         model.addAttribute("report_id", id);
-        String title = details.getReport().getName();
-        String content = details.getContent();
+        String title = report.getTitle();
+        String content = report.getContent();
         model.addAttribute("title", title);
         model.addAttribute("content", content);
         model.addAttribute("comments", comments);
@@ -112,11 +111,11 @@ public class ReportController {
         if (principal == null) {
             return "redirect:/login";
         }
-        ReportDetails details = reportDetailService.getReportDetailByReportId(id);
-        List<Comments> comments = commentService.getCommentsByReportDetatilId(details.getId());
+        Reports report = reportService.getReportsById(id);
+        List<Comments> comments = commentService.getCommentsByReportId(id);
         model.addAttribute("report_id", id);
-        String title = details.getReport().getName();
-        String content = details.getContent();
+        String title = report.getTitle();
+        String content = report.getContent();
         model.addAttribute("title", title);
         model.addAttribute("content", content);
         model.addAttribute("comments", comments);
@@ -124,49 +123,40 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/add-report", method = RequestMethod.POST)
-    public String addReport(MultipartFile file, ReportDTO dto, Model model, BindingResult result, Principal principal, HttpServletRequest request) {
+    public String addReport(MultipartFile file, Reports reportForm, Model model, BindingResult result, Principal principal, HttpServletRequest request) {
         if (principal == null) {
             return "redirect:/login";
         }
-        if (result.hasErrors()) {
-            model.addAttribute("reportDetail", new ReportDetails());
-            return "home/add-report";
-        }
         Users user = userService.findByEmail(principal.getName());
-
         String userId = user.getId();
+        CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
         String type = "daily report";
-        List<String> role = userRoleService.getRoleNamesByEmail(principal.getName());
-        for (int i = 0; i < role.size(); i++) {
-            if (role.get(i).equals("student_leader")) {
+        List<String> roles = userRoleService.getRoleNamesByEmail(principal.getName());
+        for (String role : roles) {
+            if (role.equals("student_leader")) {
                 type = "weekly report";
+                break;
             }
         }
-        Reports reports = new Reports();
+
+        Reports report = new Reports();
         Date date = new Date();
-        HistoryRecords records = new HistoryRecords();
-        ReportDetails reportDetails = new ReportDetails();
+        List<HistoryRecords> historyRecords = new ArrayList<>();
+        List<Users> userRecipients = new ArrayList<>();
         try {
+            userRecipients = capstoneProjectDetailService.getUserStudentMemberByProjectId(capstoneProject.getId());
             //post report
-            reports.setName(dto.getName());
-            reports.setType(type);
-            reportService.addReport(reports);
-
-            //post report detail
-            reportDetails.setContent(dto.getContent());
-            reportDetails.setUser(user);
-            reportDetails.setCreatedDate(date);
-            reportDetails.setLastModifiedDate(date);
-            reportDetails.setReport(reports);
-            reportDetailService.addReportDetail(reportDetails);
-
-            //save history
-            records.setUser(user);
-            records.setContent("Post report");
-            records.setReport(reports);
-            records.setCreatedDate(date);
-            recordService.save(records);
-
+            report.setTitle(reportForm.getTitle());
+            report.setContent(reportForm.getContent());
+            report.setType(type);
+            report.setCreatedDate(date);
+            report.setUser(user);
+            historyRecords.add(new HistoryRecords(user, date, null, "Create report", capstoneProject, report, null, null, null));
+            report.setReportRecipients(userRecipients);
+            report.setHistoryRecords(historyRecords);
+            if (!reportService.addReport(report)) {
+                return "home/add-report";
+            }
 
             //Import Excel
             if (file != null) {
@@ -278,37 +268,27 @@ public class ReportController {
         }
 
         //send notification to member project team
-        int projectIdByUserId = capstoneProjectDetailService.getOneProjectIdByUserId(userId);
-        List<Users> userByProject = capstoneProjectDetailService.getUserStudentMemberByProjectId(projectIdByUserId);
         String userName = user.getUsername();
-        int reportId = reports.getId();
+        int reportId = report.getId();
         String baseUrl = String.format("%s://%s:%d/", request.getScheme(), request.getServerName(), request.getServerPort());
         String title = userName + " report at " + date;
         String content = "Report by " + userName + " at " + date + " Click " + "<a href=\"" + baseUrl + "report/" + reportId + "\">view report detail.</a>";
         String typeReport = "private";
         Notifications notifications = new Notifications();
-        //NotificationCommon.addNotification(content, title, date, typeReport);
         notifications.setContent(content);
         notifications.setTitle(title);
         notifications.setCreated_date(date);
         notifications.setType(type);
         notificationsService.addNotification(notifications);
-        int notificationId = notifications.getId();
-
-        //List<NotificationDetails> notificationDetail = new ArrayList<>();
-        for (int i = 0; i < userByProject.size(); i++) {
-            reportService.addReportUserTable(reportId, userByProject.get(i).getId());
-        }
         List<NotificationDetails> detailsList = new ArrayList<>();
-        for (Users users : userByProject) {
+        NotificationDetails notificationDetails = null;
+        for (Users users : userRecipients) {
             if (!users.equals(user)) {
-                //notificationDetailService.addNotificationDetailNativeQuery(typeReport,notificationId,userByProject.get(i).getId());
-                NotificationDetails notificationDetails = new NotificationDetails();
+                notificationDetails = new NotificationDetails();
                 notificationDetails.setType(typeReport);
                 notificationDetails.setNotification(notifications);
                 notificationDetails.setUser(users);
                 detailsList.add(notificationDetails);
-
                 try {
                     SendingMail.sendEmail(users.getEmail(), "[FPTU Capstone Project] " + title, content);
                 } catch (Exception ex) {
@@ -328,18 +308,11 @@ public class ReportController {
         }
         Users user = userService.findByEmail(principal.getName());
         String userId = user.getId();
-//        List<Integer> list_report_id = reportDetailService.getListReportIdByUserId(userId);
-//        List<ReportDetails> reportDetails = new ArrayList<>();
-//        for (int i = 0; i < list_report_id.size(); i++) {
-//            ReportDetails details = reportDetailService.getReportDetailByReportId(list_report_id.get(i));
-//            reportDetails.add(details);
-//        }
-//        model.addAttribute("reportDetails", reportDetails);
 
         //phan trang
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(20);
-        Page<ReportDetails> reportsPage = reportDetailService.getTitlePagginByUserId(PageRequest.of(currentPage - 1, pageSize), userId);
+        Page<Reports> reportsPage = reportService.findReportByUserId(PageRequest.of(currentPage - 1, pageSize), userId);
         model.addAttribute("reportsPage", reportsPage);
         int totalPages = reportsPage.getTotalPages();
         if (totalPages > 0) {
@@ -355,24 +328,41 @@ public class ReportController {
             return "redirect:/login";
         }
         Users user = userService.findByEmail(principal.getName());
-        String userId = user.getId();
-        int report_detail_id = dto.getPostId();
+        int reportId = dto.getPostId();
         Comments comment = new Comments();
-        HistoryRecords records = new HistoryRecords();
         Date date = new Date();
-        ReportDetails reportDetail = reportDetailService.getReportDetailByReportId(report_detail_id);
-        Reports reports = reportService.finReportsById(report_detail_id);
+//        Reports report = reportDetailService.getReportDetailByReportId(report_detail_id);
+        Reports reports = reportService.finReportsById(reportId);
         comment.setContent(dto.getContent());
         comment.setSender(user);
-        comment.setReportDetail(reportDetail);
+        comment.setReport(reports);
         comment.setCreatedDate(date);
         commentService.save(comment);
-        records.setUser(user);
-        records.setContent("Creat comment report");
-        records.setCreatedDate(date);
-        records.setReport(reports);
-        recordService.save(records);
-        return "redirect:/report-detail/" + report_detail_id;
+
+        return "redirect:/report-detail/" + reportId;
+    }
+
+
+    @RequestMapping(value = "/my-reports", method = RequestMethod.GET)
+    public String myReport(Model model, @RequestParam("page") Optional<Integer> page,
+                             @RequestParam("size") Optional<Integer> size, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Users user = userService.findByEmail(principal.getName());
+        String userId = user.getId();
+
+        //phan trang
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(20);
+        Page<Reports> reportsPage = reportService.findReportsByUserId(PageRequest.of(currentPage - 1, pageSize), userId);
+        model.addAttribute("reportsPage", reportsPage);
+        int totalPages = reportsPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        return "home/my-reports";
     }
 
 }

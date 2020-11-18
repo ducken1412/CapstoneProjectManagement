@@ -29,7 +29,7 @@ public class ReportServiceImpl implements  ReportService{
 
     @Override
     public Reports getReportsById(Integer id) {
-        return reportRepository.getReportsById(id);
+        return reportRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -40,6 +40,22 @@ public class ReportServiceImpl implements  ReportService{
     @Override
     public Reports finReportsById(Integer id) {
         return reportRepository.findAllById(id);
+    }
+
+    @Override
+    public Page<Reports> findReportByUserId(Pageable pageable,String id) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+        return reportRepository.findReportByUserId(secondPageWithFiveElements, id);
+    }
+
+    @Override
+    public Page<Reports> findReportsByUserId(Pageable pageable, String id) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+        return reportRepository.findReportsByUserId(secondPageWithFiveElements, id);
     }
 
 }

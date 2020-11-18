@@ -60,6 +60,18 @@ public class HistoryRecords {
 		this.notification = notification;
 	}
 
+	public HistoryRecords(Users user, Date createdDate, Date lastModifiedDate, String content, CapstoneProjects capstoneProject, Reports report, Evaluations evaluation, Posts post, Notifications notification) {
+		this.user = user;
+		this.createdDate = createdDate;
+		this.lastModifiedDate = lastModifiedDate;
+		this.content = content;
+		this.capstoneProject = capstoneProject;
+		this.report = report;
+		this.evaluation = evaluation;
+		this.post = post;
+		this.notification = notification;
+	}
+
 	public Notifications getNotification() {
 		return notification;
 	}

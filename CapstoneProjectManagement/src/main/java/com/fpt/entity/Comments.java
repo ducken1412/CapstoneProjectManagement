@@ -27,8 +27,8 @@ public class Comments {
 	@Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
 	private Date createdDate;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "report_detail_id")
-	private ReportDetails reportDetail;
+	@JoinColumn(name = "report_id")
+	private Reports report;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Posts post ;
@@ -37,12 +37,12 @@ public class Comments {
 		super();
 	}
 
-	public Comments(String content, Users sender, Date createdDate, ReportDetails reportDetail, Posts post) {
+	public Comments(String content, Users sender, Date createdDate, Reports report, Posts post) {
 		super();
 		this.content = content;
 		this.sender = sender;
 		this.createdDate = createdDate;
-		this.reportDetail = reportDetail;
+		this.report = report;
 		this.post = post;
 	}
 
@@ -78,12 +78,12 @@ public class Comments {
 		this.createdDate = createdDate;
 	}
 
-	public ReportDetails getReportDetail() {
-		return reportDetail;
+	public Reports getReport() {
+		return report;
 	}
 
-	public void setReportDetail(ReportDetails reportDetail) {
-		this.reportDetail = reportDetail;
+	public void setReport(Reports report) {
+		this.report = report;
 	}
 
 	public Posts getPost() {

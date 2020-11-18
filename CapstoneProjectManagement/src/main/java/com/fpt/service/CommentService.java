@@ -18,5 +18,5 @@ public interface CommentService {
 
 	List<Comments> findByPostId(Integer id);
 
-	List<Comments> getCommentsByReportDetatilId(Integer id);
+	List<Comments> getCommentsByReportId(Integer id);
 }
