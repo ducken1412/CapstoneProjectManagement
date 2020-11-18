@@ -12,6 +12,6 @@ import com.fpt.entity.Comments;
 public interface CommentRepository extends JpaRepository<Comments, Integer>{
 	public List<Comments> findByPostId(Integer id);
 
-	@Query("select c from Comments c where c.reportDetail.id = ?1 ORDER BY c.id DESC")
-	List<Comments> getCommentsByReportDetatilId(Integer id);
+	@Query("select c from Comments c where c.report.id = ?1 ORDER BY c.id DESC")
+	List<Comments> getCommentsByReportId(Integer id);
 }

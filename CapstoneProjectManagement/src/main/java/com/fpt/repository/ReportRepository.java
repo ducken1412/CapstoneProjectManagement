@@ -16,8 +16,7 @@ import java.util.List;
 @Repository
 public interface ReportRepository extends JpaRepository<Reports, Integer> {
 
-    @Query("select r from Reports r where r.id= ?1")
-    Reports getReportsById(Integer id);
+
 
     @Transactional
     @Modifying
@@ -26,4 +25,8 @@ public interface ReportRepository extends JpaRepository<Reports, Integer> {
 
     Reports findAllById(Integer id);
 
+    @Query(value = "SELECT * FROM reports AS r INNER JOIN report_details AS rd ON r.id = rd.report_id WHERE rd.user_id = ?1", nativeQuery = true)
+    Page<Reports> findReportByUserId(Pageable pageable,String id);
+
+    Page<Reports> findReportsByUserId(Pageable pageable,String userId);
 }

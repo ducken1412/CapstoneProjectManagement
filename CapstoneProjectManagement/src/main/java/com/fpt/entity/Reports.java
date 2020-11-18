@@ -1,20 +1,9 @@
 package com.fpt.entity;
 
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Reports")
@@ -23,34 +12,42 @@ public class Reports {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "INT")
 	private Integer id;
-	@Column(name = "name", columnDefinition = "NVARCHAR(256) NOT NULL")
-	private String name;
+	@Column(name = "title", columnDefinition = "NVARCHAR(256) NOT NULL")
+	private String title;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "report")
 	private List<HistoryRecords> historyRecords;
-	@OneToOne(mappedBy = "reportSend")
-	private Users sender;
 	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "Report_User", joinColumns = { @JoinColumn(name = "report_id") }, inverseJoinColumns = {
+	@JoinTable(name = "report_details", joinColumns = { @JoinColumn(name = "report_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "user_id") })
 	private List<Users> reportRecipients;
 	@Column(name = "type", columnDefinition = "NVARCHAR(50) NOT NULL")
 	private String type;
-	@OneToOne(mappedBy = "report")
-	private ReportDetails reportDetail;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "report")
+	private List<Files> files;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "report")
+	private List<Comments> comments;
+	@Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
+	private Date createdDate;
+	@Column(name = "content", columnDefinition = "longtext NOT NULL")
+	private String content;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "created_by")
+	private Users user;
 
 	public Reports() {
-		super();
 	}
 
-	public Reports(String name, List<HistoryRecords> historyRecords, Users sender, List<Users> reportRecipients,
-			String type, ReportDetails reportDetail) {
-		super();
-		this.name = name;
+	public Reports(Integer id, String title, List<HistoryRecords> historyRecords, List<Users> reportRecipients, String type, List<Files> files, List<Comments> comments, Date createdDate, String content, Users user) {
+		this.id = id;
+		this.title = title;
 		this.historyRecords = historyRecords;
-		this.sender = sender;
 		this.reportRecipients = reportRecipients;
 		this.type = type;
-		this.reportDetail = reportDetail;
+		this.files = files;
+		this.comments = comments;
+		this.createdDate = createdDate;
+		this.content = content;
+		this.user = user;
 	}
 
 	public Integer getId() {
@@ -61,12 +58,12 @@ public class Reports {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public List<HistoryRecords> getHistoryRecords() {
@@ -75,14 +72,6 @@ public class Reports {
 
 	public void setHistoryRecords(List<HistoryRecords> historyRecords) {
 		this.historyRecords = historyRecords;
-	}
-
-	public Users getSender() {
-		return sender;
-	}
-
-	public void setSender(Users sender) {
-		this.sender = sender;
 	}
 
 	public List<Users> getReportRecipients() {
@@ -101,12 +90,43 @@ public class Reports {
 		this.type = type;
 	}
 
-	public ReportDetails getReportDetail() {
-		return reportDetail;
+	public List<Files> getFiles() {
+		return files;
 	}
 
-	public void setReportDetail(ReportDetails reportDetail) {
-		this.reportDetail = reportDetail;
+	public void setFiles(List<Files> files) {
+		this.files = files;
 	}
 
+	public List<Comments> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comments> comments) {
+		this.comments = comments;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
 }

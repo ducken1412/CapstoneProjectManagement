@@ -27,8 +27,8 @@ public class Files {
 	@JoinColumn(name = "capstone_project_id")
 	private CapstoneProjects capstoneProject;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "report_detail_id")
-	private ReportDetails reportDetail;
+	@JoinColumn(name = "report_id")
+	private Reports report;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "evaluation_id")
 	private Evaluations evaluation;
@@ -40,13 +40,13 @@ public class Files {
 		super();
 	}
 
-	public Files(String path,String fileName, String description, CapstoneProjects capstoneProject, ReportDetails reportDetail,
+	public Files(String path,String fileName, String description, CapstoneProjects capstoneProject, Reports report,
 			Evaluations evaluation, Posts post) {
 		super();
 		this.path = path;
 		this.description = description;
 		this.capstoneProject = capstoneProject;
-		this.reportDetail = reportDetail;
+		this.report = report;
 		this.evaluation = evaluation;
 		this.post = post;
 		this.fileName = fileName;
@@ -92,12 +92,12 @@ public class Files {
 		this.capstoneProject = capstoneProject;
 	}
 
-	public ReportDetails getReportDetail() {
-		return reportDetail;
+	public Reports getReport() {
+		return report;
 	}
 
-	public void setReportDetail(ReportDetails reportDetail) {
-		this.reportDetail = reportDetail;
+	public void setReport(Reports report) {
+		this.report = report;
 	}
 
 	public Evaluations getEvaluation() {

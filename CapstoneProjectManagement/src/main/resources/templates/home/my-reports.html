@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Template</title>
+    <title>My Reports</title>
 
 
     <th:block th:include="home/_css"></th:block>
@@ -66,7 +66,7 @@
                                                 class="pagination w-75 justify-content-end">
                                                 <th:block th:each="pageNumber : ${pageNumbers}">
                                                     <li th:class="${pageNumber==reportsPage.number + 1} ? active + ' ' + page-item : page-item">
-                                                        <a th:href="@{/list-reports(size=${reportsPage.size}, page=${pageNumber})}"
+                                                        <a th:href="@{/my-reports(size=${reportsPage.size}, page=${pageNumber})}"
                                                            th:text=${pageNumber}
                                                            th:class="page-link">
                                                         </a>
