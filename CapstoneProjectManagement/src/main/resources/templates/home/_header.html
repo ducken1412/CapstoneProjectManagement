@@ -167,6 +167,8 @@
             }
             if (c.indexOf(idDetail) == 0) {
                 $("#linkCap").attr("href","/project-detail/"+c.substring(idDetail.length, c.length));
+            }else {
+                $("#linkCap").css('display','none');
             }
 
             if (c.indexOf(userId) == 0) {
