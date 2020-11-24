@@ -97,11 +97,19 @@
                             <li >
                                 <a th:href="@{/model}" target="_blank">Tutorial Model</a>
                             </li>
-
-                           
                         </ul>
                     </li>
+
                 </ul>
+            </div>
+            <div class="noti-wrap w-75 justify-content-end mr-4">
+                <div class="noti__item js-item-menu mt-2-lg" id="drd-chat">
+                    <i class="far fa-comments"></i>
+                    <span class="quantity" id="numNewMessage"></span>
+                    <div class="mess-dropdown js-dropdown mt-2" id="drd-chat-content">
+
+                    </div>
+                </div>
             </div>
                 <div class="account-wrap">
                     <div class="account-item account-item--style2 clearfix js-item-menu">
@@ -194,3 +202,4 @@
         });
     })
 </script>
+<script th:src="@{/js/chatting/chat-noti.js}"></script>

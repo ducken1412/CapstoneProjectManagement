@@ -1,6 +1,8 @@
 package com.fpt.service;
 
+import com.fpt.dto.ChatDTO;
 import com.fpt.entity.Chat;
+import com.fpt.entity.Users;
 
 import java.util.List;
 
@@ -15,5 +17,9 @@ public interface ChatService {
 	List<Chat> findAll();
 
 	List<Chat> findByRoomId(String roomId);
+
+	List<Users> findUsersInRoom(String roomId);
+
+	List<ChatDTO> findChatsByUserId(String userId);
 
 }

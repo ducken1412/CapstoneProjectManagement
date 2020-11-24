@@ -23,11 +23,12 @@ public class Chat {
     public Chat() {
     }
 
-    public Chat(Integer id, String content, String roomId, Users user) {
+    public Chat(Integer id, String content, String roomId, Users user, List<ChatDetails> chatDetail) {
         this.id = id;
         this.content = content;
         this.roomId = roomId;
         this.user = user;
+        this.chatDetail = chatDetail;
     }
 
     public Integer getId() {
@@ -60,5 +61,13 @@ public class Chat {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+
+    public List<ChatDetails> getChatDetail() {
+        return chatDetail;
+    }
+
+    public void setChatDetail(List<ChatDetails> chatDetail) {
+        this.chatDetail = chatDetail;
     }
 }

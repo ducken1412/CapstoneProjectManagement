@@ -1,0 +1,19 @@
+<div class="pt-3 pl-2">
+    <th:block th:each="chat : ${chats}">
+        <div class="mess__item py-1 px-2">
+            <div class="content">
+                <h4 th:if="${chat.readStatus == 'read'}" class="d-inline-block text-truncate text-secondary" style="max-width: 300px;" data-toggle="tooltip" data-placement="left" th:text="${chat.title}" th:title="${chat.title}"></h4>
+                <h4 th:if="${chat.readStatus == 'unread'}" class="d-inline-block text-truncate" style="max-width: 300px;" data-toggle="tooltip" data-placement="left" th:text="${chat.title}" th:title="${chat.title}"></h4>
+                <p style="font-size: 14px">group</p>
+            </div>
+        </div>
+    </th:block>
+</div>
+<div class="mess__footer">
+    <a href="#">View all messages</a>
+</div>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
