@@ -49,8 +49,11 @@ public class Constant {
 	public final static String ROLE_HEAD_AUTHEN = "HeadAuthen";
 	public final static String ROLE_LECTURERS_AUTHEN = "LecturerAuthen";
 	public final static String ROLE_TRAINING_DEP_AUTHEN = "TrainingDepAuthen";
-	
-	
-		
+
+	//Constant for chat
+	public final static String CHAT_UNREAD = "unread";
+	public final static String CHAT_READ = "read";
+
+
 
 }
