@@ -86,6 +86,21 @@ public class UserServiceImpl implements UserService {
 		return userRepository.getUserByRoleId(secondPageWithFiveElements, 4);
 	}
 
+	@Override
+	public Page<Users> findPaginatedNotLecture2Booked(Pageable pageable, String lId1, String lId2) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+		return userRepository.getLectureNoteBooked2ByRoleId(secondPageWithFiveElements, 4, lId1,lId2);
+	}
+
+	@Override
+	public Page<Users> findPaginatedNotLectureBooked(Pageable pageable, String lId) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+		return userRepository.getLectureNoteBookedByRoleId(secondPageWithFiveElements, 4, lId);
+	}
 
 
 }

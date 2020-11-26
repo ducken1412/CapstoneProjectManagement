@@ -33,4 +33,8 @@ public interface UserService {
 	//pagination User
 	Page<Users> findPaginated(Pageable pageable);
 
+	Page<Users> findPaginatedNotLecture2Booked(Pageable pageable,String lId1, String lId2);
+
+	Page<Users> findPaginatedNotLectureBooked(Pageable pageable,String lId);
+
 }

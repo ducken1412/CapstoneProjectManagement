@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import com.fpt.entity.UserRoleKey;
 import com.fpt.entity.UserRoles;
 import com.fpt.entity.Users;
+import org.springframework.transaction.annotation.Transactional;
+
 @Repository
 public interface UserRolesRepository  extends JpaRepository<UserRoles, UserRoleKey>{
 	@Query("SELECT ru.userRoleKey.role.name FROM UserRoles ru WHERE ru.userRoleKey.user.id = ?1")
@@ -23,6 +25,8 @@ public interface UserRolesRepository  extends JpaRepository<UserRoles, UserRoleK
 
 	@Query("SELECT ru.userRoleKey.role.name FROM UserRoles ru WHERE ru.userRoleKey.user.email = ?1")
 	List<String> getRoleNamesByEmail(String email);
-	
 
+	@Transactional
+	@Query(value = "UPDATE UserRoles u SET u.userRoleKey.role.id = 2 WHERE u.userRoleKey.user.id = ?1")
+	void updateRoleStudentReject(String id);
 }

@@ -18,4 +18,6 @@ public interface UserRoleService {
 	UserRoles isExists(UserRoleKey roleUserKey);
 	List<String> getRoleNamesByEmail(String email);
 
+	void updateRoleStudentReject(String id);
+
 }
