@@ -70,52 +70,101 @@ public class LecturersController {
         String userId = user.getId();
         HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
         if (historyRecords != null) {
-            //check booking
-            boolean check_user_register = true;
-            model.addAttribute("check_user_register", check_user_register);
-            int project_id = historyRecords.getCapstoneProject().getId();
-            boolean check_lecture_op1 = true;
-            boolean check_lecture_op2 = true;
-            int count_lecture_op1 = capstoneProjectDetailService.countLecturersIdAndCapstoneProjectIdOP1(project_id);
-            int count_lecture_op2 = capstoneProjectDetailService.countLecturersIdAndCapstoneProjectIdOP2(project_id);
-            if (count_lecture_op1 != 0) {
-                check_lecture_op1 = false;
-            }
-            if (count_lecture_op2 != 0) {
-                check_lecture_op2 = false;
-            }
-            model.addAttribute("check_lecture_op1", check_lecture_op1);
-            model.addAttribute("check_lecture_op2", check_lecture_op2);
-            CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
-            String statusProject = capstoneProject.getStatus().getName();
-            //check total lecture bookded
-            int count = capstoneProjectDetailService.countLecturersByProjectId(project_id);
-            if (count >= 2 && statusProject.equals("registering_capstone")) {
-                model.addAttribute("disable", "Successful registration, the information is being sent to the training department");
+            try{
+                //check booking
+                boolean check_user_register = true;
+                model.addAttribute("check_user_register", check_user_register);
+                int projectId = historyRecords.getCapstoneProject().getId();
+                boolean check_lecture_op1 = true;
+                boolean check_lecture_op2 = true;
+                Users lecture1 = capstoneProjectDetailService.userLecturersIdAndCapstoneProjectIdOP1(projectId);
+                Users lecture2 = capstoneProjectDetailService.userLecturersIdAndCapstoneProjectIdOP2(projectId);
+                int count_lecture_op1 = capstoneProjectDetailService.countLecturersIdAndCapstoneProjectIdOP1(projectId);
+                int count_lecture_op2 = capstoneProjectDetailService.countLecturersIdAndCapstoneProjectIdOP2(projectId);
+                if (count_lecture_op1 != 0) {
+                    check_lecture_op1 = false;
+                }
+                if (count_lecture_op2 != 0) {
+                    check_lecture_op2 = false;
+                }
+                model.addAttribute("check_lecture_op1", check_lecture_op1);
+                model.addAttribute("check_lecture_op2", check_lecture_op2);
+                CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
+                String statusProject = capstoneProject.getStatus().getName();
+                //check total lecture bookded
+                int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
+                if (count >= 2 && statusProject.equals("registering_capstone")) {
+                    model.addAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
+                }
+                if(lecture1 != null && lecture2 != null){
+                    String lecture1Id = lecture1.getId();
+                    String lecture2Id = lecture2.getId();
+                    //phan trang
+                    int currentPage = page.orElse(1);
+                    int pageSize = size.orElse(6);
+                    Page<Users> lecturersPage = userService.findPaginatedNotLecture2Booked(PageRequest.of(currentPage - 1, pageSize), lecture1Id, lecture2Id);
+                    model.addAttribute("lecturersPage", lecturersPage);
+                    int totalPages = lecturersPage.getTotalPages();
+                    if (totalPages > 0) {
+                        List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+                        model.addAttribute("pageNumbers", pageNumbers);
+                    }
+                }else {
+                    if (lecture1 == null && lecture2 == null){
+                        //phan trang
+                        int currentPage = page.orElse(1);
+                        int pageSize = size.orElse(6);
+                        Page<Users> lecturersPage = userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+                        model.addAttribute("lecturersPage", lecturersPage);
+                        int totalPages = lecturersPage.getTotalPages();
+                        if (totalPages > 0) {
+                            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+                            model.addAttribute("pageNumbers", pageNumbers);
+                        }
+                    } else if(lecture1 != null){
+                        String lecture1Id = lecture1.getId();
+                        //phan trang
+                        int currentPage = page.orElse(1);
+                        int pageSize = size.orElse(6);
+                        Page<Users> lecturersPage = userService.findPaginatedNotLectureBooked(PageRequest.of(currentPage - 1, pageSize), lecture1Id);
+                        model.addAttribute("lecturersPage", lecturersPage);
+                        int totalPages = lecturersPage.getTotalPages();
+                        if (totalPages > 0) {
+                            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+                            model.addAttribute("pageNumbers", pageNumbers);
+                        }
+                    } else if(lecture2 != null){
+                        String lecture2Id = lecture2.getId();
+                        //phan trang
+                        int currentPage = page.orElse(1);
+                        int pageSize = size.orElse(6);
+                        Page<Users> lecturersPage = userService.findPaginatedNotLectureBooked(PageRequest.of(currentPage - 1, pageSize), lecture2Id);
+                        model.addAttribute("lecturersPage", lecturersPage);
+                        int totalPages = lecturersPage.getTotalPages();
+                        if (totalPages > 0) {
+                            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+                            model.addAttribute("pageNumbers", pageNumbers);
+                        }
+                    }
+                }
+            } catch (Exception e){
+                System.out.println(e);
             }
         } else {
             boolean check_user_register = false;
             model.addAttribute("check_user_register", check_user_register);
+            //phan trang
+            int currentPage = page.orElse(1);
+            int pageSize = size.orElse(6);
+            Page<Users> lecturersPage = userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+            model.addAttribute("lecturersPage", lecturersPage);
+            int totalPages = lecturersPage.getTotalPages();
+            if (totalPages > 0) {
+                List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+                model.addAttribute("pageNumbers", pageNumbers);
+            }
         }
 
-        //Id = 4 (role lecturers)
-//        List<Users> lecturer = userService.getUserByRoleId(4);
-//        model.addAttribute("lecturer", lecturer);
-
-        UserDTO userDTO = new UserDTO();
-//        List<Notifications> notifications = notificationService.getAllTitle();
-//        model.addAttribute("notifications", notifications);
-
-        //phan trang
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(6);
-        Page<Users> lecturersPage = userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-        model.addAttribute("lecturersPage", lecturersPage);
-        int totalPages = lecturersPage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
         return "home/listlecturers";
     }
 
@@ -137,12 +186,12 @@ public class LecturersController {
             List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(projectId);
             for (int i = 0; i < listUser.size(); i++) {
                 if (listUser.get(i).getUser().getId().equals(id)) {
-                    redirectAttributes.addFlashAttribute("disable", "lecture already booked. Please choose another lecture");
+                    redirectAttributes.addFlashAttribute("notification", "lecture already booked. Please choose another lecture");
                     return "redirect:/lecturers";
                 }
             }
             if (count >= 2) {
-                redirectAttributes.addFlashAttribute("disable", "Can't choose over 2 lecturers.");
+                redirectAttributes.addFlashAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
                 return "redirect:/lecturers";
             } else {
                 //booking lecture
@@ -193,12 +242,12 @@ public class LecturersController {
             List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(projectId);
             for (int i = 0; i < listUser.size(); i++) {
                 if (listUser.get(i).getUser().getId().equals(id)) {
-                    redirectAttributes.addFlashAttribute("disable", "lecture already booked. Please choose another lecture");
+                    redirectAttributes.addFlashAttribute("notification", "lecture already booked. Please choose another lecture");
                     return "redirect:/lecturers";
                 }
             }
             if (count >= 2) {
-                redirectAttributes.addFlashAttribute("disable", "Can't choose over 2 lecturers.");
+                redirectAttributes.addFlashAttribute("notification", "Can't choose over 2 lecturers.");
                 return "redirect:/lecturers";
             } else {
                 //booking lecture

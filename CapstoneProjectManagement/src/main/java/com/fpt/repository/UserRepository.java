@@ -27,4 +27,10 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 
 	@Query("select r from Users r where r.id = ?1")
 	Page<Reports> findReportByUserId(Pageable pageable,String id);
+
+	@Query("SELECT ru.userRoleKey.user FROM UserRoles ru WHERE ru.userRoleKey.role.id = ?1 and ru.userRoleKey.user.id <> ?2 and ru.userRoleKey.user.id <> ?3")
+	Page<Users> getLectureNoteBooked2ByRoleId(Pageable pageable,Integer id, String lId1, String lId2);
+
+	@Query("SELECT ru.userRoleKey.user FROM UserRoles ru WHERE ru.userRoleKey.role.id = ?1 and ru.userRoleKey.user.id <> ?2")
+	Page<Users> getLectureNoteBookedByRoleId(Pageable pageable,Integer id, String lId);
 }

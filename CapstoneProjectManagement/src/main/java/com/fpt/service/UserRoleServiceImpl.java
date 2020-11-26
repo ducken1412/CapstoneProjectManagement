@@ -55,6 +55,11 @@ public class UserRoleServiceImpl implements UserRoleService {
 	}
 
 	@Override
+	public void updateRoleStudentReject(String id) {
+		userRolesRepository.updateRoleStudentReject(id);
+	}
+
+	@Override
 	public List<String> getRoleNamesByUserId(String userId) {
 		return userRolesRepository.getRoleNamesByUserId(userId);
 	}

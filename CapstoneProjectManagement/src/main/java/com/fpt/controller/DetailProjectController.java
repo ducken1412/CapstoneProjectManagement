@@ -21,171 +21,170 @@ import com.fpt.utils.Constant;
 @Controller
 public class DetailProjectController {
 
-	@Autowired
-	private CapstoneProjectDetailService capstoneProjectDetailService;
+    @Autowired
+    private CapstoneProjectDetailService capstoneProjectDetailService;
 
-	@Autowired
-	private CapstoneProjectService capstoneProjectService;
+    @Autowired
+    private CapstoneProjectService capstoneProjectService;
 
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private UserRoleService userRoleService;
-	@Autowired
-	private StatusService statusService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserRoleService userRoleService;
+    @Autowired
+    private StatusService statusService;
 
-	@Autowired
-	private HistoryRecordService historyRecordService;
+    @Autowired
+    private HistoryRecordService historyRecordService;
 
 
+    @RequestMapping(value = "/project-detail/{id}", method = RequestMethod.GET)
+    public String detailProject(@PathVariable("id") Integer id, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
 
-	@RequestMapping(value = "/project-detail/{id}", method = RequestMethod.GET)
-	public String detailProject(@PathVariable("id") Integer id, Model model, Principal principal) {
-		if(principal == null) {
-			return "redirect:/login";
-		}
+        CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
+        model.addAttribute("detail", cp);
+        List<Users> userproject = capstoneProjectDetailService.getUserByCapstoneProjectDetailId(id);
+        model.addAttribute("userproject", userproject);
+        String nameStatus = cp.getStatus().getName();
+        if (nameStatus == null) {
+            model.addAttribute("status", "");
+        } else {
+            switch (nameStatus) {
+                case Constant.STATUS_NOT_ELIGIBLE_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_CAPSTONE);
+                case Constant.STATUS_ELIGIBLE_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_ELIGIBLE_CAPSTONE);
+                case Constant.STATUS_INACTIVE_USER_DB:
+                    model.addAttribute("status", Constant.STATUS_INACTIVE_USER);
+                case Constant.STATUS_REGISTERING_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_REGISTERING_CAPSTONE);
+                case Constant.STATUS_REGISTED_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_REGISTED_CAPSTONE);
+                case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
+                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_LUCTURER);
+                case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
+                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_TRAINING);
+                case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:
+                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_HEAD);
+                case Constant.STATUS_DOING_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_DOING_CAPSTONE);
+                case Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE);
+                case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE);
+                case Constant.STATUS_REJECT_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_REJECT_CAPSTONE);
+                case Constant.STATUS_CHANGING_NAME_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_CHANGING_NAME_CAPSTONE);
+                case Constant.STATUS_PENDING_CAPSTONE_DB:
+                    model.addAttribute("status", Constant.STATUS_PENDING_CAPSTONE);
 
-		CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
-		model.addAttribute("detail", cp);
-		List<Users> userproject = capstoneProjectDetailService.getUserByCapstoneProjectDetailId(id);
-		model.addAttribute("userproject", userproject);
-		String nameStatus = cp.getStatus().getName();
-		if (nameStatus == null) {
-			model.addAttribute("status", "");
-		} else {
-			switch (nameStatus) {
-				case Constant.STATUS_NOT_ELIGIBLE_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_CAPSTONE);
-				case Constant.STATUS_ELIGIBLE_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_ELIGIBLE_CAPSTONE);
-				case Constant.STATUS_INACTIVE_USER_DB:
-					model.addAttribute("status", Constant.STATUS_INACTIVE_USER);
-				case Constant.STATUS_REGISTERING_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_REGISTERING_CAPSTONE);
-				case Constant.STATUS_REGISTED_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_REGISTED_CAPSTONE);
-				case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
-					model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_LUCTURER);
-				case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
-					model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_TRAINING);
-				case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:
-					model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_HEAD);
-				case Constant.STATUS_DOING_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_DOING_CAPSTONE);
-				case Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE);
-				case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE);
-				case Constant.STATUS_REJECT_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_REJECT_CAPSTONE);
-				case Constant.STATUS_CHANGING_NAME_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_CHANGING_NAME_CAPSTONE);
-				case Constant.STATUS_PENDING_CAPSTONE_DB:
-					model.addAttribute("status", Constant.STATUS_PENDING_CAPSTONE);
+            }
+        }
+        List<UserRoleDTO> userRolesDTOs = new ArrayList<>();
+        for (Users users : userproject) {
+            String user_id = users.getId();
+            UserRoleDTO userRoleDTO = new UserRoleDTO();
+            userRoleDTO.setId(user_id);
+            userRoleDTO.setUsername(users.getUsername());
+            List<String> role = userRoleService.getRoleNamesByUserId(user_id);
+            for (String string : role) {
+                List<String> roleView = new ArrayList<>();
+                if (string.equals(Constant.ROLE_HEAD_DB)) {
+                    roleView.add(Constant.ROLE_HEAD);
+                }
+                if (string.equals(Constant.ROLE_LECTURERS_DB)) {
+                    roleView.add(Constant.ROLE_LECTURERS);
+                }
+                if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
+                    roleView.add(Constant.ROLE_STUDENT_LEADER);
+                }
+                if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+                    roleView.add(Constant.ROLE_STUDENT_MEMBER);
+                }
+                if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
+                    roleView.add(Constant.ROLE_TRAINING_DEP);
+                }
+                userRoleDTO.setRole(roleView);
+            }
+            userRolesDTOs.add(userRoleDTO);
+        }
 
-			}
-		}
-		List<UserRoleDTO> userRolesDTOs = new ArrayList<>();
-		for (Users users : userproject) {
-			String user_id = users.getId();
-			UserRoleDTO userRoleDTO = new UserRoleDTO();
-			userRoleDTO.setId(user_id);
-			userRoleDTO.setUsername(users.getUsername());
-			List<String> role = userRoleService.getRoleNamesByUserId(user_id);
-			for (String string : role) {
-				List<String> roleView = new ArrayList<>();
-				if (string.equals(Constant.ROLE_HEAD_DB)) {
-					roleView.add(Constant.ROLE_HEAD);
-				}
-				if (string.equals(Constant.ROLE_LECTURERS_DB)) {
-					roleView.add(Constant.ROLE_LECTURERS);
-				}
-				if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
-					roleView.add(Constant.ROLE_STUDENT_LEADER);
-				}
-				if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
-					roleView.add(Constant.ROLE_STUDENT_MEMBER);
-				}
-				if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
-					roleView.add(Constant.ROLE_TRAINING_DEP);
-				}
-				userRoleDTO.setRole(roleView);
-			}
-			userRolesDTOs.add(userRoleDTO);
-		}
-		
-		Users user = userService.findByEmail(principal.getName());
-		String user_login = user.getId();
-		boolean check_capstone = false;
-		//check user login = user project
-		List<Integer> capstone_id = capstoneProjectDetailService.getIdProjectByUserIDCheckApprove(user_login);
-		for (int i = 0; i < capstone_id.size(); i++){
-			if(capstone_id.get(i) == id){
-				check_capstone = true;
-			}
-		}
-		model.addAttribute("check_capstone", check_capstone);
-		model.addAttribute("userRolesDTOs", userRolesDTOs);
-		return "home/detail_project";
-	}
+        Users user = userService.findByEmail(principal.getName());
+        String user_login = user.getId();
+        boolean check_capstone = false;
+        //check user login = user project
+        List<Integer> capstone_id = capstoneProjectDetailService.getIdProjectByUserIDCheckApprove(user_login);
+        for (int i = 0; i < capstone_id.size(); i++) {
+            if (capstone_id.get(i) == id) {
+                check_capstone = true;
+            }
+        }
+        model.addAttribute("check_capstone", check_capstone);
+        model.addAttribute("userRolesDTOs", userRolesDTOs);
+        return "home/detail_project";
+    }
 
-	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "approve")
-	public String approve(@RequestParam Integer id, Model model, Principal principal){
-		if(principal == null) {
-			return "redirect:/login";
-		}
-		//int id_project = Integer.parseInt(id);
-		boolean check = false;
-		Users user = userService.findByEmail(principal.getName());
-		String user_login = user.getId();
-		
-		try {
-			
-			Date date = new Date();
-			HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
-			if(historyRecords != null) {
-				String user_booking_id = historyRecords.getUser().getId();
-				Users u = userService.findById(user_booking_id);
-				capstoneProjectDetailService.updateStatusUserProject(user_login, id);
-				String title = user_login + " has joined your team";
-				String content = user_login + " has joined your team " + date;
-				NotificationCommon.sendNotification(user, title, content, user_booking_id);
-				capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login,id);
-				SendingMail.sendEmail(u.getEmail(),"[FPTU Capstone Project] " + title, content);
-				check = true;
-			}
-		}
-		catch (Exception e){
+    @RequestMapping(value = "/approve", method = RequestMethod.POST, params = "approve")
+    public String approve(@RequestParam Integer id, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        //int id_project = Integer.parseInt(id);
+        boolean check = false;
+        Users user = userService.findByEmail(principal.getName());
+        String user_login = user.getId();
 
-		}
-		if(check){
-			//capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login);
-		}
-		return "redirect:/lecturers";
-	}
+        try {
 
-	@RequestMapping(value = "/approve", method = RequestMethod.POST, params = "reject")
-	public String reject(@RequestParam("id") Integer id, Model model, Principal principal){
-		if(principal == null) {
-			return "redirect:/login";
-		}
-		try {
-			Date date = new Date();
-			HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
-			if(historyRecords != null) {
-				Users user = userService.findByEmail(principal.getName());
-				String user_booking_id = historyRecords.getUser().getId();
-				Users u = userService.findById(user_booking_id);
-				String user_login = user.getId();
-				String title = user_login + " has rejected your team";
-				String content = user_login + " has rejected your team " + date;
-				NotificationCommon.sendNotification(user, title, content, user_booking_id);
-				capstoneProjectDetailService.deleteRejectCapstoneProjectDetailsByUserId(user_login, id);
-				SendingMail.sendEmail(u.getEmail(), "[FPTU Capstone Project] " + title, content);
-			}
-		}catch (Exception e){
-			System.out.println(e);
-		}
-		return "redirect:/lecturers";
-	}
+            Date date = new Date();
+            HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
+            if (historyRecords != null) {
+                String user_booking_id = historyRecords.getUser().getId();
+                Users u = userService.findById(user_booking_id);
+                capstoneProjectDetailService.updateStatusUserProject(user_login, id);
+                String title = user_login + " has joined your team";
+                String content = user_login + " has joined your team " + date;
+                NotificationCommon.sendNotification(user, title, content, user_booking_id);
+                capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login, id);
+                SendingMail.sendEmail(u.getEmail(), "[FPTU Capstone Project] " + title, content);
+                check = true;
+            }
+        } catch (Exception e) {
+
+        }
+        if (check) {
+            //capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login);
+        }
+        return "redirect:/lecturers";
+    }
+
+    @RequestMapping(value = "/approve", method = RequestMethod.POST, params = "reject")
+    public String reject(@RequestParam("id") Integer id, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        try {
+            Date date = new Date();
+            HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
+            if (historyRecords != null) {
+                Users user = userService.findByEmail(principal.getName());
+                String user_booking_id = historyRecords.getUser().getId();
+                Users u = userService.findById(user_booking_id);
+                String userLogin = user.getId();
+                String title = userLogin + " has rejected your team";
+                String content = userLogin + " has rejected your team " + date;
+                NotificationCommon.sendNotification(user, title, content, user_booking_id);
+                capstoneProjectDetailService.deleteRejectCapstoneProjectDetailsByUserId(userLogin, id);
+                SendingMail.sendEmail(u.getEmail(), "[FPTU Capstone Project] " + title, content);
+                userRoleService.updateRoleStudentReject(userLogin);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return "redirect:/forum";
+    }
 }

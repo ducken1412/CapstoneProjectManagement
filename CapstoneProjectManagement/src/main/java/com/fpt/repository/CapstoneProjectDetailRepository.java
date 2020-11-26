@@ -98,4 +98,12 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	List<Status> getStatusById(Integer id);
 	//KienBT4 add code end
 
+	//lecture option 1
+	@Query("SELECT c.user from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Main Lecture'")
+	Users userLecturersIdAndCapstoneProjectIdOP1(Integer cid);
+
+	//lecture option 2
+	@Query("SELECT c.user from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Assistant Lecture'")
+	Users userLecturersIdAndCapstoneProjectIdOP2(Integer cid);
+
 }
