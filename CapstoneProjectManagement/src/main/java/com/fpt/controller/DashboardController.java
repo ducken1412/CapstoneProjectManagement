@@ -2,9 +2,7 @@ package com.fpt.controller;
 
 import com.fpt.dto.StatisticsTotalDTO;
 import com.fpt.entity.*;
-import com.fpt.service.StatisticsService;
-import com.fpt.service.TaskDetailsService;
-import com.fpt.service.UserService;
+import com.fpt.service.*;
 import com.fpt.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,21 +30,29 @@ public class DashboardController {
     private StatisticsService statisticsService;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SitesService sitesService;
+    @Autowired
+    private SemestersService semestersService;
   
     @GetMapping("/db/dashboard")
-    public String getDashboard(Model model, @RequestParam("page") Optional<Integer> page,
-                               @RequestParam("size") Optional<Integer> size, Principal principal){
+    public String getDashboard(Model model, Principal principal){
         if(principal == null) {
             return "redirect:/login";
         }
 
+        //get sites and semesters
+        List<Sites> sites = sitesService.findAll();
+        model.addAttribute("sites", sites);
+
+        List<Semesters> semesters = semestersService.findAll();
+        model.addAttribute("semesters", semesters);
+
+        //get max week of statics
         Integer week =  taskDetailsService.findMaxWeek();
         Users users = userService.findByEmail(principal.getName());
-        //phan trang
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(10);
         List<Statistics>  statisticsList ;
-        Page<Statistics> statisticsPage;
         boolean roleHead =false;
         for (UserRoles role : users.getRoleUser()){
             if(role.getUserRoleKey().getRole().getName().equalsIgnoreCase(Constant.ROLE_HEAD_DB)){
@@ -56,10 +62,8 @@ public class DashboardController {
         }
         if (roleHead){
             statisticsList = statisticsService.getStatisticsWithWeek(week);
-            statisticsPage = statisticsService.getStatisticsWithWeekPage(PageRequest.of(currentPage - 1, pageSize),week);
         } else{
             statisticsList = statisticsService.getStatisticsWithWeekByLecture(week, users.getEmail());
-            statisticsPage = statisticsService.getStatisticsWithWeekPageByLecture(week,users.getEmail(),PageRequest.of(currentPage - 1, pageSize));
         }
 
         StatisticsTotalDTO  statisticsTotalDTO = new StatisticsTotalDTO();
@@ -106,6 +110,46 @@ public class DashboardController {
 
         model.addAttribute("StatisticsTotalDTO", statisticsTotalDTO);
 
+        return "admin/dashboard-project";
+    }
+
+    @GetMapping("/db/listCap")
+    public String getDashboardCap(Model model, Principal principal, @RequestParam("page") String page, @RequestParam("size") String size,
+                               @RequestParam("sites") Integer sitesSearch,
+                               @RequestParam("semesters") Integer semestersSearch, @RequestParam("nameSearch") String nameSearch ,@RequestParam("userSearch") String userSearch){
+        if(principal == null) {
+            return "redirect:/login";
+        }
+
+        //get max week of statics
+        Integer week =  taskDetailsService.findMaxWeek();
+        Users users = userService.findByEmail(principal.getName());
+        //phan trang
+        int currentPage = 1;
+        int pageSize = 10;
+        try {
+            currentPage = Integer.parseInt(page);
+            pageSize = Integer.parseInt(size);
+        } catch (Exception ex) {
+
+        }
+        Page<Statistics> statisticsPage;
+        boolean roleHead =false;
+        for (UserRoles role : users.getRoleUser()){
+            if(role.getUserRoleKey().getRole().getName().equalsIgnoreCase(Constant.ROLE_HEAD_DB)){
+                roleHead =true;
+                break;
+            }
+        }
+        if (roleHead){
+            statisticsPage = statisticsService.getStatisticsWithWeekPage(PageRequest.of(currentPage - 1, pageSize)
+                    ,week, sitesSearch, semestersSearch,nameSearch,userSearch);
+        } else{
+            statisticsPage = statisticsService.getStatisticsWithWeekPageByLecture(week,users.getEmail(),
+                    PageRequest.of(currentPage - 1, pageSize),sitesSearch,semestersSearch,nameSearch,userSearch);
+        }
+
+
         model.addAttribute("statisticsPage", statisticsPage);
         int totalPages = statisticsPage.getTotalPages();
         if (totalPages > 0) {
@@ -113,6 +157,8 @@ public class DashboardController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "admin/dashboard-project";
+        return "admin/list-capstoneProject";
     }
+
+
 }

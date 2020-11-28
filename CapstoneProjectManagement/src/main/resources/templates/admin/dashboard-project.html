@@ -85,105 +85,32 @@
 
                             <div class="table-data__tool">
                                 <div class="table-data__tool-left d-flex">
-                                    <div class="rs-select2--light rs-select2--md">
-
-                                        <select class="js-select2" name="property">
-                                            <option selected="selected">All semester</option>
-                                            <option value="">Option 1</option>
-                                            <option value="">Option 2</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
-                                    </div>
-                                    <div class="rs-select2--light rs-select2--sm">
-                                        <select class="js-select2" name="time">
-                                            <option selected="selected">All Site</option>
-                                            <option value="">3 Days</option>
-                                            <option value="">1 Week</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
-                                    </div>
+                                    <select  class="form-control ml-10 mr-3" style="width: auto;"
+                                             id="SearchSemesters" name="SearchSemesters" >
+                                        <option value="-1">All Semesters</option>
+                                        <option th:each="item : ${semesters}" th:value="${item.id}"
+                                                th:text="${item.name}"></option>
+                                    </select>
+                                    <select  class="form-control ml-10 mr-3"  style="width: auto;"
+                                             id="SearchSites" name="SearchSites" >
+                                        <option value="-1">All Sites</option>
+                                        <option th:each="item : ${sites}" th:value="${item.id}"
+                                                th:text="${item.name}"></option>
+                                    </select>
+                                    <input type="text" placeholder="Name Project" class="form-control ml-10 mr-3" id="nameSearch"  value="">
+                                    <input type="text" placeholder="Search user of Projects" class="form-control ml-10 mr-3" id="userSearch"  value="">
+                                    <button
+                                            class="btn btn-primary mr-3" onclick="getListStatisticsSearch()"
+                                            >Search
+                                    </button>
                                 </div>
 
                             </div>
                             <!-- STATISTIC-->
-                            <div class="row">
-                                <div class="col-md-4" th:each="list_statistic : ${statisticsPage}">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <strong class="card-title"> <p th:text="${list_statistic.capstoneProject.name}"></p>
-                                                <small th:if="${list_statistic.timeTrackingCurrent < 50}">
-                                                    <span class="badge badge-danger float-right mt-1">Serious</span>
-                                                </small>
-                                                <small th:if="${list_statistic.timeTrackingCurrent >= 50 && list_statistic.timeTrackingCurrent <80 }">
-                                                    <span class="badge badge-warning float-right mt-1">Warning</span>
-                                                </small>
-                                                <small th:if="${list_statistic.timeTrackingCurrent >= 80 }">
-                                                    <span class="badge badge-success float-right mt-1">On Schedule</span>
-                                                </small>
-                                            </strong>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">
-                                                <table class="table table-top-campaign">
-                                                    <tbody>
-                                                         <tr>
-                                                            <td>Name Vietnamese :</td>
-                                                            <td>
-                                                                <p th:text="${list_statistic.getCapstoneProject().nameVi}" />
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Project Participants :</td>
-                                                            <td>
-                                                                <th:block th:each="item,iState : ${list_statistic.getCapstoneProject().getCapstoneProjectDetails()}">
-                                                                    <p th:text="${list_statistic.getCapstoneProject().getCapstoneProjectDetails().get(iState.count -1).getUser().getUsername()}" />
-                                                                </th:block>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Status : </td>
-                                                            <td class="d-flex justify-content-end">
-                                                                <div  class="sp-tag sp-lozenge px-2" style="background-color: rgb(122, 134, 154);
-                                                                    color: rgb(255, 255, 255);">
-                                                                    <p th:text="${#numbers.formatDecimal(list_statistic.timeTrackingTodo,0,2)+'%'}"
-                                                                       th:title="'To Do'">
-                                                                    </p>
-                                                                </div>
-                                                                <div  class="sp-tag sp-lozenge mx-2 px-2" style="background-color: rgb(0, 82, 204); color: rgb(255, 255, 255);">
-                                                                    <p th:text="${#numbers.formatDecimal(list_statistic.timeTrackingProgress,0,2)+'%'}" th:title="'In Progress'"></p>
-                                                                </div>
-                                                                <div  class="sp-tag sp-lozenge px-2" style="background-color: rgb(0, 135, 90); color: rgb(255, 255, 255);">
-                                                                    <p th:text="${#numbers.formatDecimal(list_statistic.timeTrackingDone,0,2)+'%'}" th:title="'Done'"></p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                            </table>
-                                            </p>
-                                            <hr>
-                                            <a class="pull-right mr-1 mt-1" th:href="@{'/db/task-detail/' + ${list_statistic.capstoneProject.id}}" target="_blank">Detail</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                    </div>
+                            <div class="row" id="Capstone-container">
+                             </div>
                     <!-- END STATISTIC-->
-                            <div style="display: flex; justify-content: center; padding-top: 20px; margin-bottom: 20px">
-                                <nav aria-label="Page navigation">
-                                    <ul th:if="${statisticsPage.totalPages > 1}"
-                                        class="pagination w-75 justify-content-end">
-                                        <th:block th:each="pageNumber : ${pageNumbers}">
-                                            <li th:class="${pageNumber==statisticsPage.number + 1} ? active + ' ' + page-item : page-item">
-                                                <a th:href="@{/db/dashboard(size=${statisticsPage.size}, page=${pageNumber})}"
-                                                   th:text=${pageNumber}
-                                                   th:class="page-link">
-                                                </a>
-                                            </li>
-                                        </th:block>
-                                    </ul>
-                                </nav>
-                            </div>
+
                 </div>
             </div>
             <div class="row">
@@ -196,6 +123,7 @@
 </div>
 </div>
 </div>
+<script th:src="@{/js/statistics/statistics.js}"></script>
 <th:block th:include="home/_script"></th:block>
 </body>
 </html>
