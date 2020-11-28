@@ -37,11 +37,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 	}
 
 	@Override
-	public Page<Statistics> getStatisticsWithWeekPage(Pageable pageable, int week) {
-		int pageSize = pageable.getPageSize();
-		int currentPage = pageable.getPageNumber();
-		Pageable pageStatics = PageRequest.of(currentPage, pageSize);
-		return statisticsRepository.findByWeekOrderByTimeTrackingCurrentAsc(pageStatics, week);
+	public Page<Statistics> getStatisticsWithWeekPage(Pageable pageable, int week,Integer sites,Integer semesters,String nameSearch,String userSearch) {
+		nameSearch = '%' + nameSearch + '%';
+		userSearch = '%' + userSearch + '%';
+		return statisticsRepository.findByWeekOrderByTimeTrackingCurrentAsc(week,sites,semesters,nameSearch,userSearch,pageable);
 	}
 
 	@Override
@@ -52,10 +51,9 @@ public class StatisticsServiceImpl implements StatisticsService{
 
 
 	@Override
-	public Page<Statistics> getStatisticsWithWeekPageByLecture(int week, String email, Pageable pageable) {
-		int pageSize = pageable.getPageSize();
-		int currentPage = pageable.getPageNumber();
-		Pageable pageStatics = PageRequest.of(currentPage, pageSize);
-		return statisticsRepository.findByWeekPagingOrderByTimeTrackingCurrentAscByLecture(week,email,pageable);
+	public Page<Statistics> getStatisticsWithWeekPageByLecture(int week, String email, Pageable pageable,Integer sites,Integer semesters,String nameSearch,String userSearch) {
+		nameSearch = '%' + nameSearch + '%';
+		userSearch = '%' + userSearch + '%';
+		return statisticsRepository.findByWeekPagingOrderByTimeTrackingCurrentAscByLecture(week,email,sites,semesters,nameSearch,userSearch,pageable);
 	}
 }
