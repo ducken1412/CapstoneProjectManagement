@@ -126,13 +126,19 @@
                                             <p class="card-text">
                                                 <table class="table table-top-campaign">
                                                     <tbody>
-                                                        <tr>
-                                                            <td>Start Date :</td>
-                                                            <td><p th:text="${#dates.format(list_statistic.startDate, 'yyyy-MMM-dd')}"></p></td>
+                                                         <tr>
+                                                            <td>Name Vietnamese :</td>
+                                                            <td>
+                                                                <p th:text="${list_statistic.getCapstoneProject().nameVi}" />
+                                                            </td>
                                                         </tr>
                                                         <tr>
-                                                            <td>End Date :</td>
-                                                            <td><p th:text="${#dates.format(list_statistic.endDate, 'yyyy-MMM-dd')}"></p></td>
+                                                            <td>Project Participants :</td>
+                                                            <td>
+                                                                <th:block th:each="item,iState : ${list_statistic.getCapstoneProject().getCapstoneProjectDetails()}">
+                                                                    <p th:text="${list_statistic.getCapstoneProject().getCapstoneProjectDetails().get(iState.count -1).getUser().getUsername()}" />
+                                                                </th:block>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Status : </td>
