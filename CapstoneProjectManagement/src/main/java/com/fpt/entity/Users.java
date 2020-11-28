@@ -76,6 +76,13 @@ public class Users implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Reports> report;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "semester_id")
+    private Semesters semester;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "site_id")
+    private Sites site;
+
     public Users() {
     }
 
@@ -103,6 +110,34 @@ public class Users implements Serializable {
         this.posts = posts;
         this.chats = chats;
         this.report = report;
+    }
+
+    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, Semesters semester, Sites site) {
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.phone = phone;
+        this.image = image;
+        this.email = email;
+        this.createdDate = createdDate;
+        this.location = location;
+        this.description = description;
+        this.status = status;
+        this.roleUser = roleUser;
+        this.historyRecords = historyRecords;
+        this.capstoneProjectDetails = capstoneProjectDetails;
+        this.notificationDetails = notificationDetails;
+        this.reportReceives = reportReceives;
+        this.comments = comments;
+        this.evaluationDetail = evaluationDetail;
+        this.posts = posts;
+        this.chats = chats;
+        this.report = report;
+        this.semester = semester;
+        this.site = site;
     }
 
     public String getId() {
@@ -287,5 +322,21 @@ public class Users implements Serializable {
 
     public void setReport(List<Reports> report) {
         this.report = report;
+    }
+
+    public Semesters getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semesters semester) {
+        this.semester = semester;
+    }
+
+    public Sites getSite() {
+        return site;
+    }
+
+    public void setSite(Sites site) {
+        this.site = site;
     }
 }
