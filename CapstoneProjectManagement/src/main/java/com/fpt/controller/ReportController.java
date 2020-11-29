@@ -6,6 +6,7 @@ import com.fpt.common.SendingMail;
 import com.fpt.dto.*;
 import com.fpt.entity.*;
 import com.fpt.service.*;
+import com.fpt.utils.Constant;
 import com.fpt.utils.ExcelHelper;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -20,10 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -67,6 +65,8 @@ public class ReportController {
     @Autowired
     private NotificationDetailService notificationDetailService;
 
+    @Autowired
+    private CapstoneProjectService capstoneProjectService;
 
     @GetMapping("/report")
     public String report(Model model, Principal principal) {
@@ -103,6 +103,19 @@ public class ReportController {
         model.addAttribute("title", title);
         model.addAttribute("content", content);
         model.addAttribute("comments", comments);
+        //load file report
+        String userReport = report.getUser().getId();
+        CapstoneProjects capstoneProjects = capstoneProjectService.getCapstoneProjectByUserID(userReport);
+        List<TaskDetails> taskDetails;
+        String nameProject = "";
+        Integer week = taskDetailsService.findMaxWeek();
+        try{
+            taskDetails = taskDetailsService.findTaskDetailsByCapstoneProjectId(capstoneProjects.getId(), week);
+            model.addAttribute("tasks", taskDetails);
+
+        }catch (Exception ex) {
+
+        }
         return "home/report-detail";
     }
 
@@ -119,6 +132,21 @@ public class ReportController {
         model.addAttribute("title", title);
         model.addAttribute("content", content);
         model.addAttribute("comments", comments);
+        String userReport = report.getUser().getId();
+        CapstoneProjects capstoneProjects = capstoneProjectService.getCapstoneProjectByUserID(userReport);
+
+        //load file report
+        List<TaskDetails> taskDetails;
+        String nameProject = "";
+        Integer week = taskDetailsService.findMaxWeek();
+        try{
+            taskDetails = taskDetailsService.findTaskDetailsByCapstoneProjectId(capstoneProjects.getId(), week);
+            model.addAttribute("tasks", taskDetails);
+
+        }catch (Exception ex) {
+
+        }
+
         return "home/report-detail-container";
     }
 

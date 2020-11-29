@@ -70,7 +70,7 @@ public class LecturersController {
         String userId = user.getId();
         HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
         if (historyRecords != null) {
-            try{
+            try {
                 //check booking
                 boolean check_user_register = true;
                 model.addAttribute("check_user_register", check_user_register);
@@ -96,21 +96,30 @@ public class LecturersController {
                 if (count >= 2 && statusProject.equals("registering_capstone")) {
                     model.addAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
                 }
-                if(lecture1 != null && lecture2 != null){
-                    String lecture1Id = lecture1.getId();
-                    String lecture2Id = lecture2.getId();
-                    //phan trang
+                if (lecture1 != null && lecture2 != null) {
+//                    String lecture1Id = lecture1.getId();
+//                    String lecture2Id = lecture2.getId();
+//               //     phan trang
+//                    int currentPage = page.orElse(1);
+//                    int pageSize = size.orElse(6);
+//                    Page<Users> lecturersPage = userService.findPaginatedNotLecture2Booked(PageRequest.of(currentPage - 1, pageSize), lecture1Id, lecture2Id);
+//                    model.addAttribute("lecturersPage", lecturersPage);
+//                    int totalPages = lecturersPage.getTotalPages();
+//                    if (totalPages > 0) {
+//                        List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+//                        model.addAttribute("pageNumbers", pageNumbers);
+//                    }
                     int currentPage = page.orElse(1);
                     int pageSize = size.orElse(6);
-                    Page<Users> lecturersPage = userService.findPaginatedNotLecture2Booked(PageRequest.of(currentPage - 1, pageSize), lecture1Id, lecture2Id);
+                    Page<Users> lecturersPage = userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
                     model.addAttribute("lecturersPage", lecturersPage);
                     int totalPages = lecturersPage.getTotalPages();
                     if (totalPages > 0) {
                         List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
                         model.addAttribute("pageNumbers", pageNumbers);
                     }
-                }else {
-                    if (lecture1 == null && lecture2 == null){
+                } else {
+                    if (lecture1 == null && lecture2 == null) {
                         //phan trang
                         int currentPage = page.orElse(1);
                         int pageSize = size.orElse(6);
@@ -121,7 +130,7 @@ public class LecturersController {
                             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
                             model.addAttribute("pageNumbers", pageNumbers);
                         }
-                    } else if(lecture1 != null){
+                    } else if (lecture1 != null) {
                         String lecture1Id = lecture1.getId();
                         //phan trang
                         int currentPage = page.orElse(1);
@@ -133,7 +142,7 @@ public class LecturersController {
                             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
                             model.addAttribute("pageNumbers", pageNumbers);
                         }
-                    } else if(lecture2 != null){
+                    } else if (lecture2 != null) {
                         String lecture2Id = lecture2.getId();
                         //phan trang
                         int currentPage = page.orElse(1);
@@ -147,7 +156,7 @@ public class LecturersController {
                         }
                     }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e);
             }
         } else {
@@ -179,7 +188,7 @@ public class LecturersController {
         HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
         int projectId;
         Users userLecture = userService.findById(id);
-        String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
+        String baseUrl = String.format("%s://%s:%d/", request.getScheme(), request.getServerName(), request.getServerPort());
         if (historyRecords != null) {
             projectId = historyRecords.getCapstoneProject().getId();
             int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
@@ -210,13 +219,13 @@ public class LecturersController {
                 records.setUser(userService.findById(userId));
                 records.setCapstoneProject(capstoneProjectService.getCapstonProjectById(projectId));
                 historyRecordService.save(records);
-                try{
+                try {
                     String title = user.getUsername() + " wants to select you as the project group guide";
                     String content = "Dear Supervisors, \n" +
                             "I want to choose the teacher as a guide for our project group in this term. \n"
                             + "Click " + "<a href=\"" + baseUrl + "project-detail/" + projectId + "\">view project description</a>";
-                    SendingMail.sendEmail(userLecture.getEmail() ,"[FPTU Capstone Project] " + title, content);
-                }catch (Exception e){
+                    SendingMail.sendEmail(userLecture.getEmail(), "[FPTU Capstone Project] " + title, content);
+                } catch (Exception e) {
                     System.out.println(e);
                 }
             }
@@ -235,7 +244,7 @@ public class LecturersController {
         HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
         int projectId;
         Users userLecture = userService.findById(id);
-        String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
+        String baseUrl = String.format("%s://%s:%d/", request.getScheme(), request.getServerName(), request.getServerPort());
         if (historyRecords != null) {
             projectId = historyRecords.getCapstoneProject().getId();
             int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
@@ -267,13 +276,13 @@ public class LecturersController {
                 records.setUser(userService.findById(userId));
                 records.setCapstoneProject(capstoneProjectService.getCapstonProjectById(projectId));
                 historyRecordService.save(records);
-                try{
+                try {
                     String title = user.getUsername() + " wants to select you as the project group guide";
                     String content = "Dear Supervisors, \n" +
                             "I want to choose the teacher as a guide for our project group in this term. \n"
                             + "Click " + "<a href=\"" + baseUrl + "project-detail/" + projectId + "\">view project description</a>";
-                    SendingMail.sendEmail(userLecture.getEmail() ,"[FPTU Capstone Project] " + title, content);
-                }catch (Exception e){
+                    SendingMail.sendEmail(userLecture.getEmail(), "[FPTU Capstone Project] " + title, content);
+                } catch (Exception e) {
                     System.out.println(e);
                 }
             }

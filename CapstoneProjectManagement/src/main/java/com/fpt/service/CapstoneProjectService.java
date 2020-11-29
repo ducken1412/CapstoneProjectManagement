@@ -28,4 +28,6 @@ public interface CapstoneProjectService {
 	CapstoneProjects findById(Integer id);
 	Integer getCountStudent (Integer id);
 
+	CapstoneProjects getCapstoneProjectByUserID(String id);
+
 }
