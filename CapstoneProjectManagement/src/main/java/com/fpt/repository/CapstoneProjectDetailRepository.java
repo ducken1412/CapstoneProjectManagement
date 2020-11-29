@@ -88,8 +88,7 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	@Query(value = "SELECT distinct ru.id,ru.description_action,ru.capstone_project_id,ru.status_id,ru.user_id,de.email,de.first_name,de.gender,de.image,de.last_name,de.phone,de.user_name,ro.id as roleid,ro.name as rolename,st.name as nameStatus FROM CapstoneProject.capstone_project_details ru LEFT JOIN CapstoneProject.users de ON de.id = ru.user_id LEFT JOIN CapstoneProject.user_roles deRole ON de.id = deRole.user_id LEFT JOIN CapstoneProject.roles ro ON ro.id = deRole.role_id   LEFT JOIN CapstoneProject.status st ON st.id = ru.status_id  WHERE ru.capstone_project_id = ?1  ORDER BY ro.id DESC", nativeQuery = true)
 	List<Object[]> getByProjectId(Integer id);
 
-	@Query("SELECT ru FROM CapstoneProjectDetails ru WHERE ru.id = ?1")
-	CapstoneProjectDetails getUserByCapstoneProjectDetailId1(Integer id);
+
 
 	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.id = ?1")
 	List<Users> getUserById(Integer id);

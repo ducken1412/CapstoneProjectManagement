@@ -134,7 +134,7 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
 
     @Override
     public CapstoneProjectDetails findById(Integer id) {
-        return capstoneProjectDetailRepository.getUserByCapstoneProjectDetailId1(id);
+        return capstoneProjectDetailRepository.findById(id).orElse(null);
     }
 
     @Override

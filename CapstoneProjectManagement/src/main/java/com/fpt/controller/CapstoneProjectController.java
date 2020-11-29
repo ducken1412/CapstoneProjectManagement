@@ -214,6 +214,9 @@ public class CapstoneProjectController {
 		}
 		if(roleid == 5){
 			switch(currentProduct.getStatus().getId()) {
+				case 5:
+					statusId = 7;
+					break;
 				case 6:
 					statusId = 7;
 					break;
@@ -225,6 +228,9 @@ public class CapstoneProjectController {
 					break;
 			}
 		}
+//		if(roleid == 5){
+//			statusId = 7;
+//		}
 		currentProduct.setStatus(statusService.getStatusById(statusId));
 		currentProduct.setDesAction(des);
 		capstoneProjectDetailService.save(currentProduct);

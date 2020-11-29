@@ -22,7 +22,7 @@ public class CapstoneProjectDetails {
     @Column(name = "id", columnDefinition = "INT")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "capstone_project_id")
     private CapstoneProjects capstoneProject;
 

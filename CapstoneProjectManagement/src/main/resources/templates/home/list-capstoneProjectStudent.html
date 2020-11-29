@@ -25,11 +25,11 @@
     <td th:text="${post?.nameStatus}"></td>
     <td>
         <div class="table-data-feature">
-            <button th:if="${(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 6 || post.status_id == 8 || post.status_id == 13))}" class="item" th:onclick="|ProjectDetailApp(${post?.id})|" >
+            <button th:if="${(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 6 || post.status_id == 8 || post.status_id == 13)) || (role == 5 && ( post.status_id == 5 || post.status_id == 8 || post.status_id == 13))}" class="item" th:onclick="|ProjectDetailApp(${post?.id})|" >
                 <i class="fas fa-check"></i>
             </button>
 
-            <button th:if="${(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 6 || post.status_id == 8 || post.status_id == 13))}" class="item" th:onclick="|ProjectDetailReject(${post?.id})|" >
+            <button th:if="${(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 6 || post.status_id == 8 || post.status_id == 13)) || (role == 5 && ( post.status_id == 5 || post.status_id == 8 || post.status_id == 13))}" class="item" th:onclick="|ProjectDetailReject(${post?.id})|" >
                 <i class="fas fa-times"></i>
             </button>
         </div>
