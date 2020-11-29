@@ -115,7 +115,7 @@ public class CapstoneProjectController {
 			detail.setSpecialty((String) obj[9]);
 			detail.setProfession_id((Integer) obj[10]);
 			detail.setStatus_id((Integer) obj[11]);
-			detail.setNameStatus((String) obj[12]);
+			detail.setNameStatus((String) obj[14]);
 			Integer countstudent = capstoneProjectService.getCountStudent((Integer) obj[0]);
 			detail.setCountDetail(countstudent);
 			detail.setDetail(null);

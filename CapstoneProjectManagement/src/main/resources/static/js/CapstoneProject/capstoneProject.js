@@ -40,16 +40,17 @@ function loadProjectDetail(postId){
     });
 }
 function getListPostInit() {
-    $.LoadingOverlay("show", {
-        size: 50,
-        maxSize: 50,
-    });
     const params = new URL(location.href).searchParams;
     const size = params.get("size");
     const page = params.get("page");
     const  pro = $('#SearchProfession').val();
     const  status = $('#SearchStatus').val();
     const  nameSearch = $('#nameSearch').val();
+
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
     $.ajax({
         url: "/list-project?size=" + size + "&page=" + page+ "&status=" + status+ "&profession=" + pro + "&nameSearch=" + nameSearch,
         type: "GET",
