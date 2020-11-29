@@ -124,6 +124,7 @@ public class CapstoneProjectController {
 		Pageable secondPageWithFiveElements = PageRequest.of(currentPage -1, pageSize, Sort.by("id").descending());
 		Page<CapstoneProjectPagingBodyDTO> list = new PageImpl<>(AuthorList, secondPageWithFiveElements, AuthorList.size());
 		model.addAttribute("capstoneProjectPage", list);
+
 		int totalPages = capstoneProjectPage.size();
 		if (totalPages > 0) {
 			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
@@ -236,7 +237,7 @@ public class CapstoneProjectController {
 				Users userdetail = capstoneProjectDetailService.getUserById(item.getId()).get(0);
 				if (userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4) && !item.getId().equals(Integer.parseInt(id)))
 				{
-					item.setStatus(statusService.getStatusById(12));
+					item.setStatus(statusService.getStatusById(14));
 					item.setDesAction(des);
 					capstoneProjectDetailService.save(item);
 				}
