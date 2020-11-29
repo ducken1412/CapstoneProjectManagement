@@ -189,5 +189,17 @@
                 }
             },
         });
+       /* $.ajax({
+            url: "/check-report",
+            type: "GET",
+            success: function (data) {
+                $("#notification-container").html(data)
+            },
+            error: function (xhr) {
+                if (xhr.status == 302 || xhr.status == 200) {
+                    window.location.href = "/forum";
+                }
+            },
+        });*/
     })
 </script>

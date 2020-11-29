@@ -31,4 +31,6 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	@Query("SELECT count(ru.id) FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.user.roleUser.size <> 4")
 	Integer getCountStudent(Integer id);
 	//kienbt4 add code capstone end
+	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1")
+	CapstoneProjects getCapstoneProjectByUserId(String userId);
 }
