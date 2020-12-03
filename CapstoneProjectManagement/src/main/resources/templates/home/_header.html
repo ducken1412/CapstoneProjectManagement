@@ -164,10 +164,13 @@
                 $("#imageCockiee").attr("src",c.substring(path.length, c.length));
                 $("#image-dropdown").attr("src",c.substring(path.length, c.length));
             }
+
             if (c.indexOf(idDetail) == 0) {
-                $("#linkCap").attr("href","/project-detail/"+c.substring(idDetail.length, c.length));
-            }else {
-                $("#linkCap").css('display','none');
+                if(c.substring(idDetail.length, c.length).length != 0){
+                    $("#linkCap").attr("href","/project-detail/"+c.substring(idDetail.length, c.length));
+                }else {
+                    $("#linkCap").css('display','none');
+                }
             }
 
             if (c.indexOf(userId) == 0) {
