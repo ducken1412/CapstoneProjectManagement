@@ -23,6 +23,16 @@
                     </div>
                     <div class="row m-t-25">
                         <div class="w-80" id="content-body">
+                            <div class="alert alert-warning mx-4" role="alert" id="checkReported"
+                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkReport == false}">
+                                Warning:
+                                <br>
+                                You have not reported this week to your Supervisors
+                            </div>
+                            <div class="overview-wrap" style="margin-left: 22px; margin-bottom: 20px;">
+                                <h4 class="title" style="color: #ff0000"
+                                    th:text="${checkReported}"></h4> <br/>
+                            </div>
                             <!-- content here -->
                             <div class="card">
                                 <div class="card-body card-block">
