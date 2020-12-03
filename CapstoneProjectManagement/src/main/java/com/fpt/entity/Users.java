@@ -75,6 +75,8 @@ public class Users implements Serializable {
     private List<Chat> chats;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Reports> report;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<ChatDetails> chatDetail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "semester_id")
@@ -86,7 +88,7 @@ public class Users implements Serializable {
     public Users() {
     }
 
-    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report) {
+    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, List<ChatDetails> chatDetail) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -110,6 +112,7 @@ public class Users implements Serializable {
         this.posts = posts;
         this.chats = chats;
         this.report = report;
+        this.chatDetail = chatDetail;
     }
 
     public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, Semesters semester, Sites site) {
@@ -338,5 +341,13 @@ public class Users implements Serializable {
 
     public void setSite(Sites site) {
         this.site = site;
+    }
+
+    public List<ChatDetails> getChatDetail() {
+        return chatDetail;
+    }
+
+    public void setChatDetail(List<ChatDetails> chatDetail) {
+        this.chatDetail = chatDetail;
     }
 }
