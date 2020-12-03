@@ -13,6 +13,16 @@
                                 <br/>
                                 <th:block th:utext="${content}"></th:block>
                             </div>
+<!--                            <form method="post" th:action="@{/my-report}>-->
+<!--                                <div class="ml-auto mt-2" style="float: right; margin-top: 20px;">-->
+<!--                                    <input class="btn btn-success"-->
+<!--                                           name="approve" type="submit" value="Edit" id="approve">-->
+<!--                                </div>-->
+<!--                            </form>-->
+                            <div style="float: right; margin-top: 20px;">
+                                <a th:href="@{'/edit-report/' + ${report_id}}"
+                                   class="btn btn-success mt-2">Edit</a>
+                            </div>
                         </div>
                     </td>
                 </tr>

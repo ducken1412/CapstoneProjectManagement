@@ -408,4 +408,26 @@ public class ReportController {
         return "home/my-reports";
     }
 
+    @RequestMapping(value = "/edit-report/{id}", method = RequestMethod.GET)
+    public String editReport(@PathVariable("id") Integer id, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Users user = userService.findByEmail(principal.getName());
+        String userId = user.getId();
+        Reports report = reportService.finReportsById(id);
+        model.addAttribute("report",report);
+        return "home/edit-report";
+    }
+
+    @RequestMapping(value = "/edit-report", method = RequestMethod.GET)
+    public String saveEditReport(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Users user = userService.findByEmail(principal.getName());
+        String userId = user.getId();
+
+        return "home/report-detail" ;
+    }
 }
