@@ -15,4 +15,6 @@ public interface TaskDetailsRepository extends JpaRepository<TaskDetails, Intege
 
     @Query(value = "SELECT DISTINCT(t.week) FROM TaskDetails t")
     List<Integer> findDistinctByWeek();
+
+
 }

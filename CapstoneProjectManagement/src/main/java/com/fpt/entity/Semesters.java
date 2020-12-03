@@ -18,10 +18,10 @@ public class Semesters {
     @Column(name = "end_date", columnDefinition = "DATE")
     public Date endDate;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "semester")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
     private List<CapstoneProjects> capstoneProject;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "semester")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
     private List<Users> users;
 
     public Semesters() {

@@ -14,10 +14,10 @@ public class Sites {
     @Column(name = "name", columnDefinition = "NVARCHAR(50) NOT NULL UNIQUE")
     public String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "site")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "site")
     private List<CapstoneProjects> capstoneProject;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "site")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "site")
     private List<Users> users;
 
     public Sites() {

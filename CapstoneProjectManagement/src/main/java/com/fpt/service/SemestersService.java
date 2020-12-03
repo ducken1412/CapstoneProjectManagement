@@ -12,4 +12,7 @@ public interface SemestersService {
 
 	Semesters findById(Integer id);
 
+
+	Semesters getSemesterByUserId(String userId);
+
 }

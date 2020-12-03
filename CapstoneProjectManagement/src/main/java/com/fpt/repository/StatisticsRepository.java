@@ -41,7 +41,8 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Integer>
     Page<Statistics> findByWeekPagingOrderByTimeTrackingCurrentAscByLecture(int week,String email,Integer sites,Integer semesters,String nameSearch,String userSearch,Pageable pageable);
 
 
-
+    @Query(value = "SELECT MAX(s.week)  FROM statistics as s Where s.capstone_project_id = ?1 ", nativeQuery = true)
+    Integer getMaxWeekByCapstoneProject(Integer capstone);
 
 
 }

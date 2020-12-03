@@ -30,4 +30,9 @@ public class SemestersServiceImpl implements SemestersService {
 		return semestersRepository.findById(id).orElse(null);
 	}
 
+	@Override
+	public Semesters getSemesterByUserId(String userId) {
+		return semestersRepository.getSemesterByUserId(userId);
+	}
+
 }

@@ -56,4 +56,14 @@ public class StatisticsServiceImpl implements StatisticsService{
 		userSearch = '%' + userSearch + '%';
 		return statisticsRepository.findByWeekPagingOrderByTimeTrackingCurrentAscByLecture(week,email,sites,semesters,nameSearch,userSearch,pageable);
 	}
+
+	@Override
+	public Integer findMaxWeekByCap(Integer capId) {
+		try{
+			return statisticsRepository.getMaxWeekByCapstoneProject(capId);
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
 }

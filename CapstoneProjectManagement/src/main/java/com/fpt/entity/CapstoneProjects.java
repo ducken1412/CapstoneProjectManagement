@@ -55,7 +55,7 @@ public class CapstoneProjects {
 	private List<Evaluations> evaluations;
 	@Column(name = "description_action", columnDefinition = "longtext")
 	private String desAction;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "semester_id")
 	private Semesters semester;
 	@ManyToOne(fetch = FetchType.LAZY)

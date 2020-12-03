@@ -37,9 +37,11 @@ import com.fpt.entity.Reports;
 import com.fpt.entity.Users;
 import com.fpt.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 
@@ -77,9 +79,12 @@ public class ReportController {
     @Autowired
     private NotificationDetailService notificationDetailService;
 
+    @Autowired
+    private SemestersService semestersService;
+
 
     @GetMapping("/report")
-    public String report(Model model, Principal principal) {
+    public String report(Model model, Principal principal,HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (principal == null) {
             return "redirect:/login";
         }
@@ -93,6 +98,18 @@ public class ReportController {
                     model.addAttribute("check_role", true);
                     break;
                 }
+            }
+
+            boolean checkReport = true;
+            for (Cookie c : request.getCookies()) {
+                if (c.getName().equals("checkReported")){
+                    checkReport = Boolean.valueOf(c.getValue());
+                }
+            }
+            if (checkReport ){
+                model.addAttribute("checkReport", true);
+            }else {
+                model.addAttribute("checkReport", false);
             }
         } catch (Exception e) {
 
@@ -132,25 +149,8 @@ public class ReportController {
         return "home/report-detail-container";
     }
 
-    @RequestMapping(value = "/check-report")
-    public String checkReport(Principal principal) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
-        int week;
-        Users user = userService.findByEmail(principal.getName());
-        CapstoneProjects capstoneProject = capstoneProjectService.getCapstoneProjectByUserId(user.getId());
-        LocalDate d1 = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate d2 = LocalDate.parse(capstoneProject.getSemester().startDate.toString(), DateTimeFormatter.ISO_LOCAL_DATE);
-        Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
-        long diffDays = diff.toDays();
-        Integer currentWeek = Integer.parseInt(String.valueOf(diffDays))/7;
-        return null;
-
-    }
-
     @RequestMapping(value = "/add-report", method = RequestMethod.POST)
-    public String addReport(MultipartFile file, Reports reportForm, Model model, BindingResult result, Principal principal, HttpServletRequest request) {
+    public String addReport(MultipartFile file, Reports reportForm, Model model, BindingResult result, Principal principal, HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse response) {
         if (principal == null) {
             return "redirect:/login";
         }
@@ -200,7 +200,22 @@ public class ReportController {
                     }
                     List<TaskDetails> taskDetailsList = ExcelHelper.excelToStatistics(sheet);
 
-                    Integer week = taskDetailsService.findMaxWeek();
+                    Integer currentWeek = null;
+                    boolean checkReport = true;
+                    for (Cookie c : request.getCookies()) {
+                        if (c.getName().equals("currentWeek")){
+                            currentWeek = Integer.parseInt(c.getValue());
+                        }
+                        if (c.getName().equals("checkReported")){
+                            checkReport = Boolean.valueOf(c.getValue());
+                        }
+                    }
+                    if (checkReport == true){
+                        redirectAttributes.addFlashAttribute("checkReported", "You reported this week to your supervisors, you can only edit, not create.");
+                        return "home/add-report";
+                    }
+
+                    Integer week = currentWeek;
                     CapstoneProjects capstoneProjects = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
                     List<TaskDetails> taskDetailsListAddDB = new ArrayList<>();
                     double timeTrackingCurrent = 0;
@@ -283,8 +298,9 @@ public class ReportController {
                         }
                         statistics.setCapstoneProject(capstoneProjects);
                         statisticsService.saveStatistics(statistics);
+                        Cookie cookieCheckReport = new Cookie("checkReported", "true");
+                        response.addCookie(cookieCheckReport);
                     }
-
                 } else {
                     workbook.close();
                     return "home/add-report";

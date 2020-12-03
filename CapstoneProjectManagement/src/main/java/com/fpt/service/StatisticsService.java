@@ -20,4 +20,5 @@ public interface StatisticsService {
 
     Page<Statistics> getStatisticsWithWeekPageByLecture(int week,String email,Pageable pageable,Integer sites,Integer semesters,String nameSearch,String userSearch);
 
+    Integer findMaxWeekByCap(Integer capId);
 }
