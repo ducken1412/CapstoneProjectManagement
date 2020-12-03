@@ -84,7 +84,7 @@ public class ReportController {
 
 
     @GetMapping("/report")
-    public String report(Model model, Principal principal,HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String report(Model model, Principal principal, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (principal == null) {
             return "redirect:/login";
         }
@@ -102,13 +102,15 @@ public class ReportController {
 
             boolean checkReport = true;
             for (Cookie c : request.getCookies()) {
-                if (c.getName().equals("checkReported")){
+                if (c.getName().equals("checkReported")) {
                     checkReport = Boolean.valueOf(c.getValue());
                 }
             }
-            if (checkReport ){
+            if (checkReport) {
                 model.addAttribute("checkReport", true);
-            }else {
+                Integer reportId = reportService.getReportByUserIdMax(user.getId());
+                model.addAttribute("reportId", reportId);
+            } else {
                 model.addAttribute("checkReport", false);
             }
         } catch (Exception e) {
@@ -127,9 +129,29 @@ public class ReportController {
         model.addAttribute("report_id", id);
         String title = report.getTitle();
         String content = report.getContent();
+        Users user = userService.findByEmail(principal.getName());
+        String userId = user.getId();
+        Integer checkUserReport = reportService.checkUserReportByUserIdReportId(userId, id);
+        if (checkUserReport != 0) {
+            model.addAttribute("checkUserReport", true);
+        }
         model.addAttribute("title", title);
         model.addAttribute("content", content);
         model.addAttribute("comments", comments);
+        //load file report
+        String userReport = report.getUser().getId();
+        CapstoneProjects capstoneProjects = capstoneProjectService.getCapstoneProjectByUserId(userReport);
+        List<TaskDetails> taskDetails;
+        String nameProject = "";
+        Integer week = taskDetailsService.findMaxWeek();
+        try {
+            taskDetails = taskDetailsService.findTaskDetailsByCapstoneProjectId(capstoneProjects.getId(), week);
+            model.addAttribute("tasks", taskDetails);
+
+        } catch (Exception ex) {
+
+        }
+
         return "home/report-detail";
     }
 
@@ -203,17 +225,17 @@ public class ReportController {
                     Integer currentWeek = null;
                     boolean checkReport = true;
                     for (Cookie c : request.getCookies()) {
-                        if (c.getName().equals("currentWeek")){
+                        if (c.getName().equals("currentWeek")) {
                             currentWeek = Integer.parseInt(c.getValue());
                         }
-                        if (c.getName().equals("checkReported")){
+                        if (c.getName().equals("checkReported")) {
                             checkReport = Boolean.valueOf(c.getValue());
                         }
                     }
-                    if (checkReport == true){
-                        redirectAttributes.addFlashAttribute("checkReported", "You reported this week to your supervisors, you can only edit, not create.");
-                        return "home/add-report";
-                    }
+//                    if (checkReport == true) {
+//                        redirectAttributes.addFlashAttribute("checkReported", "You reported this week to your supervisors, you can only edit, not create.");
+//                        return "home/add-report";
+//                    }
 
                     Integer week = currentWeek;
                     CapstoneProjects capstoneProjects = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
@@ -234,7 +256,7 @@ public class ReportController {
 
                     for (TaskDetails taskDetails : taskDetailsList) {
                         if (week != null) {
-                            taskDetails.setWeek(week + 1);
+                            taskDetails.setWeek(week);
                         } else {
                             taskDetails.setWeek(1);
                         }
@@ -292,7 +314,7 @@ public class ReportController {
                         statistics.setTimeTrackingProgress(timeTrackingProcess);
                         statistics.setTimeTrackingDone(timeTrackingDone);
                         if (week != null) {
-                            statistics.setWeek(week + 1);
+                            statistics.setWeek(week);
                         } else {
                             statistics.setWeek(1);
                         }
@@ -388,7 +410,7 @@ public class ReportController {
 
     @RequestMapping(value = "/my-reports", method = RequestMethod.GET)
     public String myReport(Model model, @RequestParam("page") Optional<Integer> page,
-                             @RequestParam("size") Optional<Integer> size, Principal principal) {
+                           @RequestParam("size") Optional<Integer> size, Principal principal) {
         if (principal == null) {
             return "redirect:/login";
         }
@@ -413,21 +435,162 @@ public class ReportController {
         if (principal == null) {
             return "redirect:/login";
         }
-        Users user = userService.findByEmail(principal.getName());
-        String userId = user.getId();
         Reports report = reportService.finReportsById(id);
-        model.addAttribute("report",report);
+        model.addAttribute("report", report);
+        model.addAttribute("reportObject", new Reports());
+        List<String> roles = userRoleService.getRoleNamesByEmail(principal.getName());
+        for (String role : roles) {
+            if (role.equals("student_leader")) {
+                model.addAttribute("check_role", true);
+                break;
+            }
+        }
         return "home/edit-report";
     }
 
-    @RequestMapping(value = "/edit-report", method = RequestMethod.GET)
-    public String saveEditReport(Model model, Principal principal) {
+    @RequestMapping(value = "/edit-report", method = RequestMethod.POST)
+    public String saveEditReport(Reports editReport, Principal principal, MultipartFile file, Reports reportForm, Model model, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse response) {
         if (principal == null) {
             return "redirect:/login";
         }
         Users user = userService.findByEmail(principal.getName());
         String userId = user.getId();
+        try {
+            //Import Excel
+            if (file != null) {
+                String message = "";
 
-        return "home/report-detail" ;
+                Workbook workbook = new XSSFWorkbook(file.getInputStream());
+                String SHEET = "Sheet1";
+                Sheet sheet = workbook.getSheet(SHEET);
+                if (ExcelHelper.hasExcelFormat(file)) {
+                    List<String> errorList = ExcelHelper.checkErrorExcelImport(sheet);
+                    if (errorList == null) {
+                        workbook.close();
+                        return "home/add-report";
+                    }
+                    List<TaskDetails> taskDetailsList = ExcelHelper.excelToStatistics(sheet);
+
+                    Integer currentWeek = null;
+                    boolean checkReport = true;
+                    for (Cookie c : request.getCookies()) {
+                        if (c.getName().equals("currentWeek")) {
+                            currentWeek = Integer.parseInt(c.getValue());
+                        }
+                        if (c.getName().equals("checkReported")) {
+                            checkReport = Boolean.valueOf(c.getValue());
+                        }
+                    }
+//                    if (checkReport == true) {
+//                        redirectAttributes.addFlashAttribute("checkReported", "You reported this week to your supervisors, you can only edit, not create.");
+//                        return "home/add-report";
+//                    }
+
+                    Integer week = currentWeek;
+                    CapstoneProjects capstoneProjects = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
+                    List<TaskDetails> taskDetailsListAddDB = new ArrayList<>();
+                    double timeTrackingCurrent = 0;
+                    double timeTrackingProcess = 0;
+                    double timeTrackingTodo = 0;
+                    double timeTrackingDone = 0;
+                    //count to div %
+                    int countTrackingCurrent = 0;
+                    int countTrackingProcess = 0;
+                    int countTrackingTodo = 0;
+                    int countTrackingDone = 0;
+                    int countTask = 0;
+
+                    Date startDate = taskDetailsList.get(0).getStartDate();
+                    Date endDate = taskDetailsList.get(0).getEndDate();
+
+                    for (TaskDetails taskDetails : taskDetailsList) {
+                        if (week != null) {
+                            taskDetails.setWeek(week);
+                        } else {
+                            taskDetails.setWeek(1);
+                        }
+
+                        if (startDate.compareTo(taskDetails.getStartDate()) < 0) {
+                            startDate = taskDetails.getStartDate();
+                        }
+                        if (endDate.compareTo(taskDetails.getEndDate()) < 0) {
+                            endDate = taskDetails.getEndDate();
+                        }
+                        taskDetails.setCapstoneProject(capstoneProjects);
+                        taskDetailsListAddDB.add(taskDetails);
+                        Date dateCurrent = new Date();
+                        if (taskDetails.getEndDate().compareTo(dateCurrent) <= 0) {
+                            timeTrackingCurrent = timeTrackingCurrent + taskDetails.getTimeTracking();
+                            countTrackingCurrent = countTrackingCurrent + 1;
+                        }
+                        if (taskDetails.getStatus().equalsIgnoreCase("To Do")) {
+                            timeTrackingTodo = timeTrackingTodo + taskDetails.getTimeTracking();
+                            countTrackingTodo = countTrackingTodo + 1;
+                        }
+                        if (taskDetails.getStatus().equalsIgnoreCase("Done")) {
+                            timeTrackingDone = timeTrackingDone + taskDetails.getTimeTracking();
+                            countTrackingDone = countTrackingDone + 1;
+                        }
+                        if (taskDetails.getStatus().equalsIgnoreCase("In Progress")) {
+                            timeTrackingProcess = timeTrackingProcess + taskDetails.getTimeTracking();
+                            countTrackingProcess = countTrackingProcess + 1;
+                        }
+                        countTask = countTask + 1;
+
+                    }
+                    if (countTrackingCurrent != 0) {
+                        timeTrackingCurrent = timeTrackingCurrent / countTrackingCurrent;
+                    }
+
+                    if (countTrackingDone != 0 && countTask != 0) {
+                        timeTrackingDone = (Double.valueOf(countTrackingDone) / Double.valueOf(countTask) * 100);
+                    }
+
+                    if (countTrackingProcess != 0 && countTask != 0) {
+                        timeTrackingProcess = (Double.valueOf(countTrackingProcess) / Double.valueOf(countTask) * 100);
+                    }
+
+                    if (countTrackingTodo != 0 && countTask != 0) {
+                        timeTrackingTodo = (Double.valueOf(countTrackingTodo) / Double.valueOf(countTask) * 100);
+                    }
+
+                    taskDetailsService.deleteTaskDetailsByCapstoneProjectAndWeek(capstoneProjects,week);
+                    statisticsService.deleteStatisticsByCapstoneProjectAndWeek(capstoneProjects,week);
+
+                    if (taskDetailsListAddDB != null) {
+                        taskDetailsService.saveTaskDetails(taskDetailsListAddDB);
+                        Statistics statistics = new Statistics();
+                        statistics.setStartDate(startDate);
+                        statistics.setEndDate(endDate);
+                        statistics.setTimeTrackingCurrent(timeTrackingCurrent);
+                        statistics.setTimeTrackingTodo(timeTrackingTodo);
+                        statistics.setTimeTrackingProgress(timeTrackingProcess);
+                        statistics.setTimeTrackingDone(timeTrackingDone);
+                        if (week != null) {
+                            statistics.setWeek(week);
+                        } else {
+                            statistics.setWeek(1);
+                        }
+                        statistics.setCapstoneProject(capstoneProjects);
+                        statisticsService.saveStatistics(statistics);
+                        Cookie cookieCheckReport = new Cookie("checkReported", "true");
+                        response.addCookie(cookieCheckReport);
+                    }
+                } else {
+                    workbook.close();
+                    return "home/add-report";
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        Date date = new Date();
+        Integer reportId = editReport.getId();
+        String title = editReport.getTitle();
+        String content = editReport.getContent();
+        reportService.updateReportById(title, content, reportId);
+        return "redirect:/report/" + reportId;
     }
 }

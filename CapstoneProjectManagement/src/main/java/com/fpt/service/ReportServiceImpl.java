@@ -58,4 +58,26 @@ public class ReportServiceImpl implements  ReportService{
         return reportRepository.findReportsByUserId(secondPageWithFiveElements, id);
     }
 
+    @Override
+    public boolean updateReportById(String title, String content, Integer id) {
+        try {
+            reportRepository.updateReportById(title,content,id);
+            return true;
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    @Override
+    public Integer checkUserReportByUserIdReportId(String uid, Integer rid) {
+        return reportRepository.checkUserReportByUserIdReportId(uid,rid);
+    }
+
+    @Override
+    public Integer getReportByUserIdMax(String id) {
+        return reportRepository.getReportByUserIdMax(id);
+    }
+
+
 }

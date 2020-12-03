@@ -131,10 +131,20 @@ public class LoginController {
 						Cookie cookie1 = new Cookie("currentWeek", String.valueOf(currentWeek));
 						response.addCookie(cookie1);
 						Integer maxWeekStatistic = statisticsService.findMaxWeekByCap(capstoneProjects.getId());
-						if(maxWeekStatistic < currentWeek){
-							Cookie cookieCheckReport = new Cookie("checkReported", "false");
-							response.addCookie(cookieCheckReport);
-							return "redirect:/report";
+						if(currentWeek >= 2){
+							if(maxWeekStatistic == null){
+								Cookie cookieCheckReport = new Cookie("checkReported", "false");
+								response.addCookie(cookieCheckReport);
+								return "redirect:/report";
+							}
+							if(maxWeekStatistic < currentWeek){
+								Cookie cookieCheckReport = new Cookie("checkReported", "false");
+								response.addCookie(cookieCheckReport);
+								return "redirect:/report";
+							}else {
+								Cookie cookieCheckReport = new Cookie("checkReported", "true");
+								response.addCookie(cookieCheckReport);
+							}
 						}else {
 							Cookie cookieCheckReport = new Cookie("checkReported", "true");
 							response.addCookie(cookieCheckReport);

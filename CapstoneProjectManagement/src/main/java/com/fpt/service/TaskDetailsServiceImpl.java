@@ -1,5 +1,6 @@
 package com.fpt.service;
 
+import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.TaskDetails;
 import com.fpt.repository.ReportRepository;
 import com.fpt.repository.TaskDetailsRepository;
@@ -43,5 +44,10 @@ public class TaskDetailsServiceImpl implements TaskDetailsService{
     @Override
     public List<Integer> findDistinctByWeek() {
         return taskDetailsRepository.findDistinctByWeek();
+    }
+
+    @Override
+    public void deleteTaskDetailsByCapstoneProjectAndWeek(CapstoneProjects cid, Integer week) {
+        taskDetailsRepository.deleteTaskDetailsByCapstoneProjectAndWeek(cid, week);
     }
 }
