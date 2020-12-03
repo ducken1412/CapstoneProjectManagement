@@ -12,16 +12,20 @@ $(document).ready(function () {
         },
     });
     ajaxCall();
+
     function ajaxCall() {
         $.ajax({
             url: "/number-new-message",
             type: "GET",
             success: function (data) {
-                if(data === 'errorLogin') {
+                if (data === 'errorLogin') {
                     window.location.href = "/login";
                 } else {
                     $('#numNewMessage').text(data);
-                    ajaxCall();
+                    setTimeout(
+                        function () {
+                            ajaxCall();
+                        }, 3000);
                 }
             },
             error: function (xhr) {
@@ -33,7 +37,7 @@ $(document).ready(function () {
     }
 });
 
-$('#drd-chat').click(function(e) {
+$('#drd-chat').click(function (e) {
     $.ajax({
         url: "/chat-content",
         type: "GET",
@@ -47,3 +51,4 @@ $('#drd-chat').click(function(e) {
         },
     });
 });
+
