@@ -54,4 +54,6 @@ public interface CapstoneProjectDetailService {
 	CapstoneProjectDetails findById(Integer id);
 	boolean save(CapstoneProjectDetails capstoneProjectDetails);
 	//kienbt4 add code capstone end
+
+	List<Users> getUserByCapstoneProject(Integer id);
 }

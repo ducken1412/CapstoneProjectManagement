@@ -5,6 +5,7 @@ import com.fpt.entity.Chat;
 import com.fpt.entity.Users;
 import com.fpt.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,6 +36,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    @CacheEvict(value="numMessageCache",allEntries = true)
     public boolean save(Chat chat) {
         try {
             chatRepository.save(chat);

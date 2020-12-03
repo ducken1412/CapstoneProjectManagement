@@ -99,14 +99,13 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
-            <div class="noti-wrap w-75 justify-content-end mr-4">
+            <div class="noti-wrap justify-content-end mr-4" style="width: 65%">
                 <div class="noti__item js-item-menu mt-2-lg" id="drd-chat">
-                    <i class="far fa-comments"></i>
+                    <i class="far fa-comments" style="font-size: 22px"></i>
                     <span class="quantity" id="numNewMessage"></span>
-                    <div class="mess-dropdown js-dropdown mt-2" id="drd-chat-content">
+                    <div class="mess-dropdown js-dropdown mt-2" id="drd-chat-content" style="border-radius: 15px">
 
                     </div>
                 </div>
@@ -141,6 +140,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal fade" id="chat-container" data-toggle="modal"
+         tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" id="chatbox-content"></div>
         </div>
     </div>
     <div id="notification-container" class="w-20 float-right position-absolute" style="height: 85vh;"></div>

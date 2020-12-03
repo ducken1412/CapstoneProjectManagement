@@ -4,6 +4,7 @@ import com.fpt.dto.ChatDTO;
 import com.fpt.entity.*;
 import com.fpt.service.ChatDetailService;
 import com.fpt.service.ChatService;
+import com.fpt.service.PostService;
 import com.fpt.service.UserService;
 import com.fpt.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
@@ -31,6 +35,9 @@ public class ChatRoomController {
 
     @Autowired
     private ChatService chatService;
+
+    @Autowired
+    private PostService postService;
 
     @Autowired
     private ChatDetailService chatDetailService;
@@ -49,8 +56,15 @@ public class ChatRoomController {
         } else {
             return "error/403Page";
         }
-        List<Chat> chats = chatService.findByRoomId(postId);
-        model.addAttribute("chats",chats);
+        try {
+            List<Chat> chats = chatService.findByRoomId(postId);
+            Posts post = postService.findById(Integer.parseInt(postId));
+            model.addAttribute("chats",chats);
+            model.addAttribute("post",post);
+        }catch (Exception ex){
+            model.addAttribute("chats",new ArrayList<>());
+            model.addAttribute("post",new Posts());
+        }
         return "chatting/mychat";
     }
 
@@ -102,8 +116,7 @@ public class ChatRoomController {
         if(principal == null) {
             return "errorLogin";
         }
-        Users userLogin = userService.findByEmail(principal.getName());
-        int num = chatDetailService.findNumberNewMessage(userLogin.getId());
+        int num = chatDetailService.findNumberNewMessage(principal.getName());
         return String.valueOf(num);
     }
 
@@ -111,6 +124,18 @@ public class ChatRoomController {
     public String getChatContent(Model model,Principal principal){
         Users userLogin = userService.findByEmail(principal.getName());
         List<ChatDTO> chatDTOS = chatService.findChatsByUserId(userLogin.getId());
+        Collections.reverse(chatDTOS);
+        List<ChatDTO> readList = new ArrayList<>();
+        List<ChatDTO> unreadList = new ArrayList<>();
+        for (ChatDTO dto : chatDTOS) {
+            if(dto.getReadStatus().equals(Constant.CHAT_READ)) {
+                readList.add(dto);
+            } else {
+                unreadList.add(dto);
+            }
+        }
+        chatDTOS = Stream.concat(unreadList.stream(), readList.stream())
+                .collect(Collectors.toList());
         model.addAttribute("chats", chatDTOS);
         return "chatting/dropdown-chat-content";
     }

@@ -6,5 +6,5 @@ import com.fpt.entity.Users;
 import java.util.List;
 
 public interface ChatDetailService {
-	int findNumberNewMessage(String userId);
+	int findNumberNewMessage(String userEmail);
 }

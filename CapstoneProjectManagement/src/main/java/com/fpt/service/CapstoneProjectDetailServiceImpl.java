@@ -149,6 +149,11 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
         return false;
     }
 
+    @Override
+    public List<Users> getUserByCapstoneProject(Integer id) {
+        return capstoneProjectDetailRepository.getUserByCapstoneProject(id);
+    }
+
     //kienbt4 add code capstone end
 
 
