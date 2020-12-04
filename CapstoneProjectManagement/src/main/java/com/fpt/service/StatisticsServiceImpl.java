@@ -1,5 +1,6 @@
 package com.fpt.service;
 
+import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Statistics;
 import com.fpt.entity.Status;
 import com.fpt.repository.StatisticsRepository;
@@ -65,5 +66,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 			System.out.println(e);
 		}
 		return null;
+	}
+
+	@Override
+	public void deleteStatisticsByCapstoneProjectAndWeek(CapstoneProjects cid, Integer week) {
+		statisticsRepository.deleteStatisticsByCapstoneProjectAndWeek(cid, week);
 	}
 }

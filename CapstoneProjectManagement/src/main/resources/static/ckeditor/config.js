@@ -13,6 +13,6 @@ CKEDITOR.editorConfig = function( config ) {
 	config.skin='icy_orange';
 	//config.skin='kama';
 	//config.skin='moono';
-	config.height = 250;
+	config.height = 300;
 	config.toolbarCanCollapse = true;
 };

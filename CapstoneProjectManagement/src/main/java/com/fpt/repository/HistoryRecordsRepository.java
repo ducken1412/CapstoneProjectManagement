@@ -21,4 +21,8 @@ public interface HistoryRecordsRepository extends JpaRepository<HistoryRecords, 
 
     @Query("select h from HistoryRecords h where h.report.id = ?1 and h.content ='Post report'")
     HistoryRecords getByReportId(Integer id);
+
+    @Query("SELECT h FROM HistoryRecords h WHERE h.user.id = ?1 and h.content = 'Register Capstone' and h.capstoneProject.id = ?2")
+    HistoryRecords findHistoryByUserIdCapstoneId(String id,Integer cid);
+
 }

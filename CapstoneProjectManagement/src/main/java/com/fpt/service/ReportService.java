@@ -24,4 +24,9 @@ public interface ReportService {
 
     Page<Reports> findReportsByUserId(Pageable pageable, String id);
 
+    boolean updateReportById(String title, String content,Integer id);
+
+    Integer checkUserReportByUserIdReportId(String uid, Integer rid);
+
+    Integer getReportByUserIdMax(String id);
 }

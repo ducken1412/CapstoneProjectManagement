@@ -3,10 +3,12 @@ package com.fpt.repository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import com.fpt.entity.CapstoneProjectDetails;
 import com.fpt.entity.CapstoneProjects;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface CapstoneProjectRepository extends JpaRepository<CapstoneProjects, Integer>{
@@ -33,4 +35,10 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	//kienbt4 add code capstone end
 	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1")
 	CapstoneProjects getCapstoneProjectByUserId(String userId);
+
+	//update status project send training department
+	@Transactional
+	@Modifying
+	@Query(value = "update capstone_projects set status_id = 5 where id = ?1", nativeQuery = true)
+	void updateStatusCapstoneProjectSendTD(Integer id);
 }

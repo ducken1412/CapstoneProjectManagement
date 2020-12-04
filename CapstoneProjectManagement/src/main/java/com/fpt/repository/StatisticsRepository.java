@@ -1,12 +1,16 @@
 package com.fpt.repository;
 
+import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Statistics;
 import com.fpt.entity.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 public interface StatisticsRepository extends JpaRepository<Statistics, Integer> {
@@ -45,4 +49,9 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Integer>
     Integer getMaxWeekByCapstoneProject(Integer capstone);
 
 
+
+    @Transactional
+    @Modifying
+    //@Query("delete from Statistics t where t.capstoneProject.id = ?1 and t.week = ?2")
+    void deleteStatisticsByCapstoneProjectAndWeek(CapstoneProjects capstoneProjects,Integer week);
 }

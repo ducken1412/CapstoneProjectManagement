@@ -29,6 +29,6 @@ public interface CapstoneProjectService {
 	Integer getCountStudent (Integer id);
 	CapstoneProjects getCapstoneProjectByUserId(String userId);
 
-
+	boolean updateStatusCapstoneProjectSendTD(Integer id);
 
 }

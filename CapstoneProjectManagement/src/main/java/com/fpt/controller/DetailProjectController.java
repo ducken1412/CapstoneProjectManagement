@@ -114,10 +114,10 @@ public class DetailProjectController {
         }
 
         Users user = userService.findByEmail(principal.getName());
-        String user_login = user.getId();
+        String userId = user.getId();
         boolean check_capstone = false;
         //check user login = user project
-        List<Integer> capstone_id = capstoneProjectDetailService.getIdProjectByUserIDCheckApprove(user_login);
+        List<Integer> capstone_id = capstoneProjectDetailService.getIdProjectByUserIDCheckApprove(userId);
         for (int i = 0; i < capstone_id.size(); i++) {
             if (capstone_id.get(i) == id) {
                 check_capstone = true;
@@ -125,6 +125,13 @@ public class DetailProjectController {
         }
         model.addAttribute("check_capstone", check_capstone);
         model.addAttribute("userRolesDTOs", userRolesDTOs);
+
+        //check history show submit send training department
+        HistoryRecords historyRecords = historyRecordService.findHistoryByUserIdCapstoneId(userId, id);
+        if (historyRecords != null) {
+            boolean checkUserRegister = true;
+            model.addAttribute("checkUserRegister", checkUserRegister);
+        }
         return "home/detail_project";
     }
 
@@ -185,6 +192,15 @@ public class DetailProjectController {
         } catch (Exception e) {
             System.out.println(e);
         }
+        return "redirect:/forum";
+    }
+
+    @RequestMapping(value = "/sendtd", method = RequestMethod.POST)
+    public String editReport(@RequestParam("projectId") Integer id, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        capstoneProjectService.updateStatusCapstoneProjectSendTD(id);
         return "redirect:/forum";
     }
 }
