@@ -97,12 +97,9 @@ public class LecturersController {
                     model.addAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
                 }
                 if(lecture1 != null && lecture2 != null){
-                    String lecture1Id = lecture1.getId();
-                    String lecture2Id = lecture2.getId();
-                    //phan trang
                     int currentPage = page.orElse(1);
                     int pageSize = size.orElse(6);
-                    Page<Users> lecturersPage = userService.findPaginatedNotLecture2Booked(PageRequest.of(currentPage - 1, pageSize), lecture1Id, lecture2Id);
+                    Page<Users> lecturersPage = userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
                     model.addAttribute("lecturersPage", lecturersPage);
                     int totalPages = lecturersPage.getTotalPages();
                     if (totalPages > 0) {
