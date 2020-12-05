@@ -59,4 +59,5 @@ public interface CapstoneProjectDetailService {
 
 	Users userLecturersIdAndCapstoneProjectIdOP2(Integer id);
 
+	List<Users> getUserByCapstoneProject(Integer id);
 }

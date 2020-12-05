@@ -1,13 +1,28 @@
-
+<style>
+    .card-messagebox {
+        background-color: #e5e5e5;
+        border: none;
+        border-radius: 15px;
+    }
+    .chat-container {
+        border-radius: 15px;
+    }
+    #message {
+        border-radius: 15px;
+    }
+    #btn-send-messagebox{
+        border-radius: 15px;
+    }
+</style>
 <div id="chat-page" class="container">
     <div class="chat-container">
         <div class="chat-header">
-            <h2>Chatroom [<span id="room-id-display"></span>]</h2>
+            <h2 th:text="${post.title}"></h2>
         </div>
-        <ul id="messageArea">
+        <ul id="messageArea" class="mb-2">
             <th:block th:each="chat :${chats}">
-                <div class="card">
-                    <div class="card-body">
+                <div class="card card-messagebox mb-1">
+                    <div class="card-body p-0">
                         <li class="chat-message">
                             <i class="far fa-user" style="background-color: #a9b3c9;"></i>
                             <span th:text="${chat.user.username}"></span>
@@ -18,15 +33,18 @@
             </th:block>
         </ul>
         <input type="text" id="userLogged" th:value="${loggedUser}" hidden/>
-        <form id="messagebox" name="messagebox">
-            <div class="form-group">
-                <div class="input-group mx-4" style="width: 95%">
-                    <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
-                    <button type="submit" class="btn btn-success ml-2">Send</button>
+        <div>
+            <form id="messagebox" name="messagebox">
+                <input type="text" id="postIdForm" th:value="${post.id}" hidden/>
+                <div class="form-group">
+                    <div class="input-group mx-4" style="width: 95%">
+                        <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
+                        <button type="submit" class="btn btn-success ml-2" id="btn-send-messagebox">Send</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-        <a href="" id="back-to-forum" class="ml-4"><i class="fas fa-caret-left"></i>Forum</a>
+            </form>
+        </div>
+
     </div>
 </div>
 <th:block th:include="home/_script"></th:block>

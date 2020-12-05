@@ -159,6 +159,10 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
         return capstoneProjectDetailRepository.userLecturersIdAndCapstoneProjectIdOP2(id);
     }
 
+    public List<Users> getUserByCapstoneProject(Integer id) {
+        return capstoneProjectDetailRepository.getUserByCapstoneProject(id);
+    }
+
     //kienbt4 add code capstone end
 
 

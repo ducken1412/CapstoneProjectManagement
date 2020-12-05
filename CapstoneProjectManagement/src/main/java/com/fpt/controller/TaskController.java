@@ -55,7 +55,7 @@ public class TaskController {
             if(capstoneProject != null) {
                 nameProject = capstoneProject.getName();
             }
-            List<Users> userproject = capstoneProjectDetailService.getUserByCapstoneProjectDetailId(id);
+            List<Users> userproject = capstoneProjectDetailService.getUserByCapstoneProject(id);
             List<ContactDTO> contacts = new ArrayList<>();
             List<String> roles;
             ContactDTO contactDTO;
