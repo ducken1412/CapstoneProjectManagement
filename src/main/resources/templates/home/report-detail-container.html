@@ -7,8 +7,16 @@
                 <tr style="border-bottom: 0 none">
                     <td>
                         <div>
-                            <div id="ctl00_mainContent_divContent"><span
-                                    class="title-1"><p th:text=${title}></p></span>
+                            <div id="ctl00_mainContent_divContent">
+                                <div class="row ml-1">
+                                    <div>
+                                        <span class="title-1"><p th:text=${title}></p> </span>
+                                    </div>
+                                    <div class="ml-auto mr-3" th:if="${checkUserReport==true}">
+                                        <a th:href="@{'/edit-report/' + ${report_id}}"
+                                           class="btn btn-success mt-2">Edit</a>
+                                    </div>
+                                </div>
                                 <hr>
                                 <br/>
                                 <th:block th:utext="${content}"></th:block>
@@ -44,19 +52,50 @@
             <p class="text-secondary" style="font-size: 14px"></p>
             <hr>
             <div class="mx-5">
-                <form class="form-comment mb-0 mt-4" id="comment-form">
-                    <input id="postId" name="postId" th:value="${id}" hidden/>
-                    <div class="input-group">
-                        <input class="form-control" name="content"
-                               placeholder="Write a comment.." type="text"
-                               style="border-radius: 15px"/>
-                        <button id="" type="submit"
-                                class="btn btn-success ml-2 btn-comment">
+                <div style="margin-top: 40px; margin-bottom: 40px; margin-right: 20px; margin-left: 20px;">
+                    <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Summary</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Time Spent</th>
+                            <th>Time Tracking</th>
+                            <th>Status</th>
+                            <th>Assignee</th>
+                            <th>Week</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="task : ${tasks}">
+                            <td th:text="${task.summary}"></td>
+                            <td th:text="${#dates.format(task.startDate, 'yyyy-MMM-dd')}"></td>
+                            <td th:text="${#dates.format(task.endDate, 'yyy-MMM-dd')}"></td>
+                            <td th:text="${task.timeSpent}"></td>
+                            <td th:text="${task.timeTracking}"></td>
+                            <td th:text="${task.status}"></td>
+                            <td th:text="${task.assignee}"></td>
+                            <td th:text="${task.week}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div style="margin-top: 40px;">
+                    <form class="form-comment mb-0 mt-4" id="comment-form">
+                        <input id="postId" name="postId" th:value="${report_id}" hidden/>
+                        <div class="input-group">
+                            <input class="form-control" name="content"
+                                   placeholder="Write a comment.." type="text"
+                                   style="border-radius: 15px"/>
+                            <button id="" type="submit"
+                                    class="btn btn-success ml-2 btn-comment">
 								<span class="loading-send spinner-border spinner-border-sm mr-2"
                                       role="status" id="loading-send" aria-hidden="true" hidden="true"></span>Send
-                        </button>
-                    </div>
-                </form>
+                            </button>
+                        </div>
+                    </form>
+                </div>
                 <div class="my-2 p-2 comment-container"
                      style="background-color: #e5e5e5; width: fit-content; border-radius: 15px"
                      th:each="comment :${comments}">
@@ -66,8 +105,16 @@
                         th:text=${comment.content}></span>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
+<script th:src="@{/js/report/report.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('#bootstrap-data-table').DataTable({
+            "order":[
+                [1, 'desc']
+            ]
+        });
+    });
+</script>

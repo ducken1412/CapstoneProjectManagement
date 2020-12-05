@@ -37,24 +37,24 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <div th:each="list_report : ${reportsPage}">
+                                        <div th:each="report : ${reportsPage}">
                                             <tr>
                                                 <td></td>
                                                 <td>
-                                                    <a th:href="@{'/user/' + ${list_report.user.id}}">
+                                                    <a th:href="@{'/user/' + ${report.user.id}}">
                                                         <h5><span style="color: rgb(74, 137, 191)"
-                                                                  th:text="${list_report.user.username}"></span></h5>
+                                                                  th:text="${report.user.username}"></span></h5>
                                                     </a>
                                                 </td>
-                                                <td><a th:href="@{'/report/' + ${list_report.report.id}}">
+                                                <td><a th:href="@{'/report/' + ${report.id}}">
                                                     <h5>
                                                         <span style="color: rgb(74, 137, 191)"
-                                                              th:text="${list_report.report.name}"></span>
+                                                              th:text="${report.title}"></span>
                                                     </h5>
                                                 </a></td>
                                                 <td>
                                                         <span style="color: rgb(74, 137, 191)"
-                                                              th:text="${list_report.createdDate}"></span>
+                                                              th:text="${report.createdDate}"></span>
                                                 </td>
                                             </tr>
                                         </div>

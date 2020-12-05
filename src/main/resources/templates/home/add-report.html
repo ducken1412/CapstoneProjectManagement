@@ -23,16 +23,31 @@
                     </div>
                     <div class="row m-t-25">
                         <div class="w-80" id="content-body">
+                            <div class="alert alert-warning mx-4" role="alert" id="checkReported"
+                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkReport == false}">
+                                Warning:
+                                <br>
+                                You have not reported this week to your Supervisors
+                            </div>
+                            <div class="alert alert-warning mx-4" role="alert"
+                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkReport == true}">
+                                Warning:
+                                <br>
+                                You have reported this week to your Supervisors.
+                                <br>
+                                You can't report again. You just only edit your report.
+                                <a th:href="@{'/report/' + ${reportId}}">Click here</a> to view detail page.
+                            </div>
                             <!-- content here -->
                             <div class="card">
                                 <div class="card-body card-block">
-                                    <form th:action="@{/add-report}" th:object="${reportDetail}" method="post"  enctype="multipart/form-data">
+                                    <form th:action="@{/add-report}" th:object="${report}" method="post"  enctype="multipart/form-data">
                                         <div class="row form-group">
                                             <div class="col col-md-2">
                                                 <label for="title" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Title</label>
                                             </div>
                                             <div class="col-12 col-md-10">
-													<textarea name="name" id="name" rows="2"
+													<textarea name="title" id="title" rows="2"
                                                               placeholder="Title..." class="form-control" required></textarea>
 <!--                                                <span class="bg-danger pull-right error-mess" th:errors="*{name}"></span>-->
                                             </div>
@@ -58,9 +73,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button id="post" type="submit" class="btn btn-info pull-right">
-                                            <i class="fa fa-dot-circle-o"></i> Submit
-                                        </button>
+                                        <div th:if="${checkReport == false}">
+                                            <button id="post" type="submit" class="btn btn-info pull-right">
+                                                <i class="fa fa-dot-circle-o"></i> Submit
+                                            </button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>

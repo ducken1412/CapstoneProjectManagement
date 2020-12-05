@@ -1,5 +1,6 @@
 package com.fpt.service;
 
+import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Statistics;
 import com.fpt.entity.Status;
 import com.fpt.repository.StatisticsRepository;
@@ -37,11 +38,10 @@ public class StatisticsServiceImpl implements StatisticsService{
 	}
 
 	@Override
-	public Page<Statistics> getStatisticsWithWeekPage(Pageable pageable, int week) {
-		int pageSize = pageable.getPageSize();
-		int currentPage = pageable.getPageNumber();
-		Pageable pageStatics = PageRequest.of(currentPage, pageSize);
-		return statisticsRepository.findByWeekOrderByTimeTrackingCurrentAsc(pageStatics, week);
+	public Page<Statistics> getStatisticsWithWeekPage(Pageable pageable, int week,Integer sites,Integer semesters,String nameSearch,String userSearch) {
+		nameSearch = '%' + nameSearch + '%';
+		userSearch = '%' + userSearch + '%';
+		return statisticsRepository.findByWeekOrderByTimeTrackingCurrentAsc(week,sites,semesters,nameSearch,userSearch,pageable);
 	}
 
 	@Override
@@ -52,10 +52,24 @@ public class StatisticsServiceImpl implements StatisticsService{
 
 
 	@Override
-	public Page<Statistics> getStatisticsWithWeekPageByLecture(int week, String email, Pageable pageable) {
-		int pageSize = pageable.getPageSize();
-		int currentPage = pageable.getPageNumber();
-		Pageable pageStatics = PageRequest.of(currentPage, pageSize);
-		return statisticsRepository.findByWeekPagingOrderByTimeTrackingCurrentAscByLecture(week,email,pageable);
+	public Page<Statistics> getStatisticsWithWeekPageByLecture(int week, String email, Pageable pageable,Integer sites,Integer semesters,String nameSearch,String userSearch) {
+		nameSearch = '%' + nameSearch + '%';
+		userSearch = '%' + userSearch + '%';
+		return statisticsRepository.findByWeekPagingOrderByTimeTrackingCurrentAscByLecture(week,email,sites,semesters,nameSearch,userSearch,pageable);
+	}
+
+	@Override
+	public Integer findMaxWeekByCap(Integer capId) {
+		try{
+			return statisticsRepository.getMaxWeekByCapstoneProject(capId);
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+
+	@Override
+	public void deleteStatisticsByCapstoneProjectAndWeek(CapstoneProjects cid, Integer week) {
+		statisticsRepository.deleteStatisticsByCapstoneProjectAndWeek(cid, week);
 	}
 }

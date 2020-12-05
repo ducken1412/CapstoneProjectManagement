@@ -59,8 +59,8 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<Comments> getCommentsByReportDetatilId(Integer id) {
-		return commentRepository.getCommentsByReportDetatilId(id);
+	public List<Comments> getCommentsByReportId(Integer id) {
+		return commentRepository.getCommentsByReportId(id);
 	}
 
 }

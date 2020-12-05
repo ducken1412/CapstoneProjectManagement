@@ -1,32 +1,57 @@
 package com.fpt.repository;
 
+import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Statistics;
 import com.fpt.entity.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 public interface StatisticsRepository extends JpaRepository<Statistics, Integer> {
 
     List<Statistics> findByWeekOrderByTimeTrackingCurrentAsc(int week);
 
-    Page<Statistics> findByWeekOrderByTimeTrackingCurrentAsc(Pageable pageable,int week);
+    @Query(value = "SELECT DISTINCT  s FROM Statistics s " +
+            "join CapstoneProjects cap on s.capstoneProject.id = cap.id " +
+            "join CapstoneProjectDetails capd on cap.id = capd.capstoneProject.id " +
+            "WHERE  s.week = ?1 " +
+            "AND (s.capstoneProject.site.id = ?2 OR ?2 = -1)" +
+            "AND (s.capstoneProject.semester.id = ?3 OR ?3 = -1)" +
+            "AND (s.capstoneProject.name like ?4)" +
+            "AND (capd.user.username like ?5)" +
+            "order by  s.timeTrackingCurrent asc ")
+    Page<Statistics> findByWeekOrderByTimeTrackingCurrentAsc(int week,Integer sites,Integer semesters,String nameSearch,String userSearch,Pageable pageable);
 
     @Query(value = "SELECT s FROM Statistics s " +
             "join CapstoneProjectDetails capd on s.capstoneProject.id = capd.capstoneProject.id " +
             "WHERE  s.week = ?1 AND  capd.user.email = ?2 order by  s.timeTrackingCurrent asc ")
     List<Statistics> findByWeekOrderByTimeTrackingCurrentAscByLecture(int week,String email);
 
-    @Query(value = "SELECT s FROM Statistics s " +
-            "join CapstoneProjectDetails capd on s.capstoneProject.id = capd.capstoneProject.id " +
-            "WHERE  s.week = ?1 AND  capd.user.email = ?2 order by  s.timeTrackingCurrent asc ")
-    Page<Statistics> findByWeekPagingOrderByTimeTrackingCurrentAscByLecture(int week,String email,Pageable pageable);
+    @Query(value = "SELECT DISTINCT  s FROM Statistics s " +
+            "join CapstoneProjects cap on s.capstoneProject.id = cap.id " +
+            "join CapstoneProjectDetails capd on cap.id = capd.capstoneProject.id " +
+            "WHERE  s.week = ?1 AND  capd.user.email = ?2 " +
+            "AND (s.capstoneProject.site.id = ?3 OR ?3 = -1)" +
+            "AND (s.capstoneProject.semester.id = ?4 OR ?4 = -1)" +
+            "AND (s.capstoneProject.name like ?5)" +
+            "AND (capd.user.username like ?6)" +
+            "order by  s.timeTrackingCurrent asc ")
+    Page<Statistics> findByWeekPagingOrderByTimeTrackingCurrentAscByLecture(int week,String email,Integer sites,Integer semesters,String nameSearch,String userSearch,Pageable pageable);
+
+
+    @Query(value = "SELECT MAX(s.week)  FROM statistics as s Where s.capstone_project_id = ?1 ", nativeQuery = true)
+    Integer getMaxWeekByCapstoneProject(Integer capstone);
 
 
 
-
-
+    @Transactional
+    @Modifying
+    //@Query("delete from Statistics t where t.capstoneProject.id = ?1 and t.week = ?2")
+    void deleteStatisticsByCapstoneProjectAndWeek(CapstoneProjects capstoneProjects,Integer week);
 }

@@ -1,15 +1,14 @@
 'use strict';
-const usernamePage = document.querySelector('#userJoin');
-const chatPage = document.querySelector('#chat-page');
-const name = $("#userLogged").val().trim();
-const waiting = document.querySelector('.waiting');
-const roomIdDisplay = document.querySelector('#room-id-display');
-let stompClient = null;
-let currentSubscription;
-let topic = null;
-let roomId;
+var usernamePage = document.querySelector('#userJoin');
+var chatPage = document.querySelector('#chat-page');
+var name = $("#userLogged").val().trim();
+var waiting = document.querySelector('.waiting');
+var stompClient = null;
+var currentSubscription;
+var topic = null;
+var roomId;
 
-let colors = [
+var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
@@ -34,7 +33,6 @@ function onError(error) {
 function enterRoom(newRoomId) {
     let roomId = newRoomId;
     Cookies.set('roomId', roomId);
-    roomIdDisplay.textContent = roomId;
     topic = `/chat-app/chat/${newRoomId}`;
     currentSubscription = stompClient.subscribe(`/chat-room/${roomId}`, onMessageReceived);
     stompClient.send(`${topic}/addUser`,
@@ -66,13 +64,16 @@ function onMessageReceived(payload) {
     let message = JSON.parse(payload.body);
     let messageElement = document.createElement('li');
     let divCard = document.createElement('div');
-    divCard.className = 'card';
+    let check = false;
+    divCard.className = 'card card-messagebox mb-1';
     if (message.type === 'JOIN') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' joined!';
+        check = true;
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' left!';
+        check = true;
     } else {
         messageElement.classList.add('chat-message');
         let avatarElement = document.createElement('i');
@@ -85,18 +86,20 @@ function onMessageReceived(payload) {
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
         let divCardBody = document.createElement('div');
-        divCardBody.className = 'card-body';
-
+        divCardBody.className = 'card-body p-0';
         divCardBody.appendChild(messageElement);
         divCard.appendChild(divCardBody);
     }
     let textElement = document.createElement('p');
     let messageText = document.createTextNode(message.content);
     textElement.appendChild(messageText);
-
     messageElement.appendChild(textElement);
     let messageArea = document.querySelector('#messageArea');
-    messageArea.appendChild(divCard);
+    if(check) {
+        messageArea.appendChild(messageElement);
+    } else {
+        messageArea.appendChild(divCard);
+    }
     messageArea.scrollTop = messageArea.scrollHeight;
 }
 function getAvatarColor(messageSender) {

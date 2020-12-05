@@ -209,4 +209,19 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 		return capstoneProjectRepository.getCountStudent(id);
 	}
 
+	@Override
+	public CapstoneProjects getCapstoneProjectByUserId(String userId) {
+		return capstoneProjectRepository.getCapstoneProjectByUserId(userId);
+	}
+
+	@Override
+	public boolean updateStatusCapstoneProjectSendTD(Integer id) {
+		try {
+			capstoneProjectRepository.updateStatusCapstoneProjectSendTD(id);
+		}catch (Exception e){
+
+		}
+		return false;
+	}
+
 }

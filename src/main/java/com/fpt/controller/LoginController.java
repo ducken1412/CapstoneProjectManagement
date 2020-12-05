@@ -8,12 +8,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
-import com.fpt.service.UserRoleService;
-import com.fpt.service.UserService;
+import com.fpt.entity.CapstoneProjects;
+import com.fpt.entity.Semesters;
+import com.fpt.service.*;
 import com.fpt.utils.Constant;
 import com.fpt.utils.WebUtils;
 import org.apache.http.client.ClientProtocolException;
@@ -43,6 +48,13 @@ public class LoginController {
 
 	@Autowired
 	private UserRoleService userRoleService;
+
+	@Autowired
+	private SemestersService semestersService;
+	@Autowired
+	private CapstoneProjectService capstoneProjectService;
+	@Autowired
+	private StatisticsService statisticsService;
 
 	@RequestMapping(value = {"/", "/login"})
 	public String login(HttpServletRequest request) {
@@ -101,6 +113,46 @@ public class LoginController {
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			List<String> roles = userRoleService.getRoleNamesByUserId(appUser.getId());
 			for (String role : roles) {
+				try {
+					if(role.equals(Constant.ROLE_STUDENT_LEADER_DB)){
+						SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						CapstoneProjects capstoneProjects;
+						capstoneProjects = capstoneProjectService.getCapstoneProjectByUserId(appUser.getId());
+						Semesters semesters;
+						semesters = semestersService.getSemesterByUserId(appUser.getId());
+						LocalDate d1;
+						d1 = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ISO_LOCAL_DATE);
+						LocalDate d2;
+						d2 = LocalDate.parse(simpleDateFormat.format(semesters.startDate), DateTimeFormatter.ISO_LOCAL_DATE);
+						Duration diff;
+						diff = Duration.between(d2.atStartOfDay(),d1.atStartOfDay());
+						long diffDays = diff.toDays();
+						long currentWeek = diffDays/7;
+						Cookie cookie1 = new Cookie("currentWeek", String.valueOf(currentWeek));
+						response.addCookie(cookie1);
+						Integer maxWeekStatistic = statisticsService.findMaxWeekByCap(capstoneProjects.getId());
+						if(currentWeek >= 2){
+							if(maxWeekStatistic == null){
+								Cookie cookieCheckReport = new Cookie("checkReported", "false");
+								response.addCookie(cookieCheckReport);
+								return "redirect:/report";
+							}
+							if(maxWeekStatistic < currentWeek){
+								Cookie cookieCheckReport = new Cookie("checkReported", "false");
+								response.addCookie(cookieCheckReport);
+								return "redirect:/report";
+							}else {
+								Cookie cookieCheckReport = new Cookie("checkReported", "true");
+								response.addCookie(cookieCheckReport);
+							}
+						}else {
+							Cookie cookieCheckReport = new Cookie("checkReported", "true");
+							response.addCookie(cookieCheckReport);
+						}
+					}
+				}catch (Exception e){
+					
+				}
 				if(role.equals(Constant.ROLE_LECTURERS_DB) || role.equals(Constant.ROLE_HEAD_DB)) {
 					return "redirect:/db/dashboard";
 				}

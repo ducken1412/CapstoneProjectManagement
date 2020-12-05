@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.fpt.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -63,5 +64,10 @@ public class PostServiceImpl implements PostService {
 		int currentPage = pageable.getPageNumber();
 		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
 		return postRepository.findAll(secondPageWithFiveElements);
+	}
+
+	@Override
+	public Users findAuthorByPostId(Integer postId) {
+		return postRepository.findAuthorByPostId(postId);
 	}
 }

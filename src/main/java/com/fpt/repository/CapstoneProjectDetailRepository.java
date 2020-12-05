@@ -34,6 +34,9 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.status.name = 'registed_capstone'")
 	List<Users> getUserByCapstoneProjectDetailId(Integer id);
 
+	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.status.name = 'doing_capstone' or ru.status.name = 'changing_name_capstone'")
+	List<Users> getUserByCapstoneProject(Integer id);
+
 
 	//count lecturers by project id
 	@Query("SELECT count (u.userRoleKey.role.id) FROM CapstoneProjectDetails ru INNER JOIN ru.user.roleUser as u WHERE u.userRoleKey.user.id = ru.user.id and u.userRoleKey.role.id = 4 and ru.capstoneProject.id = ?1")
@@ -97,5 +100,13 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	@Query("SELECT ru.status FROM CapstoneProjectDetails ru WHERE ru.id = ?1")
 	List<Status> getStatusById(Integer id);
 	//KienBT4 add code end
+
+	//lecture option 1
+	@Query("SELECT c.user from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Main Lecture'")
+	Users userLecturersIdAndCapstoneProjectIdOP1(Integer cid);
+
+	//lecture option 2
+	@Query("SELECT c.user from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Assistant Lecture'")
+	Users userLecturersIdAndCapstoneProjectIdOP2(Integer cid);
 
 }

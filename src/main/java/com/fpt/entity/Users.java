@@ -62,18 +62,10 @@ public class Users implements Serializable {
     private List<CapstoneProjectDetails> capstoneProjectDetails;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<NotificationDetails> notificationDetails;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "report_id", referencedColumnName = "id", columnDefinition = "INT")
-    private Reports reportSend;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Reports reportReceive;
     @ManyToMany(mappedBy = "reportRecipients")
     private List<Reports> reportReceives;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sender")
     private List<Comments> comments;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "report_detail_id")
-    private ReportDetails reportDetail;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_detail_id", referencedColumnName = "id", columnDefinition = "INT")
     private EvaluationDetails evaluationDetail;
@@ -81,11 +73,22 @@ public class Users implements Serializable {
     private List<Posts> posts;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Chat> chats;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Reports> report;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<ChatDetails> chatDetail;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "semester_id")
+    private Semesters semester;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "site_id")
+    private Sites site;
 
     public Users() {
     }
 
-    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, Reports reportSend, Reports reportReceive, List<Reports> reportReceives, List<Comments> comments, ReportDetails reportDetail, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats) {
+    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, List<ChatDetails> chatDetail) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -103,22 +106,41 @@ public class Users implements Serializable {
         this.historyRecords = historyRecords;
         this.capstoneProjectDetails = capstoneProjectDetails;
         this.notificationDetails = notificationDetails;
-        this.reportSend = reportSend;
-        this.reportReceive = reportReceive;
         this.reportReceives = reportReceives;
         this.comments = comments;
-        this.reportDetail = reportDetail;
         this.evaluationDetail = evaluationDetail;
         this.posts = posts;
         this.chats = chats;
+        this.report = report;
+        this.chatDetail = chatDetail;
     }
 
-    public List<Chat> getChats() {
-        return chats;
-    }
-
-    public void setChats(List<Chat> chats) {
+    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, Semesters semester, Sites site) {
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.phone = phone;
+        this.image = image;
+        this.email = email;
+        this.createdDate = createdDate;
+        this.location = location;
+        this.description = description;
+        this.status = status;
+        this.roleUser = roleUser;
+        this.historyRecords = historyRecords;
+        this.capstoneProjectDetails = capstoneProjectDetails;
+        this.notificationDetails = notificationDetails;
+        this.reportReceives = reportReceives;
+        this.comments = comments;
+        this.evaluationDetail = evaluationDetail;
+        this.posts = posts;
         this.chats = chats;
+        this.report = report;
+        this.semester = semester;
+        this.site = site;
     }
 
     public String getId() {
@@ -257,22 +279,6 @@ public class Users implements Serializable {
         this.notificationDetails = notificationDetails;
     }
 
-    public Reports getReportSend() {
-        return reportSend;
-    }
-
-    public void setReportSend(Reports reportSend) {
-        this.reportSend = reportSend;
-    }
-
-    public Reports getReportReceive() {
-        return reportReceive;
-    }
-
-    public void setReportReceive(Reports reportReceive) {
-        this.reportReceive = reportReceive;
-    }
-
     public List<Reports> getReportReceives() {
         return reportReceives;
     }
@@ -289,14 +295,6 @@ public class Users implements Serializable {
         this.comments = comments;
     }
 
-    public ReportDetails getReportDetail() {
-        return reportDetail;
-    }
-
-    public void setReportDetail(ReportDetails reportDetail) {
-        this.reportDetail = reportDetail;
-    }
-
     public EvaluationDetails getEvaluationDetail() {
         return evaluationDetail;
     }
@@ -311,5 +309,45 @@ public class Users implements Serializable {
 
     public void setPosts(List<Posts> posts) {
         this.posts = posts;
+    }
+
+    public List<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
+    }
+
+    public List<Reports> getReport() {
+        return report;
+    }
+
+    public void setReport(List<Reports> report) {
+        this.report = report;
+    }
+
+    public Semesters getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semesters semester) {
+        this.semester = semester;
+    }
+
+    public Sites getSite() {
+        return site;
+    }
+
+    public void setSite(Sites site) {
+        this.site = site;
+    }
+
+    public List<ChatDetails> getChatDetail() {
+        return chatDetail;
+    }
+
+    public void setChatDetail(List<ChatDetails> chatDetail) {
+        this.chatDetail = chatDetail;
     }
 }

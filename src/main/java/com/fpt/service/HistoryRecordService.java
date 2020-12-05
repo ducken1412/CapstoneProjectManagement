@@ -21,4 +21,6 @@ public interface HistoryRecordService {
 	HistoryRecords findHistoryByUserId(String id);
 
 	HistoryRecords getByReportId(Integer id);
+
+	HistoryRecords findHistoryByUserIdCapstoneId(String id,Integer cid);
 }

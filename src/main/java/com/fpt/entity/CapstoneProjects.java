@@ -55,6 +55,12 @@ public class CapstoneProjects {
 	private List<Evaluations> evaluations;
 	@Column(name = "description_action", columnDefinition = "longtext")
 	private String desAction;
+	@ManyToOne
+	@JoinColumn(name = "semester_id")
+	private Semesters semester;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "site_id")
+	private Sites site;
 
 	public CapstoneProjects() {
 		super();
@@ -78,6 +84,28 @@ public class CapstoneProjects {
 		this.capstoneProjectDetails = capstoneProjectDetails;
 		this.evaluations = evaluations;
 		this.desAction = desAction;
+	}
+
+	public CapstoneProjects(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation, Profession profession, String specialty, String document, String program, String description, Status status, List<HistoryRecords> historyRecords, List<Statistics> statistics, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails, List<Evaluations> evaluations, String desAction, Semesters semester, Sites site) {
+		this.id = id;
+		this.name = name;
+		this.nameOther = nameOther;
+		this.nameVi = nameVi;
+		this.nameAbbreviation = nameAbbreviation;
+		this.profession = profession;
+		this.specialty = specialty;
+		this.document = document;
+		this.program = program;
+		this.description = description;
+		this.status = status;
+		this.historyRecords = historyRecords;
+		this.statistics = statistics;
+		this.files = files;
+		this.capstoneProjectDetails = capstoneProjectDetails;
+		this.evaluations = evaluations;
+		this.desAction = desAction;
+		this.semester = semester;
+		this.site = site;
 	}
 
 	public List<Statistics> getStatistics() {
@@ -216,4 +244,19 @@ public class CapstoneProjects {
 		this.evaluations = evaluations;
 	}
 
+	public Semesters getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Semesters semester) {
+		this.semester = semester;
+	}
+
+	public Sites getSite() {
+		return site;
+	}
+
+	public void setSite(Sites site) {
+		this.site = site;
+	}
 }

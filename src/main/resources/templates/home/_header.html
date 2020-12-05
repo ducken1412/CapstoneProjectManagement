@@ -77,7 +77,9 @@
                             <li >
                                 <a th:if="${#request.userPrincipal != null}" th:href="@{/list-reports}">Report Lists</a>
                             </li>
-
+                            <li >
+                                <a th:if="${#request.userPrincipal != null}" th:href="@{/my-reports}">My Reports</a>
+                            </li>
                             <li th:each="authority : ${#authentication.getPrincipal().authorities}"
                                 th:if="${authority.getAuthority() == 'MemberAuthen' || authority.getAuthority() == 'LeaderAuthen'}" >
                                 <a th:href="@{/report}">Create Report</a>
@@ -95,11 +97,18 @@
                             <li >
                                 <a th:href="@{/model}" target="_blank">Tutorial Model</a>
                             </li>
-
-                           
                         </ul>
                     </li>
                 </ul>
+            </div>
+            <div class="noti-wrap justify-content-end mr-4" style="width: 65%">
+                <div class="noti__item js-item-menu mt-2-lg" id="drd-chat">
+                    <i class="far fa-comments" style="font-size: 22px"></i>
+                    <span class="quantity" id="numNewMessage"></span>
+                    <div class="mess-dropdown js-dropdown mt-2" id="drd-chat-content" style="border-radius: 15px">
+
+                    </div>
+                </div>
             </div>
                 <div class="account-wrap">
                     <div class="account-item account-item--style2 clearfix js-item-menu">
@@ -133,6 +142,13 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="chat-container" data-toggle="modal"
+         tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" id="chatbox-content"></div>
+        </div>
+    </div>
     <div id="notification-container" class="w-20 float-right position-absolute" style="height: 85vh;"></div>
 </header>
 
@@ -144,7 +160,6 @@
         var path ="userImage=" ;
         var idDetail ="idDetail=" ;
         var userId ="userId=" ;
-        debugger;
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
         for(var i = 0; i <ca.length; i++) {
@@ -163,8 +178,13 @@
                 $("#imageCockiee").attr("src",c.substring(path.length, c.length));
                 $("#image-dropdown").attr("src",c.substring(path.length, c.length));
             }
+
             if (c.indexOf(idDetail) == 0) {
-                $("#linkCap").attr("href","/project-detail/"+c.substring(idDetail.length, c.length));
+                if(c.substring(idDetail.length, c.length).length != 0){
+                    $("#linkCap").attr("href","/project-detail/"+c.substring(idDetail.length, c.length));
+                }else {
+                    $("#linkCap").css('display','none');
+                }
             }
 
             if (c.indexOf(userId) == 0) {
@@ -188,3 +208,4 @@
         });
     })
 </script>
+<script th:src="@{/js/chatting/chat-noti.js}"></script>

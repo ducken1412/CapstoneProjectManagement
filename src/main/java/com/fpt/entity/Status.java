@@ -22,8 +22,6 @@ public class Status {
 	private Integer id;
 	@Column(name = "name", columnDefinition = "NVARCHAR(50) NOT NULL")
 	private String name;
-	@Column(name = "description", columnDefinition = "NVARCHAR(256)")
-	private String description;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
 	private List<Users> users;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "status")
@@ -33,12 +31,11 @@ public class Status {
 		super();
 	}
 
-	public Status(Integer id, String name, String description, List<Users> users,
+	public Status(Integer id, String name, List<Users> users,
 			List<CapstoneProjectDetails> capstoneProjectDetails) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.description = description;
 		this.users = users;
 		this.capstoneProjectDetails = capstoneProjectDetails;
 	}
@@ -57,14 +54,6 @@ public class Status {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public List<Users> getUsers() {

@@ -16,8 +16,7 @@ import java.util.List;
 @Repository
 public interface ReportRepository extends JpaRepository<Reports, Integer> {
 
-    @Query("select r from Reports r where r.id= ?1")
-    Reports getReportsById(Integer id);
+
 
     @Transactional
     @Modifying
@@ -26,4 +25,20 @@ public interface ReportRepository extends JpaRepository<Reports, Integer> {
 
     Reports findAllById(Integer id);
 
+    @Query(value = "SELECT * FROM reports AS r INNER JOIN report_details AS rd ON r.id = rd.report_id WHERE rd.user_id = ?1", nativeQuery = true)
+    Page<Reports> findReportByUserId(Pageable pageable,String id);
+
+    Page<Reports> findReportsByUserId(Pageable pageable,String userId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update reports set title = ?1, content = ?2 where id = ?3", nativeQuery = true)
+    void updateReportById(String title, String content, Integer id);
+
+
+    @Query(value = "select count(*) from reports where created_by = ?1 and id = ?2", nativeQuery = true)
+    Integer checkUserReportByUserIdReportId(String uid, Integer rid);
+
+    @Query("select max(r.id) from Reports r where r.user.id = ?1")
+    Integer getReportByUserIdMax(String id);
 }
