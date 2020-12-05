@@ -144,12 +144,13 @@ public class DetailProjectController {
         boolean check = false;
         Users user = userService.findByEmail(principal.getName());
         String user_login = user.getId();
-
+        CapstoneProjects capstoneProjects = capstoneProjectService.findById(id);
         try {
 
             Date date = new Date();
             HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
             if (historyRecords != null) {
+                HistoryRecords records = new HistoryRecords();
                 String user_booking_id = historyRecords.getUser().getId();
                 Users u = userService.findById(user_booking_id);
                 capstoneProjectDetailService.updateStatusUserProject(user_login, id);
@@ -157,6 +158,11 @@ public class DetailProjectController {
                 String content = user_login + " has joined your team " + date;
                 NotificationCommon.sendNotification(user, title, content, user_booking_id);
                 capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login, id);
+                records.setContent("Approve Project");
+                records.setCreatedDate(date);
+                records.setCapstoneProject(capstoneProjects);
+                records.setUser(user);
+                historyRecordService.save(records);
                 SendingMail.sendEmail(u.getEmail(), "[FPTU Capstone Project] " + title, content);
                 check = true;
             }
@@ -174,10 +180,12 @@ public class DetailProjectController {
         if (principal == null) {
             return "redirect:/login";
         }
+        CapstoneProjects capstoneProjects = capstoneProjectService.findById(id);
         try {
             Date date = new Date();
             HistoryRecords historyRecords = historyRecordService.findHistoryByProjectId(id);
             if (historyRecords != null) {
+                HistoryRecords records = new HistoryRecords();
                 Users user = userService.findByEmail(principal.getName());
                 String user_booking_id = historyRecords.getUser().getId();
                 Users u = userService.findById(user_booking_id);
@@ -186,6 +194,11 @@ public class DetailProjectController {
                 String content = userLogin + " has rejected your team " + date;
                 NotificationCommon.sendNotification(user, title, content, user_booking_id);
                 capstoneProjectDetailService.deleteRejectCapstoneProjectDetailsByUserId(userLogin, id);
+                records.setContent("Reject Project");
+                records.setCreatedDate(date);
+                records.setCapstoneProject(capstoneProjects);
+                records.setUser(user);
+                historyRecordService.save(records);
                 SendingMail.sendEmail(u.getEmail(), "[FPTU Capstone Project] " + title, content);
                 userRoleService.updateRoleStudentReject(userLogin);
             }

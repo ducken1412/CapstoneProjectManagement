@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>History Records</title>
+    <th:block th:include="home/_css"></th:block>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="page-container">
+        <th:block th:include="home/_header-no-notification"></th:block>
+        <th:block th:include="home/_header-mobile"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">History Records</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-top: 30px;">
+                        <div style="margin-top: 30px; margin-left: 70px;">
+                            <table>
+                                <tr>
+                                    <th>
+                                        <p>Role </p>
+                                    </th>
+                                    <th>
+                                        <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border"
+                                             style="width: 200px; margin-left: 20px;">
+                                            <select class="js-select2" id="dr-role">
+                                                <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${role} == ${roleSelect}"></option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="mx-5">
+                            <div id="history-container" style="margin-top: 40px; margin-bottom: 40px; margin-right: 20px; margin-left: 20px;">
+                                <th:block th:include="home/history-component"></th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <th:block th:include="home/_footer"></th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<script>
+    $(document).ready(function () {
+        $('#bootstrap-data-table').DataTable({
+            "order": [
+                [1, 'desc']
+            ]
+        });
+    });
+</script>
+</body>
+</html>

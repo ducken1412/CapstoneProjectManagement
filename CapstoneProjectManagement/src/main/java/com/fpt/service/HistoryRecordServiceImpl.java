@@ -68,5 +68,10 @@ public class HistoryRecordServiceImpl implements HistoryRecordService {
 		return historyRecordsRepository.findHistoryByUserIdCapstoneId(id,cid);
 	}
 
+	@Override
+	public List<HistoryRecords> getDataRoleStudent() {
+		return historyRecordsRepository.getDataRoleStudent();
+	}
+
 
 }
