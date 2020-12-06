@@ -96,7 +96,6 @@ public class NotificationCommon {
     }
 
     public static void sendNotificationByUsername(Users sender,String title,String content, String recipient){
-        HistoryRecords records = new HistoryRecords();
         Date date = new Date();
         Notifications notifications = new Notifications();
         NotificationDetails notificationDetails = new NotificationDetails();
@@ -104,22 +103,14 @@ public class NotificationCommon {
         notifications.setTitle(title);
         notifications.setContent(content);
         notifications.setCreated_date(date);
-
-        //int noti_id = notifications.getId();
-        //notificationDetails.setNotification(notificationsService.getOneNoification(noti_id));
         List<NotificationDetails> notificationDetail = new ArrayList<>();
         notificationDetails.setUser(notificationCommon.userService.findByUsername(recipient).get(0));
         String type = "private";
         notificationDetails.setNotification(notifications);
         notificationDetails.setType(type);
         notificationDetail.add(notificationDetails);
-        records.setUser(sender);
-        records.setContent("Create notificaton");
-        records.setNotification(notifications);
-        records.setCreatedDate(date);
         notifications.setNotificationDetails(notificationDetail);
         notificationCommon.notificationsService.addNotification(notifications);
-        notificationCommon.recordService.save(records);
     }
 
     public static void  addNotification(String content, String title, Date date, String type){

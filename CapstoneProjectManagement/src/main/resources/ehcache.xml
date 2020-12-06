@@ -14,4 +14,16 @@
         timeToIdleSeconds="3600"
         timeToLiveSeconds="1800">
     </cache>
+    <cache name="numMessageCache"
+           maxBytesLocalHeap="10m"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="1800">
+    </cache>
+    <cache name="userLoginCache"
+           maxBytesLocalHeap="10m"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="1800">
+    </cache>
 </ehcache>
