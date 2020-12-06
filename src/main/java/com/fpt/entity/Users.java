@@ -77,11 +77,10 @@ public class Users implements Serializable {
     private List<Reports> report;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<ChatDetails> chatDetail;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "semester_id")
     private Semesters semester;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "site_id")
     private Sites site;
 

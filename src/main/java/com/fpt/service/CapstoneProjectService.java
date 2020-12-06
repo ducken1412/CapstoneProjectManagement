@@ -31,4 +31,6 @@ public interface CapstoneProjectService {
 
 	boolean updateStatusCapstoneProjectSendTD(Integer id);
 
+	boolean deleteUserNotSubmitCapstone(Integer id);
+
 }

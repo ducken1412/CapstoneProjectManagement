@@ -20,9 +20,9 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	public Optional<CapstoneProjects> findById(Integer id);
 
 	//kienbt4 add code capstone start
-	@Query(value = "SELECT ru.*,st.name as nameStatus, count(de.id) as countDetail FROM CapstoneProject.capstone_projects ru " +
-			"LEFT JOIN CapstoneProject.capstone_project_details de ON de.capstone_project_id = ru.id " +
-			"LEFT JOIN CapstoneProject.status st ON st.id = ru.status_id " +
+	@Query(value = "SELECT ru.*,st.name as nameStatus, count(de.id) as countDetail FROM capstone_projects ru " +
+			"LEFT JOIN capstone_project_details de ON de.capstone_project_id = ru.id " +
+			"LEFT JOIN status st ON st.id = ru.status_id " +
 			"WHERE (de.user_id = ?1 OR ?1 = '-1' ) " +
 			"AND (ru.status_id = ?4 OR ?4 = -1 ) " +
 			"AND (ru.profession_id = ?5 OR ?5 = -1 ) " +
@@ -41,4 +41,10 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	@Modifying
 	@Query(value = "update capstone_projects set status_id = 5 where id = ?1", nativeQuery = true)
 	void updateStatusCapstoneProjectSendTD(Integer id);
+
+	//delete user not approve capstone when submit to training department
+	@Transactional
+	@Modifying
+	@Query("delete from CapstoneProjectDetails c where c.status.id = 4 and c.capstoneProject.id = ?1 and c.supType = null")
+	void deleteUserNotSubmitCapstone(Integer id);
 }

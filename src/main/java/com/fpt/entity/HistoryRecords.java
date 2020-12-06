@@ -27,7 +27,7 @@ public class HistoryRecords {
 	private Date lastModifiedDate;
 	@Column(name = "content", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String content;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "capstone_project_id")
 	private CapstoneProjects capstoneProject;
 	@ManyToOne(fetch = FetchType.LAZY)

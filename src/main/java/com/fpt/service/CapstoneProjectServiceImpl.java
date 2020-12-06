@@ -49,6 +49,9 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 	@Autowired
 	private CapstoneProjectDetailService capstoneProjectDetailService;
 
+	@Autowired
+	private SemestersService semestersService;
+
 	@Override
 	public List<String> getCapstoneProjectNameByUserId(String userId) {
 		return capstoneProjectRepository.getCapstoneProjectNameByUserId(userId);
@@ -115,7 +118,7 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 			return new Gson().toJson(output);
 		}
 		CapstoneProjects projects = new CapstoneProjects();
-		List<MemberDTO> members = new ArrayList<>();
+		List<MemberDTO> members;
 		try {
 			Status status = statusService.findByName(Constant.STATUS_REGISTERING_CAPSTONE_DB);
 			Status registedStatus = statusService.findByName(Constant.STATUS_REGISTED_CAPSTONE_DB);
@@ -129,14 +132,16 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 			projects.setProgram(dataForm.getProgram());
 			projects.setStatus(status);
 			projects.setProfession(professionService.findById(Integer.parseInt(dataForm.getProfession())));
+			projects.setSemester(user.getSemester());
+			projects.setSite(user.getSite());
 
 			List<CapstoneProjectDetails> cpds = new ArrayList<>();
-			CapstoneProjectDetails cpd = null;
+			CapstoneProjectDetails cpd;
 			members = dataForm.getMembers();
-			Users tmp = null;
-			UserRoles userRoles= null;
-			UserRoleKey roleKey = null;
-			Roles role = null;
+			Users tmp;
+			UserRoles userRoles;
+			UserRoleKey roleKey;
+			Roles role;
 			for (MemberDTO member : members) {
 				userRoles = new UserRoles();
 				roleKey = new UserRoleKey();
@@ -218,6 +223,16 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 	public boolean updateStatusCapstoneProjectSendTD(Integer id) {
 		try {
 			capstoneProjectRepository.updateStatusCapstoneProjectSendTD(id);
+		}catch (Exception e){
+
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteUserNotSubmitCapstone(Integer id) {
+		try {
+			capstoneProjectRepository.deleteUserNotSubmitCapstone(id);
 		}catch (Exception e){
 
 		}

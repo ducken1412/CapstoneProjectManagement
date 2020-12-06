@@ -18,6 +18,12 @@ public class Semesters {
     @Column(name = "end_date", columnDefinition = "DATE")
     public Date endDate;
 
+    @Column(name = "start_register_capstone", columnDefinition = "DATE")
+    public Date startRegisterCapstone;
+
+    @Column(name = "end_register_capstone", columnDefinition = "DATE")
+    public Date endRegisterCapstone;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
     private List<CapstoneProjects> capstoneProject;
 
@@ -32,6 +38,17 @@ public class Semesters {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.capstoneProject = capstoneProject;
+        this.users = users;
+    }
+
+    public Semesters(Integer id, String name, Date startDate, Date endDate, Date startRegisterCapstone, Date endRegisterCapstone, List<CapstoneProjects> capstoneProject, List<Users> users) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.startRegisterCapstone = startRegisterCapstone;
+        this.endRegisterCapstone = endRegisterCapstone;
         this.capstoneProject = capstoneProject;
         this.users = users;
     }
@@ -82,5 +99,21 @@ public class Semesters {
 
     public void setUsers(List<Users> users) {
         this.users = users;
+    }
+
+    public Date getStartRegisterCapstone() {
+        return startRegisterCapstone;
+    }
+
+    public void setStartRegisterCapstone(Date startRegisterCapstone) {
+        this.startRegisterCapstone = startRegisterCapstone;
+    }
+
+    public Date getEndRegisterCapstone() {
+        return endRegisterCapstone;
+    }
+
+    public void setEndRegisterCapstone(Date endRegisterCapstone) {
+        this.endRegisterCapstone = endRegisterCapstone;
     }
 }
