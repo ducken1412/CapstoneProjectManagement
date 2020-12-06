@@ -229,4 +229,14 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
 		return false;
 	}
 
+	@Override
+	public boolean deleteUserNotSubmitCapstone(Integer id) {
+		try {
+			capstoneProjectRepository.deleteUserNotSubmitCapstone(id);
+		}catch (Exception e){
+
+		}
+		return false;
+	}
+
 }

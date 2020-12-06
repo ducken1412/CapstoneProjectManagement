@@ -41,4 +41,10 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	@Modifying
 	@Query(value = "update capstone_projects set status_id = 5 where id = ?1", nativeQuery = true)
 	void updateStatusCapstoneProjectSendTD(Integer id);
+
+	//delete user not approve capstone when submit to training department
+	@Transactional
+	@Modifying
+	@Query("delete from CapstoneProjectDetails c where c.status.id = 4 and c.capstoneProject.id = ?1 and c.supType = null")
+	void deleteUserNotSubmitCapstone(Integer id);
 }

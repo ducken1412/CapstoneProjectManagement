@@ -92,10 +92,10 @@ public class LecturersController {
                 CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
                 String statusProject = capstoneProject.getStatus().getName();
                 //check total lecture bookded
-                int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
-                if (count >= 2 && statusProject.equals("registering_capstone")) {
-                    model.addAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
-                }
+//                int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
+//                if (count >= 2 && statusProject.equals("registering_capstone")) {
+//                    model.addAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
+//                }
                 if(lecture1 != null && lecture2 != null){
                     int currentPage = page.orElse(1);
                     int pageSize = size.orElse(6);
@@ -179,7 +179,6 @@ public class LecturersController {
         String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
         if (historyRecords != null) {
             projectId = historyRecords.getCapstoneProject().getId();
-            int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
             List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(projectId);
             for (int i = 0; i < listUser.size(); i++) {
                 if (listUser.get(i).getUser().getId().equals(id)) {
@@ -187,10 +186,7 @@ public class LecturersController {
                     return "redirect:/lecturers";
                 }
             }
-            if (count >= 2) {
-                redirectAttributes.addFlashAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
-                return "redirect:/lecturers";
-            } else {
+
                 //booking lecture
                 CapstoneProjectDetails cpd = new CapstoneProjectDetails();
                 cpd.setCapstoneProject(capstoneProjectService.getCapstonProjectById(projectId));
@@ -216,6 +212,11 @@ public class LecturersController {
                 }catch (Exception e){
                     System.out.println(e);
                 }
+            int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
+            if (count >= 2) {
+                //redirectAttributes.addFlashAttribute("notification", "Can't choose over 2 lecturers.");
+                return "redirect:/project-detail/" + projectId;
+
             }
         }
         return "redirect:/lecturers";
@@ -235,7 +236,6 @@ public class LecturersController {
         String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
         if (historyRecords != null) {
             projectId = historyRecords.getCapstoneProject().getId();
-            int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
             List<CapstoneProjectDetails> listUser = capstoneProjectDetailService.getUserByCapstioneID(projectId);
             for (int i = 0; i < listUser.size(); i++) {
                 if (listUser.get(i).getUser().getId().equals(id)) {
@@ -243,10 +243,7 @@ public class LecturersController {
                     return "redirect:/lecturers";
                 }
             }
-            if (count >= 2) {
-                redirectAttributes.addFlashAttribute("notification", "Can't choose over 2 lecturers.");
-                return "redirect:/lecturers";
-            } else {
+
                 //booking lecture
                 CapstoneProjectDetails cpd = new CapstoneProjectDetails();
                 Users user_id = userService.findById(id);
@@ -273,6 +270,11 @@ public class LecturersController {
                 }catch (Exception e){
                     System.out.println(e);
                 }
+            int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
+            if (count >= 2) {
+                //redirectAttributes.addFlashAttribute("notification", "Can't choose over 2 lecturers.");
+                return "redirect:/project-detail/" + projectId;
+
             }
         }
         return "redirect:/lecturers";

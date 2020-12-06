@@ -23,4 +23,12 @@ public interface HistoryRecordService {
 	HistoryRecords getByReportId(Integer id);
 
 	HistoryRecords findHistoryByUserIdCapstoneId(String id,Integer cid);
+
+	List<HistoryRecords> getDataRoleStudent();
+
+	List<HistoryRecords> getDataRoleHead();
+
+	List<HistoryRecords> getDataRoleTrainingDepartment();
+
+	List<HistoryRecords> getDataRoleLecture();
 }
