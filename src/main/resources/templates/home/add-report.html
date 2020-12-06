@@ -30,7 +30,7 @@
                                 You have not reported this week to your Supervisors
                             </div>
                             <div class="alert alert-warning mx-4" role="alert"
-                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkReport == true}">
+                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkReport == true && checkReportLeader == true}">
                                 Warning:
                                 <br>
                                 You have reported this week to your Supervisors.
