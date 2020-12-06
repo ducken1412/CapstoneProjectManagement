@@ -5,7 +5,7 @@ $(document).on("change", "#dr-role", function (e) {
     });
     const role = this.value;
     $.ajax({
-        url: "/db/task-detail/",
+        url: "/history-records",
         type: "POST",
         data: {
             'role' : role

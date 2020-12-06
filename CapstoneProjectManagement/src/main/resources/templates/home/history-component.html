@@ -3,7 +3,11 @@
     <tr>
         <th>Content</th>
         <th>Created date</th>
+        <th>Last modified date</th>
         <th>Capstone Project</th>
+        <th>Notification</th>
+        <th>Post</th>
+        <th>Report</th>
         <th>Create by user</th>
     </tr>
     </thead>
@@ -11,10 +15,34 @@
     <tr th:each="historyRecord : ${historyRecords}">
         <td th:text="${historyRecord.content}"></td>
         <td th:text="${#dates.format(historyRecord.createdDate, 'yyyy-MMM-dd')}"></td>
+        <th:block th:if="${historyRecord.lastModifiedDate != null}">
+            <td th:text="${#dates.format(historyRecord.lastModifiedDate, 'yyyy-MMM-dd')}"></td>
+        </th:block>
+        <th:block th:if="${historyRecord.lastModifiedDate== null}">
+            <td>null</td>
+        </th:block>
         <th:block th:if="${historyRecord.capstoneProject != null}">
             <td th:text="${historyRecord.capstoneProject.name}"></td>
         </th:block>
         <th:block th:if="${historyRecord.capstoneProject== null}">
+            <td>null</td>
+        </th:block>
+        <th:block th:if="${historyRecord.notification != null}">
+            <td th:text="${historyRecord.notification.title}"></td>
+        </th:block>
+        <th:block th:if="${historyRecord.notification== null}">
+            <td>null</td>
+        </th:block>
+        <th:block th:if="${historyRecord.post != null}">
+            <td th:text="${historyRecord.post.}"></td>
+        </th:block>
+        <th:block th:if="${historyRecord.post== null}">
+            <td>null</td>
+        </th:block>
+        <th:block th:if="${historyRecord.report != null}">
+            <td th:text="${historyRecord.report.title}"></td>
+        </th:block>
+        <th:block th:if="${historyRecord.report== null}">
             <td>null</td>
         </th:block>
         <td th:text="${historyRecord.user.getUsername()}"></td>
@@ -24,6 +52,7 @@
 <script>
     $(document).ready(function () {
         $('#bootstrap-data-table2').DataTable({
+            "pageLength": 100,
             "order": [
                 [1, 'desc']
             ]

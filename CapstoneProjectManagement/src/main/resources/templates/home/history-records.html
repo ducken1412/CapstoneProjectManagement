@@ -32,7 +32,10 @@
                                         <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border"
                                              style="width: 200px; margin-left: 20px;">
                                             <select class="js-select2" id="dr-role">
-                                                <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${role} == ${roleSelect}"></option>
+                                                <option value="1" selected>Student</option>
+                                                <option value="3">Head</option>
+                                                <option value="4">Supervisors</option>
+                                                <option value="5">Training Department</option>
                                             </select>
                                             <div class="dropDownSelect2"></div>
                                         </div>
@@ -57,14 +60,6 @@
     </div>
 </div>
 <th:block th:include="home/_script"></th:block>
-<script>
-    $(document).ready(function () {
-        $('#bootstrap-data-table').DataTable({
-            "order": [
-                [1, 'desc']
-            ]
-        });
-    });
-</script>
+<script th:src="@{/js/history/history.js}"></script>
 </body>
 </html>

@@ -159,6 +159,11 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
         return capstoneProjectDetailRepository.userLecturersIdAndCapstoneProjectIdOP2(id);
     }
 
+    @Override
+    public List<Users> getUserWaitingApproveByCapstoneProjectDetailId(Integer id) {
+        return capstoneProjectDetailRepository.getUserWaitingApproveByCapstoneProjectDetailId(id);
+    }
+
     //kienbt4 add code capstone end
 
 

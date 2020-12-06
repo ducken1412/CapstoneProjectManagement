@@ -59,4 +59,6 @@ public interface CapstoneProjectDetailService {
 
 	Users userLecturersIdAndCapstoneProjectIdOP2(Integer id);
 
+	List<Users> getUserWaitingApproveByCapstoneProjectDetailId(Integer id);
+
 }

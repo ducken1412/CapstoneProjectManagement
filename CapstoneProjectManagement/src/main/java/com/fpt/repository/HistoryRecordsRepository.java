@@ -30,4 +30,13 @@ public interface HistoryRecordsRepository extends JpaRepository<HistoryRecords, 
 
     @Query(value = "select h.id, h.content, h.created_date, h.last_modified_date, h.capstone_project_id, h.evaluation_id, h.notification_id, h.post_id, h.report_id, h.user_id from history_records as h inner join user_roles as u where (h.user_id = u.user_id and u.role_id = 2 or h.user_id = u.user_id and u.role_id = 1);",nativeQuery = true)
     List<HistoryRecords> getDataRoleStudent();
+
+    @Query(value = "select h.id, h.content, h.created_date, h.last_modified_date, h.capstone_project_id, h.evaluation_id, h.notification_id, h.post_id, h.report_id, h.user_id from history_records as h inner join user_roles as u where h.user_id = u.user_id and u.role_id = 5;",nativeQuery = true)
+    List<HistoryRecords> getDataRoleTrainingDepartment();
+
+    @Query(value = "select h.id, h.content, h.created_date, h.last_modified_date, h.capstone_project_id, h.evaluation_id, h.notification_id, h.post_id, h.report_id, h.user_id from history_records as h inner join user_roles as u where h.user_id = u.user_id and u.role_id = 3;",nativeQuery = true)
+    List<HistoryRecords> getDataRoleHead();
+
+    @Query(value = "select h.id, h.content, h.created_date, h.last_modified_date, h.capstone_project_id, h.evaluation_id, h.notification_id, h.post_id, h.report_id, h.user_id from history_records as h inner join user_roles as u where h.user_id = u.user_id and u.role_id = 4;",nativeQuery = true)
+    List<HistoryRecords> getDataRoleLecture();
 }

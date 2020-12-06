@@ -48,6 +48,8 @@ public class DetailProjectController {
         model.addAttribute("detail", cp);
         List<Users> userproject = capstoneProjectDetailService.getUserByCapstoneProjectDetailId(id);
         model.addAttribute("userproject", userproject);
+        List<Users> userprojectWaitingApprove = capstoneProjectDetailService.getUserWaitingApproveByCapstoneProjectDetailId(id);
+
         String nameStatus = cp.getStatus().getName();
         if (nameStatus == null) {
             model.addAttribute("status", "");
@@ -113,6 +115,36 @@ public class DetailProjectController {
             userRolesDTOs.add(userRoleDTO);
         }
 
+        //
+        List<UserRoleDTO> userRolesDTOsWaitingApprove = new ArrayList<>();
+        for (Users users : userprojectWaitingApprove) {
+            String user_id = users.getId();
+            UserRoleDTO userRoleDTO = new UserRoleDTO();
+            userRoleDTO.setId(user_id);
+            userRoleDTO.setUsername(users.getUsername());
+            List<String> role = userRoleService.getRoleNamesByUserId(user_id);
+            for (String string : role) {
+                List<String> roleView = new ArrayList<>();
+                if (string.equals(Constant.ROLE_HEAD_DB)) {
+                    roleView.add(Constant.ROLE_HEAD);
+                }
+                if (string.equals(Constant.ROLE_LECTURERS_DB)) {
+                    roleView.add(Constant.ROLE_LECTURERS);
+                }
+                if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
+                    roleView.add(Constant.ROLE_STUDENT_LEADER);
+                }
+                if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+                    roleView.add(Constant.ROLE_STUDENT_MEMBER);
+                }
+                if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
+                    roleView.add(Constant.ROLE_TRAINING_DEP);
+                }
+                userRoleDTO.setRole(roleView);
+            }
+            userRolesDTOsWaitingApprove.add(userRoleDTO);
+        }
+
         Users user = userService.findByEmail(principal.getName());
         String userId = user.getId();
         boolean check_capstone = false;
@@ -125,12 +157,23 @@ public class DetailProjectController {
         }
         model.addAttribute("check_capstone", check_capstone);
         model.addAttribute("userRolesDTOs", userRolesDTOs);
+        model.addAttribute("userprojectWaitingApprove", userRolesDTOsWaitingApprove);
 
         //check history show submit send training department
         HistoryRecords historyRecords = historyRecordService.findHistoryByUserIdCapstoneId(userId, id);
         if (historyRecords != null) {
             boolean checkUserRegister = true;
+            boolean checkStatusProject = false;
+            if(cp.getStatus().getName().equals("registering_capstone")){
+                checkStatusProject = true;
+                model.addAttribute("checkStatusProject", checkStatusProject);
+            }
             model.addAttribute("checkUserRegister", checkUserRegister);
+        }
+
+
+        if (cp.getStatus().getName().equals(Constant.STATUS_REGISTED_CAPSTONE_DB)) {
+            model.addAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
         }
         return "home/detail_project";
     }
@@ -172,7 +215,7 @@ public class DetailProjectController {
         if (check) {
             //capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login);
         }
-        return "redirect:/lecturers";
+        return "redirect:/project-detail/" +id;
     }
 
     @RequestMapping(value = "/approve", method = RequestMethod.POST, params = "reject")
@@ -213,7 +256,13 @@ public class DetailProjectController {
         if (principal == null) {
             return "redirect:/login";
         }
-        capstoneProjectService.updateStatusCapstoneProjectSendTD(id);
-        return "redirect:/forum";
+        try {
+            capstoneProjectService.updateStatusCapstoneProjectSendTD(id);
+            capstoneProjectService.deleteUserNotSubmitCapstone(id);
+        }catch (Exception e){
+
+        }
+
+        return "redirect:/project-detail/" + id;
     }
 }
