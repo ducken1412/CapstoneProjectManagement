@@ -114,6 +114,9 @@ public class ReportController {
                 Integer reportId = reportService.getReportByUserIdMax(user.getId());
                 model.addAttribute("reportId", reportId);
             } else {
+                if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 1){
+                    model.addAttribute("checkReportLeader", true);
+                }
                 model.addAttribute("checkReport", false);
             }
             if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 2){
