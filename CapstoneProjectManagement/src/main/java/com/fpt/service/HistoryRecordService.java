@@ -31,4 +31,14 @@ public interface HistoryRecordService {
 	List<HistoryRecords> getDataRoleTrainingDepartment();
 
 	List<HistoryRecords> getDataRoleLecture();
+
+	List<HistoryRecords> getCapstoneRegister();
+
+	List<HistoryRecords> getCapstoneApprove();
+
+	List<HistoryRecords> getCapstoneReject();
+
+	List<HistoryRecords> getCapstoneBookingSupervisors();
+
+	List<HistoryRecords> getAddSupervisorsForCapstone();
 }

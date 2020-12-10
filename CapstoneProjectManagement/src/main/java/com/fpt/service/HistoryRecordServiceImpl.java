@@ -88,5 +88,30 @@ public class HistoryRecordServiceImpl implements HistoryRecordService {
 		return historyRecordsRepository.getDataRoleLecture();
 	}
 
+	@Override
+	public List<HistoryRecords> getCapstoneRegister() {
+		return historyRecordsRepository.getCapstoneRegister();
+	}
+
+	@Override
+	public List<HistoryRecords> getCapstoneApprove() {
+		return historyRecordsRepository.getCapstoneApprove();
+	}
+
+	@Override
+	public List<HistoryRecords> getCapstoneReject() {
+		return historyRecordsRepository.getCapstoneReject();
+	}
+
+	@Override
+	public List<HistoryRecords> getCapstoneBookingSupervisors() {
+		return historyRecordsRepository.getCapstoneBookingSupervisors();
+	}
+
+	@Override
+	public List<HistoryRecords> getAddSupervisorsForCapstone() {
+		return historyRecordsRepository.getAddSupervisorsForCapstone();
+	}
+
 
 }
