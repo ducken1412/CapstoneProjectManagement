@@ -24,13 +24,21 @@
                     <div class="row m-t-25">
                         <div class="w-80" id="content-body">
                             <div class="alert alert-warning mx-4" role="alert" id="checkReported"
-                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkReport == false}">
+                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkReport == false && checkReportLeader == true}">
                                 Warning:
                                 <br>
                                 You have not reported this week to your Supervisors
                             </div>
                             <div class="alert alert-warning mx-4" role="alert"
-                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkReport == true}">
+                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkUserDoingProject == false}">
+                                Warning:
+                                <br>
+                                You need a project team.
+                                <br>
+                                The project team must be confirm by the training department.
+                            </div>
+                            <div class="alert alert-warning mx-4" role="alert"
+                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkReport == true && checkReportLeader == true}">
                                 Warning:
                                 <br>
                                 You have reported this week to your Supervisors.
@@ -73,7 +81,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div th:if="${checkReport == false}">
+                                        <div th:if="${(checkReport == false && checkReportLeader == true) || (checkReportStudent == true)}">
                                             <button id="post" type="submit" class="btn btn-info pull-right">
                                                 <i class="fa fa-dot-circle-o"></i> Submit
                                             </button>

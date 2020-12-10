@@ -107,12 +107,27 @@ public class ReportController {
                 }
             }
             if (checkReport) {
+                if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 1){
+                    model.addAttribute("checkReportLeader", true);
+                }
                 model.addAttribute("checkReport", true);
                 Integer reportId = reportService.getReportByUserIdMax(user.getId());
                 model.addAttribute("reportId", reportId);
             } else {
+                if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 1){
+                    model.addAttribute("checkReportLeader", true);
+                }
                 model.addAttribute("checkReport", false);
             }
+            if(user.getRoleUser().get(0).getUserRoleKey().getRole().getName().equals("student_member") && user.getCapstoneProjectDetails().get(0).getStatus().getName().equals("doing_capstone")){
+                model.addAttribute("checkReportStudent", true);
+            }
+
+            //check the user does not have a team project
+            if(user.getCapstoneProjectDetails() == null || !user.getCapstoneProjectDetails().get(0).getStatus().getName().equals("doing_capstone")){
+                model.addAttribute("checkUserDoingProject", false);
+            }
+
         } catch (Exception e) {
 
         }
@@ -151,7 +166,9 @@ public class ReportController {
         } catch (Exception ex) {
 
         }
-
+        if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 1){
+            model.addAttribute("checkReportLeader", true);
+        }
         return "home/report-detail";
     }
 
