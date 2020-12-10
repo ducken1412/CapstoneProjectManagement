@@ -37,6 +37,9 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.status.name = 'registering_capstone'")
 	List<Users> getUserWaitingApproveByCapstoneProjectDetailId(Integer id);
 
+	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.status.name = 'doing_capstone' or ru.status.name = 'changing_name_capstone'")
+	List<Users> getUserByCapstoneProject(Integer id);
+
 	//count lecturers by project id
 	@Query("SELECT count (u.userRoleKey.role.id) FROM CapstoneProjectDetails ru INNER JOIN ru.user.roleUser as u WHERE u.userRoleKey.user.id = ru.user.id and u.userRoleKey.role.id = 4 and ru.capstoneProject.id = ?1")
 	Integer countLecturersByCapstoneProjectId(Integer id);
