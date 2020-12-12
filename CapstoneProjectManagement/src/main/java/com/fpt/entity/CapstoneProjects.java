@@ -40,6 +40,10 @@ public class CapstoneProjects {
 	private String program;
 	@Column(name = "description", columnDefinition = "NVARCHAR(256) NOT NULL")
 	private String description;
+	@Column(name = "name_changing", columnDefinition = "NVARCHAR(256)")
+	private String nameChanging;
+	@Column(name = "name_vi_changing", columnDefinition = "NVARCHAR(256)")
+	private String nameViChanging;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "status_id")
 	private Status status;
@@ -107,6 +111,32 @@ public class CapstoneProjects {
 		this.semester = semester;
 		this.site = site;
 	}
+
+	public CapstoneProjects(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation, Profession profession, String specialty, String document, String program, String description, String nameChanging, String nameViChanging, Status status, List<HistoryRecords> historyRecords, List<Statistics> statistics, List<Files> files, List<CapstoneProjectDetails> capstoneProjectDetails, List<Evaluations> evaluations, String desAction, Semesters semester, Sites site) {
+		this.id = id;
+		this.name = name;
+		this.nameOther = nameOther;
+		this.nameVi = nameVi;
+		this.nameAbbreviation = nameAbbreviation;
+		this.profession = profession;
+		this.specialty = specialty;
+		this.document = document;
+		this.program = program;
+		this.description = description;
+		this.nameChanging = nameChanging;
+		this.nameViChanging = nameViChanging;
+		this.status = status;
+		this.historyRecords = historyRecords;
+		this.statistics = statistics;
+		this.files = files;
+		this.capstoneProjectDetails = capstoneProjectDetails;
+		this.evaluations = evaluations;
+		this.desAction = desAction;
+		this.semester = semester;
+		this.site = site;
+	}
+
+
 
 	public List<Statistics> getStatistics() {
 		return statistics;
@@ -258,5 +288,21 @@ public class CapstoneProjects {
 
 	public void setSite(Sites site) {
 		this.site = site;
+	}
+
+	public String getNameChanging() {
+		return nameChanging;
+	}
+
+	public void setNameChanging(String nameChanging) {
+		this.nameChanging = nameChanging;
+	}
+
+	public String getNameViChanging() {
+		return nameViChanging;
+	}
+
+	public void setNameViChanging(String nameViChanging) {
+		this.nameViChanging = nameViChanging;
 	}
 }

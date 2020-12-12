@@ -114,8 +114,9 @@ public class CapstoneProjectController {
 			detail.setProgram((String) obj[8]);
 			detail.setSpecialty((String) obj[9]);
 			detail.setProfession_id((Integer) obj[10]);
-			detail.setStatus_id((Integer) obj[11]);
+			detail.setStatus_id((Integer) obj[13]);
 			detail.setNameStatus((String) obj[14]);
+			detail.setSubjectCode(String.valueOf(obj[17] + "_" + obj[0]));
 			Integer countstudent = capstoneProjectService.getCountStudent((Integer) obj[0]);
 			detail.setCountDetail(countstudent);
 			detail.setDetail(null);
@@ -215,6 +216,9 @@ public class CapstoneProjectController {
 		}
 		if(roleid == 5){
 			switch(currentProduct.getStatus().getId()) {
+				case 5:
+					statusId = 7;
+					break;
 				case 6:
 					statusId = 7;
 					break;
@@ -223,6 +227,12 @@ public class CapstoneProjectController {
 					break;
 				case 13:
 					statusId = 9;
+					break;
+				case 14:
+					statusId = 7;
+					break;
+				case 16:
+					statusId = 7;
 					break;
 			}
 		}
@@ -237,7 +247,7 @@ public class CapstoneProjectController {
 				Users userdetail = capstoneProjectDetailService.getUserById(item.getId()).get(0);
 				if (userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4) && !item.getId().equals(Integer.parseInt(id)))
 				{
-					item.setStatus(statusService.getStatusById(14));
+					item.setStatus(statusService.getStatusById(12));
 					item.setDesAction(des);
 					capstoneProjectDetailService.save(item);
 				}
@@ -251,7 +261,7 @@ public class CapstoneProjectController {
 		history.setCreatedDate(date);
 		history.setUser(userService.findById(userid));
 		historyRecordService.save(history);
-		return "The Project Detail has been update successfully";
+		return "The Project has been update successfully";
 	}
 
 	@ResponseBody
@@ -287,6 +297,22 @@ public class CapstoneProjectController {
 		if (currentProduct == null) {
 			return "Not found project.";
 		}
+
+		Integer countLecture = 0;
+		List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
+		for(CapstoneProjectDetails item : detail) {
+			Users userdetail = capstoneProjectDetailService.getUserById(item.getId()).get(0);
+			if(userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4)) {
+				if(item.getStatus().getId() >= 5 && item.getStatus().getId() <= 8){
+					countLecture = countLecture + 1;
+				}
+			}
+
+		}
+		if(countLecture >1) {
+			return "Capstone Project: " + currentProduct.getProfession().getSubjectCode() + "_"
+					+ currentProduct.getId() + " has 2 supervisors, please reject a supervisors";
+		}
 		int statusId = -1;
 		int statusIdOld = currentProduct.getStatus().getId();
 		if(roleid == 3){
@@ -297,48 +323,49 @@ public class CapstoneProjectController {
 		}
 		if(roleid == 5){
 			switch(statusIdOld) {
+				case 5:
+					statusId = 7;
+					break;
 				case 6:
+					statusId = 7;
+					break;
+				case 14:
+					statusId = 7;
+					break;
+				case 16:
 					statusId = 7;
 					break;
 				case 8:
 					statusId = 9;
 					break;
 				case 13:
+					statusId = 15;
+					break;
+				case 15:
 					statusId = 9;
 					break;
 			}
+		}
+		if(statusIdOld == 15){
+			currentProduct.setName(currentProduct.getNameChanging());
+			currentProduct.setNameVi(currentProduct.getNameViChanging());
 		}
 		currentProduct.setStatus(statusService.getStatusById(statusId));
 		currentProduct.setDesAction(des);
 		capstoneProjectService.saveRegisterProject(currentProduct);
 
-		List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
-		Integer count = 0;
-		for(CapstoneProjectDetails item : detail) {
-			Status data = capstoneProjectDetailService.getStatusById(item.getId()).get(0);
-			if (data.getId() == statusIdOld)
-			{
-				Users userdetail = capstoneProjectDetailService.getUserById(item.getId()).get(0);
-				if(userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4) ){
-					count = count + 1;
-					if(count.equals(1)){
-						item.setStatus(statusService.getStatusById(statusId));
-						item.setDesAction(des);
-						capstoneProjectDetailService.save(item);
-					}
-					else {
-						item.setStatus(statusService.getStatusById(12));
-						item.setDesAction(des);
-						capstoneProjectDetailService.save(item);
-					}
-				}
-				else {
+		if(statusIdOld != 15 && statusIdOld != 13){
+			for(CapstoneProjectDetails item : detail) {
+				Status data = capstoneProjectDetailService.getStatusById(item.getId()).get(0);
+				if (data.getId() == statusIdOld)
+				{
 					item.setStatus(statusService.getStatusById(statusId));
 					item.setDesAction(des);
 					capstoneProjectDetailService.save(item);
 				}
 			}
 		}
+
 		Date date = new Date();
 		HistoryRecords history = new HistoryRecords();
 		history.setContent("Update Status Capstone Project");
@@ -346,7 +373,7 @@ public class CapstoneProjectController {
 		history.setCreatedDate(date);
 		history.setUser(userService.findById(userid));
 		historyRecordService.save(history);
-		return "The Project Detail has been update successfully";
+		return "The Project has been update successfully";
 	}
 
 	@ResponseBody
@@ -357,8 +384,10 @@ public class CapstoneProjectController {
 		}
 		Users users = userService.findByEmail(principal.getName());
 		String userid = "-1";
+		int roleid = -1;
 		if (users !=  null) {
 			userid = users.getId();;
+			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
 		} else {
 			return "error/403Page";
 		}
@@ -368,17 +397,42 @@ public class CapstoneProjectController {
 		if (currentProduct == null) {
 			return "Not found project.";
 		}
-		currentProduct.setStatus(statusService.getStatusById(12));
-		currentProduct.setDesAction(des);
-		capstoneProjectService.saveRegisterProject(currentProduct);
-
-		List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
-		for(CapstoneProjectDetails item : detail) {
-			item.setStatus(statusService.getStatusById(12));
-			item.setDesAction(des);
-			capstoneProjectDetailService.save(item);
+		int statusId = -1;
+		int statusIdOld = currentProduct.getStatus().getId();
+		if(roleid == 3){
+			statusId = 14;
+		}
+		if(roleid == 4){
+			statusId = 16;
+		}
+		if(roleid == 5){
+			switch(statusIdOld) {
+				case 13:
+					statusId = 9;
+					break;
+				case 15:
+					statusId = 9;
+					break;
+				default:
+					statusId = 12;
+			}
 		}
 
+		if (statusIdOld == 13 || statusIdOld == 15) {
+			currentProduct.setStatus(statusService.getStatusById(statusId));
+			currentProduct.setDesAction(des);
+			capstoneProjectService.saveRegisterProject(currentProduct);
+		} else {
+			currentProduct.setStatus(statusService.getStatusById(statusId));
+			currentProduct.setDesAction(des);
+			capstoneProjectService.saveRegisterProject(currentProduct);
+			List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
+			for(CapstoneProjectDetails item : detail) {
+				item.setStatus(statusService.getStatusById(statusId));
+				item.setDesAction(des);
+				capstoneProjectDetailService.save(item);
+			}
+		}
 		Date date = new Date();
 		HistoryRecords history = new HistoryRecords();
 		history.setContent("Reject Capstone Project");
@@ -397,8 +451,10 @@ public class CapstoneProjectController {
 		}
 		Users users = userService.findByEmail(principal.getName());
 		String userid = "-1";
+		int roleid = -1;
 		if (users !=  null) {
 			userid = users.getId();;
+			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
 		} else {
 			return "error/403Page";
 		}
@@ -406,9 +462,22 @@ public class CapstoneProjectController {
 				.findById(Integer.parseInt(id));
 
 		if (currentProduct == null) {
-			return "Không tìm thấy student.";
+			return "not found student.";
 		}
-		currentProduct.setStatus(statusService.getStatusById(12));
+
+		int statusId = -1;
+		switch(roleid) {
+			case 3:
+				statusId = 14;
+				break;
+			case 4:
+				statusId = 16;
+				break;
+			case 5:
+				statusId = 12;
+		}
+
+		currentProduct.setStatus(statusService.getStatusById(statusId));
 		currentProduct.setDesAction(des);
 		capstoneProjectDetailService.save(currentProduct);
 
@@ -438,6 +507,9 @@ public class CapstoneProjectController {
 		} else {
 			return "error/403Page";
 		}
+
+		String subjectCodeUnsucess =  null;
+		int success =0;
 		String[] st = id.split(",");
 		for(int i = 0;i < st.length; i++ ) {
 			CapstoneProjects currentProduct =capstoneProjectService
@@ -446,61 +518,122 @@ public class CapstoneProjectController {
 			Integer countstudent = capstoneProjectService.getCountStudent(currentProduct.getId());
 
 			if(countstudent > currentProduct.getProfession().getMaxMember()){
-				return "Đã quá số học sinh.";
+				return "Project " + currentProduct.getProfession().getSubjectCode() + "_"
+						+ currentProduct.getId() + " over student to can approve project.";
 			}
 
 			if(countstudent < currentProduct.getProfession().getMinMember()){
-				return "Chưa đủ số học sinh.";
+				return "Project " + currentProduct.getProfession().getSubjectCode() + "_"
+						+ currentProduct.getId() + " deficient student to can approve.";
 			}
 
 			if (currentProduct == null) {
-				return "Không tìm thấy project.";
+				return "Not found project.";
 			}
-			int statusId = -1;
-			if(roleid == 3){
-				statusId = 8;
-			}
-			if(roleid == 4){
-				statusId = 6;
-			}
-			if(roleid == 5){
-				switch(currentProduct.getStatus().getId()) {
-					case 6:
-						statusId = 7;
-						break;
-					case 8:
-						statusId = 9;
-						break;
-					case 13:
-						statusId = 9;
-						break;
-				}
-			}
-			currentProduct.setStatus(statusService.getStatusById(statusId));
-			currentProduct.setDesAction(des);
-			boolean data = capstoneProjectService.saveRegisterProject(currentProduct);
-			if (!data){
-				return "error";
-			}
+			Integer countLecture = 0;
 			List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
 			for(CapstoneProjectDetails item : detail) {
-				item.setStatus(statusService.getStatusById(statusId));
-				item.setDesAction(des);
-				capstoneProjectDetailService.save(item);
+				Users userdetail = capstoneProjectDetailService.getUserById(item.getId()).get(0);
+				if(userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4)) {
+					if(item.getStatus().getId() >= 5 && item.getStatus().getId() <= 8){
+						countLecture = countLecture + 1;
+					}
+				}
+
 			}
-			Date date = new Date();
-			HistoryRecords history = new HistoryRecords();
-			history.setContent("Update Status Capstone Project");
-			history.setCapstoneProject(capstoneProjectService.findById(Integer.parseInt(st[i])));
-			history.setCreatedDate(date);
-			history.setUser(userService.findById(userid));
-			boolean hist = historyRecordService.save(history);
-			if (!hist){
-				return "error";
+			if(countLecture >1) {
+				if(subjectCodeUnsucess != null){
+					subjectCodeUnsucess = subjectCodeUnsucess + " ; "+ currentProduct.getProfession().getSubjectCode() + "_"
+							+ currentProduct.getId() ;
+				}else {
+					subjectCodeUnsucess = currentProduct.getProfession().getSubjectCode() + "_"
+							+ currentProduct.getId() ;
+				}
+				break;
+
+			}else {
+				int statusId = -1;
+				if(roleid == 3){
+					statusId = 8;
+				}
+				if(roleid == 4){
+					statusId = 6;
+				}
+				int statusIdOld = currentProduct.getStatus().getId();
+				if(roleid == 5){
+					switch(statusIdOld) {
+						case 5:
+							statusId = 7;
+							break;
+						case 6:
+							statusId = 7;
+							break;
+						case 14:
+							statusId = 7;
+							break;
+						case 16:
+							statusId = 7;
+							break;
+						case 8:
+							statusId = 9;
+							break;
+						case 13:
+							statusId = 15;
+							break;
+						case 15:
+							statusId = 9;
+							break;
+					}
+				}
+				if(statusIdOld == 15){
+					currentProduct.setName(currentProduct.getNameChanging());
+					currentProduct.setNameVi(currentProduct.getNameViChanging());
+				}
+				currentProduct.setStatus(statusService.getStatusById(statusId));
+				currentProduct.setDesAction(des);
+				boolean data = capstoneProjectService.saveRegisterProject(currentProduct);
+				if (!data){
+					return "error";
+				}
+				if(statusIdOld != 15 && statusIdOld != 13){
+					for(CapstoneProjectDetails item : detail) {
+						Status status = capstoneProjectDetailService.getStatusById(item.getId()).get(0);
+						if (status.getId() == statusIdOld)
+						{
+							item.setStatus(statusService.getStatusById(statusId));
+							item.setDesAction(des);
+							capstoneProjectDetailService.save(item);
+						}
+					}
+				}
+
+				Date date = new Date();
+				HistoryRecords history = new HistoryRecords();
+				history.setContent("Update Status Capstone Project");
+				history.setCapstoneProject(capstoneProjectService.findById(Integer.parseInt(st[i])));
+				history.setCreatedDate(date);
+				history.setUser(userService.findById(userid));
+				boolean hist = historyRecordService.save(history);
+
+				if (!hist){
+					return "error";
+				}else {
+					success = success +1;
+				}
+			}
+
+		}
+
+		if(subjectCodeUnsucess != null ){
+			if (success > 0){
+				return String.valueOf(success) + " project has been update successfully . Capstone Projects: " + subjectCodeUnsucess + " has 2 supervisors, please reject a supervisors";
+			}else {
+				return "Capstone Projects: " + subjectCodeUnsucess + " has 2 supervisors, please reject a supervisors";
 			}
 		}
 
-		return "The Project Detail has been update successfully";
+
+		return "The Project has been update successfully";
 	}
 
 	@ResponseBody
@@ -511,8 +644,10 @@ public class CapstoneProjectController {
 		}
 		Users users = userService.findByEmail(principal.getName());
 		String userid = "-1";
-		if (users != null) {
+		int roleid = -1;
+		if (users !=  null) {
 			userid = users.getId();;
+			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
 		} else {
 			return "error/403Page";
 		}
@@ -524,9 +659,42 @@ public class CapstoneProjectController {
 			if (currentProduct == null) {
 				return "Not found project.";
 			}
-			currentProduct.setStatus(statusService.getStatusById(12));
-			currentProduct.setDesAction(des);
-			boolean data = capstoneProjectService.saveRegisterProject(currentProduct);
+			int statusId = -1;
+			int statusIdOld = currentProduct.getStatus().getId();
+			if(roleid == 3){
+				statusId = 14;
+			}
+			if(roleid == 4){
+				statusId = 16;
+			}
+			if(roleid == 5){
+				switch(statusIdOld) {
+					case 13:
+						statusId = 9;
+						break;
+					case 15:
+						statusId = 9;
+						break;
+					default:
+						statusId = 12;
+				}
+			}
+			boolean data = false;
+			if(statusIdOld == 13 || statusIdOld == 15){
+				currentProduct.setStatus(statusService.getStatusById(statusId));
+				currentProduct.setDesAction(des);
+				data = capstoneProjectService.saveRegisterProject(currentProduct);
+			} else {
+				currentProduct.setStatus(statusService.getStatusById(statusId));
+				currentProduct.setDesAction(des);
+				capstoneProjectService.saveRegisterProject(currentProduct);
+				List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
+				for(CapstoneProjectDetails item : detail) {
+					item.setStatus(statusService.getStatusById(statusId));
+					item.setDesAction(des);
+					capstoneProjectDetailService.save(item);
+				}
+			}
 			if (!data){
 				return "error";
 			}
@@ -563,6 +731,51 @@ public class CapstoneProjectController {
 		if(countstudent > mas.getProfession().getMaxMember()){
 			return "Over student to can approve project.";
 		}
+		String[] st = id.split(",");
+		for(int i = 0;i < st.length; i++ ) {
+			CapstoneProjectDetails projects = new CapstoneProjectDetails();
+			int statusId = 9;
+			projects.setDesAction("");
+			projects.setUser(userService.findByUsername(st[i]).get(0));
+			projects.setCapstoneProject(capstoneProjectService.findById(Integer.parseInt(capstoneProject)));
+			projects.setStatus(statusService.getStatusById(statusId));
+			capstoneProjectDetailService.addCapstonprojectDetail(projects);
+		}
+
+
+		Date date = new Date();
+		HistoryRecords history = new HistoryRecords();
+		history.setContent("Add Capstone Project Detail ");
+		history.setCapstoneProject(capstoneProjectService.findById(Integer.parseInt(capstoneProject)));
+		history.setCreatedDate(date);
+		history.setUser(userService.findById(userid));
+		historyRecordService.save(history);
+		return "Create Project Detail successfully";
+	}
+
+	@ResponseBody
+	@GetMapping("/editSupervisors")
+	public String editSupervisors( @RequestParam("id") String id, @RequestParam("capstoneProject") String capstoneProject,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
+		String userid = "-1";
+		if (users !=  null) {
+			userid = users.getId();;
+		} else {
+			return "error/403Page";
+		}
+		List<CapstoneProjectDetails> capstoneProjectDetails = capstoneProjectDetailService.getDetailByCapstoneProjectId(Integer.parseInt(capstoneProject));
+
+		for (CapstoneProjectDetails item :capstoneProjectDetails){
+			Users userdetail = capstoneProjectDetailService.getUserById(item.getId()).get(0);
+			if (userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4))
+			{
+				capstoneProjectDetailService.deleteRejectCapstoneProjectDetailsByUserId(userdetail.getId(),Integer.parseInt(capstoneProject));
+			}
+		}
+
 		String[] st = id.split(",");
 		for(int i = 0;i < st.length; i++ ) {
 			CapstoneProjectDetails projects = new CapstoneProjectDetails();
@@ -629,6 +842,53 @@ public class CapstoneProjectController {
 		if(tmp != null) {
 			success = false;
 			message = "The user has joined another group";
+		}
+
+		result.put("success", success);
+		result.put("message", message);
+		result.put("user", dto);
+		return new Gson().toJson(result);
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "/getSupervisorsProject")
+	public String getSupervisorsProject(@RequestParam("username") String username, @RequestParam("capstoneProject") String capstoneProject,Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Map<String, Object> result = new HashMap<>();
+		boolean success = true;
+		String message = "";
+		List<Users> mas = capstoneProjectDetailService.getUserByCapstoneProjectDetailId(Integer.parseInt(capstoneProject));
+		for(Users item : mas) {
+			if(item.getUsername().equals(username)){
+				success = false;
+				message = "Username already exists in Project";
+				result.put("success", success);
+				result.put("message", message);
+				result.put("user", null);
+				return new Gson().toJson(result);
+			}
+		}
+		List<Users> users = userService.findByUsername(username);
+		MemberDTO dto = new MemberDTO();
+		if (users.isEmpty()) {
+			success = false;
+			message = "Username could not be found";
+		} else {
+			dto = new MemberDTO(users.get(0));
+			boolean check = false;
+			for (UserRoles userRoles : users.get(0).getRoleUser()) {
+				if(userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_LECTURERS_DB)) {
+					check = true;
+					break;
+				}
+			}
+			if(!check) {
+				success = false;
+				message = "User is not a Supervisor";
+			}
 		}
 
 		result.put("success", success);
