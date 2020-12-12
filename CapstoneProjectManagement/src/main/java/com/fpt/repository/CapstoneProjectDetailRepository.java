@@ -2,14 +2,10 @@ package com.fpt.repository;
 
 import java.util.List;
 
+import com.fpt.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
-import com.fpt.entity.CapstoneProjectDetails;
-import com.fpt.entity.CapstoneProjects;
-import com.fpt.entity.Users;
-import com.fpt.entity.Status;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +21,7 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	List<Integer> getIdProjectByUserID(String id);
 
 	//
-		@Query("SELECT ru.capstoneProject.id FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.status.id <> 5")
+		@Query("SELECT ru.capstoneProject.id FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.status.id = 4")
 		List<Integer> getIdProjectByUserIDCheckApprove(String id);
 	
 	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.user.id = ?1")
@@ -111,4 +107,7 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	@Query("SELECT c.user from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Assistant Lecture'")
 	Users userLecturersIdAndCapstoneProjectIdOP2(Integer cid);
 
+	@Query(value = "select u.user_id, u.role_id from capstone_project_details as c inner join user_roles as u where " +
+			"(c.user_id = u.user_id and u.role_id = 1) or (c.user_id = u.user_id and u.role_id = 2) and c.capstone_project_id = ?1", nativeQuery = true)
+	List<UserRoles> listUserRoleByProjectId(Integer id);
 }

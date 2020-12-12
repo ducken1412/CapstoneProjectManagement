@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Register Project</title>
+    <th:block th:include="home/_css"></th:block>
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <th:block th:include="home/_header-mobile"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Edit Project</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-80" id="content-body">
+                            <div id="post-container">
+                                <div class="row h-auto">
+                                    <div class="card w-100 mx-4">
+                                        <div class="card-body">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body" id="form-content">
+                                                    <div class="alert alert-warning mx-4" role="alert">
+                                                        Warning:
+                                                        <br />
+                                                        You can only register once. Be careful with the information you enter. You will not be able to edit it after sending it.
+                                                        <br />
+                                                        If you need any information please contact the admin.
+                                                    </div>
+
+                                                    <form th:object="${capstoneProjectDTO}" method="post" id="update" class="mx-5">
+                                                        <div id="error-container" class="form-group d-none"></div>
+                                                        <div class="form-group row">
+                                                            <label for="name" class="text-md-right">Name Project</label>
+                                                            <input type="text" th:value="${capstoneProject.name}" id="name" class="form-control" name="name"  /> <span class="bg-danger pull-right error-mess" th:errors="*{name}"></span>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <label for="nameOther" class="text-md-right">Name Project Other language</label>
+                                                            <input type="text" id="nameOther" class="form-control" name="nameOther" th:value="${capstoneProject.nameOther}" />
+                                                            <span class="bg-danger pull-right error-mess" th:errors="*{nameOther}"></span>
+                                                        </div>
+
+                                                        <div class="form-group row"><label for="nameVi" class="text-md-right">Name Project VietNamese</label> <input th:value="${capstoneProject.nameVi}" type="text" id="nameVi" class="form-control" name="nameVi" /></div>
+
+                                                        <div class="form-group row">
+                                                            <label for="nameAbbreviation" class="text-md-right">Name Project Abbreviation</label>
+                                                            <input type="text" id="nameAbbreviation" class="form-control" name="nameAbbreviation" th:value="${capstoneProject.nameAbbreviation}"/>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <label for="dropProfession" class="text-md-right">Profession Project</label>
+                                                            <select class="form-control" id="dropProfession" name="dropProfession">
+                                                                <option th:each="profession : ${professions}" th:value="${profession.id}" th:text="${profession.name}" th:selected="${profession.id == capstoneProject.profession.id}" ></option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="form-group row"><label for="program" class="text-md-right">Program Project</label> <input th:value="${capstoneProject.program}" type="text" id="program" class="form-control" name="program" /></div>
+
+                                                        <div class="form-group row">
+                                                            <label for="specialty" class="text-md-right">Specialty Project</label>
+                                                            <input type="text" id="specialty" class="form-control" name="specialty" th:value="${capstoneProject.specialty}"/>
+                                                        </div>
+
+                                                        <div class="form-group row"><label for="document" class="text-md-right">Document Project</label> <input th:value="${capstoneProject.document}" type="text" id="document" class="form-control" name="document" /></div>
+
+                                                        <div class="row form-group">
+                                                            <label for="member" class="text-md-right">Member</label>
+                                                            <div class="input-group">
+                                                                <input type="text" id="member" name="member" class="form-control" />
+                                                                <div class="input-group-btn">
+                                                                    <button id="btn-add-member" class="btn btn-primary">
+                                                                        Add
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <span class="text-danger d-none" id="error-message"></span>
+                                                        </div>
+                                                        <div class="form-group row attrTable">
+                                                            <table class="members" id="member-table">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr class="tr-shadow">
+                                                                    <td>
+                                                                        <span class="block-email attrName" th:text="${loggedUser.username}"></span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="rs-select2--border rs-select2--sm rs-select2--dark2 pl-2">
+                                                                            <select class="btn-sm btn-secondary dropdown-toggle attrValue" name="type">
+                                                                                <option value="leader">Leader</option>
+                                                                                <option value="member">Member</option>
+                                                                            </select>
+                                                                            <div class="dropDownSelect2"></div>
+                                                                        </div>
+                                                                    </td>
+
+                                                                    <td>
+
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <label for="description" class="text-md-right">Description Project</label>
+                                                            <textarea class="form-control" rows="7" id="description" name="description" th:text="${capstoneProject.description}"></textarea>
+                                                        </div>
+                                                        <div class="text-md-right">
+                                                            <button type="submit" class="btn btn-primary" id="btn-update-project" style="">
+                                                                <span id="loading-add" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true"></span> Update
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <th:block th:include="home/_footer"></th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<script th:src="@{/js/register-project/register-project.js}"></script>
+</body>
+</html>

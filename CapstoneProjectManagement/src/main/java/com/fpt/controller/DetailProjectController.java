@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 
 import com.fpt.common.NotificationCommon;
 import com.fpt.common.SendingMail;
+import com.fpt.dto.CapstoneProjectDTO;
 import com.fpt.entity.*;
 import com.fpt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class DetailProjectController {
     @Autowired
     private HistoryRecordService historyRecordService;
 
+    @Autowired
+    private ProfessionService professionService;
 
     @RequestMapping(value = "/project-detail/{id}", method = RequestMethod.GET)
     public String detailProject(@PathVariable("id") Integer id, Model model, Principal principal) {
@@ -264,5 +267,33 @@ public class DetailProjectController {
         }
 
         return "redirect:/project-detail/" + id;
+    }
+
+    @RequestMapping(value = "/edit-project/{id}", method = RequestMethod.GET)
+    public String editProject(@PathVariable("id") Integer id, Model model, Principal principal){
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        System.out.println(id);
+        Users user = userService.findByEmail(principal.getName());
+        CapstoneProjects capstoneProject = capstoneProjectService.getCapstonProjectById(id);
+        //List<UserRoles> userRoles = capstoneProjectDetailService.listUserRoleByProjectId(id);
+//        model.addAttribute("userRoles", userRoles);
+
+        model.addAttribute("capstoneProject",capstoneProject);
+        model.addAttribute("loggedUser", user);
+        List<Profession> professions = professionService.findAll();
+        model.addAttribute("professions", professions);
+        model.addAttribute("capstoneProjectDTO", new CapstoneProjectDTO());
+        return "home/edit-project-detail";
+    }
+
+    @RequestMapping(value = "/update-project", method = RequestMethod.POST)
+    public String updateProject(Model model, Principal principal){
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        return "home/edit-project-detail";
     }
 }
