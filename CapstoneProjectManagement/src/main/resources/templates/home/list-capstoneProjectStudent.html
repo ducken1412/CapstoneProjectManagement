@@ -25,11 +25,11 @@
     <td th:text="${post?.nameStatus}"></td>
     <td>
         <div class="table-data-feature">
-            <button th:if="${(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 6 || post.status_id == 8 || post.status_id == 13))}" class="item" th:onclick="|ProjectDetailApp(${post?.id})|" >
+            <button th:if="${(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 14 || post.status_id == 16 ))}" class="item" th:onclick="|ProjectDetailApp(${post?.id})|" >
                 <i class="fas fa-check"></i>
             </button>
 
-            <button th:if="${(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 6 || post.status_id == 8 || post.status_id == 13))}" class="item" th:onclick="|ProjectDetailReject(${post?.id})|" >
+            <button th:if="${(post.status_id == 5 && role == 4) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 14 || post.status_id == 16))}" class="item" th:onclick="|ProjectDetailReject(${post?.id})|" >
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -42,6 +42,13 @@
             <span><i class="fas fa-plus"></i> ADD STUDENT</span>
         </a>
 
+    </td>
+</tr>
+<tr th:if="${addStudent == 0 && role == 5}" style="background: antiquewhite;">
+    <td colspan="7">
+        <a class="btn btn-primary" id="btn-EditSupervisors"  data-toggle="modal" data-target="#Edit-Supervisors">
+            <span><i class="fas fa-plus"></i>Edit Supervisors</span>
+        </a>
     </td>
 </tr>
 </tbody>

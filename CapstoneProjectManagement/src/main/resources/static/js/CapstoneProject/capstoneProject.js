@@ -6,15 +6,53 @@ let postContainer;
 $(document).ready(function () {
     sizeComment = sizeDefault;
     getListPostInit();
+    var checkBtn = true;
+    $("#myTable :checkbox:checked").each(function() {
+        checkBtn = false;
+    });
+    if (checkBtn) {
+        $('#btn-addApprove').prop('disabled', true);
+        $('#btn-addReject').prop('disabled', true);
+    }
 
 });
+
+
+function checkDisableButtonSelect(){
+    var checkBtn = true;
+    $("#myTable :checkbox:checked").each(function() {
+        checkBtn = false;
+    });
+    if (checkBtn) {
+        $('#btn-addApprove').prop('disabled', true);
+        $('#btn-addReject').prop('disabled', true);
+    }else {
+        $('#btn-addApprove').prop('disabled', false);
+        $('#btn-addReject').prop('disabled', false);
+    }
+}
 function loadScrip(){
     $("#checkall").change(function() {
+
         if(this.checked) {
             $('input[type="checkbox"]').prop('checked', true);
+            $('#btn-addApprove').prop('disabled', false);
+            $('#btn-addReject').prop('disabled', false);
         }
         else {
             $('input[type="checkbox"]').prop('checked', false);
+            $('#btn-addApprove').prop('disabled', true);
+            $('#btn-addReject').prop('disabled', true);
+        }
+        var checkBtn = true;
+        $("#myTable :checkbox").each(function() {
+            if (!$(this).css("visibility") == "hidden") {
+                checkBtn =false;
+            }
+        });
+        if (checkBtn) {
+            $('#btn-addApprove').prop('disabled', true);
+            $('#btn-addReject').prop('disabled', true);
         }
     });
 }
@@ -40,6 +78,8 @@ function loadProjectDetail(postId){
     });
 }
 function getListPostInit() {
+
+
     const params = new URL(location.href).searchParams;
     const size = params.get("size");
     const page = params.get("page");
@@ -184,7 +224,6 @@ $(document).on("click", "#btn-ViewProject", function () {
 $(document).on("click", "#btn-deleteProject", function () {
 
     const postId = $(this).attr("postId");
-
     $(".btn-ok").click(function () {
         const des = $("#ApproveDes").val();
         $("#loading-Approve").attr("hidden", false);
@@ -197,17 +236,26 @@ $(document).on("click", "#btn-deleteProject", function () {
                 $('.modal-backdrop').hide(); // for black background
                 $('body').removeClass('modal-open'); // For scroll run
                 $('#confirm-Approve').modal('hide');
+                if(data === "The Project has been update successfully"){
+                    $.showNotification({
+                        body: data,
+                        type: "success",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }else {
+                    $.showNotification({
+                        body: data,
+                        type: "danger",
+                        vibrate: [200, 100, 200, 100, 200, 100, 200],
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }
                 getListPost();
-                $.showNotification({
-                    body: data,
-                    type: "success",
-                    duration: 3000,
-                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
-                    zIndex: 100,
-                    margin: "1rem"
-                })
-
-
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
@@ -318,18 +366,19 @@ function rewriteUrl(size, page) {
     url += "page=" + page;
     return url;
 }
+
+
 $(document).on("click", "#btn-addApprove", function () {
     $(".btn-ok").click(function () {
         let postIdlist = "";
         $('td> label > input[type="checkbox"]').each(function () {
-            debugger;
             if(this.checked){
                 var postId = $(this).attr("postId");
                 postIdlist = postIdlist + postId + ',';
             }
 
         });
-
+        debugger;
         const des = $("#ApproveDeslist").val();
         $("#loading-Approvelist").attr("hidden", false);
         $.ajax({
@@ -341,15 +390,28 @@ $(document).on("click", "#btn-addApprove", function () {
                 $('.modal-backdrop').hide(); // for black background
                 $('body').removeClass('modal-open'); // For scroll run
                 $('#confirm-Approvelist').modal('hide');
+
+                if(data === "The Project has been update successfully"){
+                    $.showNotification({
+                        body: data,
+                        type: "success",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }else {
+                    $.showNotification({
+                        body: data,
+                        type: "danger",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }
                 getListPost();
-                $.showNotification({
-                    body: "Thành công.",
-                    type: "success",
-                    duration: 3000,
-                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
-                    zIndex: 100,
-                    margin: "1rem"
-                })
+
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
@@ -384,14 +446,25 @@ $(document).on("click", "#btn-addReject", function () {
                 $('body').removeClass('modal-open'); // For scroll run
                 $('#confirm-Rejectlist').modal('hide');
                 getListPost();
-                $.showNotification({
-                    body: "Thành công.",
-                    type: "success",
-                    duration: 3000,
-                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
-                    zIndex: 100,
-                    margin: "1rem"
-                })
+                if(data === "The Project has been update successfully"){
+                    $.showNotification({
+                        body: data,
+                        type: "success",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }else {
+                    $.showNotification({
+                        body: data,
+                        type: "danger",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
@@ -423,15 +496,27 @@ function ProjectDetailApp(postId) {
                 $('body').removeClass('modal-open'); // For scroll run
                 $('#confirm-ApproveDetail').modal('hide');
                 //loadProjectDetail(id);
+
+                if(data === "The Project has been update successfully"){
+                    $.showNotification({
+                        body: data,
+                        type: "success",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }else {
+                    $.showNotification({
+                        body: data,
+                        type: "danger",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }
                 getListPost();
-                $.showNotification({
-                    body: data,
-                    type: "success",
-                    duration: 3000,
-                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
-                    zIndex: 100,
-                    margin: "1rem"
-                })
 
 
             },
@@ -465,14 +550,25 @@ function ProjectDetailReject(postId) {
                 //loadProjectDetail(id);
 
                 getListPost();
-                $.showNotification({
-                    body: data,
-                    type: "success",
-                    duration: 3000,
-                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
-                    zIndex: 100,
-                    margin: "1rem"
-                })
+                if(data === "The Project has been update successfully"){
+                    $.showNotification({
+                        body: data,
+                        type: "success",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }else {
+                    $.showNotification({
+                        body: data,
+                        type: "danger",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
@@ -503,14 +599,25 @@ $(document).on("click", "#btn-AddDetail", function () {
                 $('body').removeClass('modal-open'); // For scroll run
                 $('#Add-ProjectDetail').modal('hide');
                 loadProjectDetail(capstoneProject);
-                $.showNotification({
-                    body: data,
-                    type: "success",
-                    duration: 3000,
-                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
-                    zIndex: 100,
-                    margin: "1rem"
-                })
+                if(data === "Create Project Detail successfully"){
+                    $.showNotification({
+                        body: data,
+                        type: "success",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }else {
+                    $.showNotification({
+                        body: data,
+                        type: "danger",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }
             },
             error: function (xhr) {
                 if (xhr.status == 302 || xhr.status == 200) {
@@ -520,6 +627,56 @@ $(document).on("click", "#btn-AddDetail", function () {
         });
     })
 });
+
+$(document).on("click", "#btn-EditSupervisors", function () {
+    $('.modal-backdrop').hide(); // for black background
+    $('body').removeClass('modal-open'); // For scroll run
+    $('#confirm-View').modal('hide');
+    $('#Edit-Supervisors').modal('show');
+    debugger;
+    const capstoneProject =$('#idproject').val();
+    $(".btn-ok").click(function () {
+        $("#loading-EditSupervisors").attr("hidden", false);
+
+        let id = getJsonMember();
+        $.ajax({
+            url: "/editSupervisors?id=" + id + "&capstoneProject=" + capstoneProject,
+            type: "GET",
+            success: function (data) {
+                $("#loading-EditSupervisors").attr("hidden", true);
+                $('.modal-backdrop').hide(); // for black background
+                $('body').removeClass('modal-open'); // For scroll run
+                $('#Edit-Supervisors').modal('hide');
+                loadProjectDetail(capstoneProject);
+                if(data === "Create Project Detail successfully"){
+                    $.showNotification({
+                        body: data,
+                        type: "success",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }else {
+                    $.showNotification({
+                        body: data,
+                        type: "danger",
+                        duration: 3000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status == 302 || xhr.status == 200) {
+                    window.location.href = "/ad/capstoneproject";
+                }
+            },
+        });
+    })
+});
+
 function getDataMember() {
     let ary = [];
     var member = '';
@@ -539,14 +696,17 @@ function getJsonMember() {
     var count = 0;
     i = $('.attrTable tr').length;
     $('.attrTable tr').each(function (a, b) {
+        debugger;
         let name = $('.attrName', b).text();
-        if(count == (i-1)){
-            member = member + name +',';
+        if(name != ""){
+            if(count == (i-1)){
+                member = member +',' + name ;
+            }
+            else {
+                member = member + name;
+            }
+            ++count;
         }
-        else {
-            member = member + name;
-        }
-        ++count;
     });
     return member;
 }
@@ -604,9 +764,46 @@ $(document).on("click", "#btn-add-member", function (e) {
         },
     });
 })
+
+$(document).on("click", "#btn-add-supervisors", function (e) {
+    e.preventDefault();
+    $("#error-message").addClass("d-none");
+    let username = $("#supervisors").val();
+    const capstoneProject =$('#idproject').val();
+    let check = true;
+    $.map(getDataMember(), function (n, i) {
+        if (n.username.toUpperCase() === username.toUpperCase()) {
+            check = false;
+            return;
+        }
+    });
+    if (!check) {
+        return;
+    }
+    $.ajax({
+        url: "/getSupervisorsProject?username=" + username + "&capstoneProject=" + capstoneProject,
+        type: "GET",
+        success: function (data) {
+            debugger;
+            let obj = JSON.parse(data);
+            if (obj.success) {
+                $("#supervisors-table").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">'+obj.user.username+'</span> </td> <td class="pt-2"> </td><td class="pt-2"> <div class="table-data-feature pl-2"> <a href="" class="item del-member" data-toggle="tooltip" data-placement="top" title="Delete"> <i class="fas fa-trash fa-xs"></i> </a>\n' +
+                    ' </div> </td> </tr>');
+                $('#btn-add-supervisors').prop('disabled', true);
+                $("#error-message-supervisors").text('');
+            } else {
+                $("#error-message-supervisors").removeClass("d-none");
+                $("#error-message-supervisors").text(obj.message);
+            }
+        },
+        error: function (xhr) {
+        },
+    });
+})
 $(document).on("click", ".del-member", function(e) {
     e.preventDefault();
     if (confirm('Do you want to delete this?')) {
         $(this).closest('tr').remove();
+        $('#btn-add-supervisors').prop('disabled', false);
     }
 })
