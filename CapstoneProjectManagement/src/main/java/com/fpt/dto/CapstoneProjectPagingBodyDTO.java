@@ -18,10 +18,11 @@ public class CapstoneProjectPagingBodyDTO {
     private String nameStatus;
     private Integer countDetail;
     private String subjectCode;
-
+    private String nameChanging;
+    private String nameChangingVi;
     private List<CapstoneProjectDetailBody> detail;
 
-    public CapstoneProjectPagingBodyDTO(Integer id, String description_action, String description, String document, String name, String name_abbreviation, String name_lang_other, String name_vi, String program, String specialty, Integer profession_id, Integer status_id, String nameStatus, Integer countDetail,String subjectCode, List<CapstoneProjectDetailBody> detail) {
+    public CapstoneProjectPagingBodyDTO(Integer id, String description_action, String description, String document, String name, String name_abbreviation, String name_lang_other, String name_vi, String program, String specialty, Integer profession_id, Integer status_id, String nameStatus, Integer countDetail,String subjectCode, String nameChanging, String nameChangingVi,List<CapstoneProjectDetailBody> detail) {
         super();
         this.id = id;
         this.description_action = description_action;
@@ -38,6 +39,8 @@ public class CapstoneProjectPagingBodyDTO {
         this.nameStatus = nameStatus;
         this.countDetail = countDetail;
         this.subjectCode = subjectCode;
+        this.nameChanging = nameChanging;
+        this.nameChangingVi = nameChangingVi;
         this.detail = detail;
     }
 
@@ -171,6 +174,22 @@ public class CapstoneProjectPagingBodyDTO {
 
     public void setSubjectCode(String subjectCode) {
         this.subjectCode = subjectCode;
+    }
+
+    public String getNameChanging() {
+        return nameChanging;
+    }
+
+    public void setNameChanging(String nameChanging) {
+        this.nameChanging = nameChanging;
+    }
+
+    public String getNameChangingVi() {
+        return nameChangingVi;
+    }
+
+    public void setNameChangingVi(String nameChangingVi) {
+        this.nameChangingVi = nameChangingVi;
     }
 }
 
