@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Forum</title>
+    <title>Manage Capstone Project</title>
     <th:block th:include="home/_css"></th:block>
     <link rel="stylesheet" type="text/css"
           th:href="@{/css/forum/forum.css}">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="row m-t-25">
-                        <div class="w-75 p-4" id="content-body">
+                        <div class="w-100 p-4" id="content-body">
                             <div class="mb-2 au-card recent-report">
                                 <div class="table-data__tool">
                                     <div class="table-data__tool-left d-flex">
@@ -48,11 +48,11 @@
                                     <div class="table-data__tool-right">
                                         <button
                                                 class="btn btn-success mr-3" id="btn-addApprove"
-                                                data-toggle="modal" data-target="#confirm-Approvelist">Approve
+                                                data-toggle="modal" data-target="#confirm-Approvelist">Approve Selected
                                         </button>
                                         <button
                                                 class="btn btn-success" id="btn-addReject"
-                                                data-toggle="modal" data-target="#confirm-Rejectlist">Reject
+                                                data-toggle="modal" data-target="#confirm-Rejectlist">Reject Selected
 
                                         </button>
                                     </div>
@@ -215,6 +215,44 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-primary btn-ok"><span id="loading-AddDetail" class="spinner-border spinner-border-sm mr-1"
                                                        role="status" aria-hidden="true" hidden="true"></span>Add</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Edit-Supervisors" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Edit Supervisors</h3>
+                <div class="input-group">
+                    <input type="text" id="supervisors" name="supervisors" class="form-control">
+                    <div class="input-group-btn">
+                        <button id="btn-add-supervisors" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+                <span class="text-danger d-none" id="error-message-supervisors"></span>
+                <div class="form-group row attrTable">
+                    <table class="members" id="supervisors-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary btn-ok"><span id="loading-EditSupervisors" class="spinner-border spinner-border-sm mr-1"
+                                                        role="status" aria-hidden="true" hidden="true"></span>Add</a>
             </div>
         </div>
     </div>

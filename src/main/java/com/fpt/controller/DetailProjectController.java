@@ -66,7 +66,7 @@ public class DetailProjectController {
                 case Constant.STATUS_REGISTED_CAPSTONE_DB:
                     model.addAttribute("status", Constant.STATUS_REGISTED_CAPSTONE);
                 case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
-                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_LUCTURER);
+                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_LECTURER);
                 case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
                     model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_TRAINING);
                 case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:

@@ -107,19 +107,10 @@ public class ReportController {
                 }
             }
             if (checkReport) {
-                if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 1){
-                    model.addAttribute("checkReportLeader", true);
-                }
                 model.addAttribute("checkReport", true);
                 Integer reportId = reportService.getReportByUserIdMax(user.getId());
                 model.addAttribute("reportId", reportId);
             } else {
-                if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 1){
-                    model.addAttribute("checkReportLeader", true);
-                }
-                model.addAttribute("checkReport", false);
-            }
-            if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 2){
                 model.addAttribute("checkReport", false);
             }
         } catch (Exception e) {
@@ -160,9 +151,7 @@ public class ReportController {
         } catch (Exception ex) {
 
         }
-        if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 1){
-            model.addAttribute("checkReportLeader", true);
-        }
+
         return "home/report-detail";
     }
 
