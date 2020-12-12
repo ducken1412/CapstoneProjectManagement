@@ -3,13 +3,10 @@ package com.fpt.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fpt.entity.CapstoneProjects;
-import com.fpt.entity.Status;
-import com.fpt.entity.Users;
+import com.fpt.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fpt.entity.CapstoneProjectDetails;
 import com.fpt.repository.CapstoneProjectDetailRepository;
 
 @Service
@@ -169,6 +166,11 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     public List<Users> getUserByCapstoneProject(Integer id) {
         return capstoneProjectDetailRepository.getUserByCapstoneProject(id);
 
+    }
+
+    @Override
+    public List<UserRoles> listUserRoleByProjectId(Integer id) {
+        return capstoneProjectDetailRepository.listUserRoleByProjectId(id);
     }
 
     //kienbt4 add code capstone end

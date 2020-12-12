@@ -113,3 +113,58 @@ $(document).on("click", ".del-member", function (e) {
         $(this).closest('tr').remove();
     }
 })
+
+//update project
+
+$(document).on("submit", "#update", function (e) {
+    e.preventDefault();
+    $("#loading-add").attr("hidden", false);
+    $("#btn-register-project").attr("disabled", true);
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
+    $("#error-container").empty();
+    let $form = $("#register");
+    let dataForm = getFormData($form);
+    $.ajax({
+        url: "/update-project",
+        type: "POST",
+        data: JSON.stringify(dataForm),
+        contentType: "application/json",
+        success: function (data) {
+            let obj = JSON.parse(data);
+            let str = '';
+            if (obj.hasError) {
+                $.map(obj.errors, function (n, i) {
+                    str += n;
+                    $("#error-container").append('<span class="text-danger">' + n + '</span><br>');
+                });
+                $("#error-container").removeClass("d-none");
+                $(window).scrollTop(0);
+                $("#loading-add").attr("hidden", true);
+                $("#btn-register-project").attr("disabled", false);
+            } else {
+                $.showNotification({
+                    body: obj.message,
+                    type: "success",
+                    duration: 3000,
+                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    zIndex: 100,
+                    margin: "1rem"
+                });
+                setTimeout(
+                    function () {
+                        window.location.href = "/lecturers";
+                    }, 2000);
+                $("#loading-add").attr("hidden", true);
+            }
+            //$("#form-content").html(data);
+
+            $.LoadingOverlay("hide");
+        },
+        error: function (xhr) {
+            console.log(xhr)
+        },
+    });
+});

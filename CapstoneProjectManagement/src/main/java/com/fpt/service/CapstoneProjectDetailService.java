@@ -2,12 +2,8 @@ package com.fpt.service;
 
 import java.util.List;
 
-import com.fpt.entity.CapstoneProjects;
+import com.fpt.entity.*;
 import org.springframework.stereotype.Service;
-
-import com.fpt.entity.CapstoneProjectDetails;
-import com.fpt.entity.Status;
-import com.fpt.entity.Users;
 
 @Service
 public interface CapstoneProjectDetailService {
@@ -65,4 +61,5 @@ public interface CapstoneProjectDetailService {
 
 	List<Users> getUserByCapstoneProject(Integer id);
 
+	List<UserRoles> listUserRoleByProjectId(Integer id);
 }

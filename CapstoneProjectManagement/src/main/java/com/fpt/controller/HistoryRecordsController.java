@@ -43,7 +43,7 @@ public class HistoryRecordsController {
         }
 
         List<HistoryRecords> historyRecords;
-        if (role != null) {
+        if (role != null && type == null) {
             switch (role) {
                 case 1:
                     historyRecords = historyRecordService.getDataRoleStudent();
@@ -63,10 +63,9 @@ public class HistoryRecordsController {
                     break;
 
             }
-
         }
 
-        if (type != null) {
+        if (type != null && role == null) {
             switch (type) {
                 case 1:
                     historyRecords = historyRecordService.getCapstoneRegister();

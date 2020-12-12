@@ -29,7 +29,7 @@ public class CapstoneProjects {
 	private String nameVi;
 	@Column(name = "name_abbreviation", columnDefinition = "NVARCHAR(256)")
 	private String nameAbbreviation;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "profession_id")
 	private Profession profession;
 	@Column(name = "specialty", columnDefinition = "NVARCHAR(256) NOT NULL")

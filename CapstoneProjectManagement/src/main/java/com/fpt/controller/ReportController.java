@@ -88,10 +88,14 @@ public class ReportController {
         if (principal == null) {
             return "redirect:/login";
         }
+
+        Users user = userService.findByEmail(principal.getName());
+        if(user.getCapstoneProjectDetails().isEmpty() || !user.getCapstoneProjectDetails().get(0).getStatus().getName().equals("doing_capstone")){
+            return "error/403Page";
+        }
         try {
             model.addAttribute("commentDTO", new CommentDTO());
             model.addAttribute("report", new Reports());
-            Users user = userService.findByEmail(principal.getName());
             List<String> roles = userRoleService.getRoleNamesByEmail(principal.getName());
             for (String role : roles) {
                 if (role.equals("student_leader")) {
@@ -123,10 +127,10 @@ public class ReportController {
                 model.addAttribute("checkReportStudent", true);
             }
 
-            //check the user does not have a team project
-            if(user.getCapstoneProjectDetails() == null || !user.getCapstoneProjectDetails().get(0).getStatus().getName().equals("doing_capstone")){
-                model.addAttribute("checkUserDoingProject", false);
-            }
+//            //check the user does not have a team project
+//            if(user.getCapstoneProjectDetails() == null || !user.getCapstoneProjectDetails().get(0).getStatus().getName().equals("doing_capstone")){
+//                model.addAttribute("checkUserDoingProject", false);
+//            }
 
         } catch (Exception e) {
 
