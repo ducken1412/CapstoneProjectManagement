@@ -50,20 +50,28 @@ public class ChatRoomController {
         if(principal == null) {
             return "redirect:/login";
         }
-        Users users = userService.findByEmail(principal.getName());
-        if (users != null) {
-            model.addAttribute("loggedUser", users.getUsername());
+        Users user = userService.findByEmail(principal.getName());
+        if (user != null) {
+            model.addAttribute("loggedUser", user.getUsername());
         } else {
             return "error/403Page";
         }
         try {
             List<Chat> chats = chatService.findByRoomId(postId);
-            Posts post = postService.findById(Integer.parseInt(postId));
+            if(postId.startsWith("pr")) {
+                model.addAttribute("roomId",postId);
+            } else {
+                Posts post = postService.findById(Integer.parseInt(postId.substring(3)));
+                model.addAttribute("title",post.getTitle());
+                model.addAttribute("roomId",post.getId());
+            }
             model.addAttribute("chats",chats);
-            model.addAttribute("post",post);
+            chatDetailService.updateChatStatusRead(postId,user.getId());
         }catch (Exception ex){
+            System.out.println(ex);
             model.addAttribute("chats",new ArrayList<>());
-            model.addAttribute("post",new Posts());
+            model.addAttribute("title", "");
+            model.addAttribute("roomId", "");
         }
         return "chatting/mychat";
     }
@@ -75,18 +83,36 @@ public class ChatRoomController {
         Chat chat = new Chat();
         chat.setRoomId(roomId);
         chat.setContent(chatMessage.getContent());
+        if(roomId.startsWith("pr")) {
+            chat.setType("private");
+        } else {
+            chat.setType("group");
+        }
         if (userLogin != null) {
             chat.setUser(userLogin);
         }
         List<Users> users = chatService.findUsersInRoom(roomId);
-        users.add(userLogin);
+        boolean checkDuplicate = false;
+        for (Users u: users) {
+            if(u.getId().equals(userLogin.getId())) {
+                checkDuplicate = true;
+                break;
+            }
+        }
+        if(!checkDuplicate) {
+            users.add(userLogin);
+        }
         List<ChatDetails> chatDetails = new ArrayList<>();
         ChatDetails temp;
         for (Users u: users) {
             temp = new ChatDetails();
             temp.setChat(chat);
             temp.setUser(u);
-            temp.setReadStatus(Constant.CHAT_UNREAD);
+            if(u.getId().equals(userLogin.getId())) {
+                temp.setReadStatus(Constant.CHAT_READ);
+            } else {
+                temp.setReadStatus(Constant.CHAT_UNREAD);
+            }
             chatDetails.add(temp);
         }
         if(!chatDetails.isEmpty()) {
@@ -124,19 +150,43 @@ public class ChatRoomController {
     public String getChatContent(Model model,Principal principal){
         Users userLogin = userService.findByEmail(principal.getName());
         List<ChatDTO> chatDTOS = chatService.findChatsByUserId(userLogin.getId());
+        List<ChatDTO> chatDTOS2 = chatService.findChatPrivateByUserId(userLogin.getId());
+        chatDTOS = Stream.concat(chatDTOS.stream(), chatDTOS2.stream())
+                .collect(Collectors.toList());
         Collections.reverse(chatDTOS);
         List<ChatDTO> readList = new ArrayList<>();
         List<ChatDTO> unreadList = new ArrayList<>();
+        boolean check;
         for (ChatDTO dto : chatDTOS) {
-            if(dto.getReadStatus().equals(Constant.CHAT_READ)) {
-                readList.add(dto);
-            } else {
+            if(dto.getReadStatus().equals(Constant.CHAT_UNREAD)) {
                 unreadList.add(dto);
+            } else {
+                check = false;
+                for (ChatDTO c: unreadList) {
+                    if(c.getId().equals(dto.getId())) {
+                        check =true;
+                    }
+                }
+                if(!check) {
+                    readList.add(dto);
+                }
             }
         }
         chatDTOS = Stream.concat(unreadList.stream(), readList.stream())
                 .collect(Collectors.toList());
         model.addAttribute("chats", chatDTOS);
         return "chatting/dropdown-chat-content";
+    }
+
+    @ResponseBody
+    @GetMapping("/find-room")
+    public String findRoom(String room1, String room2,Model model,Principal principal){
+        String room = chatService.findRoomChatPrivate(room1,room2);
+        return room;
+    }
+
+    @GetMapping("/create-chat")
+    public String getCreateChat(Model model,Principal principal){
+        return "chatting/create-chat";
     }
 }

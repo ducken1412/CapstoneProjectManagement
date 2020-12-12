@@ -21,11 +21,16 @@ $(document).ready(function () {
                 if (data === 'errorLogin') {
                     window.location.href = "/login";
                 } else {
-                    $('#numNewMessage').text(data);
+                    if (data === '0') {
+                        $("#numNewMessage").attr("hidden", true);
+                    } else {
+                        $('#numNewMessage').removeAttr('hidden');
+                        $('#numNewMessage').text(data);
+                    }
                     setTimeout(
                         function () {
                             ajaxCall();
-                        }, 3000);
+                        }, 2000);
                 }
             },
             error: function (xhr) {

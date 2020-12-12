@@ -22,4 +22,8 @@ public interface ChatService {
 
 	List<ChatDTO> findChatsByUserId(String userId);
 
+	List<ChatDTO> findChatPrivateByUserId(String userId);
+
+	String findRoomChatPrivate(String roomId1, String roomId2);
+
 }

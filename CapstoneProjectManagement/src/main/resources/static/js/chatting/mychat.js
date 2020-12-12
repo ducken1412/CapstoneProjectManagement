@@ -7,6 +7,7 @@ var stompClient = null;
 var currentSubscription;
 var topic = null;
 var roomId;
+var sockets = [];
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -14,10 +15,13 @@ var colors = [
 ];
 
 function connect(event, rId) {
+    for (var s in sockets)
+        sockets[s].close();
     roomId = rId;
     Cookies.set('name', name);
     let socket = new SockJS('/sock');
     stompClient = Stomp.over(socket);
+    sockets.push(socket);
     stompClient.connect({}, onConnected, onError);
     event.preventDefault();
 }
@@ -39,10 +43,6 @@ function enterRoom(newRoomId) {
         {},
         JSON.stringify({sender: name, type: 'JOIN'})
     );
-}
-
-function onMessageReceived(payload) {
-
 }
 
 function sendMessage(event, roomId) {
@@ -95,13 +95,14 @@ function onMessageReceived(payload) {
     textElement.appendChild(messageText);
     messageElement.appendChild(textElement);
     let messageArea = document.querySelector('#messageArea');
-    if(check) {
+    if (check) {
         messageArea.appendChild(messageElement);
     } else {
         messageArea.appendChild(divCard);
     }
     messageArea.scrollTop = messageArea.scrollHeight;
 }
+
 function getAvatarColor(messageSender) {
     var hash = 0;
     for (var i = 0; i < messageSender.length; i++) {
