@@ -34,9 +34,10 @@ function checkDisableButtonSelect(){
         $('#btn-addReject').prop('disabled', false);
     }
 }
+
 function loadScrip(){
     $("#checkall").change(function() {
-
+        debugger;
         if(this.checked) {
             $('input[type="checkbox"]').prop('checked', true);
             $('#btn-addApprove').prop('disabled', false);
@@ -48,14 +49,21 @@ function loadScrip(){
             $('#btn-addReject').prop('disabled', true);
         }
         var checkBtn = true;
-        $("#myTable :checkbox").each(function() {
-            if (!$(this).css("visibility") == "hidden") {
-                checkBtn =false;
+        var count =0;
+        $("#myTable :checkbox:checked").each(function() {
+            if (count === 0){
+                count ++;
+            }else {
+                checkBtn = false;
             }
+            count ++;
         });
         if (checkBtn) {
             $('#btn-addApprove').prop('disabled', true);
             $('#btn-addReject').prop('disabled', true);
+        }else {
+            $('#btn-addApprove').prop('disabled', false);
+            $('#btn-addReject').prop('disabled', false);
         }
     });
 }
