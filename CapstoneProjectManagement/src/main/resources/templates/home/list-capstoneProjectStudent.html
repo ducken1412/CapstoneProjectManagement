@@ -36,16 +36,14 @@
     </td>
 
 </tr>
-<tr th:if="${addStudent == 0 && role == 5}" style="background: antiquewhite;">
-    <td colspan="7">
+<tr th:if="${checkEditDetail == true && role == 5}" style="background: antiquewhite;">
+    <td  th:if="${addStudent == 0}">
         <a class="btn btn-primary" id="btn-AddDetail"  data-toggle="modal" data-target="#Add-ProjectDetail">
             <span><i class="fas fa-plus"></i> ADD STUDENT</span>
         </a>
 
     </td>
-</tr>
-<tr th:if="${addStudent == 0 && role == 5}" style="background: antiquewhite;">
-    <td colspan="7">
+    <td colspan="6">
         <a class="btn btn-primary" id="btn-EditSupervisors"  data-toggle="modal" data-target="#Edit-Supervisors">
             <span><i class="fas fa-plus"></i>Edit Supervisors</span>
         </a>

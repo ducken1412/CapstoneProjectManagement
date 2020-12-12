@@ -15,6 +15,9 @@ $(document).ready(function () {
         $('#btn-addReject').prop('disabled', true);
     }
 
+    $('#notification-container').css('display', 'none');
+
+
 });
 
 
@@ -78,8 +81,6 @@ function loadProjectDetail(postId){
     });
 }
 function getListPostInit() {
-
-
     const params = new URL(location.href).searchParams;
     const size = params.get("size");
     const page = params.get("page");

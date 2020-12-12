@@ -1,5 +1,5 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div class="table-responsive table-responsive-data2">
+<div class="table-responsive table-responsive-data2" >
 
     <table id="myTable" class="table table-data2">
         <thead>
@@ -12,9 +12,11 @@
             </th>
             <th>Subject Code</th>
             <th>Name</th>
-            <th>Description</th>
             <th>Name_Vi</th>
+            <th>Name Changing</th>
+            <th>Name Changing Vi</th>
             <th>Name_Abbreviation</th>
+            <th>Description</th>
             <th>Status</th>
             <th></th>
         </tr>
@@ -30,11 +32,13 @@
                 </label>
                 <input type="text" id="post-id" th:value="${post.id}" hidden="true">
             </td>
-            <td th:text="${post.subjectCode}"></td>
+            <td ><a th:href="@{'/project-detail/' + ${post.id}}" ><span th:text="${post.subjectCode}"></span></a></td>
             <td th:text="${post.name}"></td>
-            <td th:text="${post.description}"></td>
             <td th:text="${post.name_vi}"></td>
+            <td th:text="${post.nameChanging}"></td>
+            <td th:text="${post.nameChangingVi}"></td>
             <td th:text="${post.name_abbreviation}"></td>
+            <td th:text="${post.description}"></td>
             <td th:text="${post.nameStatus}"></td>
             <td>
                 <div class="table-data-feature">
