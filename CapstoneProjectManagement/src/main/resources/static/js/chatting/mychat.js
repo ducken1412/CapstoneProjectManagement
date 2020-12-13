@@ -7,6 +7,7 @@ var stompClient = null;
 var currentSubscription;
 var topic = null;
 var roomId;
+// var numClick;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -41,10 +42,6 @@ function enterRoom(newRoomId) {
     );
 }
 
-function onMessageReceived(payload) {
-
-}
-
 function sendMessage(event, roomId) {
     let messageContent = $("#message").val().trim();
     topic = `/chat-app/chat/${roomId}`;
@@ -62,6 +59,9 @@ function sendMessage(event, roomId) {
 
 function onMessageReceived(payload) {
     let message = JSON.parse(payload.body);
+    // if(numClick == 1) {
+    //     return;
+    // }
     let messageElement = document.createElement('li');
     let divCard = document.createElement('div');
     let check = false;
@@ -95,13 +95,15 @@ function onMessageReceived(payload) {
     textElement.appendChild(messageText);
     messageElement.appendChild(textElement);
     let messageArea = document.querySelector('#messageArea');
-    if(check) {
+    if (check) {
         messageArea.appendChild(messageElement);
     } else {
         messageArea.appendChild(divCard);
     }
     messageArea.scrollTop = messageArea.scrollHeight;
+    // ++numClick;
 }
+
 function getAvatarColor(messageSender) {
     var hash = 0;
     for (var i = 0; i < messageSender.length; i++) {
@@ -110,5 +112,9 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
+
+// $('#message').on("focus", function(){
+//     numClick = 0;
+// });
 
 

@@ -355,14 +355,14 @@ $(document).on("click", "#chat", function (e) {
         maxSize: 50,
     });
     postContainer = $("#content-body").html();
-    const postId = $(this).attr("postId");
+    const postId = 'gr_' + $(this).attr("postId");
     $.ajax({
         url: "/chat/" + postId,
         type: "GET",
         success: function (data) {
             $.LoadingOverlay("hide");
             $("#content-body").html(data)
-            connect(e, postId)
+            connect(e,postId)
             $(document).on("submit", "#messagebox", function (e1) {
                 sendMessage(e1, postId)
             })

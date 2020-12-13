@@ -20,6 +20,9 @@ public class ChatServiceImpl implements ChatService {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public Chat findById(Integer id) {
         return chatRepository.findById(id).orElse(null);
@@ -60,8 +63,15 @@ public class ChatServiceImpl implements ChatService {
     public List<Users> findUsersInRoom(String roomId) {
         List<Users> users = chatRepository.findUsersInRoom(roomId);
         Users author = null;
+        if(roomId.startsWith("pr")) {
+            String tmp = roomId.substring(3);
+            String username = tmp.substring(0,tmp.indexOf("_"));
+            users.add(userService.findByUsername(username).get(0));
+            return users;
+        }
+
         try{
-            author = postService.findAuthorByPostId(Integer.parseInt(roomId));
+            author = postService.findAuthorByPostId(Integer.parseInt(roomId.substring(3)));
         }catch (Exception ex) {
             System.out.println(ex);
         }
@@ -74,6 +84,16 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<ChatDTO> findChatsByUserId(String userId) {
         return chatRepository.findChatsByUserId(userId);
+    }
+
+    @Override
+    public List<ChatDTO> findChatPrivateByUserId(String userId) {
+        return chatRepository.findChatPrivateByUserId(userId);
+    }
+
+    @Override
+    public String findRoomChatPrivate(String roomId1, String roomId2) {
+        return chatRepository.findRoomChatPrivate(roomId1,roomId2);
     }
 
 }

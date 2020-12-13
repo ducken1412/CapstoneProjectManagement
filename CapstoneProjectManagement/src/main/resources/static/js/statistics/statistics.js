@@ -6,7 +6,6 @@ $(document).ready(function () {
 
 function getListPostInit() {
 
-    debugger;
     const params = new URL(location.href).searchParams;
     const size = params.get("size");
     const page = params.get("page");

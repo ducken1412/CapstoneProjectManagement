@@ -32,7 +32,7 @@ public class Posts {
     private Set<Comments> comments;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
     private List<HistoryRecords> historyRecords;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     @OrderBy
     private Set<Files> files;
     @ManyToOne(fetch = FetchType.LAZY)
