@@ -1,6 +1,7 @@
 package com.fpt.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.fpt.entity.*;
 import org.springframework.stereotype.Service;
@@ -62,4 +63,10 @@ public interface CapstoneProjectDetailService {
 	List<Users> getUserByCapstoneProject(Integer id);
 
 	List<UserRoles> listUserRoleByProjectId(Integer id);
+
+	List<Object[]> getUserEditByCapstoneProject(Integer id);
+
+	CapstoneProjectDetails checkUserCapstoneDetail(String username, Integer id);
+
+	List<Users> findUserByCapstoneProjectDetailId(Integer id);
 }

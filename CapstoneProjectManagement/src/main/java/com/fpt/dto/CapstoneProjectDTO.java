@@ -28,9 +28,27 @@ public class CapstoneProjectDTO {
     private String description;
     private Integer stautus;
     private List<MemberDTO> members;
-
+    private String nameChanging;
+    private String nameViChanging;
     public CapstoneProjectDTO() {
         // TODO Auto-generated constructor stub
+    }
+
+    public CapstoneProjectDTO(Integer id, String name,  String nameOther, String nameVi, String nameAbbreviation, String profession, String specialty, String document, String program, String description, Integer stautus, List<MemberDTO> members, String nameChanging, String nameViChanging) {
+        this.id = id;
+        this.name = name;
+        this.nameOther = nameOther;
+        this.nameVi = nameVi;
+        this.nameAbbreviation = nameAbbreviation;
+        this.profession = profession;
+        this.specialty = specialty;
+        this.document = document;
+        this.program = program;
+        this.description = description;
+        this.stautus = stautus;
+        this.members = members;
+        this.nameChanging = nameChanging;
+        this.nameViChanging = nameViChanging;
     }
 
     public CapstoneProjectDTO(Integer id, String name, String nameOther, String nameVi, String nameAbbreviation,
@@ -147,4 +165,23 @@ public class CapstoneProjectDTO {
         this.members = members;
     }
 
+    public void setStautus(Integer stautus) {
+        this.stautus = stautus;
+    }
+
+    public String getNameChanging() {
+        return nameChanging;
+    }
+
+    public void setNameChanging(String nameChanging) {
+        this.nameChanging = nameChanging;
+    }
+
+    public String getNameViChanging() {
+        return nameViChanging;
+    }
+
+    public void setNameViChanging(String nameViChanging) {
+        this.nameViChanging = nameViChanging;
+    }
 }

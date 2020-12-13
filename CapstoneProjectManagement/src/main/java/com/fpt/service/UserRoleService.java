@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fpt.entity.UserRoleKey;
 import com.fpt.entity.UserRoles;
-
+import com.fpt.entity.Users;
 
 
 public interface UserRoleService {
@@ -19,5 +19,7 @@ public interface UserRoleService {
 	List<String> getRoleNamesByEmail(String email);
 
 	void updateRoleStudentReject(String id);
+
+	void updateRoleLeader(String id);
 
 }

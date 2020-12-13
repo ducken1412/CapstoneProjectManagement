@@ -1,5 +1,6 @@
 package com.fpt.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,4 +38,7 @@ public interface UserService {
 
 	Page<Users> findPaginatedNotLectureBooked(Pageable pageable,String lId);
 
+	Users getUserByUserName(String id);
+
+	List<Users> getUserByUserRoleAndProjectId(Integer id, Integer cid);
 }
