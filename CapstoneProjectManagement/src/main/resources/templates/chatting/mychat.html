@@ -21,7 +21,7 @@
         </div>
         <ul id="messageArea" class="mb-2">
             <th:block th:each="chat :${chats}">
-                <div class="card card-messagebox mb-1">
+                <div class="card card-messagebox mb-1" th:if="${chat.content != ''}">
                     <div class="card-body p-0">
                         <li class="chat-message">
                             <i class="far fa-user" style="background-color: #a9b3c9;"></i>

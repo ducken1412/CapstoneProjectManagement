@@ -3,6 +3,7 @@ package com.fpt.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -348,5 +349,43 @@ public class Users implements Serializable {
 
     public void setChatDetail(List<ChatDetails> chatDetail) {
         this.chatDetail = chatDetail;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users = (Users) o;
+        return Objects.equals(id, users.id) &&
+                Objects.equals(username, users.username) &&
+                Objects.equals(firstName, users.firstName) &&
+                Objects.equals(lastName, users.lastName) &&
+                Objects.equals(birthDate, users.birthDate) &&
+                Objects.equals(gender, users.gender) &&
+                Objects.equals(phone, users.phone) &&
+                Objects.equals(image, users.image) &&
+                Objects.equals(email, users.email) &&
+                Objects.equals(createdDate, users.createdDate) &&
+                Objects.equals(location, users.location) &&
+                Objects.equals(description, users.description) &&
+                Objects.equals(status, users.status) &&
+                Objects.equals(roleUser, users.roleUser) &&
+                Objects.equals(historyRecords, users.historyRecords) &&
+                Objects.equals(capstoneProjectDetails, users.capstoneProjectDetails) &&
+                Objects.equals(notificationDetails, users.notificationDetails) &&
+                Objects.equals(reportReceives, users.reportReceives) &&
+                Objects.equals(comments, users.comments) &&
+                Objects.equals(evaluationDetail, users.evaluationDetail) &&
+                Objects.equals(posts, users.posts) &&
+                Objects.equals(chats, users.chats) &&
+                Objects.equals(report, users.report) &&
+                Objects.equals(chatDetail, users.chatDetail) &&
+                Objects.equals(semester, users.semester) &&
+                Objects.equals(site, users.site);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, firstName, lastName, birthDate, gender, phone, image, email, createdDate, location, description, status, roleUser, historyRecords, capstoneProjectDetails, notificationDetails, reportReceives, comments, evaluationDetail, posts, chats, report, chatDetail, semester, site);
     }
 }

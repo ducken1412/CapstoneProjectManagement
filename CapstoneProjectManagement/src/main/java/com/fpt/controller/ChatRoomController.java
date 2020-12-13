@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -47,7 +48,7 @@ public class ChatRoomController {
 
     @GetMapping("/chat/{postId}")
     public String chat(@PathVariable String postId, Model model, Principal principal) {
-        if(principal == null) {
+        if (principal == null) {
             return "redirect:/login";
         }
         Users user = userService.findByEmail(principal.getName());
@@ -58,18 +59,18 @@ public class ChatRoomController {
         }
         try {
             List<Chat> chats = chatService.findByRoomId(postId);
-            if(postId.startsWith("pr")) {
-                model.addAttribute("roomId",postId);
+            if (postId.startsWith("pr")) {
+                model.addAttribute("roomId", postId);
             } else {
                 Posts post = postService.findById(Integer.parseInt(postId.substring(3)));
-                model.addAttribute("title",post.getTitle());
-                model.addAttribute("roomId",post.getId());
+                model.addAttribute("title", post.getTitle());
+                model.addAttribute("roomId", post.getId());
             }
-            model.addAttribute("chats",chats);
-            chatDetailService.updateChatStatusRead(postId,user.getId());
-        }catch (Exception ex){
+            model.addAttribute("chats", chats);
+            chatDetailService.updateChatStatusRead(postId, user.getId());
+        } catch (Exception ex) {
             System.out.println(ex);
-            model.addAttribute("chats",new ArrayList<>());
+            model.addAttribute("chats", new ArrayList<>());
             model.addAttribute("title", "");
             model.addAttribute("roomId", "");
         }
@@ -83,7 +84,7 @@ public class ChatRoomController {
         Chat chat = new Chat();
         chat.setRoomId(roomId);
         chat.setContent(chatMessage.getContent());
-        if(roomId.startsWith("pr")) {
+        if (roomId.startsWith("pr")) {
             chat.setType("private");
         } else {
             chat.setType("group");
@@ -92,33 +93,45 @@ public class ChatRoomController {
             chat.setUser(userLogin);
         }
         List<Users> users = chatService.findUsersInRoom(roomId);
-        boolean checkDuplicate = false;
-        for (Users u: users) {
-            if(u.getId().equals(userLogin.getId())) {
-                checkDuplicate = true;
-                break;
-            }
-        }
-        if(!checkDuplicate) {
-            users.add(userLogin);
-        }
+        users.add(userLogin);
+        users = new ArrayList<>(new HashSet<>(users));
         List<ChatDetails> chatDetails = new ArrayList<>();
         ChatDetails temp;
-        for (Users u: users) {
+        for (Users u : users) {
             temp = new ChatDetails();
             temp.setChat(chat);
             temp.setUser(u);
-            if(u.getId().equals(userLogin.getId())) {
+            if (u.getId().equals(userLogin.getId())) {
                 temp.setReadStatus(Constant.CHAT_READ);
             } else {
                 temp.setReadStatus(Constant.CHAT_UNREAD);
             }
             chatDetails.add(temp);
         }
-        if(!chatDetails.isEmpty()) {
+        if (!chatDetails.isEmpty()) {
             chat.setChatDetail(chatDetails);
         }
         chatService.save(chat);
+        Chat chat1 = chat;
+        List<ChatDetails> chatDetails1 = new ArrayList<>();
+        ChatDetails cd = new ChatDetails();
+        cd.setUser(userLogin);
+        cd.setChat(chat1);
+        cd.setReadStatus(Constant.CHAT_READ);
+        chatDetails1.add(cd);
+        chat.setChatDetail(chatDetails1);
+        for (Users u : users) {
+            if(u.getId() != userLogin.getId()) {
+                chat1.setUser(u);
+                break;
+            }
+        }
+        if (roomId.startsWith("pr")) {
+            chat1.setContent("");
+            chat1.setId(null);
+            chatService.save(chat1);
+            chatDetailService.updateChatStatusRead(chat1.getId().toString(), chat1.getUser().getId());
+        }
     }
 
     @MessageMapping("/chat/{roomId}/addUser")
@@ -138,8 +151,8 @@ public class ChatRoomController {
 
     @ResponseBody
     @GetMapping("/number-new-message")
-    public String getNumMessage(Principal principal){
-        if(principal == null) {
+    public String getNumMessage(Principal principal) {
+        if (principal == null) {
             return "errorLogin";
         }
         int num = chatDetailService.findNumberNewMessage(principal.getName());
@@ -147,7 +160,7 @@ public class ChatRoomController {
     }
 
     @GetMapping("/chat-content")
-    public String getChatContent(Model model,Principal principal){
+    public String getChatContent(Model model, Principal principal) {
         Users userLogin = userService.findByEmail(principal.getName());
         List<ChatDTO> chatDTOS = chatService.findChatsByUserId(userLogin.getId());
         List<ChatDTO> chatDTOS2 = chatService.findChatPrivateByUserId(userLogin.getId());
@@ -158,16 +171,16 @@ public class ChatRoomController {
         List<ChatDTO> unreadList = new ArrayList<>();
         boolean check;
         for (ChatDTO dto : chatDTOS) {
-            if(dto.getReadStatus().equals(Constant.CHAT_UNREAD)) {
+            if (dto.getReadStatus().equals(Constant.CHAT_UNREAD)) {
                 unreadList.add(dto);
             } else {
                 check = false;
-                for (ChatDTO c: unreadList) {
-                    if(c.getId().equals(dto.getId())) {
-                        check =true;
+                for (ChatDTO c : unreadList) {
+                    if (c.getId().equals(dto.getId())) {
+                        check = true;
                     }
                 }
-                if(!check) {
+                if (!check) {
                     readList.add(dto);
                 }
             }
@@ -180,13 +193,13 @@ public class ChatRoomController {
 
     @ResponseBody
     @GetMapping("/find-room")
-    public String findRoom(String room1, String room2,Model model,Principal principal){
-        String room = chatService.findRoomChatPrivate(room1,room2);
+    public String findRoom(String room1, String room2, Model model, Principal principal) {
+        String room = chatService.findRoomChatPrivate(room1, room2);
         return room;
     }
 
     @GetMapping("/create-chat")
-    public String getCreateChat(Model model,Principal principal){
+    public String getCreateChat(Model model, Principal principal) {
         return "chatting/create-chat";
     }
 }
