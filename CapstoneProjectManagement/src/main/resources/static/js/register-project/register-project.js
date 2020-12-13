@@ -113,3 +113,4 @@ $(document).on("click", ".del-member", function (e) {
         $(this).closest('tr').remove();
     }
 })
+

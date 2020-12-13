@@ -2,14 +2,12 @@ package com.fpt.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import com.fpt.entity.CapstoneProjects;
-import com.fpt.entity.Status;
-import com.fpt.entity.Users;
+import com.fpt.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fpt.entity.CapstoneProjectDetails;
 import com.fpt.repository.CapstoneProjectDetailRepository;
 
 @Service
@@ -24,7 +22,7 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
             capstoneProjectDetailRepository.save(capstoneProjectDetails);
             return true;
         } catch (Exception e) {
-            System.out.println("eror add capstone project detail");
+            System.out.println("error add capstone project detail");
         }
         return false;
     }
@@ -144,7 +142,7 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
             return true;
         }
         catch (Exception e) {
-            System.out.println("eror save capstone project detail");
+            System.out.println("error save capstone project detail");
         }
         return false;
     }
@@ -169,6 +167,26 @@ public class CapstoneProjectDetailServiceImpl implements CapstoneProjectDetailSe
     public List<Users> getUserByCapstoneProject(Integer id) {
         return capstoneProjectDetailRepository.getUserByCapstoneProject(id);
 
+    }
+
+    @Override
+    public List<UserRoles> listUserRoleByProjectId(Integer id) {
+        return capstoneProjectDetailRepository.listUserRoleByProjectId(id);
+    }
+
+    @Override
+    public List<Object[]> getUserEditByCapstoneProject(Integer id) {
+        return capstoneProjectDetailRepository.getUserEditByCapstoneProject(id);
+    }
+
+    @Override
+    public CapstoneProjectDetails checkUserCapstoneDetail(String username, Integer id) {
+        return capstoneProjectDetailRepository.checkUserCapstoneDetail(username,id);
+    }
+
+    @Override
+    public List<Users> findUserByCapstoneProjectDetailId(Integer id) {
+        return capstoneProjectDetailRepository.findUserByCapstoneProjectDetailId(id);
     }
 
     //kienbt4 add code capstone end

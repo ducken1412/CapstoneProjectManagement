@@ -1,16 +1,16 @@
 package com.fpt.repository;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import com.fpt.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.fpt.entity.CapstoneProjectDetails;
-import com.fpt.entity.CapstoneProjects;
-import com.fpt.entity.Users;
-import com.fpt.entity.Status;
-
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	List<Integer> getIdProjectByUserID(String id);
 
 	//
-		@Query("SELECT ru.capstoneProject.id FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.status.id <> 5")
+		@Query("SELECT ru.capstoneProject.id FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.status.id = 4")
 		List<Integer> getIdProjectByUserIDCheckApprove(String id);
 	
 	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.user.id = ?1")
@@ -111,4 +111,29 @@ public interface CapstoneProjectDetailRepository extends JpaRepository<CapstoneP
 	@Query("SELECT c.user from CapstoneProjectDetails c where c.capstoneProject.id = ?1 and c.supType = 'Assistant Lecture'")
 	Users userLecturersIdAndCapstoneProjectIdOP2(Integer cid);
 
+	@Query(value = "select u.user_id, u.role_id from capstone_project_details as c inner join user_roles as u where " +
+			"(c.user_id = u.user_id and u.role_id = 1) or (c.user_id = u.user_id and u.role_id = 2) and c.capstone_project_id = ?1", nativeQuery = true)
+	List<UserRoles> listUserRoleByProjectId(Integer id);
+
+	@Query(value = "select u.user_name, r.name as role, s.name as status from users as u \n" +
+			"join capstone_project_details as c on c.user_id = u.id \n" +
+			"join user_roles as us on u.id = us.user_id\n" +
+			"join roles as r on r.id = us.role_id\n" +
+			"join status as s on s.id = c.status_id\n" +
+			"where c.capstone_project_id = ?1 and c.user_id = us.user_id and c.user_id = u.id and (us.role_id = 2 or us.role_id = 1)", nativeQuery = true)
+	List<Object[]> getUserEditByCapstoneProject(Integer id);
+
+	@Query("select c from CapstoneProjectDetails c where c.user.username = ?1 and c.capstoneProject.id = ?2")
+	CapstoneProjectDetails checkUserCapstoneDetail(String username, Integer id);
+
+
+	@Transactional
+	@Modifying
+	/*@Query(value = "DELETE FROM capstone_project_details AS a " +
+			"join users as u on a.user_id = u.id  " +
+			"WHERE u.user_name not in (:listIdMem) ", nativeQuery = true)*/
+	void deleteCapstoneProjectDetailsByUserNotIn(Collection<Users> users);
+
+	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.status.name <> 'registering_capstone'")
+	List<Users> findUserByCapstoneProjectDetailId(Integer id);
 }

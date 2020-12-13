@@ -33,4 +33,17 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 
 	@Query("SELECT ru.userRoleKey.user FROM UserRoles ru WHERE ru.userRoleKey.role.id = ?1 and ru.userRoleKey.user.id <> ?2")
 	Page<Users> getLectureNoteBookedByRoleId(Pageable pageable,Integer id, String lId);
+
+	@Query("select u from Users u where u.username =?1")
+	Users getUserByUserName(String id);
+
+	@Query(value = "select u.* \n" +
+			"from users as u \n" +
+			"join user_roles as ur on u.id = ur.user_id\n" +
+			"join roles as r on r.id = ur.role_id\n" +
+			"join capstone_project_details as cp on u.id = cp.user_id\n" +
+			"join capstone_projects as c on c.id = cp.capstone_project_id\n" +
+			"where r.id = ?1 and c.id =?2",nativeQuery = true)
+	List<Users> getUserByUserRoleAndProjectId(Integer id, Integer cid);
+
 }

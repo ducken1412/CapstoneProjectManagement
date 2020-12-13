@@ -27,6 +27,13 @@ public interface UserRolesRepository  extends JpaRepository<UserRoles, UserRoleK
 	List<String> getRoleNamesByEmail(String email);
 
 	@Transactional
+	@Modifying
 	@Query(value = "UPDATE UserRoles u SET u.userRoleKey.role.id = 2 WHERE u.userRoleKey.user.id = ?1")
 	void updateRoleStudentReject(String id);
+
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE UserRoles u SET u.userRoleKey.role.id = 1 WHERE u.userRoleKey.user.id = ?1")
+	void updateRoleLeader(String id);
+
 }

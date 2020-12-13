@@ -33,4 +33,9 @@ public interface CapstoneProjectService {
 
 	boolean deleteUserNotSubmitCapstone(Integer id);
 
+	String updateProject(CapstoneProjectDTO dataForm,Principal principal, String baseUrl,Integer projectId);
+
+	boolean updateStatusCapstoneProjectChangingName(Integer id);
+
+	boolean capstoneProjectChangingName(String nameC, String nameV, Integer id);
 }

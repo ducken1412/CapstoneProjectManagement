@@ -102,5 +102,15 @@ public class UserServiceImpl implements UserService {
 		return userRepository.getLectureNoteBookedByRoleId(secondPageWithFiveElements, 4, lId);
 	}
 
+	@Override
+	public Users getUserByUserName(String id) {
+		return userRepository.getUserByUserName(id);
+	}
+
+	@Override
+	public List<Users> getUserByUserRoleAndProjectId(Integer id, Integer cid) {
+		return userRepository.getUserByUserRoleAndProjectId(id,cid);
+	}
+
 
 }
