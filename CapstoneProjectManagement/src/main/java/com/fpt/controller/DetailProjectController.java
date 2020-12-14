@@ -211,7 +211,7 @@ public class DetailProjectController {
         if (cp.getStatus().getName().equals(Constant.STATUS_REGISTED_CAPSTONE_DB)) {
             model.addAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
         }
-        if (cp.getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_CAPSTONE_DB)) {
+        if (cp.getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_CAPSTONE_DB) ||cp.getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB)) {
             model.addAttribute("notification", "Changing successfully !!! Please wait  supervisor confirm your action.");
         }
         return "home/detail_project";
@@ -251,8 +251,8 @@ public class DetailProjectController {
         } catch (Exception e) {
 
         }
-        if (check) {
-            //capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user_login);
+        if (check == true) {
+            capstoneProjectDetailService.deleteCapstoneProjectDetailsByUserId(user.getId(),id);
         }
         return "redirect:/project-detail/" + id;
     }
