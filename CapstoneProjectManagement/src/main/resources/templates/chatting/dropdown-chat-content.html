@@ -17,13 +17,13 @@
                    style="max-width: 300px;color: black; font-weight: bold;" th:text="${chat.title}" th:title="${chat.title}" ></a>
                 <a href="#" th:onclick="getChatbox([[${chat.id}]]); return false" th:if="${chat.readStatus == 'unread'}" id="chat-box-link" th:postId="${chat.id}" class="d-inline-block text-truncate"
                    style="max-width: 300px;color: black; font-weight: bold;" th:text="${chat.title}" th:title="${chat.title}" ></a>
-                <p style="font-size: 14px">group</p>
+                <p style="font-size: 14px" th:text="${chat.type}"></p>
             </div>
         </div>
     </th:block>
 </div>
 <div class="mess__footer">
-    <a href="#">View all messages</a>
+
 </div>
 
 <script>
@@ -35,29 +35,8 @@
         if(!postId.startsWith("pr")) {
             postId = 'gr_' + postId;
         }
-        $.ajax({
-            url: "/chat/" + postId,
-            type: "GET",
-            success: function (data) {
-                $('#drd-chat').removeClass('show-dropdown');
-                $.LoadingOverlay("hide");
-                $("#content-body").html(data);
-                let event = document.createEvent('Event');
-                connect(event, postId);
-                $(document).on("submit", "#messagebox", function (e1) {
-                    var postCurrent = $('#postIdForm').val();
-                    if(!postCurrent.startsWith("pr")) {
-                        postCurrent = 'gr_' + postCurrent;
-                    }
-                    sendMessage(e1, postCurrent);
-                })
-            },
-            error: function (xhr) {
-                if (xhr.status == 302 || xhr.status == 200) {
-                    // window.location.href = "/forum";
-                }
-            },
-        });
+        window.location.href = "/messenger/" + postId;
+
     }
 </script>
 <script>
