@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,21 +43,24 @@ public class ChatRoomController {
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
-    @GetMapping("/chat/{postId}")
-    public String chat(@PathVariable String postId, Model model, Principal principal) {
+    @GetMapping("/messenger/{postId}")
+    public String messenger(@PathVariable String postId, Model model, Principal principal) {
         if (principal == null) {
             return "redirect:/login";
         }
         Users user = userService.findByEmail(principal.getName());
-        if (user != null) {
-            model.addAttribute("loggedUser", user.getUsername());
-        } else {
-            return "error/403Page";
-        }
+        model.addAttribute("loggedUser", user.getUsername());
         try {
             List<Chat> chats = chatService.findByRoomId(postId);
             if (postId.startsWith("pr")) {
                 model.addAttribute("roomId", postId);
+                List<String> list = new ArrayList<>(Arrays.asList(postId.split("_")));
+                for (String str: list) {
+                    if(!str.equals(user.getUsername()) && list.indexOf(str) != 0) {
+                        model.addAttribute("title", str);
+                        break;
+                    }
+                }
             } else {
                 Posts post = postService.findById(Integer.parseInt(postId.substring(3)));
                 model.addAttribute("title", post.getTitle());
@@ -74,7 +74,7 @@ public class ChatRoomController {
             model.addAttribute("title", "");
             model.addAttribute("roomId", "");
         }
-        return "chatting/mychat";
+        return "chatting/chat-page";
     }
 
     @MessageMapping("/chat/{roomId}/sendMessage")
@@ -85,7 +85,7 @@ public class ChatRoomController {
         chat.setRoomId(roomId);
         chat.setContent(chatMessage.getContent());
         if (roomId.startsWith("pr")) {
-            chat.setType("private");
+            chat.setType("specific");
         } else {
             chat.setType("group");
         }
@@ -196,6 +196,16 @@ public class ChatRoomController {
     public String findRoom(String room1, String room2, Model model, Principal principal) {
         String room = chatService.findRoomChatPrivate(room1, room2);
         return room;
+    }
+
+    @ResponseBody
+    @GetMapping("/check-username-available/{username}")
+    public String checkUsername(@PathVariable String username,Model model, Principal principal) {
+        List<Users> users = userService.findByUsername(username);
+        if(!users.isEmpty()) {
+            return "success";
+        }
+        return "fail";
     }
 
     @GetMapping("/create-chat")
