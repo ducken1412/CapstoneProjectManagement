@@ -62,13 +62,11 @@ public class DetailProjectController {
         }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Semesters semesters;
-        Users appUser = userService.findByEmail(principal.getName());
-        semesters = semestersService.getSemesterByUserId(appUser.getId());
+        CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
         LocalDate d1;
         d1 = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate d2;
-        d2 = LocalDate.parse(simpleDateFormat.format(semesters.startDate), DateTimeFormatter.ISO_LOCAL_DATE);
+        d2 = LocalDate.parse(simpleDateFormat.format(cp.getSemester().getStartDate()), DateTimeFormatter.ISO_LOCAL_DATE);
         Duration diff;
         diff = Duration.between(d2.atStartOfDay(), d1.atStartOfDay());
         long diffDays = diff.toDays();
@@ -76,7 +74,7 @@ public class DetailProjectController {
         if (currentWeek != 0) {
             model.addAttribute("checkWeek", true);
         }
-        CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
+
         if (cp.getStatus().getName().equals(Constant.STATUS_DOING_CAPSTONE_DB)) {
             model.addAttribute("checkBTChangName", true);
         }
@@ -312,13 +310,12 @@ public class DetailProjectController {
 
         try {
             Users user = userService.findByEmail(principal.getName());
+            CapstoneProjects capstoneProject = capstoneProjectService.getCapstonProjectById(id);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Semesters semesters;
-            semesters = semestersService.getSemesterByUserId(user.getId());
             LocalDate d1;
             d1 = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ISO_LOCAL_DATE);
             LocalDate d2;
-            d2 = LocalDate.parse(simpleDateFormat.format(semesters.startDate), DateTimeFormatter.ISO_LOCAL_DATE);
+            d2 = LocalDate.parse(simpleDateFormat.format(capstoneProject.getSemester().getStartDate()), DateTimeFormatter.ISO_LOCAL_DATE);
             Duration diff;
             diff = Duration.between(d2.atStartOfDay(), d1.atStartOfDay());
             long diffDays = diff.toDays();
@@ -333,7 +330,7 @@ public class DetailProjectController {
             }
 
 
-            CapstoneProjects capstoneProject = capstoneProjectService.getCapstonProjectById(id);
+
             String nameStatus = capstoneProject.getStatus().getName();
             if (nameStatus.equals(Constant.STATUS_REGISTERING_CAPSTONE_DB)) {
                 model.addAttribute("doingStatus", false);
