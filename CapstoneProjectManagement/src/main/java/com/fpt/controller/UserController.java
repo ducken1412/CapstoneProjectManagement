@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.fpt.entity.Locations;
+
 import com.fpt.entity.Status;
 import com.fpt.entity.Users;
 import com.fpt.service.CapstoneProjectService;
-import com.fpt.service.LocationService;
 import com.fpt.service.StatusService;
 import com.fpt.service.UserRoleService;
 import com.fpt.service.UserService;
@@ -40,8 +39,6 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private UserRoleService userRoleService;
-	@Autowired
-	private LocationService locationService;
 	@Autowired
 	private CapstoneProjectService capstoneProjectService;
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
@@ -127,12 +124,6 @@ public class UserController {
 		model.addAttribute("roleView", roleView);
 		List<String> capstone = capstoneProjectService.getCapstoneProjectNameByUserId(id);
 		model.addAttribute("capstone", capstone);
-		List<Locations> location = locationService.getLocationByUserId(id);
-		if (location.size() > 0) {
-			model.addAttribute("location",  location.get(0).getStreet() +","+ location.get(0).getCity()  );
-		} else {
-			model.addAttribute("location", "");
-		}
 		return "home/view-detail";
 		}
 	}

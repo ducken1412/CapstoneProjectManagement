@@ -169,7 +169,8 @@
             }
             if (c.indexOf(userName) == 0) {
                 var nameArray = c.substring(userName.length, c.length).split('_');
-                var name = nameArray[0] + " "+ nameArray[1];
+
+                    var name = nameArray[0] + " " + nameArray[nameArray.length -1];
                 $("#user-name").html(name + ' ' + '<i class="fas fa-angle-down"></i>');
                 $("#imageCockiee").attr("alt",name);
                 $("#username-dropdown").text(name);

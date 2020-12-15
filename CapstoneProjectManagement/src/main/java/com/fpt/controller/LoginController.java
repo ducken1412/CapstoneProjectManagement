@@ -89,7 +89,9 @@ public class LoginController {
 		}
 		String userFullName;
 		if (appUser.getFirstName() != null && appUser.getLastName() != null) {
-			userFullName = appUser.getFirstName() + "_" + appUser.getLastName();
+			String firstName = appUser.getFirstName().replace(' ','_');
+
+			userFullName = firstName + "_" + appUser.getLastName();
 		} else if (appUser.getFirstName() != null && appUser.getLastName() == null) {
 			userFullName = appUser.getFirstName();
 		} else {
