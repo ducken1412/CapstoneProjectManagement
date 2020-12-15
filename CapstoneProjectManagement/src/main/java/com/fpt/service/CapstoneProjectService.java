@@ -38,4 +38,6 @@ public interface CapstoneProjectService {
 	boolean updateStatusCapstoneProjectChangingName(Integer id);
 
 	boolean capstoneProjectChangingName(String nameC, String nameV, Integer id);
+
+	CapstoneProjects getCapstoneProjecRegistingtByUserId(String userId);
 }

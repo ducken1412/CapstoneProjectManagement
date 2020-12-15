@@ -1179,6 +1179,7 @@ public class CapstoneProjectController {
 		if(principal == null) {
 			return "redirect:/login";
 		}
+
 		String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
 		Map<String, Object> output = new HashMap<>();
 		List<String> errors = new ArrayList<>();

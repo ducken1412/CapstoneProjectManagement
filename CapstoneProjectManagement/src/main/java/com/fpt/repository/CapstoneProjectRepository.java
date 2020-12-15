@@ -63,5 +63,7 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	@Query("update CapstoneProjects c set c.nameChanging = ?1 , c.nameViChanging = ?2 , c.status = 13 where c.id = ?3")
 	void capstoneProjectChangingName(String nameC, String nameV, Integer id);
 
+	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.capstoneProject.status.name = 'registering_capstone'")
+	CapstoneProjects getCapstoneProjecRegistingtByUserId(String userId);
 
 }

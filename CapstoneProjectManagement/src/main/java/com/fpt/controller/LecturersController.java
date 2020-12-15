@@ -67,8 +67,10 @@ public class LecturersController {
         }
         LOGGER.info("Running on getListLecturers method of UserController");
         Users user = userService.findByEmail(principal.getName());
+        CapstoneProjects c = capstoneProjectService.getCapstoneProjecRegistingtByUserId(user.getId());
         String userId = user.getId();
-        HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
+        //HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
+        HistoryRecords historyRecords = historyRecordService.findHistoryByUserIdCapstoneId(user.getId(), c.getId());
         if (historyRecords != null) {
             try{
                 //check booking
@@ -89,8 +91,8 @@ public class LecturersController {
                 }
                 model.addAttribute("check_lecture_op1", check_lecture_op1);
                 model.addAttribute("check_lecture_op2", check_lecture_op2);
-                CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
-                String statusProject = capstoneProject.getStatus().getName();
+                //CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
+                //String statusProject = capstoneProject.getStatus().getName();
                 //check total lecture bookded
 //                int count = capstoneProjectDetailService.countLecturersByProjectId(projectId);
 //                if (count >= 2 && statusProject.equals("registering_capstone")) {
@@ -173,7 +175,10 @@ public class LecturersController {
 
         Users user = userService.findByEmail(principal.getName());
         String userId = user.getId();
-        HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
+        //CapstoneProjects c = capstoneProjectService.getCapstoneProjectByUserId(userId);
+        CapstoneProjects c = capstoneProjectService.getCapstoneProjecRegistingtByUserId(user.getId());
+        //HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
+        HistoryRecords historyRecords = historyRecordService.findHistoryByUserIdCapstoneId(user.getId(), c.getId());
         int projectId;
         Users userLecture = userService.findById(id);
         String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
@@ -230,7 +235,8 @@ public class LecturersController {
 
         Users user = userService.findByEmail(principal.getName());
         String userId = user.getId();
-        HistoryRecords historyRecords = historyRecordService.findHistoryByUserId(userId);
+        CapstoneProjects c = capstoneProjectService.getCapstoneProjecRegistingtByUserId(userId);
+        HistoryRecords historyRecords = historyRecordService.findHistoryByUserIdCapstoneId(user.getId(), c.getId());
         int projectId;
         Users userLecture = userService.findById(id);
         String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
