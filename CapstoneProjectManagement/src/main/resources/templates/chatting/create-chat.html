@@ -13,14 +13,16 @@
     <div class="mess__item py-1 px-2">
         <div class="content">
             <div class="form-group row ml-4">
-                <label for="chat-name" class="text-md-right">Username</label> <input
-                    type="text" id="chat-name" class="form-control" name="chat-name">
+                <label for="chat-name" class="text-md-right">Username:</label>
+                <div class="d-flex">
+                    <input
+                            type="text" id="chat-name" class="form-control" name="chat-name">
+                    <a type="submit" class="ml-2" id="btn-connect-chat"><i class="fas fa-share-square"></i>
+                    </a>
+                </div>
                 <span id="error-message" class="mt-2" style="color: red"></span>
             </div>
-            <div class="text-md-right">
-                <button type="submit" class="btn btn-primary" id="btn-connect-chat" style="">Connect
-                </button>
-            </div>
+
         </div>
     </div>
 </div>

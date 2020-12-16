@@ -55,12 +55,15 @@ public class ChatRoomController {
             if (postId.startsWith("pr")) {
                 model.addAttribute("roomId", postId);
                 List<String> list = new ArrayList<>(Arrays.asList(postId.split("_")));
-                for (String str: list) {
-                    if(!str.equals(user.getUsername()) && list.indexOf(str) != 0) {
+                for (String str : list) {
+                    if (!str.equals(user.getUsername()) && list.indexOf(str) != 0) {
                         model.addAttribute("title", str);
                         break;
                     }
                 }
+            } else if (postId.equals("gr_tr_dep_heads")) {
+                model.addAttribute("title", "Heads And Training Department");
+                model.addAttribute("roomId", postId);
             } else {
                 Posts post = postService.findById(Integer.parseInt(postId.substring(3)));
                 model.addAttribute("title", post.getTitle());
@@ -88,6 +91,9 @@ public class ChatRoomController {
             chat.setType("specific");
         } else {
             chat.setType("group");
+        }
+        if (roomId.equals("gr_tr_dep_heads")) {
+            chat.setType("special");
         }
         if (userLogin != null) {
             chat.setUser(userLogin);
@@ -121,7 +127,7 @@ public class ChatRoomController {
         chatDetails1.add(cd);
         chat.setChatDetail(chatDetails1);
         for (Users u : users) {
-            if(u.getId() != userLogin.getId()) {
+            if (u.getId() != userLogin.getId()) {
                 chat1.setUser(u);
                 break;
             }
@@ -187,6 +193,40 @@ public class ChatRoomController {
         }
         chatDTOS = Stream.concat(unreadList.stream(), readList.stream())
                 .collect(Collectors.toList());
+        boolean checkRole = false;
+        for (UserRoles userRoles : userLogin.getRoleUser()) {
+            if (userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_HEAD_DB) || userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_TRAINING_DEP_DB)) {
+                checkRole = true;
+                break;
+            }
+        }
+        if (checkRole) {
+            ChatDTO chatDTO = chatService.findChatTrainingDeptAndHeads(userLogin.getId());
+            if (chatDTO == null) {
+                chatDTO = new ChatDTO() {
+                    @Override
+                    public String getId() {
+                        return "gr_tr_dep_heads";
+                    }
+
+                    @Override
+                    public String getTitle() {
+                        return "Heads And Training Department";
+                    }
+
+                    @Override
+                    public String getReadStatus() {
+                        return "read";
+                    }
+
+                    @Override
+                    public String getType() {
+                        return "special";
+                    }
+                };
+            }
+            model.addAttribute("chatTrainingDepHeads", chatDTO);
+        }
         model.addAttribute("chats", chatDTOS);
         return "chatting/dropdown-chat-content";
     }
@@ -200,9 +240,9 @@ public class ChatRoomController {
 
     @ResponseBody
     @GetMapping("/check-username-available/{username}")
-    public String checkUsername(@PathVariable String username,Model model, Principal principal) {
+    public String checkUsername(@PathVariable String username, Model model, Principal principal) {
         List<Users> users = userService.findByUsername(username);
-        if(!users.isEmpty()) {
+        if (!users.isEmpty()) {
             return "success";
         }
         return "fail";

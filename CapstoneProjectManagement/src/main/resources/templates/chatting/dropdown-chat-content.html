@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css"
       th:href="@{/css/forum/forum.css}">
+
 <div class="pt-3 pl-2" style="max-height: 75vh;overflow-y: auto;cursor: auto">
     <div class="row ml-1 mr-0">
         <div>
@@ -10,6 +11,16 @@
         </div>
     </div>
     <hr style="border: 1px solid #999">
+    <div class="mess__item py-1 px-2" th:each="authority : ${#authentication.getPrincipal().authorities}"
+         th:if="${authority.getAuthority() == 'HeadAuthen' || authority.getAuthority() == 'TrainingDepAuthen'}">
+        <div class="content">
+            <a href="#" th:onclick="getChatbox([[${chatTrainingDepHeads.id}]]); return false" th:if="${chatTrainingDepHeads.readStatus == 'read'}" id="chat-box-link" th:postId="${chatTrainingDepHeads.id}" class="d-inline-block text-truncate text-secondary"
+               style="max-width: 300px;color: black; font-weight: bold;" th:text="${chatTrainingDepHeads.title}" th:title="${chatTrainingDepHeads.title}" ></a>
+            <a href="#" th:onclick="getChatbox([[${chatTrainingDepHeads.id}]]); return false" th:if="${chatTrainingDepHeads.readStatus == 'unread'}" id="chat-box-link" th:postId="${chatTrainingDepHeads.id}" class="d-inline-block text-truncate"
+               style="max-width: 300px;color: black; font-weight: bold;" th:text="${chatTrainingDepHeads.title}" th:title="${chatTrainingDepHeads.title}" ></a>
+            <p style="font-size: 14px" th:text="${chatTrainingDepHeads.type}"></p>
+        </div>
+    </div>
     <th:block th:each="chat : ${chats}">
         <div class="mess__item py-1 px-2">
             <div class="content">
@@ -32,7 +43,7 @@
             size: 50,
             maxSize: 50,
         });
-        if(!postId.startsWith("pr")) {
+        if(!postId.startsWith("pr") && postId !== 'gr_tr_dep_heads') {
             postId = 'gr_' + postId;
         }
         window.location.href = "/messenger/" + postId;

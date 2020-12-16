@@ -61,6 +61,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<Users> findUsersInRoom(String roomId) {
+        if(roomId.equals("gr_tr_dep_heads")){
+            return chatRepository.findUsersInRoomSpecial();
+        }
         List<Users> users = chatRepository.findUsersInRoom(roomId);
         Users author = null;
         if(roomId.startsWith("pr")) {
@@ -94,6 +97,16 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public String findRoomChatPrivate(String roomId1, String roomId2) {
         return chatRepository.findRoomChatPrivate(roomId1,roomId2);
+    }
+
+    @Override
+    public ChatDTO findChatTrainingDeptAndHeads(String userId) {
+        return chatRepository.findChatTrainingDeptAndHeads(userId);
+    }
+
+    @Override
+    public List<Users> findUsersInRoomSpecial() {
+        return chatRepository.findUsersInRoomSpecial();
     }
 
 }
