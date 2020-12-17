@@ -70,7 +70,7 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
             "    INNER JOIN chat_details cd \n" +
             "      ON c.id = cd.chat_id \n" +
             "  WHERE cd.user_id = ?1 \n" +
-            "    AND c.room LIKE 'cap%' \n" +
+            "    AND c.room LIKE 'cap%' AND cd.read_status = 'unread' \n" +
             "  GROUP BY c.`room`,\n" +
             "    cd.read_status,\n" +
             "    c.`user_id` ,c.type", nativeQuery = true)
