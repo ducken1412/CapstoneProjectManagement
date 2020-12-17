@@ -308,6 +308,41 @@ public class ChatRoomController {
                                 chatDTOS1.add(chatDTO);
                             }
                         }
+                    } else {
+                        if(!capstoneProjects.isEmpty()) {
+                            boolean tempCheck;
+                            for (CapstoneProjects cap:capstoneProjects) {
+                                tempCheck = false;
+                                for (ChatDTO dto:chatDTOS1) {
+                                    if(dto.getId().substring(dto.getId().indexOf("_")+1).equals(cap.getId().toString())) {
+                                        tempCheck = true;
+                                        break;
+                                    }
+                                }
+                                if(!tempCheck) {
+                                    chatDTOS1.add(new ChatDTO() {
+                                        @Override
+                                        public String getId() {
+                                            return "cap_" + cap.getId();
+                                        }
+                                        @Override
+                                        public String getTitle() {
+                                            return cap.getName();
+                                        }
+
+                                        @Override
+                                        public String getReadStatus() {
+                                            return "read";
+                                        }
+
+                                        @Override
+                                        public String getType() {
+                                            return "special";
+                                        }
+                                    });
+                                }
+                            }
+                        }
                     }
                     if(!chatDTOS1.isEmpty()) {
                         checkChatCapSupervisor = true;
