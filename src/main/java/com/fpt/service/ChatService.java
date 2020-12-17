@@ -22,4 +22,16 @@ public interface ChatService {
 
 	List<ChatDTO> findChatsByUserId(String userId);
 
+	List<ChatDTO> findChatPrivateByUserId(String userId);
+
+	String findRoomChatPrivate(String roomId1, String roomId2);
+
+	ChatDTO findChatTrainingDeptAndHeads(String userId);
+
+	List<Users> findUsersInRoomSpecial();
+
+	ChatDTO findChatGroupCap(String userId, String room);
+
+	List<ChatDTO> findChatGroupCapSupervisor(String userId);
+
 }

@@ -2,6 +2,7 @@ package com.fpt.service;
 
 import java.util.List;
 
+import com.fpt.entity.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.fpt.entity.UserRoleKey;
 import com.fpt.entity.UserRoles;
 import com.fpt.repository.UserRolesRepository;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -54,9 +55,15 @@ public class UserRoleServiceImpl implements UserRoleService {
 		return userRolesRepository.getRoleNamesByEmail(email);
 	}
 
+	@Transactional
 	@Override
 	public void updateRoleStudentReject(String id) {
 		userRolesRepository.updateRoleStudentReject(id);
+	}
+
+	@Override
+	public void updateRoleLeader(String id) {
+		userRolesRepository.updateRoleLeader(id);
 	}
 
 	@Override

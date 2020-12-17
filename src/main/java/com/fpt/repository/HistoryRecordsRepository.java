@@ -39,4 +39,20 @@ public interface HistoryRecordsRepository extends JpaRepository<HistoryRecords, 
 
     @Query(value = "select h.id, h.content, h.created_date, h.last_modified_date, h.capstone_project_id, h.evaluation_id, h.notification_id, h.post_id, h.report_id, h.user_id from history_records as h inner join user_roles as u where h.user_id = u.user_id and u.role_id = 4;",nativeQuery = true)
     List<HistoryRecords> getDataRoleLecture();
+
+    @Query("select h from HistoryRecords h where h.content = 'Register Capstone'")
+    List<HistoryRecords> getCapstoneRegister();
+
+    @Query("select h from HistoryRecords h where h.content = 'Approve Project'")
+    List<HistoryRecords> getCapstoneApprove();
+
+    @Query("select h from HistoryRecords h where h.content = 'Reject Project'")
+    List<HistoryRecords> getCapstoneReject();
+
+    @Query("select h from HistoryRecords h where h.content = 'Booking Lecture'")
+    List<HistoryRecords> getCapstoneBookingSupervisors();
+
+    @Query("select h from HistoryRecords h where h.content = 'add supervisors for capstone'")
+    List<HistoryRecords> getAddSupervisorsForCapstone();
+
 }

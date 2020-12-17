@@ -104,7 +104,7 @@
             <div class="noti-wrap justify-content-end mr-4" style="width: 75%">
                 <div class="noti__item js-item-menu mt-2-lg" id="drd-chat">
                     <i class="far fa-comments" style="font-size: 22px"></i>
-                    <span class="quantity" id="numNewMessage"></span>
+                    <span class="quantity" hidden id="numNewMessage"></span>
                     <div class="mess-dropdown js-dropdown mt-2" id="drd-chat-content" style="border-radius: 15px">
 
                     </div>
@@ -169,7 +169,8 @@
             }
             if (c.indexOf(userName) == 0) {
                 var nameArray = c.substring(userName.length, c.length).split('_');
-                var name = nameArray[0] + " "+ nameArray[1];
+
+                    var name = nameArray[0] + " " + nameArray[nameArray.length -1];
                 $("#user-name").html(name + ' ' + '<i class="fas fa-angle-down"></i>');
                 $("#imageCockiee").attr("alt",name);
                 $("#username-dropdown").text(name);

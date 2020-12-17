@@ -32,8 +32,20 @@
                                         <div class="col-lg-12">
                                             <div class="card" style="margin-top: 30px; margin-bottom: 30px;">
                                                 <div class="overview-wrap" style="margin-left: 22px; margin-bottom: 20px;">
-                                                    <h4 class="title" style="color: green; margin-top: 20px;"
-                                                        th:text="${notification}"></h4> <br/>
+                                                    <div class="row ml-1">
+                                                        <div>
+                                                            <h4 class="title" style="color: green; margin-top: 20px;"
+                                                                th:text="${notification}"></h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2" style="margin-bottom: 20px; float: right; margin-right: 20px">
+                                                    <div class="ml-auto mr-3">
+                                                        <a th:if="${checkWeek == true && checkUserRegister == true && checkBTChangName == true}"
+                                                           class="btn btn-success mt-2" th:href="@{'/changing-name-project/' + ${detail.id}}">Change Name Capstone</a>
+                                                        <a th:if="${checkUserRegister == true}" class="btn btn-success mt-2" th:href="@{'/edit-project/' + ${detail.id}}">Edit</a>
+                                                    </div>
+
                                                 </div>
                                                 <div class="m-4">
                                                     <h2>Information</h2>
@@ -92,7 +104,7 @@
                                                                 <a th:href="@{'/user/' + ${u.id}}"
                                                                    th:text=${u.username}></a></th>
                                                             <td th:each="r: ${u.role}"><p th:text=${r}></p></td>
-                                                            <td>Approved</td>
+                                                            <td>Confirmed</td>
                                                         </tr>
                                                         <tr th:each="u: ${userprojectWaitingApprove}">
                                                             <th style="background: #efefef">
@@ -110,7 +122,7 @@
                                     <div class="row mt-2">
                                         <div class="ml-auto mr-3">
                                             <input th:if="${check_capstone ==true}" class="btn btn-success"
-                                                   name="approve" type="submit" value="Approve" id="approve"
+                                                   name="approve" type="submit" value="Confirm" id="approve"
                                                    onclick="return confirmApprove();">
                                             <input th:if="${check_capstone ==true}" class="btn btn-danger" name="reject"
                                                    type="submit" value="Reject" id="reject"

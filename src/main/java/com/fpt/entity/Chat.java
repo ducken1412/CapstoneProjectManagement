@@ -14,6 +14,8 @@ public class Chat {
     private String content;
     @Column(name = "room", columnDefinition = "NVARCHAR(50) NOT NULL")
     private String roomId;
+    @Column(name = "type", columnDefinition = "NVARCHAR(50)")
+    private String type;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users user;
@@ -23,6 +25,15 @@ public class Chat {
     public Chat() {
     }
 
+    public Chat(Integer id, String content, String roomId, String type, Users user, List<ChatDetails> chatDetail) {
+        this.id = id;
+        this.content = content;
+        this.roomId = roomId;
+        this.type = type;
+        this.user = user;
+        this.chatDetail = chatDetail;
+    }
+
     public Chat(Integer id, String content, String roomId, Users user, List<ChatDetails> chatDetail) {
         this.id = id;
         this.content = content;
@@ -30,6 +41,7 @@ public class Chat {
         this.user = user;
         this.chatDetail = chatDetail;
     }
+
 
     public Integer getId() {
         return id;
@@ -69,5 +81,13 @@ public class Chat {
 
     public void setChatDetail(List<ChatDetails> chatDetail) {
         this.chatDetail = chatDetail;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

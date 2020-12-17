@@ -2,6 +2,8 @@ package com.fpt.repository;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.fpt.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +22,9 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	public Optional<CapstoneProjects> findById(Integer id);
 
 	//kienbt4 add code capstone start
-	@Query(value = "SELECT ru.*,st.name as nameStatus,p.subject_code as subjectCode, count(de.id) as countDetail FROM capstone_projects ru " +
+	@Query(value = "SELECT ru.id, ru.description_action ,ru.description,ru.document,ru.name,ru.name_abbreviation," +
+			"ru.name_lang_other ,ru.name_vi,ru.program,ru.specialty,ru.profession_id,ru.status_id,ru.name_changing,ru.name_vi_changing," +
+			"st.name as nameStatus,p.subject_code as subjectCode, count(de.id) as countDetail FROM capstone_projects ru " +
 			"LEFT JOIN capstone_project_details de ON de.capstone_project_id = ru.id " +
 			"LEFT JOIN status st ON st.id = ru.status_id " +
 			"LEFT JOIN profession p ON p.id = ru.profession_id " +
@@ -43,9 +47,34 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	@Query(value = "update capstone_projects set status_id = 5 where id = ?1", nativeQuery = true)
 	void updateStatusCapstoneProjectSendTD(Integer id);
 
+	//update status project send training department
+	@Transactional
+	@Modifying
+	@Query(value = "update capstone_projects set status_id = 13 where id = ?1", nativeQuery = true)
+	void updateStatusCapstoneProjectChangingName(Integer id);
+
 	//delete user not approve capstone when submit to training department
 	@Transactional
 	@Modifying
 	@Query("delete from CapstoneProjectDetails c where c.status.id = 4 and c.capstoneProject.id = ?1 and c.supType = null")
 	void deleteUserNotSubmitCapstone(Integer id);
+
+	//change name project send training department
+	@Transactional
+	@Modifying
+	@Query("update CapstoneProjects c set c.nameChanging = ?1 , c.nameViChanging = ?2 , c.status = 13 where c.id = ?3")
+	void capstoneProjectChangingName(String nameC, String nameV, Integer id);
+
+	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.capstoneProject.status.name = 'registering_capstone'")
+	CapstoneProjects getCapstoneProjecRegistingtByUserId(String userId);
+
+	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.capstoneProject.status.name <> 'registering_capstone'")
+	CapstoneProjects getCapstoneProjectRegistedByUserId(String userId);
+
+	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.status.name <> 'registering_capstone'")
+	List<Users> findUserByCapstoneProjectId(Integer id);
+
+	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.status.name <> 'registering_capstone'")
+	List<CapstoneProjects> findCapstoneProjectRegistedBySupervisorId(String userId);
+
 }

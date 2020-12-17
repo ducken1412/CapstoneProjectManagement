@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import com.fpt.dto.CapstoneProjectDTO;
+import com.fpt.entity.Users;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.CapstoneProjects;
@@ -33,4 +34,17 @@ public interface CapstoneProjectService {
 
 	boolean deleteUserNotSubmitCapstone(Integer id);
 
+	String updateProject(CapstoneProjectDTO dataForm,Principal principal, String baseUrl,Integer projectId);
+
+	boolean updateStatusCapstoneProjectChangingName(Integer id);
+
+	boolean capstoneProjectChangingName(String nameC, String nameV, Integer id);
+
+	CapstoneProjects getCapstoneProjecRegistingtByUserId(String userId);
+
+	CapstoneProjects getCapstoneProjectRegistedByUserId(String userId);
+
+	List<Users> findUserByCapstoneProjectId(Integer id);
+
+	List<CapstoneProjects> findCapstoneProjectRegistedBySupervisorId(String userId);
 }

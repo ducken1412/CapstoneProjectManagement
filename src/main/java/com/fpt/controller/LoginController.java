@@ -64,7 +64,14 @@ public class LoginController {
 	@RequestMapping("/login-google")
 	public String loginGoogle(HttpServletRequest request, HttpServletResponse response) throws ClientProtocolException, IOException {
 		String code = request.getParameter("code");
-
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null)
+			for (Cookie cookie : cookies) {
+				cookie.setValue("");
+				cookie.setPath("/");
+				cookie.setMaxAge(0);
+				response.addCookie(cookie);
+			}
 		if (code == null || code.isEmpty()) {
 			return "redirect:/login?google=error";
 		}
@@ -82,7 +89,9 @@ public class LoginController {
 		}
 		String userFullName;
 		if (appUser.getFirstName() != null && appUser.getLastName() != null) {
-			userFullName = appUser.getFirstName() + "_" + appUser.getLastName();
+			String firstName = appUser.getFirstName().replace(' ','_');
+
+			userFullName = firstName + "_" + appUser.getLastName();
 		} else if (appUser.getFirstName() != null && appUser.getLastName() == null) {
 			userFullName = appUser.getFirstName();
 		} else {
@@ -92,6 +101,8 @@ public class LoginController {
 		cookie.setMaxAge(1 * 24 * 60 * 60);
 		response.addCookie(cookie);
 		Cookie cookieId = new Cookie("userId", appUser.getId());
+		Cookie cookieName = new Cookie("username", appUser.getUsername());
+		response.addCookie(cookieName);
 		response.addCookie(cookieId);
 		if(appUser.getCapstoneProjectDetails().size() != 0){
 			Cookie cookieDetail = new Cookie("idDetail",

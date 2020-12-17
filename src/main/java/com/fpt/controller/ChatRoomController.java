@@ -2,10 +2,7 @@ package com.fpt.controller;
 
 import com.fpt.dto.ChatDTO;
 import com.fpt.entity.*;
-import com.fpt.service.ChatDetailService;
-import com.fpt.service.ChatService;
-import com.fpt.service.PostService;
-import com.fpt.service.UserService;
+import com.fpt.service.*;
 import com.fpt.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -20,9 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,29 +38,50 @@ public class ChatRoomController {
     private ChatDetailService chatDetailService;
 
     @Autowired
+    private CapstoneProjectService capstoneProjectService;
+
+    @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
-    @GetMapping("/chat/{postId}")
-    public String chat(@PathVariable String postId, Model model, Principal principal) {
-        if(principal == null) {
+    @GetMapping("/messenger/{postId}")
+    public String messenger(@PathVariable String postId, Model model, Principal principal) {
+        if (principal == null) {
             return "redirect:/login";
         }
-        Users users = userService.findByEmail(principal.getName());
-        if (users != null) {
-            model.addAttribute("loggedUser", users.getUsername());
-        } else {
-            return "error/403Page";
-        }
+        Users user = userService.findByEmail(principal.getName());
+        model.addAttribute("loggedUser", user.getUsername());
         try {
             List<Chat> chats = chatService.findByRoomId(postId);
-            Posts post = postService.findById(Integer.parseInt(postId));
-            model.addAttribute("chats",chats);
-            model.addAttribute("post",post);
-        }catch (Exception ex){
-            model.addAttribute("chats",new ArrayList<>());
-            model.addAttribute("post",new Posts());
+            if (postId.startsWith("pr")) {
+                model.addAttribute("roomId", postId);
+                List<String> list = new ArrayList<>(Arrays.asList(postId.split("_")));
+                for (String str : list) {
+                    if (!str.equals(user.getUsername()) && list.indexOf(str) != 0) {
+                        model.addAttribute("title", str);
+                        break;
+                    }
+                }
+            } else if (postId.equals("gr_tr_dep_heads")) {
+                model.addAttribute("title", "Heads And Training Department");
+                model.addAttribute("roomId", postId);
+            } else if (postId.startsWith("cap")) {
+                CapstoneProjects capstoneProject = capstoneProjectService.findById(Integer.parseInt(postId.substring(postId.indexOf("_")+1)));
+                model.addAttribute("title", capstoneProject.getName());
+                model.addAttribute("roomId", postId);
+            } else {
+                Posts post = postService.findById(Integer.parseInt(postId.substring(3)));
+                model.addAttribute("title", post.getTitle());
+                model.addAttribute("roomId", post.getId());
+            }
+            model.addAttribute("chats", chats);
+            chatDetailService.updateChatStatusRead(postId, user.getId());
+        } catch (Exception ex) {
+            System.out.println(ex);
+            model.addAttribute("chats", new ArrayList<>());
+            model.addAttribute("title", "");
+            model.addAttribute("roomId", "");
         }
-        return "chatting/mychat";
+        return "chatting/chat-page";
     }
 
     @MessageMapping("/chat/{roomId}/sendMessage")
@@ -75,24 +91,57 @@ public class ChatRoomController {
         Chat chat = new Chat();
         chat.setRoomId(roomId);
         chat.setContent(chatMessage.getContent());
+        if (roomId.startsWith("pr")) {
+            chat.setType("specific");
+        } else {
+            chat.setType("group");
+        }
+        if (roomId.equals("gr_tr_dep_heads") || roomId.startsWith("cap")) {
+            chat.setType("special");
+        }
         if (userLogin != null) {
             chat.setUser(userLogin);
         }
         List<Users> users = chatService.findUsersInRoom(roomId);
         users.add(userLogin);
+        users = new ArrayList<>(new HashSet<>(users));
         List<ChatDetails> chatDetails = new ArrayList<>();
         ChatDetails temp;
-        for (Users u: users) {
+        for (Users u : users) {
             temp = new ChatDetails();
             temp.setChat(chat);
             temp.setUser(u);
-            temp.setReadStatus(Constant.CHAT_UNREAD);
+            if (u.getId().equals(userLogin.getId())) {
+                temp.setReadStatus(Constant.CHAT_READ);
+            } else {
+                temp.setReadStatus(Constant.CHAT_UNREAD);
+            }
             chatDetails.add(temp);
         }
-        if(!chatDetails.isEmpty()) {
+        if (!chatDetails.isEmpty()) {
             chat.setChatDetail(chatDetails);
         }
         chatService.save(chat);
+        Chat chat1 = chat;
+        List<ChatDetails> chatDetails1 = new ArrayList<>();
+        ChatDetails cd = new ChatDetails();
+        cd.setUser(userLogin);
+        cd.setChat(chat1);
+        cd.setReadStatus(Constant.CHAT_READ);
+        chatDetails1.add(cd);
+        chat.setChatDetail(chatDetails1);
+        for (Users u : users) {
+            if (u.getId() != userLogin.getId()) {
+                chat1.setUser(u);
+                break;
+            }
+        }
+        if (roomId.startsWith("pr")) {
+            chat1.setContent("");
+            chat1.setId(null);
+            chatService.save(chat1);
+            chatDetailService.updateChatStatusRead(chat1.getId().toString(), chat1.getUser().getId());
+        }
     }
 
     @MessageMapping("/chat/{roomId}/addUser")
@@ -112,8 +161,8 @@ public class ChatRoomController {
 
     @ResponseBody
     @GetMapping("/number-new-message")
-    public String getNumMessage(Principal principal){
-        if(principal == null) {
+    public String getNumMessage(Principal principal) {
+        if (principal == null) {
             return "errorLogin";
         }
         int num = chatDetailService.findNumberNewMessage(principal.getName());
@@ -121,22 +170,179 @@ public class ChatRoomController {
     }
 
     @GetMapping("/chat-content")
-    public String getChatContent(Model model,Principal principal){
+    public String getChatContent(Model model, Principal principal) {
         Users userLogin = userService.findByEmail(principal.getName());
         List<ChatDTO> chatDTOS = chatService.findChatsByUserId(userLogin.getId());
+        List<ChatDTO> chatDTOS2 = chatService.findChatPrivateByUserId(userLogin.getId());
+        chatDTOS = Stream.concat(chatDTOS.stream(), chatDTOS2.stream())
+                .collect(Collectors.toList());
         Collections.reverse(chatDTOS);
         List<ChatDTO> readList = new ArrayList<>();
         List<ChatDTO> unreadList = new ArrayList<>();
+        boolean check;
         for (ChatDTO dto : chatDTOS) {
-            if(dto.getReadStatus().equals(Constant.CHAT_READ)) {
-                readList.add(dto);
-            } else {
+            if (dto.getReadStatus().equals(Constant.CHAT_UNREAD)) {
                 unreadList.add(dto);
+            } else {
+                check = false;
+                for (ChatDTO c : unreadList) {
+                    if (c.getId().equals(dto.getId())) {
+                        check = true;
+                    }
+                }
+                if (!check) {
+                    readList.add(dto);
+                }
             }
         }
         chatDTOS = Stream.concat(unreadList.stream(), readList.stream())
                 .collect(Collectors.toList());
+        boolean checkRole = false;
+        for (UserRoles userRoles : userLogin.getRoleUser()) {
+            if (userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_HEAD_DB) || userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_TRAINING_DEP_DB)) {
+                checkRole = true;
+                break;
+            }
+        }
+        boolean checkChatCap = false;
+        boolean checkChatCapSupervisor = false;
+        if (checkRole) {
+            ChatDTO chatDTO = chatService.findChatTrainingDeptAndHeads(userLogin.getId());
+            if (chatDTO == null) {
+                chatDTO = new ChatDTO() {
+                    @Override
+                    public String getId() {
+                        return "gr_tr_dep_heads";
+                    }
+
+                    @Override
+                    public String getTitle() {
+                        return "Heads And Training Department";
+                    }
+
+                    @Override
+                    public String getReadStatus() {
+                        return "read";
+                    }
+
+                    @Override
+                    public String getType() {
+                        return "special";
+                    }
+                };
+            }
+            model.addAttribute("chatTrainingDepHeads", chatDTO);
+        } else {
+            for (UserRoles userRoles : userLogin.getRoleUser()) {
+                if (userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_LEADER_DB) || userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+                    checkRole = true;
+                    break;
+                }
+            }
+            if (checkRole) {
+                CapstoneProjects capstoneProject = capstoneProjectService.getCapstoneProjectRegistedByUserId(userLogin.getId());
+                if (capstoneProject != null && !capstoneProject.getStatus().getName().equals(Constant.STATUS_REGISTERING_CAPSTONE_DB)) {
+                    ChatDTO chatDTO = chatService.findChatGroupCap(userLogin.getId(), "cap_" + capstoneProject.getId());
+                    if (chatDTO == null) {
+                        chatDTO = new ChatDTO() {
+                            @Override
+                            public String getId() {
+                                return "cap_" + capstoneProject.getId();
+                            }
+
+                            @Override
+                            public String getTitle() {
+                                return capstoneProject.getName();
+                            }
+
+                            @Override
+                            public String getReadStatus() {
+                                return "read";
+                            }
+
+                            @Override
+                            public String getType() {
+                                return "special";
+                            }
+                        };
+                    }
+                    checkChatCap = true;
+                    model.addAttribute("chatTrainingDepHeads", chatDTO);
+                }
+
+            } else {
+                for (UserRoles userRoles : userLogin.getRoleUser()) {
+                    if (userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_LECTURERS_DB)) {
+                        checkRole = true;
+                        break;
+                    }
+                }
+                if(checkRole) {
+                    ChatDTO chatDTO;
+                    List<ChatDTO> chatDTOS1 = chatService.findChatGroupCapSupervisor(userLogin.getId());
+                    List<CapstoneProjects> capstoneProjects = capstoneProjectService.findCapstoneProjectRegistedBySupervisorId(userLogin.getId());
+                    if(chatDTOS1.isEmpty()) {
+                        chatDTOS1 = new ArrayList<>();
+                        if(!capstoneProjects.isEmpty()) {
+                            for (CapstoneProjects cap:capstoneProjects) {
+                                chatDTO = new ChatDTO() {
+                                    @Override
+                                    public String getId() {
+                                        return "cap_" + cap.getId();
+                                    }
+                                    @Override
+                                    public String getTitle() {
+                                        return cap.getName();
+                                    }
+
+                                    @Override
+                                    public String getReadStatus() {
+                                        return "read";
+                                    }
+
+                                    @Override
+                                    public String getType() {
+                                        return "special";
+                                    }
+                                };
+                                chatDTOS1.add(chatDTO);
+                            }
+                        }
+                    }
+                    if(!chatDTOS1.isEmpty()) {
+                        checkChatCapSupervisor = true;
+                    }
+                    model.addAttribute("chatCapSupervisor", chatDTOS1);
+                }
+            }
+        }
+        if(!checkChatCapSupervisor) {
+            model.addAttribute("chatCapSupervisor", new ArrayList<>());
+        }
+        model.addAttribute("checkChatCap", checkChatCap);
         model.addAttribute("chats", chatDTOS);
         return "chatting/dropdown-chat-content";
+    }
+
+    @ResponseBody
+    @GetMapping("/find-room")
+    public String findRoom(String room1, String room2, Model model, Principal principal) {
+        String room = chatService.findRoomChatPrivate(room1, room2);
+        return room;
+    }
+
+    @ResponseBody
+    @GetMapping("/check-username-available/{username}")
+    public String checkUsername(@PathVariable String username, Model model, Principal principal) {
+        List<Users> users = userService.findByUsername(username);
+        if (!users.isEmpty()) {
+            return "success";
+        }
+        return "fail";
+    }
+
+    @GetMapping("/create-chat")
+    public String getCreateChat(Model model, Principal principal) {
+        return "chatting/create-chat";
     }
 }

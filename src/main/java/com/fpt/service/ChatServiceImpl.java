@@ -20,6 +20,12 @@ public class ChatServiceImpl implements ChatService {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CapstoneProjectService capstoneProjectService;
+
     @Override
     public Chat findById(Integer id) {
         return chatRepository.findById(id).orElse(null);
@@ -58,10 +64,24 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<Users> findUsersInRoom(String roomId) {
+        if(roomId.equals("gr_tr_dep_heads")){
+            return chatRepository.findUsersInRoomSpecial();
+        }
+        if(roomId.startsWith("cap")) {
+            String capId = roomId.substring(roomId.indexOf("_")+1);
+            return capstoneProjectService.findUserByCapstoneProjectId(Integer.parseInt(capId));
+        }
         List<Users> users = chatRepository.findUsersInRoom(roomId);
         Users author = null;
+        if(roomId.startsWith("pr")) {
+            String tmp = roomId.substring(3);
+            String username = tmp.substring(0,tmp.indexOf("_"));
+            users.add(userService.findByUsername(username).get(0));
+            return users;
+        }
+
         try{
-            author = postService.findAuthorByPostId(Integer.parseInt(roomId));
+            author = postService.findAuthorByPostId(Integer.parseInt(roomId.substring(3)));
         }catch (Exception ex) {
             System.out.println(ex);
         }
@@ -74,6 +94,36 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<ChatDTO> findChatsByUserId(String userId) {
         return chatRepository.findChatsByUserId(userId);
+    }
+
+    @Override
+    public List<ChatDTO> findChatPrivateByUserId(String userId) {
+        return chatRepository.findChatPrivateByUserId(userId);
+    }
+
+    @Override
+    public String findRoomChatPrivate(String roomId1, String roomId2) {
+        return chatRepository.findRoomChatPrivate(roomId1,roomId2);
+    }
+
+    @Override
+    public ChatDTO findChatTrainingDeptAndHeads(String userId) {
+        return chatRepository.findChatTrainingDeptAndHeads(userId);
+    }
+
+    @Override
+    public List<Users> findUsersInRoomSpecial() {
+        return chatRepository.findUsersInRoomSpecial();
+    }
+
+    @Override
+    public ChatDTO findChatGroupCap(String userId, String room) {
+        return chatRepository.findChatGroupCap(userId,room);
+    }
+
+    @Override
+    public List<ChatDTO> findChatGroupCapSupervisor(String userId) {
+        return chatRepository.findChatGroupCapSupervisor(userId);
     }
 
 }

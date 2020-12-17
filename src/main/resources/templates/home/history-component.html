@@ -19,31 +19,31 @@
             <td th:text="${#dates.format(historyRecord.lastModifiedDate, 'yyyy-MMM-dd')}"></td>
         </th:block>
         <th:block th:if="${historyRecord.lastModifiedDate== null}">
-            <td>null</td>
+            <td></td>
         </th:block>
         <th:block th:if="${historyRecord.capstoneProject != null}">
             <td th:text="${historyRecord.capstoneProject.name}"></td>
         </th:block>
         <th:block th:if="${historyRecord.capstoneProject== null}">
-            <td>null</td>
+            <td></td>
         </th:block>
         <th:block th:if="${historyRecord.notification != null}">
             <td th:text="${historyRecord.notification.title}"></td>
         </th:block>
         <th:block th:if="${historyRecord.notification== null}">
-            <td>null</td>
+            <td></td>
         </th:block>
         <th:block th:if="${historyRecord.post != null}">
-            <td th:text="${historyRecord.post.}"></td>
+            <td th:text="${historyRecord.post.title}"></td>
         </th:block>
         <th:block th:if="${historyRecord.post== null}">
-            <td>null</td>
+            <td></td>
         </th:block>
         <th:block th:if="${historyRecord.report != null}">
             <td th:text="${historyRecord.report.title}"></td>
         </th:block>
         <th:block th:if="${historyRecord.report== null}">
-            <td>null</td>
+            <td></td>
         </th:block>
         <td th:text="${historyRecord.user.getUsername()}"></td>
     </tr>

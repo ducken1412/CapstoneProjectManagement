@@ -355,24 +355,8 @@ $(document).on("click", "#chat", function (e) {
         maxSize: 50,
     });
     postContainer = $("#content-body").html();
-    const postId = $(this).attr("postId");
-    $.ajax({
-        url: "/chat/" + postId,
-        type: "GET",
-        success: function (data) {
-            $.LoadingOverlay("hide");
-            $("#content-body").html(data)
-            connect(e, postId)
-            $(document).on("submit", "#messagebox", function (e1) {
-                sendMessage(e1, postId)
-            })
-        },
-        error: function (xhr) {
-            if (xhr.status == 302 || xhr.status == 200) {
-                // window.location.href = "/forum";
-            }
-        },
-    });
+    const postId = 'gr_' + $(this).attr("postId");
+    window.location.href = "/messenger/" + postId;
 })
 
 $(document).on("click", "#back-to-forum", function (e) {

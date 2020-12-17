@@ -1,0 +1,76 @@
+<link rel="stylesheet" type="text/css"
+      th:href="@{/css/forum/forum.css}">
+<div class="pt-3 pl-2" style="max-height: 75vh;overflow-y: auto;cursor: auto">
+    <div class="row ml-1 mr-0">
+        <div>
+            <h3>Messenger</h3>
+        </div>
+        <div class="ml-auto mr-3">
+            <a href="#"><i class="far fa-edit far-sm pt-1" aria-hidden="true" style="font-size: 18px"></i></a>
+        </div>
+    </div>
+    <hr style="border: 1px solid #999">
+    <div class="mess__item py-1 px-2">
+        <div class="content">
+            <div class="form-group row ml-4">
+                <label for="chat-name" class="text-md-right">Username:</label>
+                <div class="d-flex">
+                    <input
+                            type="text" id="chat-name" class="form-control" name="chat-name">
+                    <a type="submit" class="ml-2" id="btn-connect-chat"><i class="fas fa-share-square"></i>
+                    </a>
+                </div>
+                <span id="error-message" class="mt-2" style="color: red"></span>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $('#btn-connect-chat').click(function (e) {
+        $.LoadingOverlay("show", {
+            size: 50,
+            maxSize: 50,
+        });
+        let roomId = 'pr_' + $('#chat-name').val() + '_' + Cookies.get("username");
+        let roomId2 = 'pr_' + Cookies.get("username") + '_' + $('#chat-name').val();
+        $.ajax({
+            url: "/check-username-available/" + $('#chat-name').val(),
+            type: "GET",
+            success: function (data) {
+                if(data === 'fail') {
+                    $('#error-message').text('Not Found!!!');
+                    $.LoadingOverlay("hide");
+                } else {
+                    $.ajax({
+                        url: "/find-room",
+                        type: "GET",
+                        data: {
+                            'room1' : roomId,
+                            'room2' : roomId2,
+                        },
+                        success: function (data) {
+                            if(data !== 'null' && data !== '') {
+                                window.location.href = "/messenger/" + data;
+                            } else {
+                                window.location.href = "/messenger/" + roomId;
+                            }
+                        },
+                        error: function (xhr) {
+                            if (xhr.status == 302 || xhr.status == 200) {
+                                // window.location.href = "/forum";
+                            }
+                        },
+                    });
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status == 302 || xhr.status == 200) {
+                    // window.location.href = "/forum";
+                }
+            },
+        });
+
+    });
+</script>
+

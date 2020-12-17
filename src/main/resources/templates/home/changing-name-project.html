@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Project Name Change</title>
+    <th:block th:include="home/_css"></th:block>
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <th:block th:include="home/_header-mobile"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Project Name Change</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-80" id="content-body">
+                            <div id="post-container">
+                                <div class="row h-auto">
+                                    <div class="card w-100 mx-4">
+                                        <div class="card-body">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body" id="form-content">
+                                                    <div class="alert alert-warning mx-4" role="alert">
+                                                        Warning:
+                                                        <br />
+                                                        You can only rename one times and cannot change anymore. Please be care for this action !
+                                                    </div>
+
+                                                    <form th:action="@{/save-change-name}"  th:method="POST" th:object="${capstoneProject}" method="post" id="update" class="mx-5">
+                                                        <div id="error-container" class="form-group d-none"></div>
+                                                        <input th:value="${capstone.id}" name="id" id="id" hidden/>
+                                                        <div style="margin-top: 20px; margin-bottom: 20px">
+                                                            <p th:text="${notification}" style="color: red"></p>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <label class="text-md-right">Name Changing</label>
+                                                            <input type="text" id="nameChanging" class="form-control" name="nameChanging"  /> <span class="bg-danger pull-right error-mess" th:errors="*{name}" ></span>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="text-md-right">Name Vi Changing</label>
+                                                            <input type="text" id="nameViChanging" class="form-control" name="nameViChanging"  /> <span class="bg-danger pull-right error-mess" th:errors="*{name}" ></span>
+                                                        </div>
+                                                        <div class="text-md-right">
+                                                            <button id="post" type="submit" class="btn btn-info pull-right">
+                                                                <i class="fa fa-dot-circle-o"></i> Submit
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <th:block th:include="home/_footer"></th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<!--<script th:src="@{/js/register-project/register-project.js}"></script>-->
+<!--<script th:src="@{/js/register-project/edit-project.js}"></script>-->
+</body>
+</html>

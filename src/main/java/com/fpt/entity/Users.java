@@ -3,6 +3,7 @@ package com.fpt.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -46,9 +47,8 @@ public class Users implements Serializable {
     private String email;
     @Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
     private Date createdDate;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "locations_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
-    private Locations location;
+    @Column(name = "address", columnDefinition = "NVARCHAR(256)")
+    private String address;
     @Column(name = "description", columnDefinition = "NVARCHAR(256)")
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -87,7 +87,7 @@ public class Users implements Serializable {
     public Users() {
     }
 
-    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, List<ChatDetails> chatDetail) {
+    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, String address, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, List<ChatDetails> chatDetail) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -98,7 +98,7 @@ public class Users implements Serializable {
         this.image = image;
         this.email = email;
         this.createdDate = createdDate;
-        this.location = location;
+        this.address = address;
         this.description = description;
         this.status = status;
         this.roleUser = roleUser;
@@ -114,7 +114,7 @@ public class Users implements Serializable {
         this.chatDetail = chatDetail;
     }
 
-    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, Semesters semester, Sites site) {
+    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, String address, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, Semesters semester, Sites site) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -125,7 +125,7 @@ public class Users implements Serializable {
         this.image = image;
         this.email = email;
         this.createdDate = createdDate;
-        this.location = location;
+        this.address = address;
         this.description = description;
         this.status = status;
         this.roleUser = roleUser;
@@ -222,12 +222,12 @@ public class Users implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Locations getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLocation(Locations location) {
-        this.location = location;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getDescription() {
@@ -348,5 +348,18 @@ public class Users implements Serializable {
 
     public void setChatDetail(List<ChatDetails> chatDetail) {
         this.chatDetail = chatDetail;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users = (Users) o;
+        return id.equals(users.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

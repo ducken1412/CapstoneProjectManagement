@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ChatDetailService {
 	int findNumberNewMessage(String userEmail);
+
+	int updateChatStatusRead(String roomId, String userId);
 }
