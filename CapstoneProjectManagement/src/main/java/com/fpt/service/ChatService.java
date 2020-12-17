@@ -30,4 +30,8 @@ public interface ChatService {
 
 	List<Users> findUsersInRoomSpecial();
 
+	ChatDTO findChatGroupCap(String userId, String room);
+
+	List<ChatDTO> findChatGroupCapSupervisor(String userId);
+
 }

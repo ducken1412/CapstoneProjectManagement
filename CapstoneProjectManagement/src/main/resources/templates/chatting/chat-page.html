@@ -44,8 +44,6 @@
                                 <div class="chat-container">
                                     <div class="chat-header">
                                         <h2 th:text="${title}"></h2>
-                                        <h5 class="text-secondary" th:each="authority : ${#authentication.getPrincipal().authorities}"
-                                            th:if="${roomId == 'gr_tr_dep_heads' && authority.getAuthority() == 'HeadAuthen' || authority.getAuthority() == 'TrainingDepAuthen'}">This is a chat group for the heads and training department</h5>
                                     </div>
                                     <ul id="messageArea" class="mb-2">
                                         <th:block th:each="chat :${chats}">
@@ -94,7 +92,7 @@
 <script>
     $().ready(function (e) {
         var postId = $('#postIdForm').val();
-        if(!postId.startsWith("pr") && postId !== 'gr_tr_dep_heads') {
+        if(!postId.startsWith("pr") && postId !== 'gr_tr_dep_heads' && !postId.startsWith("cap") ) {
             postId = 'gr_' + postId;
         }
         let event = document.createEvent('Event');

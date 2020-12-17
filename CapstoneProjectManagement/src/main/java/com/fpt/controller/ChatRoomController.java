@@ -2,10 +2,7 @@ package com.fpt.controller;
 
 import com.fpt.dto.ChatDTO;
 import com.fpt.entity.*;
-import com.fpt.service.ChatDetailService;
-import com.fpt.service.ChatService;
-import com.fpt.service.PostService;
-import com.fpt.service.UserService;
+import com.fpt.service.*;
 import com.fpt.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -41,6 +38,9 @@ public class ChatRoomController {
     private ChatDetailService chatDetailService;
 
     @Autowired
+    private CapstoneProjectService capstoneProjectService;
+
+    @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
     @GetMapping("/messenger/{postId}")
@@ -63,6 +63,10 @@ public class ChatRoomController {
                 }
             } else if (postId.equals("gr_tr_dep_heads")) {
                 model.addAttribute("title", "Heads And Training Department");
+                model.addAttribute("roomId", postId);
+            } else if (postId.startsWith("cap")) {
+                CapstoneProjects capstoneProject = capstoneProjectService.findById(Integer.parseInt(postId.substring(postId.indexOf("_")+1)));
+                model.addAttribute("title", capstoneProject.getName());
                 model.addAttribute("roomId", postId);
             } else {
                 Posts post = postService.findById(Integer.parseInt(postId.substring(3)));
@@ -92,7 +96,7 @@ public class ChatRoomController {
         } else {
             chat.setType("group");
         }
-        if (roomId.equals("gr_tr_dep_heads")) {
+        if (roomId.equals("gr_tr_dep_heads") || roomId.startsWith("cap")) {
             chat.setType("special");
         }
         if (userLogin != null) {
@@ -200,6 +204,8 @@ public class ChatRoomController {
                 break;
             }
         }
+        boolean checkChatCap = false;
+        boolean checkChatCapSupervisor = false;
         if (checkRole) {
             ChatDTO chatDTO = chatService.findChatTrainingDeptAndHeads(userLogin.getId());
             if (chatDTO == null) {
@@ -226,7 +232,94 @@ public class ChatRoomController {
                 };
             }
             model.addAttribute("chatTrainingDepHeads", chatDTO);
+        } else {
+            for (UserRoles userRoles : userLogin.getRoleUser()) {
+                if (userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_LEADER_DB) || userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+                    checkRole = true;
+                    break;
+                }
+            }
+            if (checkRole) {
+                CapstoneProjects capstoneProject = capstoneProjectService.getCapstoneProjectRegistedByUserId(userLogin.getId());
+                if (capstoneProject != null && !capstoneProject.getStatus().getName().equals(Constant.STATUS_REGISTERING_CAPSTONE_DB)) {
+                    ChatDTO chatDTO = chatService.findChatGroupCap(userLogin.getId(), "cap_" + capstoneProject.getId());
+                    if (chatDTO == null) {
+                        chatDTO = new ChatDTO() {
+                            @Override
+                            public String getId() {
+                                return "cap_" + capstoneProject.getId();
+                            }
+
+                            @Override
+                            public String getTitle() {
+                                return capstoneProject.getName();
+                            }
+
+                            @Override
+                            public String getReadStatus() {
+                                return "read";
+                            }
+
+                            @Override
+                            public String getType() {
+                                return "special";
+                            }
+                        };
+                    }
+                    checkChatCap = true;
+                    model.addAttribute("chatTrainingDepHeads", chatDTO);
+                }
+
+            } else {
+                for (UserRoles userRoles : userLogin.getRoleUser()) {
+                    if (userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_LECTURERS_DB)) {
+                        checkRole = true;
+                        break;
+                    }
+                }
+                if(checkRole) {
+                    ChatDTO chatDTO;
+                    List<ChatDTO> chatDTOS1 = chatService.findChatGroupCapSupervisor(userLogin.getId());
+                    List<CapstoneProjects> capstoneProjects = capstoneProjectService.findCapstoneProjectRegistedBySupervisorId(userLogin.getId());
+                    if(chatDTOS1.isEmpty()) {
+                        chatDTOS1 = new ArrayList<>();
+                        if(!capstoneProjects.isEmpty()) {
+                            for (CapstoneProjects cap:capstoneProjects) {
+                                chatDTO = new ChatDTO() {
+                                    @Override
+                                    public String getId() {
+                                        return "cap_" + cap.getId();
+                                    }
+                                    @Override
+                                    public String getTitle() {
+                                        return cap.getName();
+                                    }
+
+                                    @Override
+                                    public String getReadStatus() {
+                                        return "read";
+                                    }
+
+                                    @Override
+                                    public String getType() {
+                                        return "special";
+                                    }
+                                };
+                                chatDTOS1.add(chatDTO);
+                            }
+                        }
+                    }
+                    if(!chatDTOS1.isEmpty()) {
+                        checkChatCapSupervisor = true;
+                    }
+                    model.addAttribute("chatCapSupervisor", chatDTOS1);
+                }
+            }
         }
+        if(!checkChatCapSupervisor) {
+            model.addAttribute("chatCapSupervisor", new ArrayList<>());
+        }
+        model.addAttribute("checkChatCap", checkChatCap);
         model.addAttribute("chats", chatDTOS);
         return "chatting/dropdown-chat-content";
     }

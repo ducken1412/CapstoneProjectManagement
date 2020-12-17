@@ -23,6 +23,9 @@ public class ChatServiceImpl implements ChatService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CapstoneProjectService capstoneProjectService;
+
     @Override
     public Chat findById(Integer id) {
         return chatRepository.findById(id).orElse(null);
@@ -63,6 +66,10 @@ public class ChatServiceImpl implements ChatService {
     public List<Users> findUsersInRoom(String roomId) {
         if(roomId.equals("gr_tr_dep_heads")){
             return chatRepository.findUsersInRoomSpecial();
+        }
+        if(roomId.startsWith("cap")) {
+            String capId = roomId.substring(roomId.indexOf("_")+1);
+            return capstoneProjectService.findUserByCapstoneProjectId(Integer.parseInt(capId));
         }
         List<Users> users = chatRepository.findUsersInRoom(roomId);
         Users author = null;
@@ -107,6 +114,16 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<Users> findUsersInRoomSpecial() {
         return chatRepository.findUsersInRoomSpecial();
+    }
+
+    @Override
+    public ChatDTO findChatGroupCap(String userId, String room) {
+        return chatRepository.findChatGroupCap(userId,room);
+    }
+
+    @Override
+    public List<ChatDTO> findChatGroupCapSupervisor(String userId) {
+        return chatRepository.findChatGroupCapSupervisor(userId);
     }
 
 }
