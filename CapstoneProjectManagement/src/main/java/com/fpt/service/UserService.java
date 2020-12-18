@@ -1,5 +1,6 @@
 package com.fpt.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fpt.dto.UserManagementDTO;
@@ -59,4 +60,6 @@ public interface UserService {
 
 	//count all student Eligible Capstone by site, semester
 	Integer countStudentEligibleCapstone(String site, String semester);
+
+	boolean updateProfileByUserId(String des, String phone, String address, String img, Date date,String uid);
 }
