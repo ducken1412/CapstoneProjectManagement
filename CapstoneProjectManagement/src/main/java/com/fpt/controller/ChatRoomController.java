@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,6 +49,13 @@ public class ChatRoomController {
         if (principal == null) {
             return "redirect:/login";
         }
+        try{
+            byte[] decodedDocIdBytes = Base64.getDecoder().decode(postId);
+            String decodedDocIdAsString = new String(decodedDocIdBytes, "UTF-8");
+            postId = decodedDocIdAsString;
+        }catch (Exception ex){
+
+        }
         Users user = userService.findByEmail(principal.getName());
         model.addAttribute("loggedUser", user.getUsername());
         try {
@@ -55,17 +63,50 @@ public class ChatRoomController {
             if (postId.startsWith("pr")) {
                 model.addAttribute("roomId", postId);
                 List<String> list = new ArrayList<>(Arrays.asList(postId.split("_")));
+                boolean checkAuth = false;
                 for (String str : list) {
                     if (!str.equals(user.getUsername()) && list.indexOf(str) != 0) {
                         model.addAttribute("title", str);
                         break;
                     }
+                    if(str.equals(user.getUsername())) {
+                        checkAuth = true;
+                    }
+                }
+                for (String str : list) {
+                    if(str.equals(user.getUsername())) {
+                        checkAuth = true;
+                        break;
+                    }
+                }
+                if(!checkAuth) {
+                    return "error/403Page";
                 }
             } else if (postId.equals("gr_tr_dep_heads")) {
+                boolean checkRole = false;
+                for (UserRoles userRoles : user.getRoleUser()) {
+                    if (userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_HEAD_DB) || userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_TRAINING_DEP_DB)) {
+                        checkRole = true;
+                        break;
+                    }
+                }
+                if(!checkRole) {
+                    return "error/403Page";
+                }
                 model.addAttribute("title", "Heads And Training Department");
                 model.addAttribute("roomId", postId);
             } else if (postId.startsWith("cap")) {
                 CapstoneProjects capstoneProject = capstoneProjectService.findById(Integer.parseInt(postId.substring(postId.indexOf("_")+1)));
+                List<CapstoneProjects> capstoneProjects = capstoneProjectService.findCapstoneProjectRegistedBySupervisorId(user.getId());
+                boolean checkAuth = false;
+                for (CapstoneProjects cap:capstoneProjects) {
+                    if(cap.getId().toString().equals(postId.substring(postId.indexOf("_")+1))) {
+                        checkAuth = true;
+                    }
+                }
+                if(!checkAuth) {
+                    return "error/403Page";
+                }
                 model.addAttribute("title", capstoneProject.getName());
                 model.addAttribute("roomId", postId);
             } else {

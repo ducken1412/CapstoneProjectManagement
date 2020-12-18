@@ -51,9 +51,9 @@
                         },
                         success: function (data) {
                             if(data !== 'null' && data !== '') {
-                                window.location.href = "/messenger/" + data;
+                                window.location.href = "/messenger/" + btoa(data);
                             } else {
-                                window.location.href = "/messenger/" + roomId;
+                                window.location.href = "/messenger/" + btoa(roomId);
                             }
                         },
                         error: function (xhr) {

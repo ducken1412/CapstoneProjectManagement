@@ -92,6 +92,9 @@
 <script>
     $().ready(function (e) {
         var postId = $('#postIdForm').val();
+        if(postId !== '') {
+            window.history.pushState("", "", "/messenger/" + btoa(postId));
+        }
         if(!postId.startsWith("pr") && postId !== 'gr_tr_dep_heads' && !postId.startsWith("cap") ) {
             postId = 'gr_' + postId;
         }
