@@ -55,7 +55,7 @@
             <th>Full Name</th>
 
             <th>Gender</th>
-            <th>Phone</th>
+            <th>Created Date</th>
             <th>Email</th>
             <th>Capstone Project</th>
             <th>Status</th>
@@ -79,13 +79,13 @@
 
 
             <th:block th:if="${user.getGender() == 1}">
-                <td>Men</td>
+                <td>Male</td>
             </th:block>
             <th:block th:if="${user.getGender() == 0}">
-                <td>Women</td>
+                <td>Female</td>
             </th:block>
 
-            <td th:text="${user.getPhone()}"></td>
+            <td th:text="${user.getCreatedDate()}"></td>
             <td th:text="${user.getEmail()}"></td>
 
             <td>
@@ -113,7 +113,7 @@
         $('#bootstrap-data-table3').DataTable({
             "pageLength": 50,
             "order": [
-                [1, 'desc']
+                [4, 'desc']
             ]
         });
     });

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository  extends JpaRepository<Users, String>{	
 
 	@Query(value = "SELECT \n" +
-			"  u.id id, u.user_name userName, u.first_name firstName, u.last_name lastName, u.gender gender, u.phone phone, u. email, u.image image, cp.name nameCapstone, s.name site, sem.name semester, sta.name status, cp.id capstoneId \n" +
+			"  u.id id, u.user_name userName, u.first_name firstName, u.last_name lastName, u.gender gender, u.phone phone, u. email, u.image image, cp.name nameCapstone, s.name site, sem.name semester, sta.name status, cp.id capstoneId, u.created_date createdDate \n" +
 			"FROM\n" +
 			"  users u \n" +
 			"  INNER JOIN user_roles ur \n" +
@@ -68,7 +68,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 			"where r.id = ?1 and c.id =?2",nativeQuery = true)
 	List<Users> getUserByUserRoleAndProjectId(Integer id, Integer cid);
 
-	@Query(value = "select u.id id, u.user_name userName, u.first_name firstName, u.last_name lastName, u.gender gender, u.phone phone, u. email, u.image image, cp.name nameCapstone, s.name site, sem.name semester, sta.name status, cp.id capstoneId " +
+	@Query(value = "select u.id id, u.user_name userName, u.first_name firstName, u.last_name lastName, u.gender gender, u.phone phone, u. email, u.image image, cp.name nameCapstone, s.name site, sem.name semester, sta.name status, cp.id capstoneId, u.created_date createdDate " +
 			"from users as u\n" +
 			"join user_roles as ur on u.id = ur.user_id and (ur.role_id = 2 or ur.role_id = 1)\n" +
 			"join capstone_project_details as cpd on cpd.user_id = u.id \n" +
@@ -90,7 +90,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 	Integer countStudent(Integer id,String site, String semester);
 
 	@Query(value = "SELECT \n" +
-			"  u.id id, u.user_name userName, u.first_name firstName, u.last_name lastName, u.gender gender, u.phone phone, u. email, u.image image, cp.name nameCapstone, s.name site, sem.name semester, sta.name status, cp.id capstoneId \n" +
+			"  u.id id, u.user_name userName, u.first_name firstName, u.last_name lastName, u.gender gender, u.phone phone, u. email, u.image image, cp.name nameCapstone, s.name site, sem.name semester, sta.name status, cp.id capstoneId, u.created_date createdDate \n" +
 			"FROM\n" +
 			"  users u \n" +
 			"  INNER JOIN user_roles ur \n" +

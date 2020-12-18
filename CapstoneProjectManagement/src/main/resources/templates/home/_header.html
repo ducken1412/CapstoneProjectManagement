@@ -150,6 +150,10 @@
                                 </div>
                             </div>
                             <div class="account-dropdown__footer">
+                                <a th:if="${#request.userPrincipal != null}" th:href="@{/edit-user}">
+                                    <i class="fas fa-book"></i>Edit Profile</a>
+                            </div>
+                            <div class="account-dropdown__footer">
                                 <a th:if="${#request.userPrincipal != null}" th:href="@{/j_spring_security_logout}">
                                     <i class="fas fa-sign-out-alt"></i>Logout</a>
                             </div>

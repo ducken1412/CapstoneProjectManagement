@@ -19,4 +19,5 @@ public interface UserManagementDTO {
     String getSite();
     String getImage();
     Integer getCapstoneId();
+    String getCreatedDate();
 }
