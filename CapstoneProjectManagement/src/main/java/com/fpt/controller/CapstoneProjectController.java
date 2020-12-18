@@ -1,6 +1,7 @@
 package com.fpt.controller;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -1116,6 +1117,24 @@ public class CapstoneProjectController {
 			return "redirect:/login";
 		}
 		Users user = userService.findByEmail(principal.getName());
+		Date dateCurrent = new Date();
+		Date startRegister = user.getSemester().getStartRegisterCapstone();
+		Date endRegister = user.getSemester().getEndRegisterCapstone();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			startRegister = formatter.parse(startRegister.toString());
+			endRegister = formatter.parse(endRegister.toString());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		if(!startRegister.before(dateCurrent) || !endRegister.after(dateCurrent)) {
+			SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+			model.addAttribute("messageTime", "The start time is " + fmt.format(startRegister) + ", the end time is " + fmt.format(endRegister));
+			model.addAttribute("checkTime", false);
+		} else {
+			model.addAttribute("checkTime", true);
+		}
+		System.out.println(user.getSemester().getEndRegisterCapstone());
 		model.addAttribute("loggedUser", user);
 		List<Profession> professions = professionService.findAll();
 		model.addAttribute("professions", professions);
