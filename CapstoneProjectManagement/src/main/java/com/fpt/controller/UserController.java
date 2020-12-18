@@ -42,117 +42,119 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class UserController {
 
-    @GetMapping("/viewdetail")
-    public String viewDetail() {
-        return "home/view-detail";
-    }
-
-    @GetMapping("/error")
-    public String eror() {
-        return "home/error";
-    }
-
-    @Autowired
-    private StatusService statusService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserRoleService userRoleService;
-    @Autowired
-    private CapstoneProjectService capstoneProjectService;
-    @Autowired
-    private SemestersService semestersService;
-    @Autowired
-    private SitesService sitesService;
-
-    @Autowired
+  
+@GetMapping("/viewdetail")
+	public String viewDetail() {
+		return "home/view-detail";
+	}
+	@GetMapping("/error")
+	public String eror() {
+		return "home/error";
+	}
+	@Autowired
+	private StatusService statusService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private UserRoleService userRoleService;
+	@Autowired
+	private CapstoneProjectService capstoneProjectService;
+	@Autowired
+	private SemestersService semestersService;
+	@Autowired
+	private SitesService sitesService;
+   @Autowired
     FilesStorageService storageService;
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+	public String userProfile(@PathVariable("id") String id, Model model, Principal principal) {
+		if(principal == null) {
+			return "redirect:/login";
+		}
 
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public String userProfile(@PathVariable("id") String id, Model model, Principal principal) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
+		Users user = userService.findById(id);
+		if (user == null) {
+			return "home/error";
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		if(user.getBirthDate() != null) {
+			String parsedDate = formatter.format(user.getBirthDate());
+			model.addAttribute("dob", parsedDate);
+		}else {
+			model.addAttribute("dob", null);
+		}
 
-        Users user = userService.findById(id);
-        if (user == null) {
-            return "home/error";
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        System.out.println(formatter.format(user.getBirthDate()));
-        String parsedDate = formatter.format(user.getBirthDate());
-        model.addAttribute("dob", parsedDate);
-        String parseDate = formatter.format(user.getCreatedDate());
-        model.addAttribute("do", parseDate);
-        model.addAttribute("user", user);
-        List<String> role = userRoleService.getRoleNamesByUserId(id);
-        List<String> roleView = new ArrayList<>();
-        for (String string : role) {
-            if (string.equals(Constant.ROLE_HEAD_DB)) {
-                roleView.add(Constant.ROLE_HEAD);
-            }
-            if (string.equals(Constant.ROLE_LECTURERS_DB)) {
-                roleView.add(Constant.ROLE_LECTURERS);
-            }
-            if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
-                roleView.add(Constant.ROLE_STUDENT_LEADER);
-            }
-            if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
-                roleView.add(Constant.ROLE_STUDENT_MEMBER);
-            }
-            if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
-                roleView.add(Constant.ROLE_TRAINING_DEP);
-            }
-        }
-        if (user.getGender() == 1) {
-            model.addAttribute("gender", "male");
-        } else {
-            model.addAttribute("gender", "female");
+		String parseDate = formatter.format(user.getCreatedDate());
+		model.addAttribute("do", parseDate);
+		model.addAttribute("user", user);
+		List<String> role = userRoleService.getRoleNamesByUserId(id);
+		List<String> roleView = new ArrayList<>();
+		for (String string : role) {
+			if (string.equals(Constant.ROLE_HEAD_DB)) {
+				roleView.add(Constant.ROLE_HEAD);
+			}
+			if (string.equals(Constant.ROLE_LECTURERS_DB)) {
+				roleView.add(Constant.ROLE_LECTURERS);
+			}
+			if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
+				roleView.add(Constant.ROLE_STUDENT_LEADER);
+			}
+			if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+				roleView.add(Constant.ROLE_STUDENT_MEMBER);
+			}
+			if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
+				roleView.add(Constant.ROLE_TRAINING_DEP);
+			}
+		}
+		if (user.getGender() == 1) {
+			model.addAttribute("gender", "male");
+		} else {
+			model.addAttribute("gender", "female");
 
-        }
-        Status status = user.getStatus();
-        if (status == null) {
-            model.addAttribute("status", "");
-        } else {
-            String nameStatus = user.getStatus().getName();
-            switch (nameStatus) {
-                case Constant.STATUS_NOT_ELIGIBLE_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_CAPSTONE);
-                case Constant.STATUS_ELIGIBLE_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_ELIGIBLE_CAPSTONE);
-                case Constant.STATUS_INACTIVE_USER_DB:
-                    model.addAttribute("status", Constant.STATUS_INACTIVE_USER);
-                case Constant.STATUS_REGISTERING_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_REGISTERING_CAPSTONE);
-                case Constant.STATUS_REGISTED_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_REGISTED_CAPSTONE);
-                case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
-                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_LECTURER);
-                case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
-                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_TRAINING);
-                case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:
-                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_HEAD);
-                case Constant.STATUS_DOING_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_DOING_CAPSTONE);
-                case Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE);
-                case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE);
-                case Constant.STATUS_REJECT_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_REJECT_CAPSTONE);
-                case Constant.STATUS_CHANGING_NAME_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_CHANGING_NAME_CAPSTONE);
-                case Constant.STATUS_PENDING_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_PENDING_CAPSTONE);
+		}
+		Status status = user.getStatus();
+		if (status == null) {
+			model.addAttribute("status", "");
+		} else {
+			String nameStatus = user.getStatus().getName();
+			switch (nameStatus) {
+				case Constant.STATUS_NOT_ELIGIBLE_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_CAPSTONE);
+				case Constant.STATUS_ELIGIBLE_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_ELIGIBLE_CAPSTONE);
+				case Constant.STATUS_INACTIVE_USER_DB:
+					model.addAttribute("status", Constant.STATUS_INACTIVE_USER);
+				case Constant.STATUS_REGISTERING_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_REGISTERING_CAPSTONE);
+				case Constant.STATUS_REGISTED_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_REGISTED_CAPSTONE);
+				case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
+					model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_LECTURER);
+				case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
+					model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_TRAINING);
+				case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:
+					model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_HEAD);
+				case Constant.STATUS_DOING_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_DOING_CAPSTONE);
+				case Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE);
+				case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE);
+				case Constant.STATUS_REJECT_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_REJECT_CAPSTONE);
+				case Constant.STATUS_CHANGING_NAME_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_CHANGING_NAME_CAPSTONE);
+				case Constant.STATUS_PENDING_CAPSTONE_DB:
+					model.addAttribute("status", Constant.STATUS_PENDING_CAPSTONE);
 
-            }
-        }
+			}
+		}
 
-        model.addAttribute("roleView", roleView);
-        List<String> capstone = capstoneProjectService.getCapstoneProjectNameByUserId(id);
-        model.addAttribute("capstone", capstone);
-        return "home/view-detail";
-    }
+		model.addAttribute("roleView", roleView);
+		List<String> capstone = capstoneProjectService.getCapstoneProjectNameByUserId(id);
+		model.addAttribute("capstone", capstone);
+		return "home/view-detail";
+		}
+
 
     @RequestMapping(value = "/student-managements", method = RequestMethod.GET)
     public String studentManagment(Model model, Principal principal) {

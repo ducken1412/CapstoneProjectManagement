@@ -1,3 +1,8 @@
+$(document).ready(function () {
+    getSearch();
+    $('#notification-container').css('display', 'none');
+});
+
 
 function getSearch() {
     const params = new URL(location.href).searchParams;

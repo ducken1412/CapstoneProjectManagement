@@ -35,4 +35,11 @@ public class SemestersServiceImpl implements SemestersService {
 		return semestersRepository.getSemesterByUserId(userId);
 	}
 
+	@Override
+	public Semesters saveSemesters(Semesters semesters) {
+
+		semestersRepository.save(semesters);
+		return semesters;
+	}
+
 }

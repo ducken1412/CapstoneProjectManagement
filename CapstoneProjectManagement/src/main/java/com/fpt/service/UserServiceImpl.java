@@ -57,6 +57,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public boolean saveAll(List<Users> user) {
+		try {
+			userRepository.saveAll(user);
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public List<Users> findAll() {
 		return userRepository.findAll();
 }
@@ -111,6 +121,7 @@ public class UserServiceImpl implements UserService {
 	public List<Users> getUserByUserRoleAndProjectId(Integer id, Integer cid) {
 		return userRepository.getUserByUserRoleAndProjectId(id,cid);
 	}
+
 
 	@Override
 	public List<UserManagementDTO> getUserStudentByStatusId(Integer id) {
