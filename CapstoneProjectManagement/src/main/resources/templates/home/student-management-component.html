@@ -1,0 +1,120 @@
+<div style="margin-top: 30px;">
+    <table>
+        <tr>
+            <th>
+                <div>Students are eligible for the scheme Capstone Project:</div>
+            </th>
+            <th>
+                <div style="margin-left: 10px">
+                    <h4 th:text="${countStudentEligibleCapstone}"></h4>
+                </div>
+            </th>
+            <th>
+                <div style="margin-left: 10px">
+                    <h4>/</h4>
+                </div>
+            </th>
+            <th>
+                <div style="margin-left: 10px">
+                    <h4 th:text="${countStudent}"></h4>
+                </div>
+            </th>
+        </tr>
+    </table>
+    <table style="margin-top: 20px">
+        <tr>
+            <th>
+                <div>Total student doing capstone project:</div>
+            </th>
+            <th>
+                <div style="margin-left: 10px">
+                    <h4 th:text="${countStudentDoingCP}"></h4>
+                </div>
+            </th>
+        </tr>
+    </table>
+    <table style="margin-top: 20px">
+        <tr>
+            <th>
+                <div>Total student has no team capstone project:</div>
+            </th>
+            <th>
+                <div style="margin-left: 10px">
+                    <h4 th:text="${countStudentHasNoTeam}"></h4>
+                </div>
+            </th>
+        </tr>
+    </table>
+</div>
+<div style="margin-top: 50px;">
+    <table id="bootstrap-data-table3" class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Username</th>
+            <th>Full Name</th>
+
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Capstone Project</th>
+            <th>Status</th>
+            <th>Semester</th>
+            <th>Site</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+
+            <td>
+                <a th:href="@{'/user/' + ${user.getId()}}">
+                    <h5><span style="color: rgb(74, 137, 191)"
+                              th:text="${user.getId()}"></span></h5>
+                </a>
+            </td>
+
+            <td th:text="${user.getUserName()}"></td>
+            <td th:text="${user.getFirstName() + ' '+ user.getLastName()}"></td>
+
+
+            <th:block th:if="${user.getGender() == 1}">
+                <td>Men</td>
+            </th:block>
+            <th:block th:if="${user.getGender() == 0}">
+                <td>Women</td>
+            </th:block>
+
+            <td th:text="${user.getPhone()}"></td>
+            <td th:text="${user.getEmail()}"></td>
+
+            <td>
+                <a th:href="@{'/project-detail/' + ${user.getCapstoneId()}}">
+                    <h5><span style="color: rgb(74, 137, 191)"
+                              th:text="${user.getNameCapstone()}"></span></h5>
+                </a>
+            </td>
+
+            <td th:text="${user.getStatus()}"></td>
+            <td th:text="${user.getSemester()}"></td>
+            <td th:text="${user.getSite()}"></td>
+            <td>
+                <div class="profile-img">
+                    <img th:src="${user.getImage()}" style="width: 150px; padding-left: 50px;"
+                         alt="" class="image">
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#bootstrap-data-table3').DataTable({
+            "pageLength": 50,
+            "order": [
+                [1, 'desc']
+            ]
+        });
+    });
+</script>

@@ -1,10 +1,8 @@
 package com.fpt.service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-import com.fpt.entity.Reports;
+import com.fpt.dto.UserManagementDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,7 +16,7 @@ public interface UserService {
 	List<Users> getAllUser();
 	
 	//list all user role student
-	List<Users> getAllUserStudent();
+	List<UserManagementDTO> getAllUserStudent(String site, String semester);
 
 	boolean deleteUser(String id);
 
@@ -43,4 +41,22 @@ public interface UserService {
 	Users getUserByUserName(String id);
 
 	List<Users> getUserByUserRoleAndProjectId(Integer id, Integer cid);
+
+	//get user by status project
+	List<UserManagementDTO> getUserStudentByStatusId(Integer id);
+
+	//count student
+	Integer countStudent(Integer id,String site, String semester);
+
+	//get all student has no team project
+	List<UserManagementDTO> getAllUserStudentHasNoTeam(String site, String semester);
+
+	//count student has no team
+	Integer countStudentHasNoTeam(String site, String semester);
+
+	//count all student by site, semester
+	Integer countAllStudent(String site, String semester);
+
+	//count all student Eligible Capstone by site, semester
+	Integer countStudentEligibleCapstone(String site, String semester);
 }

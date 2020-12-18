@@ -6,9 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fpt.dto.UserManagementDTO;
+import com.fpt.entity.*;
+import com.fpt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +27,13 @@ import com.fpt.service.CapstoneProjectService;
 import com.fpt.service.StatusService;
 import com.fpt.service.UserRoleService;
 import com.fpt.service.UserService;
+
 import com.fpt.utils.Constant;
+
 @Controller
 public class UserController {
-	
-	@GetMapping("/viewdetail")
+  
+@GetMapping("/viewdetail")
 	public String viewDetail() {
 		return "home/view-detail";
 	}
@@ -41,6 +49,10 @@ public class UserController {
 	private UserRoleService userRoleService;
 	@Autowired
 	private CapstoneProjectService capstoneProjectService;
+	@Autowired
+	private SemestersService semestersService;
+	@Autowired
+	private SitesService sitesService;
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
 	public String userProfile(@PathVariable("id") String id, Model model, Principal principal) {
 		if(principal == null) {
@@ -126,7 +138,139 @@ public class UserController {
 		model.addAttribute("capstone", capstone);
 		return "home/view-detail";
 		}
-	}
+
+    @RequestMapping(value = "/student-managements", method = RequestMethod.GET)
+    public String studentManagment(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        List<Sites> sites = sitesService.findAll();
+        model.addAttribute("sites", sites);
+
+        List<Semesters> semesters = semestersService.findAll();
+        model.addAttribute("semesters", semesters);
+        return "home/student-management";
+    }
+
+    @RequestMapping(value = "/student-management", method = RequestMethod.GET)
+    public String loadDataTableToTheDropdown(Model model, @RequestParam(required=false,name = "type") String typeParam, @RequestParam(required=false,name ="site") String site,
+                                             @RequestParam(required=false,name ="semester") String semester, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        //count student doing capstone
+        Integer countStudentDoingCp = userService.countStudent(9,site,semester);
+
+        //count student has no team
+        Integer countStudentHasNoTeam = userService.countStudentHasNoTeam(site, semester);
+
+        //count student has no team
+        Integer countStudent = userService.countAllStudent(site, semester);
+
+        //count student has no team
+        Integer countStudentEligibleCapstone = userService.countStudentEligibleCapstone(site, semester);
+
+        model.addAttribute("countStudentEligibleCapstone",countStudentEligibleCapstone);
+        model.addAttribute("countStudent", countStudent);
+        model.addAttribute("countStudentHasNoTeam", countStudentHasNoTeam);
+        model.addAttribute("countStudentDoingCP", countStudentDoingCp);
+
+        List<UserManagementDTO> users;
+        Integer type = Integer.parseInt(typeParam);
+        switch (type) {
+            //get all student
+            case 1:
+                users = userService.getAllUserStudent(site,semester);
+                model.addAttribute("users", users);
+                break;
+
+            //get student doing capstone project
+            case 2:
+                users = userService.getUserStudentByStatusId(9);
+                model.addAttribute("users", users);
+                break;
+
+            //get student registering project
+            case 3:
+                users = userService.getUserStudentByStatusId(4);
+                model.addAttribute("users", users);
+                break;
+
+            //Registered Capstone Project by status project
+            case 4:
+                users = userService.getUserStudentByStatusId(5);
+                model.addAttribute("users", users);
+                break;
+
+            //Approve Capstone Supervisor by status project
+            case 5:
+                users = userService.getUserStudentByStatusId(6);
+                model.addAttribute("users", users);
+                break;
+
+            //Approve Capstone Training Department by status project
+            case 6:
+                users = userService.getUserStudentByStatusId(7);
+                model.addAttribute("users", users);
+                break;
+
+            //Approve Capstone Head by status project
+            case 7:
+                users = userService.getUserStudentByStatusId(8);
+                model.addAttribute("users", users);
+                break;
+
+            //Not Eligible Defence Capstone by status project
+            case 8:
+                users = userService.getUserStudentByStatusId(10);
+                model.addAttribute("users", users);
+                break;
+
+            //Eligible Defence Capstone by status project
+            case 9:
+                users = userService.getUserStudentByStatusId(11);
+                model.addAttribute("users", users);
+                break;
+
+            //Reject Capstone by status project
+            case 10:
+                users = userService.getUserStudentByStatusId(12);
+                model.addAttribute("users", users);
+                break;
+
+            //Changing Name Capstone by status project
+            case 11:
+                users = userService.getUserStudentByStatusId(13);
+                model.addAttribute("users", users);
+                break;
+
+            //Pending Capstone by status project
+            case 12:
+                users = userService.getUserStudentByStatusId(14);
+                model.addAttribute("users", users);
+                break;
+
+            //Change Name Capstone Supervisor by status project
+            case 13:
+                users = userService.getUserStudentByStatusId(15);
+                model.addAttribute("users", users);
+                break;
+
+            //List student has no team
+            case 14:
+                users = userService.getAllUserStudentHasNoTeam(site,semester);
+                model.addAttribute("users", users);
+                break;
+        }
+
+
+        return "home/student-management-component";
+    }
+
+}
+
 		
 		
 
