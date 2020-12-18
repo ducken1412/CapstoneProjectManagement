@@ -31,7 +31,7 @@
         <label for="dropProfession" class="text-md-right">Profession
             Project</label> <select th:field="*{profession}" class="form-control"
                                     id="dropProfession" name="dropProfession">
-        <option th:each="profession : ${professions}" th:value="${profession.id}"
+        <option th:each="profession : ${professions}" th:minMember="${profession.minMember}" th:maxMember="${profession.maxMember}" th:value="${profession.id}"
                 th:text="${profession.name}"></option>
     </select>
     </div>
@@ -60,7 +60,16 @@
                 <button id="btn-add-member" class="btn btn-primary">Add</button>
             </div>
         </div>
-        <span class="text-danger d-none" id="error-message"></span>
+        <div class="d-block">
+            <div class="d-block">
+                <span class="text-secondary" id="member-message"></span>
+            </div>
+            <div class="d-block">
+                <span class="text-danger d-none" id="error-message"></span>
+            </div>
+        </div>
+
+
     </div>
     <div class="form-group row attrTable">
         <table class="members" id="member-table">
@@ -110,7 +119,7 @@
                                  name="file-multiple-input" multiple class="form-control-file">
     </div>
 
-    <div class="text-md-right">
+    <div class="text-md-right" th:if="${checkTime}">
         <button type="submit" class="btn btn-primary" id="btn-register-project" style="">
             <span id="loading-add" class="spinner-border spinner-border-sm"
                   role="status" aria-hidden="true" hidden="true"></span> Submit
