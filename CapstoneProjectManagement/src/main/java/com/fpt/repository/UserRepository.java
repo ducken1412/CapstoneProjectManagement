@@ -1,5 +1,6 @@
 package com.fpt.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,10 +9,13 @@ import com.fpt.entity.Reports;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.fpt.entity.Users;
+import org.springframework.transaction.annotation.Transactional;
+
 @Repository
 public interface UserRepository  extends JpaRepository<Users, String>{	
 
@@ -173,4 +177,8 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 			"  OR r.name = 'student_member') and sta.name = 'eligible_capstone' and s.name = ?1 and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
 	Integer countStudentEligibleCapstone(String site, String semester);
 
+	@Transactional
+	@Modifying
+	@Query("update Users u set u.description = ?1, u.phone = ?2, u.address = ?3, u.image = ?4, u.birthDate = ?5 where u.id = ?6")
+	void updateProfileByUserId(String des, String phone, String address, String img, Date date,String uid);
 }

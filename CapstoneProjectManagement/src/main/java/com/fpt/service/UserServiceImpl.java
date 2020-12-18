@@ -1,5 +1,6 @@
 package com.fpt.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fpt.dto.UserManagementDTO;
@@ -139,6 +140,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Integer countStudentEligibleCapstone(String site, String semester) {
 		return userRepository.countStudentEligibleCapstone(site,semester);
+	}
+
+    @Override
+	public boolean updateProfileByUserId(String des, String phone, String address, String img, Date date,String uid) {
+		try {
+			userRepository.updateProfileByUserId(des,phone,address,img,date,uid);
+			return true;
+		}catch (Exception e){
+			System.out.println(e);
+		}
+		return false;
 	}
 
 
