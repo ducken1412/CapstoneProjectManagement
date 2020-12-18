@@ -49,6 +49,10 @@ public class UserController {
 	private UserRoleService userRoleService;
 	@Autowired
 	private CapstoneProjectService capstoneProjectService;
+	@Autowired
+	private SemestersService semestersService;
+	@Autowired
+	private SitesService sitesService;
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
 	public String userProfile(@PathVariable("id") String id, Model model, Principal principal) {
 		if(principal == null) {
@@ -146,28 +150,6 @@ public class UserController {
 
         List<Semesters> semesters = semestersService.findAll();
         model.addAttribute("semesters", semesters);
-
-
-        List<CapstoneProjectDetails> details = null;
-//        List<UserManagementDTO> users = userService.getAllUserStudent(site, semester);
-//        model.addAttribute("users", users);
-
-//        //count student doing capstone
-//        Integer countStudentDoingCp = userService.countStudent(9);
-//
-//        //count student has no team
-//        Integer countStudentHasNoTeam = userService.countStudentHasNoTeam(site, semester);
-//
-//        //count student has no team
-//        Integer countStudent = userService.countAllStudent(site, semester);
-//
-//        //count student has no team
-//        Integer countStudentEligibleCapstone = userService.countStudentEligibleCapstone(site, semester);
-//
-//        model.addAttribute("countStudentEligibleCapstone",countStudentEligibleCapstone);
-//        model.addAttribute("countStudent", countStudent);
-//        model.addAttribute("countStudentHasNoTeam", countStudentHasNoTeam);
-//        model.addAttribute("countStudentDoingCP", countStudentDoingCp);
         return "home/student-management";
     }
 
