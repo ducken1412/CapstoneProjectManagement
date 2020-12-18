@@ -11,7 +11,9 @@ import java.util.*;
 
 import com.fpt.dto.TaskDetailsDTO;
 import com.fpt.entity.TaskDetails;
+import com.fpt.entity.Users;
 import com.fpt.service.TaskDetailsService;
+import org.apache.catalina.User;
 import org.apache.http.client.utils.DateUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -121,6 +123,100 @@ public class ExcelHelper {
         return taskDetails;
     }
 
+    public static List<Users> excelToUsers(Sheet sheet) {
+
+        Iterator<Row> rows = sheet.iterator();
+
+        List<Users> usersList = new ArrayList<Users>();
+
+        int rowNumber = 0;
+        while (rows.hasNext()) {
+            Row currentRow = rows.next();
+            // skip header
+            if (rowNumber == 0) {
+                rowNumber++;
+                continue;
+            }
+            boolean checkTask = true;
+
+            Iterator<Cell> cellsInRow = currentRow.iterator();
+
+            Users users = new Users();
+            int cellIdx = 0;
+            while (cellsInRow.hasNext()) {
+                Cell currentCellCheck = currentRow.getCell(cellIdx);
+                String header = sheet.getRow(0).getCell(cellIdx).getStringCellValue();
+                if (header == null) {
+                    checkTask = false;
+                    cellIdx++;
+                    break;
+                }
+                if (currentCellCheck == null){
+                    cellIdx++;
+                    continue;
+                }
+
+                Cell currentCell = cellsInRow.next();
+
+
+
+                switch (header.toLowerCase().trim()) {
+                    case "id":
+                        users.setId(getDataFromExcel(currentCell));
+                        break;
+
+                    case "description":
+                        users.setDescription(getDataFromExcel(currentCell));
+                        break;
+
+                    case "email":
+                        users.setEmail(getDataFromExcel(currentCell));
+                        break;
+
+                    case "first name":
+                        users.setFirstName(getDataFromExcel(currentCell));
+                        break;
+
+                    case "gender":
+                        if(getDataFromExcel(currentCell).equalsIgnoreCase("male")){
+                            users.setGender(1);
+                        }else {
+                            users.setGender(0);
+                        }
+                        break;
+                    case "last name":
+                        users.setLastName(getDataFromExcel(currentCell));
+                        break;
+                    case "phone":
+                        users.setPhone(getDataFromExcel(currentCell));
+                        break;
+                    case "user name":
+                        users.setUsername(getDataFromExcel(currentCell));
+                        break;
+                    case "address":
+                        users.setAddress(getDataFromExcel(currentCell));
+                        break;
+                    case "birth date":
+                        Date birthDate =  DateUtils.parseDate(getDataFromExcel(currentCell),
+                                new String[] { "yyyy-MM-dd","dd/MM/yyyy","yyyy/MM/dd","dd-MM-yyyy" });
+                        users.setBirthDate(birthDate);
+                        break;
+
+                    default:
+                        break;
+                }
+                cellIdx++;
+            }
+            if (checkTask) {
+                usersList.add(users);
+
+            }
+
+        }
+        // workbook.close();
+        return usersList;
+    }
+
     private static String getDataFromExcel(Cell cell) {
         Object result;
         switch (cell.getCellType()) {
@@ -140,6 +236,110 @@ public class ExcelHelper {
                 return null;
         }
         return result.toString().trim();
+    }
+
+    public static List<String> checkErrorExcelUserImport(Sheet sheet) {
+        Iterator<Row> rows = sheet.iterator();
+        int countId = 0;
+        int countUserName = 0;
+        int countAddress = 0;
+        int countEmail = 0;
+        int countFirstName= 0;
+        int countGender = 0;
+        int countLastName= 0;
+        int countPhone = 0;
+        List<String> errorList =  new ArrayList<>();
+
+        while (rows.hasNext()) {
+            int cellIdx = 0;
+            Row currentRow = rows.next();
+            Iterator<Cell> cellsInRow = currentRow.iterator();
+            while (cellsInRow.hasNext()) {
+                Cell currentCellCheck = currentRow.getCell(cellIdx);
+
+                if(cellIdx > 9){
+                    break;
+                }
+                String header = sheet.getRow(0).getCell(cellIdx).getStringCellValue();
+                if (header == null) {
+                    cellIdx++;
+                    break;
+                }
+
+                if (currentCellCheck == null && !header.toLowerCase().trim().equalsIgnoreCase("description") &&
+                        !header.toLowerCase().trim().equalsIgnoreCase("birth date") ){
+                    errorList.add("Row :" +currentRow.getRowNum()+ " Column: "+header+ " is not null");
+                    cellIdx++;
+                    continue;
+                }
+
+
+                switch (header.toLowerCase().trim()) {
+                    case "id":
+                        countId = countId + 1;
+                        break;
+
+                    case "user name":
+                        countUserName = countUserName + 1;
+                        break;
+
+                    case "address":
+                        countAddress = countAddress + 1;
+                        break;
+
+                    case "email":
+                        countEmail = countEmail + 1;
+                        break;
+
+                    case "first name":
+                        countFirstName = countFirstName + 1;
+                        break;
+                    case "gender":
+                        countGender = countGender + 1;
+                        break;
+
+                    case "last name":
+                        countLastName = countLastName + 1;
+                        break;
+                    case "phone":
+                        countPhone = countPhone + 1;
+                        break;
+                    default:
+                        break;
+                }
+                cellIdx++;
+            }
+        }
+
+        String errorMess="";
+        if(countUserName == 0){
+            errorMess = errorMess +"user name,";
+        }
+        if(countAddress == 0){
+            errorMess = errorMess +"address,";
+        }
+        if(countFirstName == 0){
+            errorMess = errorMess +"First Name,";
+        }
+        if(countLastName == 0){
+            errorMess = errorMess +"Last Name,";
+        }
+        if(countEmail == 0){
+            errorMess = errorMess +"Email,";
+        }
+        if(countGender == 0){
+            errorMess = errorMess +"Gender,";
+        }
+        if(countPhone == 0){
+            errorMess = errorMess +"Phone,";
+        }
+        if(countId == 0){
+            errorMess = errorMess +"Id,";
+        }
+        if(errorMess!= ""){
+            errorList.add("You are missing the following columns: " + errorMess);
+        }
+        return errorList;
     }
 
     public static List<String> checkErrorExcelImport(Sheet sheet) {

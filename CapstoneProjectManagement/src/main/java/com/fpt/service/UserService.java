@@ -24,6 +24,8 @@ public interface UserService {
 
 	boolean save(Users user);
 
+	boolean saveAll(List<Users> user);
+
 	List<Users> findAll();
 	List<Users> getUserByRoleId(Integer id);
 	

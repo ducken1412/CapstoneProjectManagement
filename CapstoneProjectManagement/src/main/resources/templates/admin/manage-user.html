@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Report</title>
+    <th:block th:include="home/_css"></th:block>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <th:block th:include="home/_header-mobile"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Add User</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-80" id="content-body">
+                            <div class="alert alert-success mx-4" role="alert"
+                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkUpdateSuccess  == true}">
+                                User successfully updated!!!!
+                                <br>
+                                <a th:href="@{'/report/'}">Click here</a> to view detail page.
+                            </div>
+                            <div class="alert alert-danger mx-4" role="alert"
+                                 style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkUpdateError == true}">
+                                Error:
+                                <br>
+                                <p th:text="${checkSemester}">
+                                <br>
+                                <p th:text="${formartExcel}">
+                                <br>
+                                <div th:if="${errorList != null}">
+                                    <th:block th:each="item : ${errorList}">
+                                        <br>
+                                         <p th:text="${item}"/>
+                                    </th:block>
+                                </div>
+
+                            </div>
+                            <!-- content here -->
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    <form th:action="@{/add-user}" th:object="${manageUserDTO}" method="post"  enctype="multipart/form-data">
+
+                                        <div class="row form-group">
+                                            <div class="col col-md-2">
+                                                <label for="role" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Role</label>
+                                            </div>
+                                            <div class="col-12 col-md-10">
+                                                <select  class="form-control mr-3"  style="width: 250px;"
+                                                         id="role" name="role" >
+                                                    <option value="2" label="Student"></option>
+                                                    <option value="3" label="Head"></option>
+                                                    <option value="4" label="Lectures"></option>
+                                                    <option value="5" label="Training Department"></option>
+                                                    <option value="6" label="Head And Lectures"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group" id="divStatus">
+                                            <div class="col col-md-2">
+                                                <label for="role" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Status</label>
+                                            </div>
+                                            <div class="col-12 col-md-10">
+                                                <select  class="form-control mr-3"  style="width: 250px;"
+                                                         id="status" name="status" >
+                                                    <option value="2" label="Eligible Capstone"></option>
+                                                    <option value="1" label="Not Eligible Capstone"></option>
+
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col col-md-2">
+                                                    <label for="site" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Site</label>
+                                            </div>
+                                            <div class="col-12 col-md-10">
+                                                <select  class="form-control mr-3"  style="width: 250px;"
+                                                         id="site" name="site" >
+                                                    <option th:each="item : ${sites}" th:value="${item.id}"
+                                                            th:text="${item.name}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-2">
+                                                <label for="divSemester" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Semester</label>
+                                            </div>
+                                            <div class="col-12 col-md-10">
+                                                <p>Do you want to create semester?</p>
+                                                <fieldset id="isUpdateSemester">
+                                                    <label for="age1">Yes</label>
+                                                    <input type="radio" checked id="age1"   name="isUpdateSemester" value="1">
+                                                    <label for="age1">No</label>
+                                                    <input type="radio" id="age2" name="isUpdateSemester" value="0">
+                                                </fieldset>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="row form-group" id="semseterUpdate">
+                                            <div class="col col-md-2">
+                                                <label for="site" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Update Semester</label>
+                                            </div>
+                                            <div class="col-12 col-md-10">
+                                                <select  class="form-control mr-3"  style="width: 250px;"
+                                                         id="semester" name="semester" >
+                                                    <option th:each="item : ${semesters}" th:value="${item.id}"
+                                                            th:text="${item.name}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div id="divSemester">
+                                            <div class="row form-group">
+                                                <div class="col col-md-2">
+                                                    <label for="nameSemester" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Name Semester</label>
+                                                </div>
+                                                <div class="col-12 col-md-10">
+                                                        <input name="nameSemester" id="nameSemester"
+                                                           placeholder="Name Semester " class="form-control"/>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col col-md-2">
+                                                    <label for="startDate" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Period Of Semesters</label>
+                                                </div>
+                                                <div class="col-12 col-md-10">
+
+                                                    <div class="row">
+                                                        <div class="col-2  col-md-2">
+                                                            Start Date:
+                                                        </div>
+                                                        <div class="col-4 col-md-4">
+                                                            <div class="input-group date" data-provide="datepicker" >
+                                                                <input  name="startDate" id="startDate" type="text" class="form-control"  placeholder="MM/DD/YYY">
+                                                                <div class="input-group-addon">
+                                                                    <span class="fas fa-calendar-alt"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2 col-md-2">
+                                                            End Date:
+                                                        </div>
+                                                        <div class="col-4 col-md-4">
+                                                            <div class="input-group date" data-provide="datepicker">
+                                                                <input name="endDate" id="endDate" type="text" class="form-control" placeholder="MM/DD/YYY">
+                                                                <div class="input-group-addon">
+                                                                    <span class="fas fa-calendar-alt"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row form-group">
+                                                <div class="col col-md-2">
+                                                    <label for="startDateRegister" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">PERIOD of registration</label>
+                                                </div>
+                                                <div class="col-12 col-md-10">
+                                                    <div class="row">
+                                                        <div class="col-2 col-md-2">
+                                                            Start Date:
+                                                        </div>
+                                                        <div class="col-4 col-md-4">
+                                                            <div class="input-group date" data-provide="datepicker">
+                                                                <input name="startDateRegister" id="startDateRegister" type="text" class="form-control" placeholder="MM/DD/YYY">
+                                                                <div class="input-group-addon">
+                                                                    <span class="fas fa-calendar-alt"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2 col-md-2">
+                                                            End Date:
+                                                        </div>
+                                                        <div class="col-4 col-md-4">
+                                                            <div class="input-group date" data-provide="datepicker">
+                                                                <input name="endDateRegister" id="endDateRegister" type="text" class="form-control" placeholder="MM/DD/YYY">
+                                                                <div class="input-group-addon">
+                                                                    <span class="fas fa-calendar-alt"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div  class="row form-group">
+                                            <div class="col col-md-2">
+                                                <label for="fileInputUpload" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Add a
+                                                    files</label>
+                                            </div>
+                                            <div class="col-12 col-md-10">
+                                                <input type="file" id="fileInputUpload" name="file" class="fileUploadClass" >
+                                                <div id="uploadFile">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div >
+                                            <button id="post" type="submit" class="btn btn-info pull-right">
+                                                <i class="fa fa-dot-circle-o"></i> Submit
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- content here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <th:block th:include="home/_footer"></th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="topic-container" data-toggle="modal"
+             tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" id="modal-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+
+<script type="text/javascript">
+    $(document).ready(function (){
+
+        if ($("#age2").prop("checked")) {
+            $('#divSemester').css('display','none');
+            $('#semseterUpdate').removeAttr('style');
+
+        }else {
+            $('#semseterUpdate').css('display','none');
+            $('#divSemester').removeAttr('style');
+        }
+    })
+    $(document).on("click", "#post", function (e) {
+        $.LoadingOverlay("show", {
+            size: 50,
+            maxSize: 50,
+        });});
+
+    $(document).on("change", "#role", function (e) {
+        debugger;
+       if( $('#role').val() === "2"){
+           $('#divStatus').removeAttr('style');
+
+       }else {
+           $('#divStatus').css('display','none');
+       }
+    });
+
+    $(document).on("change", "#age2", function (e) {
+
+        if ($("#age2").prop("checked")) {
+            $('#divSemester').css('display','none');
+            $('#semseterUpdate').removeAttr('style');
+
+        }else {
+            $('#semseterUpdate').css('display','none');
+            $('#divSemester').removeAttr('style');
+        }
+
+    });
+    $(document).on("change", "#age1", function (e) {
+
+        if ($("#age2").prop("checked")) {
+            $('#divSemester').css('display','none');
+            $('#semseterUpdate').removeAttr('style');
+
+        }else {
+            $('#semseterUpdate').css('display','none');
+            $('#divSemester').removeAttr('style');
+        }
+
+    });
+
+</script>
+</body>
+</html>
