@@ -65,10 +65,26 @@
                     <li>
                         <a th:href="@{/lecturers}">
                             <i class="fas  fa-user"></i>
-                            <span class="bot-line"></span>Lectures</a>
+                            <span class="bot-line"></span>Supervisors</a>
+                    </li>
+                    <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                        th:if="${authority.getAuthority() == 'TrainingDepAuthen'}">
+                        <a href="#">
+                            <i class="fas fa-copy"></i>
+                            <span class="bot-line"></span>Manage User</a>
+                        <ul class="header3-sub-list list-unstyled">
+                            <li >
+                                <a th:href="@{/ad/manageuser}">Create Users</a>
+                            </li>
+
+                            <li >
+                                <a  th:href="@{/student-managements}" >Manage Student</a>
+                            </li>
+                        </ul>
                     </li>
 
-                    <li class="has-sub">
+                    <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                        th:if="${authority.getAuthority() != 'HeadAuthen' && authority.getAuthority() != 'TrainingDepAuthen'}">
                         <a href="#">
                             <i class="fas  fa-bullhorn"></i>
                             <span class="bot-line"></span>Reports</a>
@@ -86,7 +102,8 @@
                             </li>
                         </ul>
                     </li>
-                     <li class="has-sub">
+                     <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                         th:if="${authority.getAuthority() == 'MemberAuthen' || authority.getAuthority() == 'LeaderAuthen'}">
                        <a href="#">
                             <i class="fas fa-american-sign-language-interpreting"></i>
                             <span class="bot-line"></span>Model</a>

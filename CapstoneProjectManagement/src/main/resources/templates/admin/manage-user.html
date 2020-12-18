@@ -27,7 +27,7 @@
                                  style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkUpdateSuccess  == true}">
                                 User successfully updated!!!!
                                 <br>
-                                <a th:href="@{'/report/'}">Click here</a> to view detail page.
+                                <a th:href="@{'/student-managements'}">Click here</a> to view detail page.
                             </div>
                             <div class="alert alert-danger mx-4" role="alert"
                                  style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkUpdateError == true}">
@@ -52,7 +52,7 @@
 
                                         <div class="row form-group">
                                             <div class="col col-md-2">
-                                                <label for="role" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Role</label>
+                                                <label for="role" class=" form-control-label" style="font-size: 18px;width: 90%; ">Role</label>
                                             </div>
                                             <div class="col-12 col-md-10">
                                                 <select  class="form-control mr-3"  style="width: 250px;"
@@ -68,7 +68,7 @@
 
                                         <div class="row form-group" id="divStatus">
                                             <div class="col col-md-2">
-                                                <label for="role" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Status</label>
+                                                <label for="role" class=" form-control-label" style="font-size: 18px;width: 90%;">Status</label>
                                             </div>
                                             <div class="col-12 col-md-10">
                                                 <select  class="form-control mr-3"  style="width: 250px;"
@@ -83,7 +83,7 @@
 
                                         <div class="row form-group">
                                             <div class="col col-md-2">
-                                                    <label for="site" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Site</label>
+                                                    <label for="site" class=" form-control-label" style="font-size: 18px;width: 90%; ">Site</label>
                                             </div>
                                             <div class="col-12 col-md-10">
                                                 <select  class="form-control mr-3"  style="width: 250px;"
@@ -95,7 +95,7 @@
                                         </div>
                                         <div class="row form-group">
                                             <div class="col col-md-2">
-                                                <label for="divSemester" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Semester</label>
+                                                <label for="divSemester" class=" form-control-label" style="font-size: 18px;width: 90%; ">Semester</label>
                                             </div>
                                             <div class="col-12 col-md-10">
                                                 <p>Do you want to create semester?</p>
@@ -111,7 +111,7 @@
                                         </div>
                                         <div class="row form-group" id="semseterUpdate">
                                             <div class="col col-md-2">
-                                                <label for="site" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Update Semester</label>
+                                                <label for="site" class=" form-control-label" style="font-size: 18px;width: 90%; ">Update Semester</label>
                                             </div>
                                             <div class="col-12 col-md-10">
                                                 <select  class="form-control mr-3"  style="width: 250px;"
@@ -124,7 +124,7 @@
                                         <div id="divSemester">
                                             <div class="row form-group">
                                                 <div class="col col-md-2">
-                                                    <label for="nameSemester" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Name Semester</label>
+                                                    <label for="nameSemester" class=" form-control-label" style="font-size: 18px;width: 90%; ">Name Semester</label>
                                                 </div>
                                                 <div class="col-12 col-md-10">
                                                         <input name="nameSemester" id="nameSemester"
@@ -135,7 +135,7 @@
 
                                             <div class="row form-group">
                                                 <div class="col col-md-2">
-                                                    <label for="startDate" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Period Of Semesters</label>
+                                                    <label for="startDate" class=" form-control-label" style="font-size: 18px;width: 90%; ">Period Of Semesters</label>
                                                 </div>
                                                 <div class="col-12 col-md-10">
 
@@ -169,7 +169,7 @@
 
                                             <div class="row form-group">
                                                 <div class="col col-md-2">
-                                                    <label for="startDateRegister" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">PERIOD of registration</label>
+                                                    <label for="startDateRegister" class=" form-control-label" style="font-size: 18px;width: 90%; ">Period  of registration</label>
                                                 </div>
                                                 <div class="col-12 col-md-10">
                                                     <div class="row">
@@ -203,16 +203,21 @@
 
                                         <div  class="row form-group">
                                             <div class="col col-md-2">
-                                                <label for="fileInputUpload" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Add a
+                                                <label for="fileInputUpload" class=" form-control-label" style="font-size: 18px;width: 90%; ">Add a
                                                     files</label>
                                             </div>
-                                            <div class="col-12 col-md-10">
+                                            <div class="col-3 col-md-3">
                                                 <input type="file" id="fileInputUpload" name="file" class="fileUploadClass" >
                                                 <div id="uploadFile">
                                                 </div>
                                             </div>
+                                            <div class="col-9 col-md-7">
+                                                <a th:href="'/file/UserDataImport.xlsx'">Download template to import </a>
+                                            </div>
+
                                         </div>
                                         <div >
+
                                             <button id="post" type="submit" class="btn btn-info pull-right">
                                                 <i class="fa fa-dot-circle-o"></i> Submit
                                             </button>

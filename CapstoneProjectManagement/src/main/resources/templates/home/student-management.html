@@ -9,7 +9,7 @@
 <body>
 <div class="page-wrapper">
     <div class="page-container">
-        <th:block th:include="home/_header-no-notification"></th:block>
+        <th:block th:include="home/_header"></th:block>
         <th:block th:include="home/_header-mobile"></th:block>
         <div class="main-content">
             <div class="section__content section__content--p30">
@@ -36,6 +36,7 @@
                                                 <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border"
                                                      style="width: 170px; margin-left: 20px;">
                                                     <select class="js-select2" id="dr-site">
+                                                        <option value="-1">All</option>
                                                         <option th:each="sites : ${sites}" th:value="${sites.name}"
                                                                 th:text="${sites.name}"></option>
                                                     </select>

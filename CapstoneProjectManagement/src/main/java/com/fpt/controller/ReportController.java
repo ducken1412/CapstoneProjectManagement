@@ -81,7 +81,7 @@ public class ReportController {
     private NotificationDetailService notificationDetailService;
 
     @Autowired
-    private SemestersService semestersService;
+    private StatusService statusService;
 
 
     @GetMapping("/report")
@@ -90,10 +90,12 @@ public class ReportController {
             return "redirect:/login";
         }
 
+
         Users user = userService.findByEmail(principal.getName());
-        if(user.getCapstoneProjectDetails().isEmpty() ||
-                !user.getCapstoneProjectDetails().get(0).getStatus().getName().equals(Constant.STATUS_DOING_CAPSTONE_DB)||
-                !user.getCapstoneProjectDetails().get(0).getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB)
+        Status status = statusService.findStatusByUserId(user.getId());
+        if(user.getCapstoneProjectDetails().isEmpty() || (
+                !status.getName().equals(Constant.STATUS_DOING_CAPSTONE_DB) &&
+                !status.getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB))
         ){
             return "error/403Page";
         }

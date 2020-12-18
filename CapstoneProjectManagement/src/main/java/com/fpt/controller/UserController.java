@@ -64,9 +64,13 @@ public class UserController {
 			return "home/error";
 		}
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		System.out.println(formatter.format(user.getBirthDate()));
-		String parsedDate = formatter.format(user.getBirthDate());
-		model.addAttribute("dob", parsedDate);
+		if(user.getBirthDate() != null) {
+			String parsedDate = formatter.format(user.getBirthDate());
+			model.addAttribute("dob", parsedDate);
+		}else {
+			model.addAttribute("dob", null);
+		}
+
 		String parseDate = formatter.format(user.getCreatedDate());
 		model.addAttribute("do", parseDate);
 		model.addAttribute("user", user);

@@ -295,6 +295,10 @@ public class ExcelHelper {
                         countFirstName = countFirstName + 1;
                         break;
                     case "gender":
+                        if(currentRow.getRowNum() !=0 && !getDataFromExcel(currentCellCheck).equalsIgnoreCase("male") &&
+                                !getDataFromExcel(currentCellCheck).equalsIgnoreCase("female")){
+                            errorList.add("Row :" +currentRow.getRowNum()+ " Column: "+header+ " must male or female");
+                        }
                         countGender = countGender + 1;
                         break;
 

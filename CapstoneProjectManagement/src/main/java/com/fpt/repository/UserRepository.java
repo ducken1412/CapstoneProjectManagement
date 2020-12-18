@@ -34,7 +34,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 			"LEFT JOIN status sta\n" +
 			"\tON sta.id = u.status_id\n" +
 			"WHERE (r.name = 'student_leader' \n" +
-			"  OR r.name = 'student_member') and s.name = ?1 and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
+			"  OR r.name = 'student_member') and (s.name = ?1 OR ?1 = '-1')  and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
 	List<UserManagementDTO> getAllUserStudent(String site, String semester);
 	List<Users> findByUsername(String username);
 	Optional<Users> findByEmail(String email);
@@ -82,7 +82,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 			"join sites s on s.id = u.site_id\n" +
 			"join semesters sem on sem.id = u.semester_id\n" +
 			"join status sta on sta.id = u.status_id " +
-			"where s.name = ?2 and (sem.name = ?3 OR ?3 = '-1')", nativeQuery = true)
+			"where (s.name = ?2 or  ?2 = '-1') and (sem.name = ?3 OR ?3 = '-1')", nativeQuery = true)
 	Integer countStudent(Integer id,String site, String semester);
 
 	@Query(value = "SELECT \n" +
@@ -104,7 +104,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 			"LEFT JOIN status sta\n" +
 			"\tON sta.id = u.status_id\n" +
 			"WHERE (r.name = 'student_leader' \n" +
-			"  OR r.name = 'student_member') and cp.name is Null and sta.name = 'eligible_capstone' and s.name = ?1 and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
+			"  OR r.name = 'student_member') and cp.name is Null and sta.name = 'eligible_capstone' and (s.name = ?1 OR ?1 = '-1') and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
 	List<UserManagementDTO> getAllUserStudentHasNoTeam(String site, String semester);
 
 	@Query(value = "SELECT \n" +
@@ -126,7 +126,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 			"LEFT JOIN status sta\n" +
 			"\tON sta.id = u.status_id\n" +
 			"WHERE (r.name = 'student_leader' \n" +
-			"  OR r.name = 'student_member') and cp.name is Null and sta.name = 'eligible_capstone' and s.name = ?1 and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
+			"  OR r.name = 'student_member') and cp.name is Null and sta.name = 'eligible_capstone' and (s.name = ?1 OR ?1 = '-1') and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
 	Integer countStudentHasNoTeam(String site, String semester);
 
 	@Query(value = "SELECT \n" +
@@ -148,7 +148,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 			"LEFT JOIN status sta\n" +
 			"\tON sta.id = u.status_id\n" +
 			"WHERE (r.name = 'student_leader' \n" +
-			"  OR r.name = 'student_member') and s.name = ?1 and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
+			"  OR r.name = 'student_member') and (s.name = ?1 OR ?1 = '-1') and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
 	Integer countAllStudent(String site, String semester);
 
 	@Query(value = "SELECT \n" +
@@ -170,7 +170,7 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 			"LEFT JOIN status sta\n" +
 			"\tON sta.id = u.status_id\n" +
 			"WHERE (r.name = 'student_leader' \n" +
-			"  OR r.name = 'student_member') and sta.name = 'eligible_capstone' and s.name = ?1 and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
+			"  OR r.name = 'student_member') and sta.name = 'eligible_capstone' and (s.name = ?1 OR ?1 = '-1') and (sem.name = ?2 OR ?2 = '-1')", nativeQuery = true)
 	Integer countStudentEligibleCapstone(String site, String semester);
 
 }
