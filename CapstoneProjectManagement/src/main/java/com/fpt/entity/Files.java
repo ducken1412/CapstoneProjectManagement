@@ -32,7 +32,7 @@ public class Files {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "evaluation_id")
 	private Evaluations evaluation;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "post_id")
 	private Posts post;
 

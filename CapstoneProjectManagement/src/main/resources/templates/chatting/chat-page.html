@@ -1,0 +1,104 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Forum</title>
+    <th:block th:include="home/_css"></th:block>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/forum/forum.css}">
+    <style>
+        .card-messagebox {
+            background-color: #e5e5e5;
+            border: none;
+            border-radius: 15px;
+        }
+        .chat-container {
+            border-radius: 15px;
+        }
+        #message {
+            border-radius: 15px;
+        }
+        #btn-send-messagebox{
+            border-radius: 15px;
+        }
+    </style>
+<body>
+<div class="page-wrapper">
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <th:block th:include="home/_header-mobile"></th:block>
+        <div class="main-content">
+
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Messenger
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="w-80 p-1" id="content-body">
+                            <div id="chat-page" class="container">
+                                <div class="chat-container">
+                                    <div class="chat-header">
+                                        <h2 th:text="${title}"></h2>
+                                    </div>
+                                    <ul id="messageArea" class="mb-2">
+                                        <th:block th:each="chat :${chats}">
+                                            <div class="card card-messagebox mb-1" th:if="${chat.content != ''}">
+                                                <div class="card-body p-0">
+                                                    <li class="chat-message">
+                                                        <i class="far fa-user" style="background-color: #a9b3c9;"></i>
+                                                        <span th:text="${chat.user.username}"></span>
+                                                        <p th:text="${chat.content}"></p>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                        </th:block>
+                                    </ul>
+                                    <input type="text" id="userLogged" th:value="${loggedUser}" hidden/>
+                                    <div>
+                                        <form id="messagebox" name="messagebox">
+                                            <input type="text" id="postIdForm" th:value="${roomId}" hidden/>
+                                            <div class="form-group">
+                                                <div class="input-group mx-4" style="width: 95%">
+                                                    <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
+                                                    <button type="submit" class="btn btn-success ml-2" id="btn-send-messagebox">Send</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <th:block th:include="home/_footer"></th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<script th:src="@{/js/chatting/mychat.js}"></script>
+</body>
+</html>
+<script>
+    $().ready(function (e) {
+        var postId = $('#postIdForm').val();
+        if(!postId.startsWith("pr") && postId !== 'gr_tr_dep_heads' && !postId.startsWith("cap") ) {
+            postId = 'gr_' + postId;
+        }
+        let event = document.createEvent('Event');
+        connect(event, postId);
+        $(document).on("submit", "#messagebox", function (e1) {
+            sendMessage(e1, postId);
+        })
+    })
+</script>

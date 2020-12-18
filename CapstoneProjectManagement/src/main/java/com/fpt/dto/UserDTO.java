@@ -3,7 +3,6 @@ package com.fpt.dto;
 import java.util.Date;
 import java.util.List;
 import com.fpt.entity.CapstoneProjects;
-import com.fpt.entity.Locations;
 import com.fpt.entity.Reports;
 import com.fpt.entity.Status;
 
@@ -19,7 +18,7 @@ public class UserDTO {
 	private String phone;
 	private String email;
 	private Date createdDate;
-	private Locations location;
+	private String address;
 	private String description;
 	private Status status;
 	private CapstoneProjects capstoneProject;
@@ -29,7 +28,7 @@ public class UserDTO {
 	public UserDTO() {
 	}
 
-	public UserDTO(String id, String userName, String firstName, String lastName, Date birthDate, Integer gender, String phone, String email, Date createdDate, Locations location, String description, Status status, CapstoneProjects capstoneProject, Reports reportReceive, List<Reports> reportReceives) {
+	public UserDTO(String id, String userName, String firstName, String lastName, Date birthDate, Integer gender, String phone, String email, Date createdDate, String address, String description, Status status, CapstoneProjects capstoneProject, Reports reportReceive, List<Reports> reportReceives) {
 		this.id = id;
 		this.userName = userName;
 		this.firstName = firstName;
@@ -39,7 +38,7 @@ public class UserDTO {
 		this.phone = phone;
 		this.email = email;
 		this.createdDate = createdDate;
-		this.location = location;
+		this.address = address;
 		this.description = description;
 		this.status = status;
 		this.capstoneProject = capstoneProject;
@@ -119,12 +118,12 @@ public class UserDTO {
 		this.createdDate = createdDate;
 	}
 
-	public Locations getLocation() {
-		return location;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setLocation(Locations location) {
-		this.location = location;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getDescription() {

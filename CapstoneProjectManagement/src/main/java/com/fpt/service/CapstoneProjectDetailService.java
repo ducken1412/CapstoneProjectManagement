@@ -69,4 +69,5 @@ public interface CapstoneProjectDetailService {
 	CapstoneProjectDetails checkUserCapstoneDetail(String username, Integer id);
 
 	List<Users> findUserByCapstoneProjectDetailId(Integer id);
+
 }

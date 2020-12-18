@@ -100,7 +100,7 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
         }
         Users user = userService.findByEmail(principal.getName());
         CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(user.getId());
-        if (capstoneProject != null) {
+        if (capstoneProject != null && !capstoneProject.getStatus().getName().equalsIgnoreCase(Constant.STATUS_REJECT_CAPSTONE_DB)) {
             errors.add("You already have a project");
             output.put("hasError", true);
             output.put("errors", errors);
@@ -404,5 +404,25 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
             System.out.println("error add capstone project");
         }
         return false;
+    }
+
+    @Override
+    public CapstoneProjects getCapstoneProjecRegistingtByUserId(String userId) {
+        return capstoneProjectRepository.getCapstoneProjecRegistingtByUserId(userId);
+    }
+
+    @Override
+    public CapstoneProjects getCapstoneProjectRegistedByUserId(String userId) {
+        return capstoneProjectRepository.getCapstoneProjectRegistedByUserId(userId);
+    }
+
+    @Override
+    public List<Users> findUserByCapstoneProjectId(Integer id) {
+        return capstoneProjectRepository.findUserByCapstoneProjectId(id);
+    }
+
+    @Override
+    public List<CapstoneProjects> findCapstoneProjectRegistedBySupervisorId(String userId) {
+        return capstoneProjectRepository.findCapstoneProjectRegistedBySupervisorId(userId);
     }
 }

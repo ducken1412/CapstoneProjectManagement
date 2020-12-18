@@ -90,7 +90,7 @@ public class TaskController {
             model.addAttribute("nameProject", nameProject);
             model.addAttribute("contacts", contacts);
         }catch (Exception ex) {
-
+            System.out.println(ex);
         }
         return "admin/task-detail";
     }

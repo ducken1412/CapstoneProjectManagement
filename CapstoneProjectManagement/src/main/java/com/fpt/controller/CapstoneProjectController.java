@@ -218,10 +218,10 @@ public class CapstoneProjectController {
 			detail.setProgram((String) obj[8]);
 			detail.setSpecialty((String) obj[9]);
 			detail.setProfession_id((Integer) obj[10]);
-			detail.setStatus_id((Integer) obj[13]);
-			detail.setNameChanging((String) obj[14]);
-			detail.setNameChangingVi((String) obj[15]);
-			String nameStatus = (String) obj[16];
+			detail.setStatus_id((Integer) obj[11]);
+			detail.setNameChanging((String) obj[12]);
+			detail.setNameChangingVi((String) obj[13]);
+			String nameStatus = (String) obj[14];
 			switch (nameStatus) {
 				case Constant.STATUS_REGISTERING_CAPSTONE_DB:
 					nameStatus = Constant.STATUS_REGISTERING_CAPSTONE;
@@ -266,7 +266,7 @@ public class CapstoneProjectController {
 					nameStatus = null;
 			}
 			detail.setNameStatus(nameStatus);
-			detail.setSubjectCode(String.valueOf(obj[17] + "_" + obj[0]));
+			detail.setSubjectCode(String.valueOf(obj[15] + "_" + obj[0]));
 			Integer countstudent = capstoneProjectService.getCountStudent((Integer) obj[0]);
 			detail.setCountDetail(countstudent);
 			detail.setDetail(null);
@@ -1179,6 +1179,7 @@ public class CapstoneProjectController {
 		if(principal == null) {
 			return "redirect:/login";
 		}
+
 		String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
 		Map<String, Object> output = new HashMap<>();
 		List<String> errors = new ArrayList<>();

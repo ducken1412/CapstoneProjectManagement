@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import com.fpt.entity.Locations;
 import com.fpt.entity.Status;
 
 public class ListLecturersDTO {
@@ -29,7 +28,7 @@ public class ListLecturersDTO {
 	private String phone;
 	private String userName;
     private Integer capstone_project_id;
-    private Integer locations_id;
+    private String address;
     private Integer report_detail_id;
     private Integer report_receive_id;
     private Integer status_id;
@@ -134,12 +133,12 @@ public class ListLecturersDTO {
 		this.capstone_project_id = capstone_project_id;
 	}
 
-	public Integer getLocations_id() {
-		return locations_id;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setLocations_id(Integer locations_id) {
-		this.locations_id = locations_id;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public Integer getReport_detail_id() {
@@ -168,7 +167,7 @@ public class ListLecturersDTO {
 
 	public ListLecturersDTO(String id, Date birthDate, Date createdDate, String description, String email,
 			String encrytedPassword, String firstName, Integer gender, String lastName, String phone, String userName,
-			Integer capstone_project_id, Integer locations_id, Integer report_detail_id, Integer report_receive_id,
+			Integer capstone_project_id, String address, Integer report_detail_id, Integer report_receive_id,
 			Integer status_id) {
 		super();
 		this.id = id;
@@ -183,7 +182,7 @@ public class ListLecturersDTO {
 		this.phone = phone;
 		this.userName = userName;
 		this.capstone_project_id = capstone_project_id;
-		this.locations_id = locations_id;
+		this.address = address;
 		this.report_detail_id = report_detail_id;
 		this.report_receive_id = report_receive_id;
 		this.status_id = status_id;
@@ -191,7 +190,7 @@ public class ListLecturersDTO {
 
 	public ListLecturersDTO(Date birthDate, Date createdDate, String description, String email, String encrytedPassword,
 			String firstName, Integer gender, String lastName, String phone, String userName,
-			Integer capstone_project_id, Integer locations_id, Integer report_detail_id, Integer report_receive_id,
+			Integer capstone_project_id, String address, Integer report_detail_id, Integer report_receive_id,
 			Integer status_id) {
 		super();
 		this.birthDate = birthDate;
@@ -205,7 +204,7 @@ public class ListLecturersDTO {
 		this.phone = phone;
 		this.userName = userName;
 		this.capstone_project_id = capstone_project_id;
-		this.locations_id = locations_id;
+		this.address = address;
 		this.report_detail_id = report_detail_id;
 		this.report_receive_id = report_receive_id;
 		this.status_id = status_id;

@@ -47,9 +47,8 @@ public class Users implements Serializable {
     private String email;
     @Column(name = "created_date", columnDefinition = "DATETIME NOT NULL")
     private Date createdDate;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "locations_id", referencedColumnName = "id", columnDefinition = "INT NOT NULL")
-    private Locations location;
+    @Column(name = "address", columnDefinition = "NVARCHAR(256)")
+    private String address;
     @Column(name = "description", columnDefinition = "NVARCHAR(256)")
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -88,7 +87,7 @@ public class Users implements Serializable {
     public Users() {
     }
 
-    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, List<ChatDetails> chatDetail) {
+    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, String address, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, List<ChatDetails> chatDetail) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -99,7 +98,7 @@ public class Users implements Serializable {
         this.image = image;
         this.email = email;
         this.createdDate = createdDate;
-        this.location = location;
+        this.address = address;
         this.description = description;
         this.status = status;
         this.roleUser = roleUser;
@@ -115,7 +114,7 @@ public class Users implements Serializable {
         this.chatDetail = chatDetail;
     }
 
-    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, Locations location, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, Semesters semester, Sites site) {
+    public Users(String id, String username, String firstName, String lastName, Date birthDate, Integer gender, String phone, String image, String email, Date createdDate, String address, String description, Status status, List<UserRoles> roleUser, List<HistoryRecords> historyRecords, List<CapstoneProjectDetails> capstoneProjectDetails, List<NotificationDetails> notificationDetails, List<Reports> reportReceives, List<Comments> comments, EvaluationDetails evaluationDetail, List<Posts> posts, List<Chat> chats, List<Reports> report, Semesters semester, Sites site) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -126,7 +125,7 @@ public class Users implements Serializable {
         this.image = image;
         this.email = email;
         this.createdDate = createdDate;
-        this.location = location;
+        this.address = address;
         this.description = description;
         this.status = status;
         this.roleUser = roleUser;
@@ -223,12 +222,12 @@ public class Users implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Locations getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLocation(Locations location) {
-        this.location = location;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getDescription() {
@@ -356,36 +355,11 @@ public class Users implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Users users = (Users) o;
-        return Objects.equals(id, users.id) &&
-                Objects.equals(username, users.username) &&
-                Objects.equals(firstName, users.firstName) &&
-                Objects.equals(lastName, users.lastName) &&
-                Objects.equals(birthDate, users.birthDate) &&
-                Objects.equals(gender, users.gender) &&
-                Objects.equals(phone, users.phone) &&
-                Objects.equals(image, users.image) &&
-                Objects.equals(email, users.email) &&
-                Objects.equals(createdDate, users.createdDate) &&
-                Objects.equals(location, users.location) &&
-                Objects.equals(description, users.description) &&
-                Objects.equals(status, users.status) &&
-                Objects.equals(roleUser, users.roleUser) &&
-                Objects.equals(historyRecords, users.historyRecords) &&
-                Objects.equals(capstoneProjectDetails, users.capstoneProjectDetails) &&
-                Objects.equals(notificationDetails, users.notificationDetails) &&
-                Objects.equals(reportReceives, users.reportReceives) &&
-                Objects.equals(comments, users.comments) &&
-                Objects.equals(evaluationDetail, users.evaluationDetail) &&
-                Objects.equals(posts, users.posts) &&
-                Objects.equals(chats, users.chats) &&
-                Objects.equals(report, users.report) &&
-                Objects.equals(chatDetail, users.chatDetail) &&
-                Objects.equals(semester, users.semester) &&
-                Objects.equals(site, users.site);
+        return id.equals(users.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, firstName, lastName, birthDate, gender, phone, image, email, createdDate, location, description, status, roleUser, historyRecords, capstoneProjectDetails, notificationDetails, reportReceives, comments, evaluationDetail, posts, chats, report, chatDetail, semester, site);
+        return Objects.hash(id);
     }
 }

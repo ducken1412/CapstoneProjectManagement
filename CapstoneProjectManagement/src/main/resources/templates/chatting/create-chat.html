@@ -13,13 +13,16 @@
     <div class="mess__item py-1 px-2">
         <div class="content">
             <div class="form-group row ml-4">
-                <label for="chat-name" class="text-md-right">Username</label> <input
-                    type="text" id="chat-name" class="form-control" name="chat-name">
+                <label for="chat-name" class="text-md-right">Username:</label>
+                <div class="d-flex">
+                    <input
+                            type="text" id="chat-name" class="form-control" name="chat-name">
+                    <a type="submit" class="ml-2" id="btn-connect-chat"><i class="fas fa-share-square"></i>
+                    </a>
+                </div>
+                <span id="error-message" class="mt-2" style="color: red"></span>
             </div>
-            <div class="text-md-right">
-                <button type="submit" class="btn btn-primary" id="btn-connect-chat" style="">Connect
-                </button>
-            </div>
+
         </div>
     </div>
 </div>
@@ -32,48 +35,26 @@
         let roomId = 'pr_' + $('#chat-name').val() + '_' + Cookies.get("username");
         let roomId2 = 'pr_' + Cookies.get("username") + '_' + $('#chat-name').val();
         $.ajax({
-            url: "/find-room",
+            url: "/check-username-available/" + $('#chat-name').val(),
             type: "GET",
-            data: {
-                'room1' : roomId,
-                'room2' : roomId2,
-            },
             success: function (data) {
-                if(data !== 'null' && data !== '') {
-                    $.ajax({
-                        url: "/chat/" + data,
-                        type: "GET",
-                        success: function (d) {
-                            $('#drd-chat').removeClass('show-dropdown');
-                            $.LoadingOverlay("hide");
-                            $("#content-body").html(d);
-                            let event = document.createEvent('Event');
-                            connect(event, data);
-                            $(document).on("submit", "#messagebox", function (e1) {
-                                var postCurrent = $('#postIdForm').val();
-                                sendMessage(e1, data);
-                            })
-                        },
-                        error: function (xhr) {
-                            if (xhr.status == 302 || xhr.status == 200) {
-                                // window.location.href = "/forum";
-                            }
-                        },
-                    });
+                if(data === 'fail') {
+                    $('#error-message').text('Not Found!!!');
+                    $.LoadingOverlay("hide");
                 } else {
                     $.ajax({
-                        url: "/chat/" + roomId,
+                        url: "/find-room",
                         type: "GET",
+                        data: {
+                            'room1' : roomId,
+                            'room2' : roomId2,
+                        },
                         success: function (data) {
-                            $('#drd-chat').removeClass('show-dropdown');
-                            $.LoadingOverlay("hide");
-                            $("#content-body").html(data);
-                            let event = document.createEvent('Event');
-                            connect(event, roomId);
-                            $(document).on("submit", "#messagebox", function (e1) {
-                                var postCurrent = $('#postIdForm').val();
-                                sendMessage(e1, roomId);
-                            })
+                            if(data !== 'null' && data !== '') {
+                                window.location.href = "/messenger/" + data;
+                            } else {
+                                window.location.href = "/messenger/" + roomId;
+                            }
                         },
                         error: function (xhr) {
                             if (xhr.status == 302 || xhr.status == 200) {
