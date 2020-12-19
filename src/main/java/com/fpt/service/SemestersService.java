@@ -15,4 +15,7 @@ public interface SemestersService {
 
 	Semesters getSemesterByUserId(String userId);
 
+	Semesters saveSemesters(Semesters semesters);
+
+
 }

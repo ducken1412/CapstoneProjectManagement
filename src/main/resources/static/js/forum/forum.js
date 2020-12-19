@@ -356,7 +356,7 @@ $(document).on("click", "#chat", function (e) {
     });
     postContainer = $("#content-body").html();
     const postId = 'gr_' + $(this).attr("postId");
-    window.location.href = "/messenger/" + postId;
+    window.location.href = "/messenger/" + btoa(postId);
 })
 
 $(document).on("click", "#back-to-forum", function (e) {

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Student Management</title>
+    <th:block th:include="home/_css"></th:block>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="page-container">
+        <th:block th:include="home/_header"></th:block>
+        <th:block th:include="home/_header-mobile"></th:block>
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Student Management</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-top: 30px;">
+                        <div style="margin-top: 30px; margin-left: 70px;">
+
+                                <table>
+                                    <tr>
+                                        <div>
+                                            <th>
+                                                <div>
+                                                    Site
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border"
+                                                     style="width: 170px; margin-left: 20px;">
+                                                    <select class="js-select2" id="dr-site">
+                                                        <option value="-1">All</option>
+                                                        <option th:each="sites : ${sites}" th:value="${sites.name}"
+                                                                th:text="${sites.name}"></option>
+                                                    </select>
+                                                    <div class="dropDownSelect2"></div>
+                                                </div>
+                                            </th>
+                                        </div>
+                                        <div>
+                                            <th>
+                                                <div>
+                                                    Semester
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border"
+                                                     style="width: 140px; margin-left: 20px;">
+                                                    <select class="js-select2" id="dr-semester">
+                                                        <option value="-1">All</option>
+                                                        <option th:each="semesters : ${semesters}" th:value="${semesters.name}"
+                                                                th:text="${semesters.name}"></option>
+                                                    </select>
+                                                    <div class="dropDownSelect2"></div>
+                                                </div>
+                                            </th>
+                                        </div>
+                                        <th>
+                                            <div>
+                                                Type
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border"
+                                                 style="width: 350px; margin-left: 20px;">
+                                                <select class="js-select2" id="dr-type">
+                                                    <option value="1" selected>All</option>
+                                                    <option value="2">Doing Capstone</option>
+                                                    <option value="14">Has No Team Capstone</option>
+                                                    <option value="3">Registering Capstone Project</option>
+                                                    <option value="4">Registered Capstone Project</option>
+                                                    <option value="5">Approve Capstone Supervisor</option>
+                                                    <option value="6">Approve Capstone Training Department</option>
+                                                    <option value="7">Approve Capstone Head</option>
+                                                    <option value="8">Not Eligible Defence Capstone</option>
+                                                    <option value="9">Eligible Defence Capstone</option>
+                                                    <option value="10">Reject Capstone</option>
+                                                    <option value="11">Changing Name Capstone</option>
+                                                    <option value="12">Pending Capstone</option>
+                                                    <option value="13">Change Name Capstone Supervisor</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="table-data__tool-right">
+                                                <button
+                                                        class="au-btn au-btn-icon au-btn--green mr-3" id="btn-searchStudentManagement"
+                                                        data-toggle="modal" data-target="#topic-container"><i
+                                                        class="fas fa-search" ></i>Search
+                                                </button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </table>
+
+                        </div>
+                        <div class="mx-5">
+                            <div id="student-container"
+                                 style="margin-top: 40px; margin-bottom: 40px; margin-right: 20px; margin-left: 20px;">
+                                <th:block th:include="home/student-management-component"></th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row w-100">
+                            <div class="col-md-12">
+                                <div class="copyright">
+                                    <p>Copyright © 2020 FPT</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="home/_script"></th:block>
+<script th:src="@{/js/user/user-management.js}"></script>
+</body>
+</html>

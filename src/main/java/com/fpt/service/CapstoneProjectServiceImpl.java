@@ -125,8 +125,15 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
             return new Gson().toJson(output);
         }
         CapstoneProjects projects = new CapstoneProjects();
-        List<MemberDTO> members;
+        List<MemberDTO> members = dataForm.getMembers();;
         try {
+            Profession profession = professionService.findById(Integer.parseInt(dataForm.getProfession()));
+            if(profession.getMinMember() > members.size() || profession.getMaxMember() < members.size()) {
+                errors.add("You can only add minimum " + profession.getMinMember() +" member and maximum "+ profession.getMaxMember() +" members ("+profession.getName()+")");
+                output.put("hasError", true);
+                output.put("errors", errors);
+                return new Gson().toJson(output);
+            }
             Status status = statusService.findByName(Constant.STATUS_REGISTERING_CAPSTONE_DB);
             Status registedStatus = statusService.findByName(Constant.STATUS_REGISTED_CAPSTONE_DB);
             projects.setName(dataForm.getName());
@@ -138,13 +145,13 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
             projects.setSpecialty(dataForm.getSpecialty());
             projects.setProgram(dataForm.getProgram());
             projects.setStatus(status);
-            projects.setProfession(professionService.findById(Integer.parseInt(dataForm.getProfession())));
+            projects.setProfession(profession);
             projects.setSemester(user.getSemester());
             projects.setSite(user.getSite());
 
             List<CapstoneProjectDetails> cpds = new ArrayList<>();
             CapstoneProjectDetails cpd;
-            members = dataForm.getMembers();
+
             Users tmp;
             UserRoles userRoles;
             UserRoleKey roleKey;

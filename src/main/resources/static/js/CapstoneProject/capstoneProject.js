@@ -759,7 +759,6 @@ $(document).on("click", "#btn-add-member", function (e) {
         url: "/getMemberProject?username=" + username + "&capstoneProject=" + capstoneProject,
         type: "GET",
         success: function (data) {
-            debugger;
             let obj = JSON.parse(data);
             if (obj.success) {
                 $("#member-table").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">'+obj.user.username+'</span> </td> <td class="pt-2"> </td><td class="pt-2"> <div class="table-data-feature pl-2"> <a href="" class="item del-member" data-toggle="tooltip" data-placement="top" title="Delete"> <i class="fas fa-trash fa-xs"></i> </a>\n' +
@@ -793,7 +792,6 @@ $(document).on("click", "#btn-add-supervisors", function (e) {
         url: "/getSupervisorsProject?username=" + username + "&capstoneProject=" + capstoneProject,
         type: "GET",
         success: function (data) {
-            debugger;
             let obj = JSON.parse(data);
             if (obj.success) {
                 $("#supervisors-table").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">'+obj.user.username+'</span> </td> <td class="pt-2"> </td><td class="pt-2"> <div class="table-data-feature pl-2"> <a href="" class="item del-member" data-toggle="tooltip" data-placement="top" title="Delete"> <i class="fas fa-trash fa-xs"></i> </a>\n' +
