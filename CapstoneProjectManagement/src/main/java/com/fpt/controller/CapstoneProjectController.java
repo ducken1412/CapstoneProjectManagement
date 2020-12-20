@@ -301,6 +301,8 @@ public class CapstoneProjectController {
 		CapstoneProjects currentProduct =capstoneProjectService
 				.findById(Integer.parseInt(projectid));
 		Integer countstudent = capstoneProjectService.getCountStudent(currentProduct.getId());
+		Status status = statusService.findStatusByCapstoneProject(currentProduct.getId());
+		int statusIdOld = status.getId();
 
 		if(countstudent == currentProduct.getProfession().getMaxMember()){
 			addStudent = 1;
@@ -378,9 +380,9 @@ public class CapstoneProjectController {
 		model.addAttribute("role", roleid);
 		model.addAttribute("id", projectid);
 
-		if((currentProduct.getStatus().getId() >= 5 && currentProduct.getStatus().getId() <= 8)
-				|| currentProduct.getStatus().getId() == 14
-				|| currentProduct.getStatus().getId() == 16 ){
+		if((statusIdOld >= 5 && statusIdOld <= 8)
+				|| statusIdOld == 14
+				|| statusIdOld == 16 ){
 			model.addAttribute("checkEditDetail", true);
 		}else {
 			model.addAttribute("checkEditDetail", false);
@@ -517,7 +519,8 @@ public class CapstoneProjectController {
 					+ currentProduct.getId() + " has 2 supervisors, please reject a supervisors";
 		}
 		int statusId = -1;
-		int statusIdOld = currentProduct.getStatus().getId();
+		Status status = statusService.findStatusByCapstoneProject(currentProduct.getId());
+		int statusIdOld = status.getId();
 		if(roleid == 3){
 			statusId = 8;
 		}
@@ -602,7 +605,8 @@ public class CapstoneProjectController {
 			return "Not found project.";
 		}
 		int statusId = -1;
-		int statusIdOld = currentProduct.getStatus().getId();
+		Status status = statusService.findStatusByCapstoneProject(currentProduct.getId());
+		int statusIdOld = status.getId();
 		if(roleid == 3){
 			statusId = 16;
 		}
@@ -759,7 +763,8 @@ public class CapstoneProjectController {
 				break;
 
 			}else {
-				int statusIdOld = currentProduct.getStatus().getId();
+				Status statusOld = statusService.findStatusByCapstoneProject(currentProduct.getId());
+				int statusIdOld = statusOld.getId();
 				int statusId = -1;
 				if(roleid == 3){
 					statusId = 8;
@@ -870,7 +875,8 @@ public class CapstoneProjectController {
 				return "Not found project.";
 			}
 			int statusId = -1;
-			int statusIdOld = currentProduct.getStatus().getId();
+			Status status = statusService.findStatusByCapstoneProject(currentProduct.getId());
+			int statusIdOld = status.getId();
 			if(roleid == 3){
 				statusId = 16;
 			}
