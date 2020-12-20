@@ -432,4 +432,15 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
     public List<CapstoneProjects> findCapstoneProjectRegistedBySupervisorId(String userId) {
         return capstoneProjectRepository.findCapstoneProjectRegistedBySupervisorId(userId);
     }
+
+    @Override
+    public boolean updateSupervisorsSubmitCapstone(Integer id) {
+        try {
+            capstoneProjectRepository.updateSupervisorsSubmitCapstone(id);
+            return true;
+        } catch (Exception e) {
+            System.out.println("error add capstone project");
+        }
+        return false;
+    }
 }

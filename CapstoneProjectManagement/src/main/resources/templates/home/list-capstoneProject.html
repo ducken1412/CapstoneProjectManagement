@@ -64,10 +64,10 @@
         </tr>
         </tbody>
     </table>
-    <div class="table-data__tool">
+    <div class="table-data__tool mt-2">
         <div class="table-data__tool-right mx-auto">
             <nav aria-label="Page navigation">
-                <ul th:if="${capstoneProjectPage.totalPages > 0}"
+                <ul th:if="${capstoneProjectPage.totalPages > 1}"
                     class="pagination w-75">
                     <input type="text" id="page-size" name="page-size"
                            th:value="${capstoneProjectPage.size}" hidden="true"/>
