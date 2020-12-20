@@ -390,7 +390,7 @@ public class ReportController {
             }
         }
         notificationDetailService.saveAllNotificationDetails(detailsList);
-        return "/report/" + reportId;
+        return "redirect:report/" + reportId;
     }
 
     @RequestMapping(value = "/list-reports", method = RequestMethod.GET)

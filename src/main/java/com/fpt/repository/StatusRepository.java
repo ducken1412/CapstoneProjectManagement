@@ -21,4 +21,9 @@ public interface StatusRepository extends JpaRepository<Status, Integer>{
 			"JOIN users AS u ON u.id = capD.user_id\n" +
 			"WHERE u.id = ?1",nativeQuery = true)
 	Status findStatusByUserId(String userId);
+
+	@Query(value = "SELECT s.* FROM status AS s\n" +
+			"JOIN capstone_projects AS cap ON s.id = cap.status_id\n" +
+			"WHERE cap.id = ?1",nativeQuery = true)
+	Status findStatusByCapstoneProject(Integer id);
 }
