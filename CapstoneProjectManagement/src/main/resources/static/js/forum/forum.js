@@ -233,6 +233,18 @@ $(document).on("submit", "#post-form", function (e) {
         type: "POST",
         data: dataForm,
         success: function (data) {
+            let obj = JSON.parse(data);
+            let str = '';
+            if(obj.hasError) {
+                $.map(obj.errors, function (n, i) {
+                    str += n;
+                    $("#error-container").append('<span class="text-danger">' + n + '</span><br>');
+                });
+                $("#error-container").removeClass("d-none");
+                $("#loading-add").attr("hidden", true);
+                $("#btn-post").attr("disabled", false);
+                return false;
+            }
             const params = new URL(location.href).searchParams;
             const size = params.get("size");
             const page = params.get("page");
@@ -244,7 +256,7 @@ $(document).on("submit", "#post-form", function (e) {
                 })
             });
             $.ajax({
-                url: "/add-file-post/"+data,
+                url: "/add-file-post/"+obj.data,
                 type: "POST",
                 enctype: 'multipart/form-data',
                 data :formData,
@@ -297,11 +309,23 @@ $(document).on("submit", "#post-form", function (e) {
     });
 });
 
+function parseParams(str) {
+    return str.split('&').reduce(function (params, param) {
+        var paramSplit = param.split('=').map(function (value) {
+            return decodeURIComponent(value.replace(/\+/g, ' '));
+        });
+        params[paramSplit[0]] = paramSplit[1];
+        return params;
+    }, {});
+}
+
 $(document).on("submit", ".form-comment", function (e) {
     e.preventDefault();
-    const params = new URL(location.href).searchParams;
-    const size = params.get("size");
-    const page = params.get("page");
+    let dataForm = $(this).serialize();
+    let obj = parseParams(dataForm);
+    if(obj.content === '') {
+        return false;
+    }
     const values = {};
     $.each($(this).serializeArray(), function (i, field) {
         values[field.name] = field.value;
@@ -315,13 +339,18 @@ $(document).on("submit", ".form-comment", function (e) {
             $(this).attr("hidden", false);
         }
     });
-    let dataForm = $(this).serialize();
+    $(".btn-comment").each(function () {
+        if ($(this).attr("commentPostId") === postId) {
+            $(this).attr("disabled", true);
+        }
+    });
+
     $.ajax({
         url: "/add-comment",
         type: "POST",
         data: dataForm,
         success: function (data) {
-            getListPost()
+            getListPost();
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {

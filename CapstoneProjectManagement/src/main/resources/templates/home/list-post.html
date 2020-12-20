@@ -6,7 +6,7 @@
         <div class="card-header pt-3 d-block">
             <a id="chat" href="#"
                class="pull-right mr-2" th:postId=${post.id}><i class=" far fa-comments" ></i></a>
-            <a th:if="${loggedUser == post.author.id}" href="#"
+            <a th:if="${loggedUser == post.author.id || isAdmin == true}" href="#"
                class="pull-right mr-2" id="btn-deleteTopic" th:postId=${post.id} data-toggle="modal" data-target="#confirm-delete" ><i class="far fa-trash-alt"></i></a> <a
                 th:if="${loggedUser == post.author.id}" href="#"
                 class="pull-right mr-2" id="btn-editTopic" data-toggle="modal"
@@ -46,7 +46,7 @@
                                 class="form-control" name="content"
                                 placeholder="Write a comment.." type="text"
                                 style="border-radius: 15px">
-                            <button id="" type="submit"
+                            <button id="" th:commentPostId="${post.id}" type="submit"
                                     class="btn btn-success ml-2 btn-comment">
 								<span th:loadingPostId="${post.id}"
                                       class="loading-send spinner-border spinner-border-sm mr-2"
