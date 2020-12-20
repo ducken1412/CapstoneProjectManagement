@@ -47,4 +47,6 @@ public interface CapstoneProjectService {
 	List<Users> findUserByCapstoneProjectId(Integer id);
 
 	List<CapstoneProjects> findCapstoneProjectRegistedBySupervisorId(String userId);
+
+	boolean updateSupervisorsSubmitCapstone(Integer id);
 }

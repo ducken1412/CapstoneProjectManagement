@@ -1,4 +1,5 @@
 $(document).on("submit", "#comment-form", function (e) {
+    debugger;
     e.preventDefault();
     $("#loading-send").removeAttr('hidden');
     let dataForm = $("#comment-form").serialize();
