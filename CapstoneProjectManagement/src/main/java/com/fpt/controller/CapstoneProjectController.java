@@ -443,7 +443,8 @@ public class CapstoneProjectController {
 					break;
 			}
 		}
-		currentProduct.setStatus(statusService.getStatusById(statusId));
+		Status statusNew = statusService.getStatusById(statusId);
+		currentProduct.setStatus(statusNew);
 		currentProduct.setDesAction(des);
 		capstoneProjectDetailService.save(currentProduct);
 		Users user = capstoneProjectDetailService.getUserById(Integer.parseInt(id)).get(0);
@@ -557,7 +558,8 @@ public class CapstoneProjectController {
 			currentProduct.setName(currentProduct.getNameChanging());
 			currentProduct.setNameVi(currentProduct.getNameViChanging());
 		}
-		currentProduct.setStatus(statusService.getStatusById(statusId));
+		Status statusNew = statusService.getStatusById(statusId);
+		currentProduct.setStatus(statusNew);
 		currentProduct.setDesAction(des);
 		capstoneProjectService.saveRegisterProject(currentProduct);
 
@@ -630,11 +632,13 @@ public class CapstoneProjectController {
 		if (statusIdOld == 13 || statusIdOld == 15) {
 			currentProduct.setName(null);
 			currentProduct.setNameVi(null);
-			currentProduct.setStatus(statusService.getStatusById(statusId));
+			Status statusNew = statusService.getStatusById(statusId);
+			currentProduct.setStatus(statusNew);
 			currentProduct.setDesAction(des);
 			capstoneProjectService.saveRegisterProject(currentProduct);
 		} else {
-			currentProduct.setStatus(statusService.getStatusById(statusId));
+			Status statusNew = statusService.getStatusById(statusId);
+			currentProduct.setStatus(statusNew);
 			currentProduct.setDesAction(des);
 			capstoneProjectService.saveRegisterProject(currentProduct);
 			List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
@@ -688,7 +692,8 @@ public class CapstoneProjectController {
 				statusId = 12;
 		}
 
-		currentProduct.setStatus(statusService.getStatusById(statusId));
+		Status statusNew = statusService.getStatusById(statusId);
+		currentProduct.setStatus(statusNew);
 		currentProduct.setDesAction(des);
 		capstoneProjectDetailService.save(currentProduct);
 
@@ -804,7 +809,8 @@ public class CapstoneProjectController {
 					currentProduct.setName(currentProduct.getNameChanging());
 					currentProduct.setNameVi(currentProduct.getNameViChanging());
 				}
-				currentProduct.setStatus(statusService.getStatusById(statusId));
+				Status statusNew = statusService.getStatusById(statusId);
+				currentProduct.setStatus(statusNew);
 				currentProduct.setDesAction(des);
 				boolean data = capstoneProjectService.saveRegisterProject(currentProduct);
 				if (!data){
@@ -900,11 +906,13 @@ public class CapstoneProjectController {
 			if(statusIdOld == 13 || statusIdOld == 15){
 				currentProduct.setName(null);
 				currentProduct.setNameVi(null);
-				currentProduct.setStatus(statusService.getStatusById(statusId));
+				Status statusNew = statusService.getStatusById(statusId);
+				currentProduct.setStatus(statusNew);
 				currentProduct.setDesAction(des);
 				data = capstoneProjectService.saveRegisterProject(currentProduct);
 			} else {
-				currentProduct.setStatus(statusService.getStatusById(statusId));
+				Status statusNew = statusService.getStatusById(statusId);
+				currentProduct.setStatus(statusNew);
 				currentProduct.setDesAction(des);
 				capstoneProjectService.saveRegisterProject(currentProduct);
 				List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
