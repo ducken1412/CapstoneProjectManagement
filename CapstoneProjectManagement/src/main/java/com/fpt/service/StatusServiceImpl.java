@@ -37,5 +37,10 @@ public class StatusServiceImpl implements StatusService{
 		return statusRepository.findStatusByUserId(userId);
 	}
 
+	@Override
+	public Status findStatusByCapstoneProject(Integer id) {
+		return statusRepository.findStatusByCapstoneProject(id);
+	}
+
 
 }

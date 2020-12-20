@@ -13,4 +13,6 @@ public interface StatusService {
 	Status findByName(String name);
 	List<Status> getAll();
 	Status findStatusByUserId(String userId);
+
+	Status findStatusByCapstoneProject(Integer id);
 }
