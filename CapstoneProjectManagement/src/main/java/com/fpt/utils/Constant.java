@@ -29,6 +29,7 @@ public class Constant {
 	public final static String STATUS_CHANGING_NAME_BY_LECTURER_CAPSTONE = "Accepted Renaming By Supervisor";
 	public final static String STATUS_PENDING_CAPSTONE = "Pending By Supervisor";
 	public final static String STATUS_PENDING_CAPSTONE_BY_HEAD = "Pending By Head";
+	public final static String STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE = "Eligible Defence By Supervisor";
 
 	public final static String STATUS_NOT_ELIGIBLE_CAPSTONE_DB = "not_eligible_capstone";
 	public final static String STATUS_ELIGIBLE_CAPSTONE_DB = "eligible_capstone";
@@ -46,6 +47,7 @@ public class Constant {
 	public final static String STATUS_PENDING_CAPSTONE_DB = "pending_capstone_by_lecturer";
 	public final static String STATUS_PENDING_CAPSTONE_BY_HEAD_DB = "pending_capstone_by_head";
 	public final static String STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB = "change_name_capstone_lecturer";
+	public final static String STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB = "eligible_defence_capstone_by_lecture";
 
 
 	public final static String ROLE_STUDENT_LEADER_AUTHEN = "LeaderAuthen";

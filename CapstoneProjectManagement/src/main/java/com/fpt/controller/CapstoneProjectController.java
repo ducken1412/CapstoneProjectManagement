@@ -111,6 +111,9 @@ public class CapstoneProjectController {
 					case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
 						nameStatus = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
 						break;
+					case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+						nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
+						break;
 					default:
 						nameStatus = null;
 				}
@@ -149,6 +152,9 @@ public class CapstoneProjectController {
 						break;
 					case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
 						nameStatus = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
+						break;
+					case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+						nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
 						break;
 					default:
 						nameStatus = null;
@@ -263,6 +269,9 @@ public class CapstoneProjectController {
 				case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
 					nameStatus = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
 					break;
+				case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
+					break;
 				default:
 					nameStatus = null;
 			}
@@ -324,7 +333,24 @@ public class CapstoneProjectController {
 			projectdetailnew.setPhone((String) objdetail[10]);
 			projectdetailnew.setUser_name((String) objdetail[11]);
 			projectdetailnew.setRoleid((Integer) objdetail[12]);
-			projectdetailnew.setRolename((String) objdetail[13]);
+			String roleDB = (String) objdetail[13];
+			switch (roleDB) {
+				case Constant.ROLE_HEAD_DB:
+					roleDB = Constant.ROLE_HEAD;
+					break;
+				case Constant.ROLE_LECTURERS_DB:
+					roleDB = Constant.ROLE_LECTURERS;
+					break;
+				case Constant.ROLE_STUDENT_MEMBER_DB:
+					roleDB = Constant.ROLE_STUDENT_MEMBER;
+					break;
+				case Constant.ROLE_STUDENT_LEADER_DB:
+					roleDB = Constant.ROLE_STUDENT_LEADER;
+					break;
+				default:
+					roleDB = null;
+			}
+			projectdetailnew.setRolename(roleDB);
 
 			String nameStatus = (String) objdetail[14];
 			switch (nameStatus) {
@@ -367,10 +393,15 @@ public class CapstoneProjectController {
 				case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
 					nameStatus = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
 					break;
+				case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
+					break;
 				default:
 					nameStatus = null;
 			}
-			projectdetailnew.setNameStatus(nameStatus);
+			if(!roleDB.equals(Constant.ROLE_LECTURERS)){
+				projectdetailnew.setNameStatus(nameStatus);
+			}
 			projectdetailList.add(projectdetailnew);
 		}
 		Pageable secondPageWithFiveElements = PageRequest.of(0, 100, Sort.by("id").descending());
@@ -419,7 +450,12 @@ public class CapstoneProjectController {
 			statusId = 8;
 		}
 		if(roleid == 4){
-			statusId = 6;
+			if(currentProduct.getStatus().getId() == 5){
+				statusId = 6;
+			}else {
+				statusId = 17;
+			}
+
 		}
 		if(roleid == 5){
 			switch(currentProduct.getStatus().getId()) {
@@ -528,8 +564,10 @@ public class CapstoneProjectController {
 		if(roleid == 4){
 			if(statusIdOld == 13){
 				statusId = 15;
-			}else {
+			}else if(statusIdOld == 5) {
 				statusId = 6;
+			} else {
+				statusId = 17;
 			}
 		}
 		if(roleid == 5){
@@ -551,6 +589,9 @@ public class CapstoneProjectController {
 					break;
 				case 15:
 					statusId = 9;
+					break;
+				case 17:
+					statusId = 11;
 					break;
 			}
 		}
@@ -615,8 +656,10 @@ public class CapstoneProjectController {
 		if(roleid == 4){
 			if(statusIdOld == 13){
 				statusId = 9;
-			}else {
+			}else if(statusIdOld == 5){
 				statusId = 14;
+			}else {
+				statusId = 10;
 			}
 		}
 		if(roleid == 5){
@@ -777,8 +820,10 @@ public class CapstoneProjectController {
 				if(roleid == 4){
 					if(statusIdOld == 13){
 						statusId = 15;
-					}else {
+					}else if(statusIdOld == 5) {
 						statusId = 6;
+					} else {
+						statusId = 17;
 					}
 
 				}
@@ -802,6 +847,9 @@ public class CapstoneProjectController {
 							break;
 						case 15:
 							statusId = 9;
+							break;
+						case 17:
+							statusId = 11;
 							break;
 					}
 				}
@@ -889,8 +937,10 @@ public class CapstoneProjectController {
 			if(roleid == 4){
 				if(statusIdOld == 13){
 					statusId = 9;
-				}else {
+				}else if(statusIdOld == 5){
 					statusId = 14;
+				}else {
+					statusId = 10;
 				}
 			}
 			if(roleid == 5){
