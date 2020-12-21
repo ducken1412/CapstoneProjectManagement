@@ -12,7 +12,6 @@ $(document).ready(function () {
         url: "/getMemberEdit",
         type: "GET",
         success: function (data) {
-            debugger;
             let objs = JSON.parse(data);
             for (let obj in objs){
                 var a = objs[obj];

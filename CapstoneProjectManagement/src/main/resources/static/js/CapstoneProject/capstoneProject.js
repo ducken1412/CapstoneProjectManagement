@@ -37,7 +37,7 @@ function checkDisableButtonSelect(){
 
 function loadScrip(){
     $("#checkall").change(function() {
-        debugger;
+        
         if(this.checked) {
             $('input[type="checkbox"]').prop('checked', true);
             $('#btn-addApprove').prop('disabled', false);
@@ -231,9 +231,13 @@ $(document).on("click", "#btn-ViewProject", function () {
     });
 });
 $(document).on("click", "#btn-deleteProject", function () {
-
     const postId = $(this).attr("postId");
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         const des = $("#ApproveDes").val();
         $("#loading-Approve").attr("hidden", false);
         $.ajax({
@@ -249,7 +253,7 @@ $(document).on("click", "#btn-deleteProject", function () {
                     $.showNotification({
                         body: data,
                         type: "success",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -258,7 +262,7 @@ $(document).on("click", "#btn-deleteProject", function () {
                     $.showNotification({
                         body: data,
                         type: "danger",
-                        vibrate: [200, 100, 200, 100, 200, 100, 200],
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -278,8 +282,12 @@ $(document).on("click", "#btn-deleteProject", function () {
 $(document).on("click", "#btn-RejectProject", function () {
 
     const postId = $(this).attr("postId");
-
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         $("#loading-Reject").attr("hidden", false);
         const des = $("#RejectDes").val();
         $.ajax({
@@ -295,7 +303,7 @@ $(document).on("click", "#btn-RejectProject", function () {
                 $.showNotification({
                     body: data,
                     type: "success",
-                    duration: 3000,
+                    duration: 2000,
                     shadow: "0 2px 6px rgba(0,0,0,0.2)",
                     zIndex: 100,
                     margin: "1rem"
@@ -378,7 +386,12 @@ function rewriteUrl(size, page) {
 
 
 $(document).on("click", "#btn-addApprove", function () {
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         let postIdlist = "";
         $('td> label > input[type="checkbox"]').each(function () {
             if(this.checked){
@@ -387,7 +400,7 @@ $(document).on("click", "#btn-addApprove", function () {
             }
 
         });
-        debugger;
+        
         const des = $("#ApproveDeslist").val();
         $("#loading-Approvelist").attr("hidden", false);
         $.ajax({
@@ -404,7 +417,7 @@ $(document).on("click", "#btn-addApprove", function () {
                     $.showNotification({
                         body: data,
                         type: "success",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -413,7 +426,7 @@ $(document).on("click", "#btn-addApprove", function () {
                     $.showNotification({
                         body: data,
                         type: "danger",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -432,10 +445,15 @@ $(document).on("click", "#btn-addApprove", function () {
 });
 
 $(document).on("click", "#btn-addReject", function () {
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         let postIdlist = "";
         $('td> label > input[type="checkbox"]').each(function () {
-            debugger;
+            
             if(this.checked){
                 var postId = $(this).attr("postId");
                 postIdlist = postIdlist + postId + ',';
@@ -459,7 +477,7 @@ $(document).on("click", "#btn-addReject", function () {
                     $.showNotification({
                         body: data,
                         type: "success",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -468,7 +486,7 @@ $(document).on("click", "#btn-addReject", function () {
                     $.showNotification({
                         body: data,
                         type: "danger",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -493,12 +511,12 @@ function ProjectDetailApp(postId) {
     $(".btn-ok").click(function () {
         const des = $("#ApproveDesDetail").val();
         $("#loading-ApproveDetail").attr("hidden", false);
-        debugger;
+        
         $.ajax({
             url: "/update-Status-Detail?id=" + postId + "&des=" + des,
             type: "GET",
             success: function (data) {
-                debugger;
+                
                 $("#loading-ApproveDetail").attr("hidden", true);
                 $("#ApproveDesDetail").val("");
                 $('.modal-backdrop').hide(); // for black background
@@ -546,7 +564,7 @@ function ProjectDetailReject(postId) {
     $(".btn-okRejectDetail").click(function () {
         $("#loading-RejectDetail").attr("hidden", false);
         const des = $("#RejectDesDetail").val();
-        debugger;
+        
         $.ajax({
             url: "/rejectDetail?id=" + postId + "&des=" + des,
             type: "GET",
@@ -593,9 +611,14 @@ $(document).on("click", "#btn-AddDetail", function () {
     $('body').removeClass('modal-open'); // For scroll run
     $('#confirm-View').modal('hide');
     $('#Add-ProjectDetail').modal('show');
-    debugger;
+    
     const capstoneProject =$('#idproject').val();
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         $("#loading-AddDetail").attr("hidden", false);
 
         let id = getJsonMember();
@@ -612,7 +635,7 @@ $(document).on("click", "#btn-AddDetail", function () {
                     $.showNotification({
                         body: data,
                         type: "success",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -621,7 +644,7 @@ $(document).on("click", "#btn-AddDetail", function () {
                     $.showNotification({
                         body: data,
                         type: "danger",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -642,9 +665,14 @@ $(document).on("click", "#btn-EditSupervisors", function () {
     $('body').removeClass('modal-open'); // For scroll run
     $('#confirm-View').modal('hide');
     $('#Edit-Supervisors').modal('show');
-    debugger;
+    
     const capstoneProject =$('#idproject').val();
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         $("#loading-EditSupervisors").attr("hidden", false);
 
         let id = getJsonMember();
@@ -705,7 +733,7 @@ function getJsonMember() {
     var count = 0;
     i = $('.attrTable tr').length;
     $('.attrTable tr').each(function (a, b) {
-        debugger;
+        
         let name = $('.attrName', b).text();
         if(name != ""){
             if(count == (i-1)){
