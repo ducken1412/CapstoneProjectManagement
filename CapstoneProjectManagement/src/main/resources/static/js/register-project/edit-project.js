@@ -152,6 +152,8 @@ $(document).on("submit", "#update", function (e) {
     $("#error-container").empty();
     let $form = $("#update");
     let dataForm = getFormData($form);
+    var idCP = $("#idCP").val();
+
     $.ajax({
         url: "/updateProject",
         type: "POST",
@@ -180,7 +182,7 @@ $(document).on("submit", "#update", function (e) {
                 });
                 setTimeout(
                     function () {
-                        window.location.href = "/lecturers";
+                        window.location.href = "/project-detail/" + idCP;
                     }, 2000);
                 $("#loading-add").attr("hidden", true);
             }
@@ -194,3 +196,78 @@ $(document).on("submit", "#update", function (e) {
     });
 });
 
+//hidden member
+
+$(document).ready(function () {
+    $('#nameViHidden').val($("#nameVi").val());
+    $('#nameHidden').val($("#name").val());
+    $( '#nameViHidden' ).change(function() {
+        $('#nameVi').val($("#nameViHidden").val());
+    });
+    $( '#nameHidden').change(function() {
+        $('#name').val($("#nameHidden").val());
+    });
+    $.ajax({
+        url: "/getMemberEdit",
+        type: "GET",
+        success: function (data) {
+            debugger;
+            let objs = JSON.parse(data);
+            for (let obj in objs){
+                var a = objs[obj];
+                for(let pro in a){
+                    var b = a[pro].username;
+                    if (b != undefined) {
+                        if(a[pro].status === 'registed_capstone'){
+                            if(a[pro].role ==='student_leader'){
+                                $("#member-table-hidden").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">' + a[pro].username + '</span> </td> <td class="pt-2"> <div class="rs-select2--border rs-select2--sm rs-select2--dark2 pl-2"> ' +
+                                    '<select class="btn-sm btn-secondary dropdown-toggle attrValue"  name="type"> ' +
+                                    '<option value="leader"  selected>Leader</option>' +
+                                    '<option value="member">Member</option> ' +
+                                    '</select> <div class="dropDownSelect2">' +
+                                    '</div> </div> </td><td class="pt-2">' +
+                                    ' <div class="table-data-feature pl-2"> </a>\n' +
+                                    ' </div> </td> </tr>')
+                            }else {
+                                $("#member-table-hidden").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">' + a[pro].username + '</span> </td> <td class="pt-2"> <div class="rs-select2--border rs-select2--sm rs-select2--dark2 pl-2"> ' +
+                                    '<select class="btn-sm btn-secondary dropdown-toggle attrValue"  name="type"> ' +
+                                    '<option value="leader"  >Leader</option>' +
+                                    '<option value="member" selected >Member</option> ' +
+                                    '</select> <div class="dropDownSelect2">' +
+                                    '</div> </div> </td><td class="pt-2">' +
+                                    ' <div class="table-data-feature pl-2"> </a>\n' +
+                                    ' </div> </td> </tr>')
+                            }
+
+                        }else {
+                            if(a[pro].role ==='student_leader'){
+                                $("#member-table-hidden").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">' + a[pro].username + '</span> </td> <td class="pt-2"> <div class="rs-select2--border rs-select2--sm rs-select2--dark2 pl-2"> ' +
+                                    '<select class="btn-sm btn-secondary dropdown-toggle attrValue"  name="type"> ' +
+                                    '<option value="leader"  selected>Leader</option>' +
+                                    '<option value="member">Member</option> ' +
+                                    '</select> <div class="dropDownSelect2">' +
+                                    '</div> </div> </td><td class="pt-2">' +
+                                    ' <div class="table-data-feature pl-2"> </a> <a href="" class="item del-member" data-toggle="tooltip" data-placement="top" title="Delete"> <i class="fas fa-trash fa-xs"></i> </a>\n' +
+                                    ' </div> </td> </tr>')
+                            }else {
+                                $("#member-table-hidden").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">' + a[pro].username + '</span> </td> <td class="pt-2"> <div class="rs-select2--border rs-select2--sm rs-select2--dark2 pl-2"> ' +
+                                    '<select class="btn-sm btn-secondary dropdown-toggle attrValue"  name="type"> ' +
+                                    '<option value="leader"  >Leader</option>' +
+                                    '<option value="member" selected >Member</option> ' +
+                                    '</select> <div class="dropDownSelect2">' +
+                                    '</div> </div> </td><td class="pt-2">' +
+                                    ' <div class="table-data-feature pl-2"> </a> <a href="" class="item del-member" data-toggle="tooltip" data-placement="top" title="Delete"> <i class="fas fa-trash fa-xs"></i> </a>\n' +
+                                    ' </div> </td> </tr>')
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+        },
+        error: function (xhr) {
+        },
+    });
+});
