@@ -105,7 +105,6 @@ function getListPostInit() {
         type: "GET",
         success: function (data) {
             $("#Capstone-container").html(data);
-            loadCommentContainer(sizeDefault, -1);
             $.LoadingOverlay("hide");
             if (!(size === null || page === null)) {
                 window.history.pushState("", "", "/ad/capstoneproject" + rewriteUrl(size, page));
@@ -121,39 +120,7 @@ function getListPostInit() {
     });
 }
 
-function loadCommentContainer(size, postId) {
-    let id;
-    let s;
-    $(".list-post-container").each(function (i) {
-        id = $(this).find("#post-id").val();
-        let arr = $(this).find(".comment-container");
-        let viewMoreElement = $(this).find("#view-more-comments");
-        // check post selected
-        if (postId.toString() !== id) {
-            s = sizeDefault
-        } else {
-            s = size
-        }
-        let arrSize = arr.length;
-        // check and set display for div comment
-        if (arrSize >= s) {
-            arr.each(function (j) {
-                if (j < (arrSize - s)) {
-                    $(this).addClass("d-none");
-                } else {
-                    $(this).removeClass("d-none");
-                }
 
-            })
-        }
-        if ((arrSize - s) < sizeDefault) {
-            arr.each(function (j) {
-                $(this).removeClass("d-none");
-            })
-            viewMoreElement.addClass("d-none");
-        }
-    })
-}
 
 
 
@@ -169,7 +136,6 @@ function getListPost() {
         type: "GET",
         success: function (data) {
             $("#Capstone-container").html(data);
-            loadCommentContainer(sizeDefault, -1);
             if (!(size === null || page === null)) {
                 window.history.pushState("", "", "/ad/capstoneproject" + rewriteUrl(size, page));
             }
@@ -198,7 +164,6 @@ function getListPostSearch() {
         type: "GET",
         success: function (data) {
             $("#Capstone-container").html(data);
-            loadCommentContainer(sizeDefault, -1);
             loadScrip();
             $.LoadingOverlay("hide");
         },
@@ -353,7 +318,6 @@ $(document).on("click", ".page-link", function (e) {
         type: "GET",
         success: function (data) {
             $("#Capstone-container").html(data);
-            loadCommentContainer(sizeDefault, -1);
             $.LoadingOverlay("hide");
             if (!(size === null || page === null || page === "Previous")) {
                 window.history.pushState("", "", "/ad/capstoneproject" + rewriteUrl(size, page));

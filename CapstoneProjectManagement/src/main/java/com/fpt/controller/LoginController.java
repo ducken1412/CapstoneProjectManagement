@@ -57,7 +57,11 @@ public class LoginController {
 	private StatisticsService statisticsService;
 
 	@RequestMapping(value = {"/", "/login"})
-	public String login(HttpServletRequest request) {
+	public String login(HttpServletRequest request,Model model) {
+		String error = request.getParameter("error");
+		if(error != null){
+			model.addAttribute("error" ,"User was not found in the system");
+		}
 		return "login/loginPage";
 	}
 
@@ -83,9 +87,15 @@ public class LoginController {
 		Users appUser;
 		if (email != null) {
 			appUser = this.userService.findByEmail(email);
-			userDetail = googleUtils.buildUser(email, appUser);
+			try {
+				userDetail = googleUtils.buildUser(email, appUser);
+			} catch (Exception e) {
+
+				return "redirect:/login?error=true";
+			}
+
 		} else {
-			return "redirect:/login?google=error";
+			return "redirect:/login?error=true";
 		}
 		String userFullName;
 		if (appUser.getFirstName() != null && appUser.getLastName() != null) {
@@ -170,7 +180,7 @@ public class LoginController {
 			}
 			return "redirect:/forum";
 		} else {
-			return "redirect:/login?google=error";
+			return "redirect:/login?error=true";
 		}
 
 	}

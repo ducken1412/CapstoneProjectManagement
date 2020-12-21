@@ -36,7 +36,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             init();
             Files.copy(file.getInputStream(), this.root.resolve(fileName));
         } catch (Exception e) {
-            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+           throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
                 throw new RuntimeException("Could not read the file!");
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+           throw new RuntimeException("Error: " + e.getMessage());
         }
     }
 
@@ -67,7 +67,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         try {
             return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
         } catch (IOException e) {
-            throw new RuntimeException("Could not load the files!");
+           throw new RuntimeException("Could not load the files!");
         }
     }
 }
