@@ -96,6 +96,50 @@ public class ForumController {
         return "home/list-post";
     }
 
+    @GetMapping("/search")
+    public String search(Model model, @RequestParam("page") String page, @RequestParam("size") String size,@RequestParam("search") String search, Principal principal) {
+        if(principal == null) {
+            return "redirect:/login";
+        }
+        // get user logged
+        Users users = userService.findByEmail(principal.getName());
+        if (users != null) {
+            model.addAttribute("loggedUser", users.getId());
+        } else {
+            return "error/403Page";
+        }
+
+        boolean checkRole = false;
+        for (UserRoles userRoles : users.getRoleUser()) {
+            if (userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_HEAD_DB) || userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_TRAINING_DEP_DB)) {
+                checkRole = true;
+                break;
+            }
+        }
+        if(checkRole) {
+            model.addAttribute("isAdmin", true);
+        } else {
+            model.addAttribute("isAdmin", false);
+        }
+
+        int currentPage = 1;
+        int pageSize = 5;
+        try {
+            currentPage = Integer.parseInt(page);
+            pageSize = Integer.parseInt(size);
+        } catch (Exception ex) {
+
+        }
+        Page<Posts> postPage = postService.findByTitleContains(PageRequest.of(currentPage - 1, pageSize),search);
+        model.addAttribute("postPage", postPage);
+        int totalPages = postPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        return "home/list-post";
+    }
+
     @ResponseBody
     @PostMapping("/add-post")
     public String addPost(@Valid @ModelAttribute PostDTO dto, BindingResult result , Principal principal) {

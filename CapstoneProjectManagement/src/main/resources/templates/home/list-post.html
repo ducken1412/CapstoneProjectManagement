@@ -69,12 +69,12 @@
                            th:value="${postPage.size}" hidden="true"/>
                     <input type="text" id="total-page" name="total-page"
                            th:value="${postPage.totalPages}" hidden="true"/>
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item previous-link"><a class="page-link" href="#">Previous</a></li>
                     <th:block th:each="pageNumber : ${pageNumbers}">
                         <li th:class="${pageNumber==postPage.number + 1} ? active + ' ' + page-item : page-item"><a
                                 href="#" th:text=${pageNumber} th:class="page-link"></a></li>
                     </th:block>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <li class="page-item next-link"><a class="page-link" href="#">Next</a></li>
                 </ul>
             </nav>
         </div>

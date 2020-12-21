@@ -67,6 +67,14 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+	public Page<Posts> findByTitleContains(Pageable pageable, String title) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		Pageable secondPageWithFiveElements = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+		return postRepository.findByTitleContains(secondPageWithFiveElements,title);
+	}
+
+	@Override
 	public Users findAuthorByPostId(Integer postId) {
 		return postRepository.findAuthorByPostId(postId);
 	}
