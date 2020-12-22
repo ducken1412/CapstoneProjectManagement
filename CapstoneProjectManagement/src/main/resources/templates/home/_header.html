@@ -141,7 +141,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="has-sub">
+                    <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                        th:if="${authority.getAuthority() == 'MemberAuthen'|| authority.getAuthority() == 'LeaderAuthen'}">
                        <a href="#">
                             <i class="fas fa-american-sign-language-interpreting"></i>
                             <span class="bot-line"></span>Guide</a>
