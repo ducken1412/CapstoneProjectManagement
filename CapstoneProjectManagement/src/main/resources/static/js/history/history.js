@@ -1,3 +1,8 @@
+$(document).ready(function () {
+    $('#notification-container').css('display', 'none');
+});
+
+
 $(document).on("change", "#dr-role", function (e) {
     $('#history-container').LoadingOverlay("show", {
         size: 50,

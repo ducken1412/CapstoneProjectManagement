@@ -20,5 +20,7 @@ public interface PostService {
 
 	Page<Posts> findPaginated(Pageable pageable);
 
+	Page<Posts> findByTitleContains(Pageable pageable, String title);
+
 	Users findAuthorByPostId(Integer postId);
 }

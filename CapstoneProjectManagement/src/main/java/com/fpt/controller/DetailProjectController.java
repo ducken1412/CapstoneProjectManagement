@@ -60,158 +60,164 @@ public class DetailProjectController {
         if (principal == null) {
             return "redirect:/login";
         }
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
-        LocalDate d1;
-        d1 = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate d2;
-        d2 = LocalDate.parse(simpleDateFormat.format(cp.getSemester().getStartDate()), DateTimeFormatter.ISO_LOCAL_DATE);
-        Duration diff;
-        diff = Duration.between(d2.atStartOfDay(), d1.atStartOfDay());
-        long diffDays = diff.toDays();
-        long currentWeek = diffDays / 7;
-        if (currentWeek != 0) {
-            model.addAttribute("checkWeek", true);
-        }
-
-        if (cp.getStatus().getName().equals(Constant.STATUS_DOING_CAPSTONE_DB)) {
-            model.addAttribute("checkBTChangName", true);
-        }
-        model.addAttribute("detail", cp);
-        List<Users> userproject = capstoneProjectDetailService.findUserByCapstoneProjectDetailId(id);
-        model.addAttribute("userproject", userproject);
-        List<Users> userprojectWaitingApprove = capstoneProjectDetailService.getUserWaitingApproveByCapstoneProjectDetailId(id);
-
-        String nameStatus = cp.getStatus().getName();
-
-        if (nameStatus == null) {
-            model.addAttribute("status", "");
-        } else {
-            switch (nameStatus) {
-                case Constant.STATUS_NOT_ELIGIBLE_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_CAPSTONE);
-                case Constant.STATUS_ELIGIBLE_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_ELIGIBLE_CAPSTONE);
-                case Constant.STATUS_INACTIVE_USER_DB:
-                    model.addAttribute("status", Constant.STATUS_INACTIVE_USER);
-                case Constant.STATUS_REGISTERING_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_REGISTERING_CAPSTONE);
-                case Constant.STATUS_REGISTED_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_REGISTED_CAPSTONE);
-                case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
-                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_LECTURER);
-                case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
-                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_TRAINING);
-                case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:
-                    model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_HEAD);
-                case Constant.STATUS_DOING_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_DOING_CAPSTONE);
-                case Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE);
-                case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE);
-                case Constant.STATUS_REJECT_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_REJECT_CAPSTONE);
-                case Constant.STATUS_CHANGING_NAME_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_CHANGING_NAME_CAPSTONE);
-                case Constant.STATUS_PENDING_CAPSTONE_DB:
-                    model.addAttribute("status", Constant.STATUS_PENDING_CAPSTONE);
-
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            CapstoneProjects cp = capstoneProjectService.getCapstonProjectById(id);
+            LocalDate d1;
+            d1 = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ISO_LOCAL_DATE);
+            LocalDate d2;
+            d2 = LocalDate.parse(simpleDateFormat.format(cp.getSemester().getStartDate()), DateTimeFormatter.ISO_LOCAL_DATE);
+            Duration diff;
+            diff = Duration.between(d2.atStartOfDay(), d1.atStartOfDay());
+            long diffDays = diff.toDays();
+            long currentWeek = diffDays / 7;
+            if (currentWeek != 0) {
+                model.addAttribute("checkWeek", true);
             }
-        }
-        List<UserRoleDTO> userRolesDTOs = new ArrayList<>();
-        for (Users users : userproject) {
-            String user_id = users.getId();
-            UserRoleDTO userRoleDTO = new UserRoleDTO();
-            userRoleDTO.setId(user_id);
-            userRoleDTO.setUsername(users.getUsername());
-            List<String> role = userRoleService.getRoleNamesByUserId(user_id);
-            for (String string : role) {
-                List<String> roleView = new ArrayList<>();
-                if (string.equals(Constant.ROLE_HEAD_DB)) {
-                    roleView.add(Constant.ROLE_HEAD);
-                }
-                if (string.equals(Constant.ROLE_LECTURERS_DB)) {
-                    roleView.add(Constant.ROLE_LECTURERS);
-                }
-                if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
-                    roleView.add(Constant.ROLE_STUDENT_LEADER);
-                }
-                if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
-                    roleView.add(Constant.ROLE_STUDENT_MEMBER);
-                }
-                if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
-                    roleView.add(Constant.ROLE_TRAINING_DEP);
-                }
-                userRoleDTO.setRole(roleView);
+
+            Status statusCP = statusService.findStatusByCapstoneProject(cp.getId());
+            if (statusCP.getName().equals(Constant.STATUS_DOING_CAPSTONE_DB)) {
+                model.addAttribute("checkBTChangName", true);
             }
-            userRolesDTOs.add(userRoleDTO);
-        }
+            model.addAttribute("detail", cp);
+            List<Users> userproject = capstoneProjectDetailService.findUserByCapstoneProjectDetailId(id);
+            model.addAttribute("userproject", userproject);
+            List<Users> userprojectWaitingApprove = capstoneProjectDetailService.getUserWaitingApproveByCapstoneProjectDetailId(id);
 
-        //
-        List<UserRoleDTO> userRolesDTOsWaitingApprove = new ArrayList<>();
-        for (Users users : userprojectWaitingApprove) {
-            String user_id = users.getId();
-            UserRoleDTO userRoleDTO = new UserRoleDTO();
-            userRoleDTO.setId(user_id);
-            userRoleDTO.setUsername(users.getUsername());
-            List<String> role = userRoleService.getRoleNamesByUserId(user_id);
-            for (String string : role) {
-                List<String> roleView = new ArrayList<>();
-                if (string.equals(Constant.ROLE_HEAD_DB)) {
-                    roleView.add(Constant.ROLE_HEAD);
+            String nameStatus = statusCP.getName();
+
+            if (nameStatus == null) {
+                model.addAttribute("status", "");
+            } else {
+                switch (nameStatus) {
+                    case Constant.STATUS_NOT_ELIGIBLE_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_CAPSTONE);
+                    case Constant.STATUS_ELIGIBLE_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_ELIGIBLE_CAPSTONE);
+                    case Constant.STATUS_INACTIVE_USER_DB:
+                        model.addAttribute("status", Constant.STATUS_INACTIVE_USER);
+                    case Constant.STATUS_REGISTERING_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_REGISTERING_CAPSTONE);
+                    case Constant.STATUS_REGISTED_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_REGISTED_CAPSTONE);
+                    case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
+                        model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_LECTURER);
+                    case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
+                        model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_TRAINING);
+                    case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:
+                        model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_HEAD);
+                    case Constant.STATUS_DOING_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_DOING_CAPSTONE);
+                    case Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE);
+                    case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE);
+                    case Constant.STATUS_REJECT_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_REJECT_CAPSTONE);
+                    case Constant.STATUS_CHANGING_NAME_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_CHANGING_NAME_CAPSTONE);
+                    case Constant.STATUS_PENDING_CAPSTONE_DB:
+                        model.addAttribute("status", Constant.STATUS_PENDING_CAPSTONE);
+
                 }
-                if (string.equals(Constant.ROLE_LECTURERS_DB)) {
-                    roleView.add(Constant.ROLE_LECTURERS);
-                }
-                if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
-                    roleView.add(Constant.ROLE_STUDENT_LEADER);
-                }
-                if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
-                    roleView.add(Constant.ROLE_STUDENT_MEMBER);
-                }
-                if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
-                    roleView.add(Constant.ROLE_TRAINING_DEP);
-                }
-                userRoleDTO.setRole(roleView);
             }
-            userRolesDTOsWaitingApprove.add(userRoleDTO);
-        }
-
-        Users user = userService.findByEmail(principal.getName());
-        String userId = user.getId();
-        boolean check_capstone = false;
-        //check user login = user project
-        List<Integer> capstone_id = capstoneProjectDetailService.getIdProjectByUserIDCheckApprove(userId);
-        for (int i = 0; i < capstone_id.size(); i++) {
-            if (capstone_id.get(i) == id) {
-                check_capstone = true;
+            List<UserRoleDTO> userRolesDTOs = new ArrayList<>();
+            for (Users users : userproject) {
+                String user_id = users.getId();
+                UserRoleDTO userRoleDTO = new UserRoleDTO();
+                userRoleDTO.setId(user_id);
+                userRoleDTO.setUsername(users.getUsername());
+                List<String> role = userRoleService.getRoleNamesByUserId(user_id);
+                for (String string : role) {
+                    List<String> roleView = new ArrayList<>();
+                    if (string.equals(Constant.ROLE_HEAD_DB)) {
+                        roleView.add(Constant.ROLE_HEAD);
+                    }
+                    if (string.equals(Constant.ROLE_LECTURERS_DB)) {
+                        roleView.add(Constant.ROLE_LECTURERS);
+                    }
+                    if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
+                        roleView.add(Constant.ROLE_STUDENT_LEADER);
+                    }
+                    if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+                        roleView.add(Constant.ROLE_STUDENT_MEMBER);
+                    }
+                    if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
+                        roleView.add(Constant.ROLE_TRAINING_DEP);
+                    }
+                    userRoleDTO.setRole(roleView);
+                }
+                userRolesDTOs.add(userRoleDTO);
             }
-        }
-        model.addAttribute("check_capstone", check_capstone);
-        model.addAttribute("userRolesDTOs", userRolesDTOs);
-        model.addAttribute("userprojectWaitingApprove", userRolesDTOsWaitingApprove);
 
-        //check history show submit send training department
-        HistoryRecords historyRecords = historyRecordService.findHistoryByUserIdCapstoneId(userId, id);
-        if (historyRecords != null) {
-            boolean checkUserRegister = true;
-            boolean checkStatusProject = false;
-            if (cp.getStatus().getName().equals("registering_capstone")) {
-                checkStatusProject = true;
-                model.addAttribute("checkStatusProject", checkStatusProject);
+            //
+            List<UserRoleDTO> userRolesDTOsWaitingApprove = new ArrayList<>();
+            for (Users users : userprojectWaitingApprove) {
+                String user_id = users.getId();
+                UserRoleDTO userRoleDTO = new UserRoleDTO();
+                userRoleDTO.setId(user_id);
+                userRoleDTO.setUsername(users.getUsername());
+                List<String> role = userRoleService.getRoleNamesByUserId(user_id);
+                for (String string : role) {
+                    List<String> roleView = new ArrayList<>();
+                    if (string.equals(Constant.ROLE_HEAD_DB)) {
+                        roleView.add(Constant.ROLE_HEAD);
+                    }
+                    if (string.equals(Constant.ROLE_LECTURERS_DB)) {
+                        roleView.add(Constant.ROLE_LECTURERS);
+                    }
+                    if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
+                        roleView.add(Constant.ROLE_STUDENT_LEADER);
+                    }
+                    if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+                        roleView.add(Constant.ROLE_STUDENT_MEMBER);
+                    }
+                    if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
+                        roleView.add(Constant.ROLE_TRAINING_DEP);
+                    }
+                    userRoleDTO.setRole(roleView);
+                }
+                userRolesDTOsWaitingApprove.add(userRoleDTO);
             }
-            model.addAttribute("checkUserRegister", checkUserRegister);
+
+            Users user = userService.findByEmail(principal.getName());
+            String userId = user.getId();
+            boolean check_capstone = false;
+            //check user login = user project
+            List<Integer> capstone_id = capstoneProjectDetailService.getIdProjectByUserIDCheckApprove(userId);
+            for (int i = 0; i < capstone_id.size(); i++) {
+                if (capstone_id.get(i) == id) {
+                    check_capstone = true;
+                }
+            }
+            model.addAttribute("check_capstone", check_capstone);
+            model.addAttribute("userRolesDTOs", userRolesDTOs);
+            model.addAttribute("userprojectWaitingApprove", userRolesDTOsWaitingApprove);
+
+            //check history show submit send training department
+            HistoryRecords historyRecords = historyRecordService.findHistoryByUserIdCapstoneId(userId, id);
+            if (historyRecords != null) {
+                boolean checkUserRegister = true;
+                boolean checkStatusProject = false;
+                if (statusCP.getName().equals("registering_capstone")) {
+                    checkStatusProject = true;
+                    model.addAttribute("checkStatusProject", checkStatusProject);
+                }
+                model.addAttribute("checkUserRegister", checkUserRegister);
+            }
+
+
+            if (statusCP.getName().equals(Constant.STATUS_REGISTED_CAPSTONE_DB)) {
+                model.addAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
+            }
+            if (statusCP.getName().equals(Constant.STATUS_CHANGING_NAME_CAPSTONE_DB) ||statusCP.getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB)) {
+                model.addAttribute("notification", "Changing successfully !!! Please wait  supervisor confirm your action.");
+            }
+        }catch (Exception e){
+
         }
 
 
-        if (cp.getStatus().getName().equals(Constant.STATUS_REGISTED_CAPSTONE_DB)) {
-            model.addAttribute("notification", "Your request has been submitted, please wait for the response from the Training Department.");
-        }
-        if (cp.getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_CAPSTONE_DB) ||cp.getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB)) {
-            model.addAttribute("notification", "Changing successfully !!! Please wait  supervisor confirm your action.");
-        }
         return "home/detail_project";
     }
 
@@ -296,6 +302,7 @@ public class DetailProjectController {
         try {
             capstoneProjectService.updateStatusCapstoneProjectSendTD(id);
             capstoneProjectService.deleteUserNotSubmitCapstone(id);
+            capstoneProjectService.updateSupervisorsSubmitCapstone(id);
         } catch (Exception e) {
 
         }
@@ -336,6 +343,14 @@ public class DetailProjectController {
                 model.addAttribute("doingStatus", false);
             } else {
                 model.addAttribute("doingStatus", true);
+            }
+            if(nameStatus.equals((Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB)) || nameStatus.equals((Constant.STATUS_DOING_CAPSTONE_DB))
+            || nameStatus.equals((Constant.STATUS_CHANGING_NAME_CAPSTONE_DB))){
+                model.addAttribute("checkInputNameCP",true);
+                model.addAttribute("checkMemberCP",true);
+            }else {
+                model.addAttribute("checkInputNameCP",false);
+                model.addAttribute("checkMemberCP",false);
             }
 
             String changName = capstoneProject.getNameChanging();
@@ -449,7 +464,7 @@ public class DetailProjectController {
         Users user = userService.findByEmail(principal.getName());
         CapstoneProjects capstoneProjects = capstoneProjectService.getCapstoneProjectByUserId(user.getId());
 
-        if (!capstoneProjects.getStatus().getName().equals(Constant.STATUS_REGISTERING_CAPSTONE)) {
+        if (!capstoneProjects.getStatus().getName().equals(Constant.STATUS_REGISTERING_CAPSTONE_DB)) {
             dataForm.setName(capstoneProjects.getName());
             dataForm.setNameVi(capstoneProjects.getNameVi());
         }

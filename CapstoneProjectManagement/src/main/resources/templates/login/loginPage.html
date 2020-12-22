@@ -17,31 +17,30 @@
 					<img src= "/image/logo2.png"/>
 		</div>
 	</div>
-	<div class="container" style="padding-left: 254px;padding-top: 85px;">
+	<div class="container text-center" >
 		<h1>Capstone Project Management Login</h1>
 		<p>
 			Helping the school to have the tools to register and manage project
 			making and grading while <br />making it as easy, convenient and
 			fast as possible for students, teachers, and training rooms.
 		</p>
+
 	</div>
 	<div class="container">
-		<div class="row">
-			<div class="col-sm-4"  > </div>
-				<div class="col-sm-4" style="padding-top: 30px; padding-left: 60px;">
-					<div>
-						<a      class="btn btn-block btn-social btn-google customBtn"
-								href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/login-google&response_type=code
-    					&client_id=129727949930-69qmp90rob83tsnqvqnekmkhb9qpat54.apps.googleusercontent.com&approval_prompt=force">
-							<span
-								class="fa fa-google width42px"></span> Sign in with Google
-						</a>
-					</div>
-				</div>
-			<div class="col-sm-4">
+
+		<div class="d-flex justify-content-center">
+			<div>
+				<a      class="btn btn-block btn-social btn-google customBtn"
+						href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/login-google&response_type=code
+				&client_id=129727949930-69qmp90rob83tsnqvqnekmkhb9qpat54.apps.googleusercontent.com&approval_prompt=force">
+					<span
+						class="fa fa-google width42px"></span> Sign in with Google
+				</a>
 			</div>
 
-		
+		</div>
+		<div class="d-flex justify-content-center">
+			<span class="text-danger" th:text="${error}"></span>
 		</div>
 
 	</div>

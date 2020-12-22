@@ -42,7 +42,7 @@
                                                 <div class="row mt-2" style="margin-bottom: 20px; float: right; margin-right: 20px">
                                                     <div class="ml-auto mr-3">
                                                         <a th:if="${checkWeek == true && checkUserRegister == true && checkBTChangName == true}"
-                                                           class="btn btn-success mt-2" th:href="@{'/changing-name-project/' + ${detail.id}}">Change Name Capstone</a>
+                                                           class="btn btn-success mt-2" th:href="@{'/changing-name-project/' + ${detail.id}}">Change Name</a>
                                                         <a th:if="${checkUserRegister == true}" class="btn btn-success mt-2" th:href="@{'/edit-project/' + ${detail.id}}">Edit</a>
                                                     </div>
 
@@ -111,7 +111,7 @@
                                                                 <a th:href="@{'/user/' + ${u.id}}"
                                                                    th:text=${u.username}></a></th>
                                                             <td th:each="r: ${u.role}"><p th:text=${r}></p></td>
-                                                            <td>Waiting for approval</td>
+                                                            <td>Wait for confirmation</td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

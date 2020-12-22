@@ -355,36 +355,11 @@ public class Users implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Users users = (Users) o;
-        return Objects.equals(id, users.id) &&
-                Objects.equals(username, users.username) &&
-                Objects.equals(firstName, users.firstName) &&
-                Objects.equals(lastName, users.lastName) &&
-                Objects.equals(birthDate, users.birthDate) &&
-                Objects.equals(gender, users.gender) &&
-                Objects.equals(phone, users.phone) &&
-                Objects.equals(image, users.image) &&
-                Objects.equals(email, users.email) &&
-                Objects.equals(createdDate, users.createdDate) &&
-                Objects.equals(address, users.address) &&
-                Objects.equals(description, users.description) &&
-                Objects.equals(status, users.status) &&
-                Objects.equals(roleUser, users.roleUser) &&
-                Objects.equals(historyRecords, users.historyRecords) &&
-                Objects.equals(capstoneProjectDetails, users.capstoneProjectDetails) &&
-                Objects.equals(notificationDetails, users.notificationDetails) &&
-                Objects.equals(reportReceives, users.reportReceives) &&
-                Objects.equals(comments, users.comments) &&
-                Objects.equals(evaluationDetail, users.evaluationDetail) &&
-                Objects.equals(posts, users.posts) &&
-                Objects.equals(chats, users.chats) &&
-                Objects.equals(report, users.report) &&
-                Objects.equals(chatDetail, users.chatDetail) &&
-                Objects.equals(semester, users.semester) &&
-                Objects.equals(site, users.site);
+        return id.equals(users.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, firstName, lastName, birthDate, gender, phone, image, email, createdDate, address, description, status, roleUser, historyRecords, capstoneProjectDetails, notificationDetails, reportReceives, comments, evaluationDetail, posts, chats, report, chatDetail, semester, site);
+        return Objects.hash(id);
     }
 }

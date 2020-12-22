@@ -2,6 +2,8 @@ package com.fpt.repository;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.fpt.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -65,5 +67,20 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 
 	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.capstoneProject.status.name = 'registering_capstone'")
 	CapstoneProjects getCapstoneProjecRegistingtByUserId(String userId);
+
+	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.capstoneProject.status.name <> 'registering_capstone'")
+	CapstoneProjects getCapstoneProjectRegistedByUserId(String userId);
+
+	@Query("SELECT ru.user FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.status.name <> 'registering_capstone'")
+	List<Users> findUserByCapstoneProjectId(Integer id);
+
+	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1 and ru.status.name <> 'registering_capstone'")
+	List<CapstoneProjects> findCapstoneProjectRegistedBySupervisorId(String userId);
+
+	//delete user not approve capstone when submit to training department
+	@Transactional
+	@Modifying
+	@Query("update CapstoneProjectDetails c set c.status.id = 5 where c.capstoneProject.id = ?1 and (c.supType = 'Main Lecture' or c.supType = 'Assistant Lecture')")
+	void updateSupervisorsSubmitCapstone(Integer id);
 
 }

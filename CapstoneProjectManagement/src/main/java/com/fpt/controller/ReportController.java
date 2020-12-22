@@ -6,6 +6,7 @@ import com.fpt.common.SendingMail;
 import com.fpt.dto.*;
 import com.fpt.entity.*;
 import com.fpt.service.*;
+import com.fpt.utils.Constant;
 import com.fpt.utils.ExcelHelper;
 import org.apache.http.client.utils.DateUtils;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -80,7 +81,7 @@ public class ReportController {
     private NotificationDetailService notificationDetailService;
 
     @Autowired
-    private SemestersService semestersService;
+    private StatusService statusService;
 
 
     @GetMapping("/report")
@@ -89,8 +90,13 @@ public class ReportController {
             return "redirect:/login";
         }
 
+
         Users user = userService.findByEmail(principal.getName());
-        if(user.getCapstoneProjectDetails().isEmpty() || !user.getCapstoneProjectDetails().get(0).getStatus().getName().equals("doing_capstone")){
+        Status status = statusService.findStatusByUserId(user.getId());
+        if(user.getCapstoneProjectDetails().isEmpty() || (
+                !status.getName().equals(Constant.STATUS_DOING_CAPSTONE_DB) &&
+                !status.getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB))
+        ){
             return "error/403Page";
         }
         try {
@@ -229,7 +235,7 @@ public class ReportController {
             }
 
             //Import Excel
-            if (file != null) {
+            if (file != null && !file.isEmpty()) {
                 String message = "";
 
                 Workbook workbook = new XSSFWorkbook(file.getInputStream());
@@ -348,6 +354,7 @@ public class ReportController {
                     workbook.close();
                     return "home/add-report";
                 }
+                workbook.close();
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -383,7 +390,7 @@ public class ReportController {
             }
         }
         notificationDetailService.saveAllNotificationDetails(detailsList);
-        return "redirect:/report/" + reportId;
+        return "redirect:report/" + reportId;
     }
 
     @RequestMapping(value = "/list-reports", method = RequestMethod.GET)

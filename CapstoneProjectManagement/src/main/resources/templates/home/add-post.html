@@ -8,6 +8,7 @@
 		</div>
 	</div>
 	<div class="card-body card-block">
+		<div id="error-container" class="form-group d-none"></div>
 		<form id="post-form" method="post" class="form-horizontal"
 			th:object="${post}" enctype="multipart/form-data" >
 			<input type="text" id="id" name="id" th:value="${post.id}"

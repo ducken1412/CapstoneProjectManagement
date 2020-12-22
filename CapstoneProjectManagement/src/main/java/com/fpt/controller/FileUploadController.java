@@ -120,26 +120,30 @@ public class FileUploadController {
 	@RequestMapping("/file/{filename:.+}")
 	public void downloadResource(HttpServletRequest request, HttpServletResponse response,
 								 @PathVariable String filename) throws IOException {
+		try {
+			Resource file = storageService.load(filename);
+			if (file.exists()) {
 
-		Resource file = storageService.load(filename);
-		if (file.exists()) {
+				//get the mimetype
+				String mimeType = URLConnection.guessContentTypeFromName(file.getFilename());
+				if (mimeType == null) {
+					//unknown mimetype so set the mimetype to application/octet-stream
+					mimeType = "application/octet-stream";
+				}
 
-			//get the mimetype
-			String mimeType = URLConnection.guessContentTypeFromName(file.getFilename());
-			if (mimeType == null) {
-				//unknown mimetype so set the mimetype to application/octet-stream
-				mimeType = "application/octet-stream";
+				response.setContentType(mimeType);
+				//response.setHeader("Content-Disposition", String.format("inline; filename=" + file.getFilename()));
+
+				InputStream inputStream = new BufferedInputStream(new FileInputStream(file.getFile()));
+
+				FileCopyUtils.copy(inputStream, response.getOutputStream());
+				response.getOutputStream().flush();
+
 			}
-
-			response.setContentType(mimeType);
-			//response.setHeader("Content-Disposition", String.format("inline; filename=" + file.getFilename()));
-
-			InputStream inputStream = new BufferedInputStream(new FileInputStream(file.getFile()));
-
-			FileCopyUtils.copy(inputStream, response.getOutputStream());
-			response.getOutputStream().flush();
+		}catch (Exception e){
 
 		}
+
 	}
 
 }
