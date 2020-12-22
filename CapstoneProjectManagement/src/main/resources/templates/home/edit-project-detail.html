@@ -38,15 +38,16 @@
                                                     </div>
                                                     <form th:object="${capstoneProjectDTO}" method="post" id="update" class="mx-5">
                                                         <div id="error-container" class="form-group d-none"></div>
-
+                                                        <input id="idCP" th:value="${capstoneProject.id}" hidden>
                                                         <div class="form-group row">
                                                             <label for="name" class="text-md-right">Name Project</label>
-                                                            <input type="text" th:value="${capstoneProject.name}"  th:disabled="${doingStatus}"  id="name" class="form-control"  /> <span class="bg-danger pull-right error-mess" th:errors="*{name}"></span>
-
+                                                            <input type="text" th:value="${capstoneProject.name}"  th:disabled="${doingStatus}" name="name" id="name" class="form-control"  /> <span class="bg-danger pull-right error-mess" th:errors="*{name}"></span>
+                                                            <input th:if="${checkInputNameCP}" type="text" th:value="${capstoneProject.name}"   name="name" class="form-control"  hidden/>
                                                         </div>
 
                                                         <div class="form-group row"><label for="nameVi" class="text-md-right">Name Project VietNamese</label>
-                                                            <input  th:value="${capstoneProject.nameVi}" type="text" id="nameVi"  th:disabled="${doingStatus}" class="form-control" />
+                                                            <input  th:value="${capstoneProject.nameVi}" type="text" id="nameVi"  name="nameVi" th:disabled="${doingStatus}" class="form-control" />
+                                                            <input th:if="${checkInputNameCP}" type="text" th:value="${capstoneProject.nameVi}"   name="nameVi" class="form-control"  hidden/>
                                                         </div>
 
                                                         <div class="form-group row">
@@ -61,9 +62,15 @@
                                                             <input type="text" id="nameAbbreviation" class="form-control" name="nameAbbreviation" th:value="${capstoneProject.nameAbbreviation}"/>
                                                         </div>
 
-                                                        <div class="form-group row">
+                                                        <div th:if="${checkInputNameCP == false}" class="form-group row">
                                                             <label for="dropProfession" class="text-md-right">Profession Project</label>
                                                             <select class="form-control" id="dropProfession" name="profession">
+                                                                <option th:each="profession : ${professions}" th:value="${profession.id}" th:text="${profession.name}" th:selected="${profession.id == capstoneProject.profession.id}" ></option>
+                                                            </select>
+                                                        </div>
+                                                        <div th:if="${checkInputNameCP == true}" class="form-group row" style="display: none;">
+                                                            <label for="dropProfession" class="text-md-right">Profession Project</label>
+                                                            <select class="form-control" id="dropProfessionHidden" name="profession">
                                                                 <option th:each="profession : ${professions}" th:value="${profession.id}" th:text="${profession.name}" th:selected="${profession.id == capstoneProject.profession.id}" ></option>
                                                             </select>
                                                         </div>
@@ -78,21 +85,40 @@
                                                         <div class="form-group row"><label for="document" class="text-md-right">Document Project</label>
                                                             <input th:value="${capstoneProject.document}" type="text" id="document" class="form-control" name="document" />
                                                         </div>
-
-                                                        <div class="row form-group">
-                                                            <label for="member" class="text-md-right">Add New Member</label>
-                                                            <div class="input-group">
-                                                                <input type="text" id="member" name="member" class="form-control" />
-                                                                <div class="input-group-btn">
-                                                                    <button id="btn-add-member" class="btn btn-primary">
-                                                                        Add
-                                                                    </button>
+                                                        <div th:if="${checkInputNameCP == false}">
+                                                            <div  class="row form-group">
+                                                                <label for="member" class="text-md-right">Add New Member</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" id="member" name="member" class="form-control" />
+                                                                    <div class="input-group-btn">
+                                                                        <button id="btn-add-member" class="btn btn-primary">
+                                                                            Add
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
+                                                                <span class="text-danger d-none" id="error-message"></span>
                                                             </div>
-                                                            <span class="text-danger d-none" id="error-message"></span>
+                                                            <div class="form-group row attrTable">
+                                                                <table class="members" id="member-table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-group row attrTable">
-                                                            <table class="members" id="member-table">
+
+                                                        <div th:if="${checkInputNameCP == true}" class="form-group row attrTable" style="display: none">
+                                                            <table class="members" id="member-table-hidden">
                                                                 <thead>
                                                                 <tr>
                                                                     <th></th>

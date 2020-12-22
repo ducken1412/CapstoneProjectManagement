@@ -39,6 +39,9 @@ import com.fpt.utils.Constant;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 public class UserController {
 
@@ -314,20 +317,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/update-profile", method = RequestMethod.POST)
-    public String updateUserProfile(UserEditDTO userForm, RedirectAttributes redirectAttributes, Model model, Principal principal,@RequestParam("file") MultipartFile file) {
+    public String updateUserProfile(UserEditDTO userForm, RedirectAttributes redirectAttributes, Model model, Principal principal,@RequestParam("file") MultipartFile file, HttpServletResponse response) {
         if (principal == null) {
             return "redirect:/login";
         }
 //        FileUploadController fileUploadController = new FileUploadController();
 //        fileUploadController.uploadFile()
         String image = null;
-        if (!file.isEmpty()) {
-            long date = new Date().getTime();
-            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-            String fileName = FilenameUtils.removeExtension(file.getOriginalFilename()) + "-" + String.valueOf(date) + "." +extension;
-            storageService.save(file,fileName);
-            image = "/file/"+ fileName;
-        }
         String id = userForm.getId();
         String phone = userForm.getPhone();
         String address = userForm.getAddress();
@@ -346,12 +342,22 @@ public class UserController {
             model.addAttribute("user", user);
             return "redirect:/edit-user";
         }
+        if (!file.isEmpty()) {
+            long date = new Date().getTime();
+            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+            String fileName = FilenameUtils.removeExtension(file.getOriginalFilename()) + "-" + String.valueOf(date) + "." +extension;
+            storageService.save(file,fileName);
+            image = "/file/"+ fileName;
+        }
         try {
             Date startDateRegister = new SimpleDateFormat("yyyy-MM-dd").parse(userForm.getBirthDate());
             userService.updateProfileByUserId(description,phone,address,image,startDateRegister,id);
         } catch (Exception e){
 
         }
+        Cookie cookieImage = new Cookie("userImage",image);
+        // add cookie to response
+        response.addCookie(cookieImage);
         return "redirect:/user/" + id;
     }
 }
