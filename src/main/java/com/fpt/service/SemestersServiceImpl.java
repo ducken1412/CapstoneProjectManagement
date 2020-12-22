@@ -1,9 +1,7 @@
 package com.fpt.service;
 
 import com.fpt.entity.Semesters;
-import com.fpt.entity.Sites;
 import com.fpt.repository.SemestersRepository;
-import com.fpt.repository.SitesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

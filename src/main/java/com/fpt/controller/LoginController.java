@@ -57,7 +57,15 @@ public class LoginController {
 	private StatisticsService statisticsService;
 
 	@RequestMapping(value = {"/", "/login"})
-	public String login(HttpServletRequest request,Model model) {
+	public String login(HttpServletRequest request,Model model, HttpServletResponse response) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null)
+			for (Cookie cookie : cookies) {
+				cookie.setValue("");
+				cookie.setPath("/");
+				cookie.setMaxAge(0);
+				response.addCookie(cookie);
+			}
 		String error = request.getParameter("error");
 		if(error != null){
 			model.addAttribute("error" ,"User was not found in the system");
