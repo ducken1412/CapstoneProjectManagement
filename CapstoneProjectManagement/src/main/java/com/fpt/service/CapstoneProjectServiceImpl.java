@@ -59,6 +59,12 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
     @Autowired
     private CapstoneProjectService capstoneProjectService;
 
+    @Autowired
+    private NotificationsService notificationsService;
+
+    @Autowired
+    private NotificationDetailService notificationDetailService;
+
     @Override
     public List<String> getCapstoneProjectNameByUserId(String userId) {
         return capstoneProjectRepository.getCapstoneProjectNameByUserId(userId);
@@ -197,10 +203,23 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
         String title = user.getUsername() + " invites you to participate in a capstone project";
         String content = user.getUsername() + " invites you to participate in a capstone project. Click " + "<a href=\"" + baseUrl + "project-detail/" + projects.getId() + "\">view</a>";
         Users userTmp = null;
+        Date date = new Date();
+        Notifications notifications = new Notifications();
+        notifications.setContent(content);
+        notifications.setTitle(title);
+        notifications.setCreated_date(date);
+        notifications.setType("private");
+        notificationsService.addNotification(notifications);
+        List<NotificationDetails> detailsList = new ArrayList<>();
+        NotificationDetails notificationDetails = null;
         for (MemberDTO member : members) {
             if (!member.getUsername().equalsIgnoreCase(user.getUsername())) {
-                NotificationCommon.sendNotificationByUsername(user, title, content, member.getUsername());
                 userTmp = userService.findByUsername(member.getUsername()).get(0);
+                notificationDetails = new NotificationDetails();
+                notificationDetails.setType("private");
+                notificationDetails.setNotification(notifications);
+                notificationDetails.setUser(userTmp);
+                detailsList.add(notificationDetails);
                 try {
                     SendingMail.sendEmail(userTmp.getEmail(), "[FPTU Capstone Project] Invite to participate capstone project", content);
                 } catch (Exception ex) {
@@ -208,6 +227,7 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
                 }
             }
         }
+        notificationDetailService.saveAllNotificationDetails(detailsList);
         output.put("hasError", false);
         output.put("message", "Project registration is successful.");
         return new Gson().toJson(output);
@@ -375,10 +395,23 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
         String title = user.getUsername() + " invites you to participate in a capstone project";
         String content = user.getUsername() + " invites you to participate in a capstone project. Click " + "<a href=\"" + baseUrl + "project-detail/" + projects.getId() + "\">view</a>";
         Users userTmp = null;
+        Date date = new Date();
+        Notifications notifications = new Notifications();
+        notifications.setContent(content);
+        notifications.setTitle(title);
+        notifications.setCreated_date(date);
+        notifications.setType("private");
+        notificationsService.addNotification(notifications);
+        List<NotificationDetails> detailsList = new ArrayList<>();
+        NotificationDetails notificationDetails = null;
         for (MemberDTO member : members) {
             if (!member.getUsername().equalsIgnoreCase(user.getUsername())) {
-                NotificationCommon.sendNotificationByUsername(user, title, content, member.getUsername());
                 userTmp = userService.findByUsername(member.getUsername()).get(0);
+                notificationDetails = new NotificationDetails();
+                notificationDetails.setType("private");
+                notificationDetails.setNotification(notifications);
+                notificationDetails.setUser(userTmp);
+                detailsList.add(notificationDetails);
                 try {
                     SendingMail.sendEmail(userTmp.getEmail(), "[FPTU Capstone Project] Invite to participate capstone project", content);
                 } catch (Exception ex) {
@@ -386,6 +419,7 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
                 }
             }
         }
+        notificationDetailService.saveAllNotificationDetails(detailsList);
         output.put("hasError", false);
         output.put("message", "Project update is successful.");
         return new Gson().toJson(output);
