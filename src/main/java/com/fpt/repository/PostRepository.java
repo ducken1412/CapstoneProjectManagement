@@ -19,6 +19,9 @@ public interface PostRepository extends JpaRepository<Posts, Integer> {
     @EntityGraph(value = "post-entity-graph-with-comment-users")
     Page<Posts> findAll(Pageable pageable);
 
+    @EntityGraph(value = "post-entity-graph-with-comment-users")
+    Page<Posts> findByTitleContains(Pageable pageable, String title);
+
     @Query(value = "SELECT p.author FROM Posts p WHERE p.id = ?1")
     Users findAuthorByPostId(Integer postId);
 

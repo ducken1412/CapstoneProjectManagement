@@ -8,10 +8,14 @@ import com.fpt.entity.Files;
 import com.fpt.entity.HistoryRecords;
 import com.fpt.entity.Users;
 
+import javax.validation.constraints.NotBlank;
+
 public class PostDTO {
 	@JsonProperty("id")
 	private Integer id;
+	@NotBlank(message = "Title must not blank")
 	private String title;
+	@NotBlank(message = "Description must not blank")
 	private String description;
 	private List<Comments> comments;
 	private List<HistoryRecords> historyRecords;

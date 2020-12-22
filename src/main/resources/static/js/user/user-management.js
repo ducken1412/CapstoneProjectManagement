@@ -9,7 +9,6 @@ function getSearch() {
     var site = $('#dr-site').val();
     var semester = $('#dr-semester').val();
     var type = $('#dr-type').val().toString();
-    debugger;
     // $.LoadingOverlay("show", {
     //     size: 50,
     //     maxSize: 50,

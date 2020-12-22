@@ -28,7 +28,10 @@
 </div>
 <script>
     $('#btn-connect-chat').click(function (e) {
-        $.LoadingOverlay("show", {
+        if($('#chat-name').val() === '') {
+            return false;
+        }
+        $('.mess__item').LoadingOverlay("show", {
             size: 50,
             maxSize: 50,
         });
@@ -39,8 +42,8 @@
             type: "GET",
             success: function (data) {
                 if(data === 'fail') {
+                    $('.mess__item').LoadingOverlay("hide");
                     $('#error-message').text('Not Found!!!');
-                    $.LoadingOverlay("hide");
                 } else {
                     $.ajax({
                         url: "/find-room",

@@ -344,6 +344,14 @@ public class DetailProjectController {
             } else {
                 model.addAttribute("doingStatus", true);
             }
+            if(nameStatus.equals((Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB)) || nameStatus.equals((Constant.STATUS_DOING_CAPSTONE_DB))
+            || nameStatus.equals((Constant.STATUS_CHANGING_NAME_CAPSTONE_DB))){
+                model.addAttribute("checkInputNameCP",true);
+                model.addAttribute("checkMemberCP",true);
+            }else {
+                model.addAttribute("checkInputNameCP",false);
+                model.addAttribute("checkMemberCP",false);
+            }
 
             String changName = capstoneProject.getNameChanging();
             String statusCapstone = capstoneProject.getStatus().getName();
@@ -456,7 +464,7 @@ public class DetailProjectController {
         Users user = userService.findByEmail(principal.getName());
         CapstoneProjects capstoneProjects = capstoneProjectService.getCapstoneProjectByUserId(user.getId());
 
-        if (!capstoneProjects.getStatus().getName().equals(Constant.STATUS_REGISTERING_CAPSTONE)) {
+        if (!capstoneProjects.getStatus().getName().equals(Constant.STATUS_REGISTERING_CAPSTONE_DB)) {
             dataForm.setName(capstoneProjects.getName());
             dataForm.setNameVi(capstoneProjects.getNameVi());
         }
