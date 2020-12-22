@@ -1,0 +1,13 @@
+@charset "ISO-8859-1";
+#header {
+  background: url(/image/guide/header.jpg) center center / cover no-repeat ;
+}
+h2{
+	color: green;
+}
+p{
+	color: #b77514;
+}
+h1{
+	color: red;
+}
