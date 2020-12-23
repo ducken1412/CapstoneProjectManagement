@@ -241,6 +241,11 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
     }
 
     @Override
+    public List<Object[]> getAllCap() {
+        return capstoneProjectRepository.getAllCap();
+    }
+
+    @Override
     public CapstoneProjects findById(Integer id) {
         return capstoneProjectRepository.findById(id).orElse(null);
     }

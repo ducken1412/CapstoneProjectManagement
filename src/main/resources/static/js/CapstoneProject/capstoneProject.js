@@ -806,3 +806,22 @@ $(document).on("click", ".del-member", function(e) {
         $('#btn-add-supervisors').prop('disabled', false);
     }
 })
+
+
+
+$(document).on("click", "#btn-exportExcel", function () {
+
+    $.ajax({
+        url: "/exportExcel",
+        type: "GET",
+        success: function (data) {
+            debugger;
+            $('#linkDowloadExel')[0].click();
+        },
+        error: function (xhr) {
+            if (xhr.status == 302 || xhr.status == 200) {
+                window.location.href = "/ad/capstoneproject";
+            }
+        },
+    });
+});

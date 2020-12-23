@@ -164,5 +164,10 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 
+	@Override
+	public Integer checkCountLeader(String uId, Integer cpId) {
+		return  userRepository.checkCountLeader(uId,cpId);
+	}
+
 
 }

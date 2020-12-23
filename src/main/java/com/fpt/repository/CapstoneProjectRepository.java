@@ -24,6 +24,13 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	//kienbt4 add code capstone start
 	@Query(value = "SELECT ru.id, ru.description_action ,ru.description,ru.document,ru.name,ru.name_abbreviation," +
 			"ru.name_lang_other ,ru.name_vi,ru.program,ru.specialty,ru.profession_id,ru.status_id,ru.name_changing,ru.name_vi_changing," +
+			"st.name as nameStatus,p.subject_code as subjectCode FROM capstone_projects ru " +
+			"LEFT JOIN status st ON st.id = ru.status_id " +
+			"LEFT JOIN profession p ON p.id = ru.profession_id " +
+			"group by ru.id,ru.description_action,ru.description,ru.document,ru.name,ru.name_abbreviation,ru.name_lang_other,ru.name_vi,ru.program,ru.specialty,ru.profession_id,ru.status_id,st.name", nativeQuery = true)
+	List<Object[]> getAllCap();
+	@Query(value = "SELECT ru.id, ru.description_action ,ru.description,ru.document,ru.name,ru.name_abbreviation," +
+			"ru.name_lang_other ,ru.name_vi,ru.program,ru.specialty,ru.profession_id,ru.status_id,ru.name_changing,ru.name_vi_changing," +
 			"st.name as nameStatus,p.subject_code as subjectCode, count(de.id) as countDetail FROM capstone_projects ru " +
 			"LEFT JOIN capstone_project_details de ON de.capstone_project_id = ru.id " +
 			"LEFT JOIN status st ON st.id = ru.status_id " +
