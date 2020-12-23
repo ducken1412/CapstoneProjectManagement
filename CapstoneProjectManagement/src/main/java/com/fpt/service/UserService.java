@@ -62,4 +62,7 @@ public interface UserService {
 	Integer countStudentEligibleCapstone(String site, String semester);
 
 	boolean updateProfileByUserId(String des, String phone, String address, String img, Date date,String uid);
+
+	//count check leader
+	Integer checkCountLeader(String uId, Integer cpId);
 }
