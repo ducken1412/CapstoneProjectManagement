@@ -68,7 +68,7 @@ public class DetailProjectController {
             diff = Duration.between(d2.atStartOfDay(), d1.atStartOfDay());
             long diffDays = diff.toDays();
             long currentWeek = diffDays / 7;
-            if (currentWeek != 0) {
+            if (currentWeek <= 8) {
                 model.addAttribute("checkWeek", true);
             }
 
@@ -131,64 +131,6 @@ public class DetailProjectController {
                         model.addAttribute("status", Constant.STATUS_PENDING_CAPSTONE);
                 }
             }
-//            List<UserRoleDTO> userRolesDTOs = new ArrayList<>();
-//            for (Users users : userproject) {
-//                String user_id = users.getId();
-//                UserRoleDTO userRoleDTO = new UserRoleDTO();
-//                userRoleDTO.setId(user_id);
-//                userRoleDTO.setUsername(users.getUsername());
-//                List<String> role = userRoleService.getRoleNamesByUserId(user_id);
-//                for (String string : role) {
-//                    List<String> roleView = new ArrayList<>();
-//                    if (string.equals(Constant.ROLE_HEAD_DB)) {
-//                        roleView.add(Constant.ROLE_HEAD);
-//                    }
-//                    if (string.equals(Constant.ROLE_LECTURERS_DB)) {
-//                        roleView.add(Constant.ROLE_LECTURERS);
-//                    }
-//                    if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
-//                        roleView.add(Constant.ROLE_STUDENT_LEADER);
-//                    }
-//                    if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
-//                        roleView.add(Constant.ROLE_STUDENT_MEMBER);
-//                    }
-//                    if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
-//                        roleView.add(Constant.ROLE_TRAINING_DEP);
-//                    }
-//                    userRoleDTO.setRole(roleView);
-//                }
-//                userRolesDTOs.add(userRoleDTO);
-//            }
-//
-//            //
-//            List<UserRoleDTO> userRolesDTOsWaitingApprove = new ArrayList<>();
-//            for (Users users : userprojectWaitingApprove) {
-//                String user_id = users.getId();
-//                UserRoleDTO userRoleDTO = new UserRoleDTO();
-//                userRoleDTO.setId(user_id);
-//                userRoleDTO.setUsername(users.getUsername());
-//                List<String> role = userRoleService.getRoleNamesByUserId(user_id);
-//                for (String string : role) {
-//                    List<String> roleView = new ArrayList<>();
-//                    if (string.equals(Constant.ROLE_HEAD_DB)) {
-//                        roleView.add(Constant.ROLE_HEAD);
-//                    }
-//                    if (string.equals(Constant.ROLE_LECTURERS_DB)) {
-//                        roleView.add(Constant.ROLE_LECTURERS);
-//                    }
-//                    if (string.equals(Constant.ROLE_STUDENT_LEADER_DB)) {
-//                        roleView.add(Constant.ROLE_STUDENT_LEADER);
-//                    }
-//                    if (string.equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
-//                        roleView.add(Constant.ROLE_STUDENT_MEMBER);
-//                    }
-//                    if (string.equals(Constant.ROLE_TRAINING_DEP_DB)) {
-//                        roleView.add(Constant.ROLE_TRAINING_DEP);
-//                    }
-//                    userRoleDTO.setRole(roleView);
-//                }
-//                userRolesDTOsWaitingApprove.add(userRoleDTO);
-//            }
 
             List<Object[]> projectdetail = capstoneProjectDetailService.getByProjectId(id);
             List<CapstoneProjectDetailBody> projectdetailList = new ArrayList<CapstoneProjectDetailBody>();
