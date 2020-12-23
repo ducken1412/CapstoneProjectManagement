@@ -68,7 +68,7 @@ public class DetailProjectController {
             diff = Duration.between(d2.atStartOfDay(), d1.atStartOfDay());
             long diffDays = diff.toDays();
             long currentWeek = diffDays / 7;
-            if (currentWeek != 0) {
+            if (currentWeek <= 8) {
                 model.addAttribute("checkWeek", true);
             }
 
