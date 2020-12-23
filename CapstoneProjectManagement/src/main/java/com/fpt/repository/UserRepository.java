@@ -181,4 +181,8 @@ public interface UserRepository  extends JpaRepository<Users, String>{
 	@Modifying
 	@Query("update Users u set u.description = ?1, u.phone = ?2, u.address = ?3, u.image = ?4, u.birthDate = ?5 where u.id = ?6")
 	void updateProfileByUserId(String des, String phone, String address, String img, Date date,String uid);
+
+	@Query(value = "SELECT COUNT(*) \n" +
+			"FROM user_roles ur JOIN capstone_project_details cpd ON ur.user_id = cpd.user_id AND ur.role_id = 1 AND ur.user_id = ?1 AND cpd.capstone_project_id = ?2", nativeQuery = true)
+	Integer checkCountLeader(String uId, Integer cpId);
 }

@@ -41,9 +41,9 @@
                                                 </div>
                                                 <div class="row mt-2" style="margin-bottom: 20px; float: right; margin-right: 20px">
                                                     <div class="ml-auto mr-3">
-                                                        <a th:if="${checkWeek == true && checkUserRegister == true && checkBTChangName == true}"
+                                                        <a th:if="${checkWeek == true && checkLeader == true && checkBTChangName == true}"
                                                            class="btn btn-success mt-2" th:href="@{'/changing-name-project/' + ${detail.id}}">Change Name</a>
-                                                        <a th:if="${checkUserRegister == true}" class="btn btn-success mt-2" th:href="@{'/edit-project/' + ${detail.id}}">Edit</a>
+                                                        <a th:if="${checkUserRegister == true || checkEditLeader == true}" class="btn btn-success mt-2" th:href="@{'/edit-project/' + ${detail.id}}">Edit</a>
                                                     </div>
 
                                                 </div>
@@ -99,20 +99,14 @@
                                                             <td style="background: #efefef">Role</td>
                                                             <td style="background: #efefef">Status</td>
                                                         </tr>
-                                                        <tr th:each="u: ${userRolesDTOs}">
-                                                            <th style="background: #efefef">
-                                                                <a th:href="@{'/user/' + ${u.id}}"
-                                                                   th:text=${u.username}></a></th>
-                                                            <td th:each="r: ${u.role}"><p th:text=${r}></p></td>
-                                                            <td>Confirmed</td>
+                                                        <tr th:each="u: ${projectdetailList}">
+                                                            <td style="background: #efefef">
+                                                                <a th:href="@{'/user/' + ${u.user_id}}"
+                                                                   th:text=${u.user_name}></a></td>
+                                                            <td th:text="${u.rolename}"></td>
+                                                            <td th:text="${u.nameStatus}"></td>
                                                         </tr>
-                                                        <tr th:each="u: ${userprojectWaitingApprove}">
-                                                            <th style="background: #efefef">
-                                                                <a th:href="@{'/user/' + ${u.id}}"
-                                                                   th:text=${u.username}></a></th>
-                                                            <td th:each="r: ${u.role}"><p th:text=${r}></p></td>
-                                                            <td>Wait for confirmation</td>
-                                                        </tr>
+
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -154,7 +148,7 @@
 <th:block th:include="home/_script"></th:block>
 <script>
     function confirmApprove() {
-        if (confirm('Are you sure you want to approve?')) {
+        if (confirm('Are you sure you want to confirm?')) {
             $.LoadingOverlay("show", {
                 size: 50,
                 maxSize: 50,
