@@ -530,7 +530,7 @@ public class CapstoneProjectController {
 					roleDB = Constant.ROLE_STUDENT_LEADER;
 					break;
 				default:
-					roleDB = null;
+					roleDB = "";
 			}
 			projectdetailnew.setRolename(roleDB);
 
