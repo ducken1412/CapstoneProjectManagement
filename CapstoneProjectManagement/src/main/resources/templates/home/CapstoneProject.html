@@ -45,7 +45,16 @@
                                                 >Search
                                         </button>
                                     </div>
+                                    <div style="display: none;" >
+                                        <a id="linkDowloadExel" th:href="'/file/CapstoneProjectList.xlsx'">Download </a>
+                                    </div>
+
                                     <div class="table-data__tool-right">
+
+                                        <button
+                                                class="btn fas fa-file-excel-o  btn-success mr-3" id="btn-exportExcel">
+                                            Export Excel
+                                        </button>
                                         <button
                                                 class="btn btn-success mr-3" id="btn-addApprove"
                                                 data-toggle="modal" data-target="#confirm-Approvelist">Approve Selected

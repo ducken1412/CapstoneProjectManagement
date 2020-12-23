@@ -11,8 +11,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
+import com.fpt.dto.CapstoneProjectDetailBody;
 import com.fpt.dto.CapstoneProjectPagingBodyDTO;
 import com.fpt.dto.TaskDetailsDTO;
+import com.fpt.dto.UserManagementDTO;
 import com.fpt.entity.TaskDetails;
 import com.fpt.entity.Users;
 import com.fpt.service.TaskDetailsService;
@@ -459,14 +461,27 @@ public class ExcelHelper {
     public static final int COLUMN_INDEX_CAP_DESCRIPTION = 6;
     public static final int COLUMN_INDEX_CAP_STATUS = 7;
 
+    private static CellStyle cellStyleFormatNumber = null;
+
     public static final int COLUMN_INDEX_USERNAME = 0;
     public static final int COLUMN_INDEX_ROLE      = 1;
     public static final int COLUMN_INDEX_NAME_STUDENT     = 2;
     public static final int COLUMN_INDEX_PHONE	= 3;
     public static final int COLUMN_INDEX_EMAIL = 4;
     public static final int COLUMN_STATUS_CAP_DETAIL = 5;
+    public final String excelFilePath = "D:/demo/books.xlsx";
 
-    private static CellStyle cellStyleFormatNumber = null;
+    public static final int COLUMN_INDEX_Student_ID = 0;
+    public static final int COLUMN_INDEX_Username     = 1;
+    public static final int COLUMN_INDEX_NAME_Full_Name     = 2;
+    public static final int COLUMN_INDEX_Gender	= 3;
+    public static final int COLUMN_INDEX_Created_Date = 4;
+    public static final int COLUMN_STATUS_Email = 5;
+    public static final int COLUMN_STATUS_Capstone_Project = 5;
+    public static final int COLUMN_STATUS_Status = 6;
+    public static final int COLUMN_STATUS_Semester = 7;
+    public static final int COLUMN_STATUS_Site = 8;
+
 
 
 
@@ -479,17 +494,30 @@ public class ExcelHelper {
 
         int rowIndex = 0;
 
-        // Write header
-        writeHeader(sheet, rowIndex);
 
-        // Write data
+
+        // Write header Cap
+        writeHeader(sheet, rowIndex);
         rowIndex++;
+
         for (CapstoneProjectPagingBodyDTO capstoneProject : capstoneProjectPagingBodyDTO) {
+
             // Create row
             Row row = sheet.createRow(rowIndex);
-            // Write data on row
-            ///writeBook(users, row);
+            // Write data cap on row
+            writeCapstone(sheet,capstoneProject, row);
+            rowIndex ++;
+            writeHeaderProjectDetail(sheet,rowIndex);
             rowIndex++;
+            for (CapstoneProjectDetailBody capstoneProjectDetail : capstoneProject.getDetail()) {
+                Row rowCapDetail = sheet.createRow(rowIndex);
+                writeCapstoneDetail(capstoneProjectDetail,rowCapDetail);
+                rowIndex++;
+            }
+            if(capstoneProject.getDetail() == null || capstoneProject.getDetail().size() == 0) {
+                rowIndex ++;
+            }
+
         }
 
 
@@ -502,16 +530,39 @@ public class ExcelHelper {
         System.out.println("Done!!!");
     }
 
-    // Create dummy data
-    /*private static List<Book> getBooks() {
-        List<Book> listBook = new ArrayList<>();
-        Book book;
-        for (int i = 1; i <= 5; i++) {
-            book = new Book(i, "Book " + i, i * 2, i * 1000);
-            listBook.add(book);
+
+    public static void writeExcelUser(List<UserManagementDTO> userManagementDTOS, String excelFilePath) throws IOException {
+        // Create Workbook
+        Workbook workbook = getWorkbook(excelFilePath);
+
+        // Create sheet
+        Sheet sheet = workbook.createSheet("Users"); // Create sheet with sheet name
+
+        int rowIndex = 0;
+
+
+        // Write header User
+        writeHeaderUser(sheet, rowIndex);
+        rowIndex++;
+
+        for (UserManagementDTO userManagementDTO : userManagementDTOS) {
+
+            // Create row
+            Row row = sheet.createRow(rowIndex);
+            // Write data user on row
+            writeManageUser(sheet,userManagementDTO, row);
+            rowIndex ++;
+
         }
-        return listBook;
-    }*/
+
+        // Auto resize column witdth
+        int numberOfColumn = sheet.getRow(0).getPhysicalNumberOfCells();
+        autosizeColumn(sheet, numberOfColumn);
+
+        // Create file excel
+        createOutputFile(workbook, excelFilePath);
+        System.out.println("Done!!!");
+    }
 
     // Create workbook
     private static Workbook getWorkbook(String excelFilePath) throws IOException {
@@ -526,6 +577,57 @@ public class ExcelHelper {
         }
 
         return workbook;
+    }
+
+    // Write header with format of manage user
+    private static void writeHeaderUser(Sheet sheet, int rowIndex) {
+        // create CellStyle
+        CellStyle cellStyle = createStyleForHeader(sheet);
+
+        // Create row
+        Row row = sheet.createRow(rowIndex);
+
+        // Create cells
+        Cell cell = row.createCell(COLUMN_INDEX_Student_ID);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Student ID");
+
+        cell = row.createCell(COLUMN_INDEX_Username);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Username");
+
+        cell = row.createCell(COLUMN_INDEX_NAME_Full_Name);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Full Name");
+
+        cell = row.createCell(COLUMN_INDEX_Gender);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Gender");
+
+        cell = row.createCell(COLUMN_INDEX_Created_Date);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Created Date");
+
+        cell = row.createCell(COLUMN_STATUS_Email );
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Email");
+
+        cell = row.createCell(COLUMN_STATUS_Capstone_Project);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Capstone Project");
+
+        cell = row.createCell(COLUMN_STATUS_Status );
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Status");
+
+        cell = row.createCell(COLUMN_STATUS_Semester );
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Semester ");
+
+        cell = row.createCell(COLUMN_STATUS_Site);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Site");
+
     }
 
     // Write header with format
@@ -549,54 +651,197 @@ public class ExcelHelper {
         cell.setCellStyle(cellStyle);
         cell.setCellValue("NAME VI");
 
-
-        /*cell = row.createCell(COLUMN_INDEX_PRICE);
+        cell = row.createCell(COLUMN_INDEX_NAME_CHANGING);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue("Price");
+        cell.setCellValue("NAME CHANGING");
 
-        cell = row.createCell(COLUMN_INDEX_QUANTITY);
+        cell = row.createCell(COLUMN_INDEX_NAME_CHANGING_VI);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue("Quantity");
+        cell.setCellValue("NAME CHANGING VI");
 
-        cell = row.createCell(COLUMN_INDEX_TOTAL);
+        cell = row.createCell(COLUMN_INDEX_NAME_ABBREVIATION);
         cell.setCellStyle(cellStyle);
-        cell.setCellValue("Total money");*/
+        cell.setCellValue("NAME_ABBREVIATION");
+
+        cell = row.createCell(COLUMN_INDEX_CAP_DESCRIPTION);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("DESCRIPTION");
+
+        cell = row.createCell(COLUMN_INDEX_CAP_STATUS);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("STATUS CAPSTONE PROJECT");
+
     }
 
-    // Write data
-    private static void writeBook(Users users, Row row) {
+
+
+    // Write header with format
+    private static void writeHeaderProjectDetail(Sheet sheet, int rowIndex) {
+        // create CellStyle
+        //CellStyle cellStyle = createStyleForHeaderCapDetail(sheet);
+
+        // Create row
+        Row row = sheet.createRow(rowIndex);
+
+        // Create cells
+        Cell cell = row.createCell(COLUMN_INDEX_USERNAME);
+        //cell.setCellStyle(cellStyle);
+        cell.setCellValue("USERNAME");
+
+        cell = row.createCell(COLUMN_INDEX_ROLE);
+        //cell.setCellStyle(cellStyle);
+        cell.setCellValue("ROLE");
+
+        cell = row.createCell(COLUMN_INDEX_NAME_STUDENT);
+       // cell.setCellStyle(cellStyle);
+        cell.setCellValue("NAME");
+
+        cell = row.createCell(COLUMN_INDEX_PHONE);
+        //cell.setCellStyle(cellStyle);
+        cell.setCellValue("PHONE");
+
+        cell = row.createCell(COLUMN_INDEX_EMAIL);
+        //cell.setCellStyle(cellStyle);
+        cell.setCellValue("EMAIL");
+
+        cell = row.createCell(COLUMN_STATUS_CAP_DETAIL );
+        //cell.setCellStyle(cellStyle);
+        cell.setCellValue("STATUS");
+
+    }
+
+    // Write data Manage User
+    private static void writeManageUser(Sheet sheet,UserManagementDTO user, Row row) {
         if (cellStyleFormatNumber == null) {
             // Format number
             short format = (short)BuiltinFormats.getBuiltinFormat("#,##0");
             // DataFormat df = workbook.createDataFormat();
             // short format = df.getFormat("#,##0");
-
             //Create CellStyle
             Workbook workbook = row.getSheet().getWorkbook();
             cellStyleFormatNumber = workbook.createCellStyle();
             cellStyleFormatNumber.setDataFormat(format);
         }
 
-        //Cell cell = row.createCell(COLUMN_INDEX_ID);
-        /*cell.setCellValue(book.getId());
 
-        cell = row.createCell(COLUMN_INDEX_TITLE);
-        cell.setCellValue(book.getTitle());
+        // Create cells
+        Cell cell = row.createCell(COLUMN_INDEX_Student_ID);
+        cell.setCellValue(user.getId());
 
-        cell = row.createCell(COLUMN_INDEX_PRICE);
-        cell.setCellValue(book.getPrice());
-        cell.setCellStyle(cellStyleFormatNumber);
+        cell = row.createCell(COLUMN_INDEX_Username);
+        cell.setCellValue(user.getUserName());
 
-        cell = row.createCell(COLUMN_INDEX_QUANTITY);
-        cell.setCellValue(book.getQuantity());*/
-        // Create cell formula
-        // totalMoney = price * quantity
-        /*cell = row.createCell(COLUMN_INDEX_TOTAL, CellType.FORMULA);
-        cell.setCellStyle(cellStyleFormatNumber);
-        int currentRow = row.getRowNum() + 1;
-        String columnPrice = CellReference.convertNumToColString(COLUMN_INDEX_PRICE);
-        String columnQuantity = CellReference.convertNumToColString(COLUMN_INDEX_QUANTITY);*/
-        //cell.setCellFormula(columnPrice + currentRow + "*" + columnQuantity + currentRow);
+        cell = row.createCell(COLUMN_INDEX_NAME_Full_Name);
+        cell.setCellValue(user.getFirstName() + " " + user.getLastName());
+
+        cell = row.createCell(COLUMN_INDEX_Gender);
+        if(user.getGender() == 1) {
+            cell.setCellValue("Male");
+        }else  {
+            cell.setCellValue("Female");
+        }
+
+        cell = row.createCell(COLUMN_INDEX_Created_Date);
+        cell.setCellValue(user.getCreatedDate());
+
+        cell = row.createCell(COLUMN_STATUS_Email );
+        cell.setCellValue(user.getEmail());
+
+        cell = row.createCell(COLUMN_STATUS_Capstone_Project);
+        cell.setCellValue(user.getNameCapstone());
+
+        cell = row.createCell(COLUMN_STATUS_Status);
+        cell.setCellValue(user.getStatus());
+
+
+        cell = row.createCell(COLUMN_STATUS_Semester );
+        cell.setCellValue(user.getSemester());
+
+        cell = row.createCell(COLUMN_STATUS_Site);
+        cell.setCellValue(user.getSite());
+    }
+
+    // Write data
+    private static void writeCapstone(Sheet sheet,CapstoneProjectPagingBodyDTO cap, Row row) {
+        if (cellStyleFormatNumber == null) {
+            // Format number
+            short format = (short)BuiltinFormats.getBuiltinFormat("#,##0");
+            // DataFormat df = workbook.createDataFormat();
+            // short format = df.getFormat("#,##0");
+            //Create CellStyle
+            Workbook workbook = row.getSheet().getWorkbook();
+            cellStyleFormatNumber = workbook.createCellStyle();
+            cellStyleFormatNumber.setDataFormat(format);
+        }
+        CellStyle cellStyle = createStyleForHeaderCapDetail(sheet);
+
+
+        // Create cells
+        Cell cell = row.createCell(COLUMN_INDEX_SUBJECT_CODE);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(cap.getSubjectCode());
+
+        cell = row.createCell(COLUMN_INDEX_NAME_CAP);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(cap.getName());
+
+        cell = row.createCell(COLUMN_INDEX_NAME_VI);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(cap.getName_vi());
+
+        cell = row.createCell(COLUMN_INDEX_NAME_CHANGING);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(cap.getNameChanging());
+
+        cell = row.createCell(COLUMN_INDEX_NAME_CHANGING_VI);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(cap.getNameChangingVi());
+
+        cell = row.createCell(COLUMN_INDEX_NAME_ABBREVIATION);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(cap.getName_abbreviation());
+
+        cell = row.createCell(COLUMN_INDEX_CAP_DESCRIPTION);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(cap.getDescription());
+
+        cell = row.createCell(COLUMN_INDEX_CAP_STATUS);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(cap.getNameStatus());
+    }
+
+    // Write data
+    private static void writeCapstoneDetail(CapstoneProjectDetailBody capDetail, Row row) {
+        if (cellStyleFormatNumber == null) {
+            // Format number
+            short format = (short)BuiltinFormats.getBuiltinFormat("#,##0");
+            // DataFormat df = workbook.createDataFormat();
+            // short format = df.getFormat("#,##0");
+            //Create CellStyle
+            Workbook workbook = row.getSheet().getWorkbook();
+            cellStyleFormatNumber = workbook.createCellStyle();
+            cellStyleFormatNumber.setDataFormat(format);
+        }
+
+        // Create cells
+        // Create cells
+        Cell cell = row.createCell(COLUMN_INDEX_USERNAME);
+        cell.setCellValue(capDetail.getUser_name());
+
+        cell = row.createCell(COLUMN_INDEX_ROLE);
+        cell.setCellValue(capDetail.getRolename());
+
+        cell = row.createCell(COLUMN_INDEX_NAME_STUDENT);
+        cell.setCellValue(capDetail.getFirst_name() + " " +capDetail.getLast_name());
+
+        cell = row.createCell(COLUMN_INDEX_PHONE);
+        cell.setCellValue(capDetail.getPhone());
+
+        cell = row.createCell(COLUMN_INDEX_EMAIL);
+        cell.setCellValue(capDetail.getEmail());
+
+        cell = row.createCell(COLUMN_STATUS_CAP_DETAIL );
+        cell.setCellValue(capDetail.getNameStatus());
     }
 
     // Create CellStyle for header
@@ -605,17 +850,33 @@ public class ExcelHelper {
         Font font = sheet.getWorkbook().createFont();
         font.setFontName("Times New Roman");
         font.setBold(true);
-        font.setFontHeightInPoints((short) 14); // font size
+        font.setFontHeightInPoints((short) 10); // font size
         font.setColor(IndexedColors.WHITE.getIndex()); // text color
 
         // Create CellStyle
         CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
         cellStyle.setFont(font);
-        cellStyle.setFillForegroundColor(IndexedColors.BLUE.getIndex());
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         cellStyle.setBorderBottom(BorderStyle.THIN);
         return cellStyle;
     }
+
+    // Create CellStyle for header
+    private static CellStyle createStyleForHeaderCapDetail(Sheet sheet) {
+        // Create font
+        Font font = sheet.getWorkbook().createFont();
+        font.setColor(IndexedColors.BLACK.getIndex()); // text color
+
+        // Create CellStyle
+        CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+        cellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        return cellStyle;
+    }
+
 
 
     // Auto resize column width

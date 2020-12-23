@@ -26,6 +26,9 @@ public interface CapstoneProjectService {
 
 	// get all
 	List<Object[]> getAllByUserId(String UserId, Integer PageIndex, Integer PageSize,Integer status,Integer profession,String nameSearch);
+
+	List<Object[]> getAllCap();
+
 	CapstoneProjects findById(Integer id);
 	Integer getCountStudent (Integer id);
 	CapstoneProjects getCapstoneProjectByUserId(String userId);

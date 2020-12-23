@@ -33,3 +33,23 @@ function getSearch() {
 $(document).on("click", "#btn-searchStudentManagement", function () {
     getSearch();
 });
+
+$(document).on("click", "#btn-exportExcel", function () {
+
+    var site = $('#dr-site').val();
+    var semester = $('#dr-semester').val();
+    var type = $('#dr-type').val().toString();
+    $.ajax({
+        url: "/exportExcelUser?site=" + site + "&semester=" + semester + "&type=" + type,
+        type: "GET",
+        success: function (data) {
+            debugger;
+            $('#linkDowloadExel')[0].click();
+        },
+        error: function (xhr) {
+            if (xhr.status == 302 || xhr.status == 200) {
+                window.location.href = "/ad/capstoneproject";
+            }
+        },
+    });
+});

@@ -2,6 +2,7 @@ package com.fpt.controller;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,9 +14,11 @@ import com.fpt.dto.UserEditDTO;
 import com.fpt.dto.UserManagementDTO;
 import com.fpt.entity.*;
 import com.fpt.service.*;
+import com.fpt.utils.ExcelHelper;
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -287,6 +290,108 @@ public class UserController {
 
 
         return "home/student-management-component";
+    }
+
+    @ResponseBody
+    @GetMapping("/exportExcelUser")
+    public String exportDataTable(Model model, @RequestParam(required = false, name = "type") String typeParam, @RequestParam(required = false, name = "site") String site,
+                                             @RequestParam(required = false, name = "semester") String semester, Principal principal) throws IOException {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        List<UserManagementDTO> users = new ArrayList<>();
+        Integer type = Integer.parseInt(typeParam);
+        switch (type) {
+            //get all student
+            case 1:
+                users = userService.getAllUserStudent(site, semester);
+                model.addAttribute("users", users);
+                break;
+
+            //get student doing capstone project
+            case 2:
+                users = userService.getUserStudentByStatusId(9);
+                model.addAttribute("users", users);
+                break;
+
+            //get student registering project
+            case 3:
+                users = userService.getUserStudentByStatusId(4);
+                model.addAttribute("users", users);
+                break;
+
+            //Registered Capstone Project by status project
+            case 4:
+                users = userService.getUserStudentByStatusId(5);
+                model.addAttribute("users", users);
+                break;
+
+            //Approve Capstone Supervisor by status project
+            case 5:
+                users = userService.getUserStudentByStatusId(6);
+                model.addAttribute("users", users);
+                break;
+
+            //Approve Capstone Training Department by status project
+            case 6:
+                users = userService.getUserStudentByStatusId(7);
+                model.addAttribute("users", users);
+                break;
+
+            //Approve Capstone Head by status project
+            case 7:
+                users = userService.getUserStudentByStatusId(8);
+                model.addAttribute("users", users);
+                break;
+
+            //Not Eligible Defence Capstone by status project
+            case 8:
+                users = userService.getUserStudentByStatusId(10);
+                model.addAttribute("users", users);
+                break;
+
+            //Eligible Defence Capstone by status project
+            case 9:
+                users = userService.getUserStudentByStatusId(11);
+                model.addAttribute("users", users);
+                break;
+
+            //Reject Capstone by status project
+            case 10:
+                users = userService.getUserStudentByStatusId(12);
+                model.addAttribute("users", users);
+                break;
+
+            //Changing Name Capstone by status project
+            case 11:
+                users = userService.getUserStudentByStatusId(13);
+                model.addAttribute("users", users);
+                break;
+
+            //Pending Capstone by status project
+            case 12:
+                users = userService.getUserStudentByStatusId(14);
+                model.addAttribute("users", users);
+                break;
+
+            //Change Name Capstone Supervisor by status project
+            case 13:
+                users = userService.getUserStudentByStatusId(15);
+                model.addAttribute("users", users);
+                break;
+
+            //List student has no team
+            case 14:
+                users = userService.getAllUserStudentHasNoTeam(site, semester);
+                model.addAttribute("users", users);
+                break;
+        }
+        Resource file = storageService.load("UserManagerment.xlsx");
+        String excelFilePath = file.getURI().getPath();
+        ExcelHelper.writeExcelUser(users,excelFilePath);
+
+        return "true";
     }
 
     @RequestMapping(value = "/edit-user", method = RequestMethod.GET)
