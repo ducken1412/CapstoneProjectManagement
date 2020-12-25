@@ -584,7 +584,7 @@ public class DetailProjectController {
             redirectAttributes.addFlashAttribute("notification", "Name Changing and name changingVi not blank!");
             return "redirect:/changing-name-project/" + capstoneProjects.getId();
         }
-        if (nameChanging.equalsIgnoreCase(projects.getName()) || nameViChange.equalsIgnoreCase(projects.getName())) {
+        if (nameChanging.equalsIgnoreCase(projects.getName()) || nameViChange.equalsIgnoreCase(projects.getNameVi())) {
             redirectAttributes.addFlashAttribute("notification", "Name Changing and name changingVi must not equal the old name!");
             return "redirect:/changing-name-project/" + capstoneProjects.getId();
         }

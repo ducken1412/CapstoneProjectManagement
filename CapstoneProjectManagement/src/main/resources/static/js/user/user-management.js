@@ -9,10 +9,10 @@ function getSearch() {
     var site = $('#dr-site').val();
     var semester = $('#dr-semester').val();
     var type = $('#dr-type').val().toString();
-    // $.LoadingOverlay("show", {
-    //     size: 50,
-    //     maxSize: 50,
-    // });
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
     $.ajax({
         url: "/student-management?site=" + site + "&semester=" + semester + "&type=" + type,
         type: "GET",
@@ -20,6 +20,7 @@ function getSearch() {
         success: function (data) {
             $('#student-container').html(data);
             $('#student-container').LoadingOverlay("hide");
+            $.LoadingOverlay("hide");
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {

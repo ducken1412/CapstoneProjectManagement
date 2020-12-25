@@ -27,8 +27,11 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 			"st.name as nameStatus,p.subject_code as subjectCode FROM capstone_projects ru " +
 			"LEFT JOIN status st ON st.id = ru.status_id " +
 			"LEFT JOIN profession p ON p.id = ru.profession_id " +
-			"group by ru.id,ru.description_action,ru.description,ru.document,ru.name,ru.name_abbreviation,ru.name_lang_other,ru.name_vi,ru.program,ru.specialty,ru.profession_id,ru.status_id,st.name", nativeQuery = true)
-	List<Object[]> getAllCap();
+			"WHERE (ru.status_id = ?1 OR ?1 = -1 ) " +
+			"AND (ru.profession_id = ?2 OR ?2 = -1 ) " +
+			"AND ru.name like ?3  " , nativeQuery = true)
+	List<Object[]> getAllCap(Integer status, Integer profession, String nameSearch);
+
 	@Query(value = "SELECT ru.id, ru.description_action ,ru.description,ru.document,ru.name,ru.name_abbreviation," +
 			"ru.name_lang_other ,ru.name_vi,ru.program,ru.specialty,ru.profession_id,ru.status_id,ru.name_changing,ru.name_vi_changing," +
 			"st.name as nameStatus,p.subject_code as subjectCode, count(de.id) as countDetail FROM capstone_projects ru " +
@@ -41,6 +44,18 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 			"AND ru.name like ?6  " +
 			"group by ru.id,ru.description_action,ru.description,ru.document,ru.name,ru.name_abbreviation,ru.name_lang_other,ru.name_vi,ru.program,ru.specialty,ru.profession_id,ru.status_id,st.name LIMIT ?2,?3", nativeQuery = true)
 	List<Object[]> getAll(String name, Integer PageIndex, Integer PageSize,Integer status,Integer profession,String nameSearch);
+
+	@Query(value = "SELECT count(ru.id) as countCap FROM capstone_projects ru " +
+			"LEFT JOIN capstone_project_details de ON de.capstone_project_id = ru.id " +
+			"LEFT JOIN status st ON st.id = ru.status_id " +
+			"LEFT JOIN profession p ON p.id = ru.profession_id " +
+			"WHERE (de.user_id = ?1 OR ?1 = '-1' ) " +
+			"AND (ru.status_id = ?2 OR ?2 = -1 ) " +
+			"AND (ru.profession_id = ?3 OR ?3 = -1 ) " +
+			"AND ru.name like ?4  " +
+			"group by ru.id,ru.description_action,ru.description,ru.document,ru.name,ru.name_abbreviation,ru.name_lang_other,ru.name_vi,ru.program,ru.specialty,ru.profession_id,ru.status_id,st.name", nativeQuery = true)
+	List<Integer> countCapAll(String name,Integer status,Integer profession,String nameSearch);
+
 
 	@Query("SELECT count(ru.id) FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.user.roleUser.size <> 4")
 	Integer getCountStudent(Integer id);
