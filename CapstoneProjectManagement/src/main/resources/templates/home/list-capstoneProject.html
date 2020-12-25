@@ -55,8 +55,9 @@
                     <button th:if="${(post.status_id == 7 && role == 3) ||((post.status_id == 5 || post.status_id == 13 || post.status_id == 9) && role == 4 ) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 15 || post.status_id == 14 || post.status_id == 16 ))}"
                             class="item" id="btn-RejectProject"
                             th:postId=${post.id} data-toggle="modal"
-                            data-target="#confirm-Reject">
-                        <i class="fas fa-times"></i>l
+                            data-target="#confirm-Reject"
+                            style="background-color: #dc3545 !important; border:#dc3545 !important; ">
+                        <i class="fas fa-times" style="color: white !important;"></i>
                     </button>
                 </div>
             </td>

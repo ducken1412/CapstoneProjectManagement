@@ -114,6 +114,7 @@ function getListPostInit() {
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {
+                $.LoadingOverlay("hide");
                 window.location.href = "/ad/capstoneproject";
             }
         },
@@ -143,6 +144,7 @@ function getListPost() {
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {
+                $.LoadingOverlay("hide");
                 window.location.href = "/forum";
             }
         },
@@ -810,12 +812,15 @@ $(document).on("click", ".del-member", function(e) {
 
 
 $(document).on("click", "#btn-exportExcel", function () {
-
+    const  pro = $('#SearchProfession').val();
+    const  status = $('#SearchStatus').val();
+    const  nameSearch = $('#nameSearch').val();
+    debugger;
     $.ajax({
-        url: "/exportExcel",
+        url: "/exportExcel?status=" + status+ "&profession=" + pro + "&nameSearch=" + nameSearch,
         type: "GET",
         success: function (data) {
-            debugger;
+
             $('#linkDowloadExel')[0].click();
         },
         error: function (xhr) {

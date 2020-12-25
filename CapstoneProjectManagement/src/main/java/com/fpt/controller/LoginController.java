@@ -95,10 +95,12 @@ public class LoginController {
 		Users appUser;
 		if (email != null) {
 			appUser = this.userService.findByEmail(email);
+			if(appUser.getStatus().getName().equals(Constant.STATUS_INACTIVE_USER_DB)) {
+				return "redirect:/login?error=true";
+			}
 			try {
 				userDetail = googleUtils.buildUser(email, appUser);
 			} catch (Exception e) {
-
 				return "redirect:/login?error=true";
 			}
 
