@@ -165,6 +165,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public boolean updateStatusByUserId(int status,String uid) {
+		try {
+			userRepository.updateStatusByUserId(status,uid);
+			return true;
+		}catch (Exception e){
+			System.out.println(e);
+		}
+		return false;
+	}
+
+	@Override
 	public Integer checkCountLeader(String uId, Integer cpId) {
 		return  userRepository.checkCountLeader(uId,cpId);
 	}

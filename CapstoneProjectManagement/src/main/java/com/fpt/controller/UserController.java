@@ -201,6 +201,7 @@ public class UserController {
         model.addAttribute("countStudentDoingCP", countStudentDoingCp);
 
         List<UserManagementDTO> users;
+
         Integer type = Integer.parseInt(typeParam);
         switch (type) {
             //get all student
@@ -291,6 +292,9 @@ public class UserController {
 
         return "home/student-management-component";
     }
+
+
+
 
     @ResponseBody
     @GetMapping("/exportExcelUser")
@@ -465,6 +469,24 @@ public class UserController {
         response.addCookie(cookieImage);
         return "redirect:/user/" + id;
     }
+
+
+
+    @ResponseBody
+    @GetMapping("/update-StatusUser")
+    public String updateStatus(Model model, @RequestParam(required = false, name = "id") String typeParam, @RequestParam(required = false, name = "status") boolean status, Principal principal) throws IOException {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        if(status) {
+            userService.updateStatusByUserId(3,typeParam);
+            return "false";
+        }else {
+            userService.updateStatusByUserId(2,typeParam);
+            return "true";
+        }
+    }
+
 }
 
 		
