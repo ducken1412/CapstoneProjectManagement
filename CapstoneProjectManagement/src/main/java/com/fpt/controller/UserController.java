@@ -125,32 +125,46 @@ public class UserController {
 			switch (nameStatus) {
 				case Constant.STATUS_NOT_ELIGIBLE_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_CAPSTONE);
+					break;
 				case Constant.STATUS_ELIGIBLE_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_ELIGIBLE_CAPSTONE);
+                    break;
 				case Constant.STATUS_INACTIVE_USER_DB:
 					model.addAttribute("status", Constant.STATUS_INACTIVE_USER);
+                    break;
 				case Constant.STATUS_REGISTERING_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_REGISTERING_CAPSTONE);
+                    break;
 				case Constant.STATUS_REGISTED_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_REGISTED_CAPSTONE);
+                    break;
 				case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
 					model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_LECTURER);
+                    break;
 				case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
 					model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_TRAINING);
+                    break;
 				case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:
 					model.addAttribute("status", Constant.STATUS_APPROVE_CAPSTONE_HEAD);
+                    break;
 				case Constant.STATUS_DOING_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_DOING_CAPSTONE);
+                    break;
 				case Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE);
+                    break;
 				case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE);
+                    break;
 				case Constant.STATUS_REJECT_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_REJECT_CAPSTONE);
+                    break;
 				case Constant.STATUS_CHANGING_NAME_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_CHANGING_NAME_CAPSTONE);
+                    break;
 				case Constant.STATUS_PENDING_CAPSTONE_DB:
 					model.addAttribute("status", Constant.STATUS_PENDING_CAPSTONE);
+                    break;
 
 			}
 		}

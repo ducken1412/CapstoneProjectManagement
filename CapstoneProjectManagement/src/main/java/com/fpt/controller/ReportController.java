@@ -176,7 +176,9 @@ public class ReportController {
         } catch (Exception ex) {
 
         }
-        if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 1){
+        if(user.getRoleUser().get(0).getUserRoleKey().getRole().getName().equals(Constant.ROLE_LECTURERS_DB)
+                || user.getRoleUser().get(0).getUserRoleKey().getRole().getName().equals(Constant.ROLE_LECTURERS_DB)
+                || user.getRoleUser().get(0).getUserRoleKey().getRole().getName().equals(Constant.ROLE_HEAD_DB)){
             model.addAttribute("checkReportLeader", true);
         }
         return "home/report-detail";
@@ -206,6 +208,12 @@ public class ReportController {
         Users user = userService.findByEmail(principal.getName());
         String userId = user.getId();
         CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
+
+        if(reportForm.getTitle() == null || reportForm.getContent() == null || reportForm.getTitle().isEmpty() || reportForm.getContent().isEmpty()){
+            redirectAttributes.addFlashAttribute("notification", "Title and Content not blank!");
+            return "redirect:/report";
+        }
+
         String type = "daily report";
         List<String> roles = userRoleService.getRoleNamesByEmail(principal.getName());
         for (String role : roles) {
@@ -364,8 +372,10 @@ public class ReportController {
         String userName = user.getUsername();
         int reportId = report.getId();
         String baseUrl = String.format("%s://%s:%d/", request.getScheme(), request.getServerName(), request.getServerPort());
-        String title = userName + " report at " + date;
-        String content = "Report by " + userName + " at " + date + " Click " + "<a href=\"" + baseUrl + "report/" + reportId + "\">view report detail.</a>";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String parsedDate = formatter.format(date);
+        String title = userName + " report at " + parsedDate;
+        String content = "Report by " + userName + " at " + parsedDate + " Click " + "<a href=\"" + baseUrl + "report/" + reportId + "\">view report detail.</a>";
         String typeReport = "private";
         Notifications notifications = new Notifications();
         notifications.setContent(content);
