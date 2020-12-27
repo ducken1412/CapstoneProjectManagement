@@ -830,3 +830,91 @@ $(document).on("click", "#btn-exportExcel", function () {
         },
     });
 });
+
+$(document).on("click", "#btn-passProject", function () {
+    const postId = $(this).attr("postId");
+    let countCheck = 0;
+    $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
+        const des = $("#PassDes").val();
+        $("#loading-Approve").attr("hidden", false);
+        $.ajax({
+            url: "/update-Status?id=" + postId + "&des=" + des,
+            type: "GET",
+            success: function (data) {
+                $("#loading-Pass").attr("hidden", true);
+                $("#PassDes").val("");
+                $('.modal-backdrop').hide(); // for black background
+                $('body').removeClass('modal-open'); // For scroll run
+                $('#confirm-Pass').modal('hide');
+                if(data === "The Project has been update successfully"){
+                    $.showNotification({
+                        body: data,
+                        type: "success",
+                        duration: 2000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }else {
+                    $.showNotification({
+                        body: data,
+                        type: "danger",
+                        duration: 2000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }
+                getListPost();
+            },
+            error: function (xhr) {
+                if (xhr.status == 302 || xhr.status == 200) {
+                    window.location.href = "/ad/capstoneproject";
+                }
+            },
+        });
+    })
+});
+
+$(document).on("click", "#btn-failProject", function () {
+
+    const postId = $(this).attr("postId");
+    let countCheck = 0;
+    $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
+        $("#loading-Fail").attr("hidden", false);
+        const des = $("#FailDes").val();
+        $.ajax({
+            url: "/reject?id=" + postId + "&des=" + des,
+            type: "GET",
+            success: function (data) {
+                $("#loading-Fail").attr("hidden", true);
+                $("#FailDes").val("");
+                $('.modal-backdrop').hide(); // for black background
+                $('body').removeClass('modal-open'); // For scroll run
+                $('#confirm-Fail').modal('hide');
+                getListPost();
+                $.showNotification({
+                    body: data,
+                    type: "success",
+                    duration: 2000,
+                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    zIndex: 100,
+                    margin: "1rem"
+                })
+            },
+            error: function (xhr) {
+                if (xhr.status == 302 || xhr.status == 200) {
+                    window.location.href = "/ad/capstoneproject";
+                }
+            },
+        });
+    })
+});

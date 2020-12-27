@@ -25,7 +25,7 @@
         <tr class="tr-shadow list-post-container" th:each="post :${capstoneProjectPage.content}"
             th:data-id="${post.countDetail}" th:id="${post.id}">
             <td>
-                <label th:if="${(post.status_id == 7 && role == 3) ||((post.status_id == 5 || post.status_id == 13 || post.status_id == 9) && role == 4) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 15 || post.status_id == 14 || post.status_id == 16 || post.status_id == 17 ))}"
+                <label th:if="${(post.status_id == 7 && role == 3) ||((post.status_id == 5 || post.status_id == 13) && role == 4) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 15 || post.status_id == 14 || post.status_id == 16 || post.status_id == 17 ))}"
                        class="au-checkbox">
                     <input th:postId=${post.id} type="checkbox" onclick="checkDisableButtonSelect()">
                     <span class="au-checkmark"></span>
@@ -46,16 +46,30 @@
                             id="btn-ViewProject" th:postId=${post.id} data-toggle="modal" data-target="#confirm-View">
                         <i class="fas fa-eye"></i>
                     </button>
-                    <button th:if="${(post.status_id == 7 && role == 3) ||((post.status_id == 5 || post.status_id == 13 || post.status_id == 9) && role == 4) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 15 || post.status_id == 14 || post.status_id == 16 || post.status_id == 17 ))}"
+                    <button th:if="${(post.status_id == 7 && role == 3) ||((post.status_id == 5 || post.status_id == 13 ) && role == 4) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 15 || post.status_id == 14 || post.status_id == 16))}"
                             class="item" id="btn-deleteProject"
                             th:postId=${post.id} data-toggle="modal"
                             data-target="#confirm-Approve">
                         <i class="fas fa-check"></i>
                     </button>
-                    <button th:if="${(post.status_id == 7 && role == 3) ||((post.status_id == 5 || post.status_id == 13 || post.status_id == 9) && role == 4 ) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 15 || post.status_id == 14 || post.status_id == 16 ))}"
+                    <button th:if="${(post.status_id == 7 && role == 3) ||((post.status_id == 5 || post.status_id == 13 ) && role == 4 ) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 15 || post.status_id == 14 || post.status_id == 16 ))}"
                             class="item" id="btn-RejectProject"
                             th:postId=${post.id} data-toggle="modal"
                             data-target="#confirm-Reject"
+                            style="background-color: #dc3545 !important; border:#dc3545 !important; ">
+                        <i class="fas fa-times" style="color: white !important;"></i>
+                    </button>
+
+                    <button th:if="${(post.status_id == 9 && role == 4) || (role == 5 && post.status_id == 17 )}"
+                            class="item" id="btn-passProject"
+                            th:postId=${post.id} data-toggle="modal"
+                                data-target="#confirm-Pass">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button th:if="${post.status_id == 9 && role == 4 }"
+                            class="item" id="btn-failProject"
+                            th:postId=${post.id} data-toggle="modal"
+                            data-target="#confirm-Fail"
                             style="background-color: #dc3545 !important; border:#dc3545 !important; ">
                         <i class="fas fa-times" style="color: white !important;"></i>
                     </button>
