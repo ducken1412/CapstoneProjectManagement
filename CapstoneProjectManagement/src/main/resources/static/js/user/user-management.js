@@ -31,6 +31,30 @@ function getSearch() {
     });
 }
 
+function getSearchWhenActive() {
+    const params = new URL(location.href).searchParams;
+    var site = $('#dr-site').val();
+    var semester = $('#dr-semester').val();
+    var type = $('#dr-type').val().toString();
+
+    $.ajax({
+        url: "/student-management?site=" + site + "&semester=" + semester + "&type=" + type,
+        type: "GET",
+
+        success: function (data) {
+            $('#student-container').html(data);
+            $('#student-container').LoadingOverlay("hide");
+
+        },
+        error: function (xhr) {
+            if (xhr.status == 302 || xhr.status == 200) {
+                // window.location.href = "/forum";
+            }
+        },
+
+    });
+}
+
 $(document).on("click", "#btn-searchStudentManagement", function () {
     getSearch();
 });
@@ -60,11 +84,17 @@ $(document).on("change", "#activeUser", function () {
     const postId = $(this).attr("postId");
 
     const status = $(this).val();
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
 
     $.ajax({
         url: "/update-StatusUser?id=" + postId + "&status=" + status,
         type: "GET",
         success: function (data) {
+            getSearchWhenActive();
+            $.LoadingOverlay("hide");
             if(data === "true"){
                 $.showNotification({
                     body: "Active User Successfully",
@@ -77,14 +107,14 @@ $(document).on("change", "#activeUser", function () {
             }else {
                 $.showNotification({
                     body: "InActive User Successfully",
-                    type: "danger",
+                    type: "success",
                     duration: 2000,
                     shadow: "0 2px 6px rgba(0,0,0,0.2)",
                     zIndex: 100,
                     margin: "1rem"
                 })
             }
-            getSearch();
+
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {
@@ -100,11 +130,17 @@ $(document).on("change", "#deActiveUser", function () {
     const postId = $(this).attr("postId");
 
     const status = $(this).val();
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
 
     $.ajax({
         url: "/update-StatusUser?id=" + postId + "&status=" + status,
         type: "GET",
         success: function (data) {
+            getSearchWhenActive();
+            $.LoadingOverlay("hide");
             if(data === "true"){
                 $.showNotification({
                     body: "Active User Successfully",
@@ -117,14 +153,14 @@ $(document).on("change", "#deActiveUser", function () {
             }else {
                 $.showNotification({
                     body: "InActive User Successfully",
-                    type: "danger",
+                    type: "success",
                     duration: 2000,
                     shadow: "0 2px 6px rgba(0,0,0,0.2)",
                     zIndex: 100,
                     margin: "1rem"
                 })
             }
-            getSearch();
+
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {
