@@ -1417,7 +1417,7 @@ public class CapstoneProjectController {
 			dto = new MemberDTO(users.get(0));
 			boolean check = false;
 			for (UserRoles userRoles : users.get(0).getRoleUser()) {
-				if(userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+				if(userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_MEMBER_DB) || userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_LEADER_DB)) {
 					check = true;
 					break;
 				}
