@@ -61,6 +61,12 @@
                         <div class="w-80" id="content-body">
                             <!-- content here -->
                             <div class="card">
+                                <div class="col col-md-2 mt-3">
+                                    <p th:text="${notification}" style="color: red"></p>
+                                </div>
+                                <div class="col col-md-2">
+                                    <p th:text="${notificationsuccess}" style="color: #00ad5f"></p>
+                                </div>
                                 <div class="card-body card-block">
                                     <form th:action="@{/add-notification}" th:object="${notificationsDTO}"
                                            method="POST">

@@ -9,10 +9,10 @@ function getSearch() {
     var site = $('#dr-site').val();
     var semester = $('#dr-semester').val();
     var type = $('#dr-type').val().toString();
-    // $.LoadingOverlay("show", {
-    //     size: 50,
-    //     maxSize: 50,
-    // });
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
     $.ajax({
         url: "/student-management?site=" + site + "&semester=" + semester + "&type=" + type,
         type: "GET",
@@ -20,6 +20,31 @@ function getSearch() {
         success: function (data) {
             $('#student-container').html(data);
             $('#student-container').LoadingOverlay("hide");
+            $.LoadingOverlay("hide");
+        },
+        error: function (xhr) {
+            if (xhr.status == 302 || xhr.status == 200) {
+                // window.location.href = "/forum";
+            }
+        },
+
+    });
+}
+
+function getSearchWhenActive() {
+    const params = new URL(location.href).searchParams;
+    var site = $('#dr-site').val();
+    var semester = $('#dr-semester').val();
+    var type = $('#dr-type').val().toString();
+
+    $.ajax({
+        url: "/student-management?site=" + site + "&semester=" + semester + "&type=" + type,
+        type: "GET",
+
+        success: function (data) {
+            $('#student-container').html(data);
+            $('#student-container').LoadingOverlay("hide");
+
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {
@@ -53,3 +78,94 @@ $(document).on("click", "#btn-exportExcel", function () {
         },
     });
 });
+
+
+$(document).on("change", "#activeUser", function () {
+    const postId = $(this).attr("postId");
+
+    const status = $(this).val();
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
+
+    $.ajax({
+        url: "/update-StatusUser?id=" + postId + "&status=" + status,
+        type: "GET",
+        success: function (data) {
+            getSearchWhenActive();
+            $.LoadingOverlay("hide");
+            if(data === "true"){
+                $.showNotification({
+                    body: "Active User Successfully",
+                    type: "success",
+                    duration: 2000,
+                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    zIndex: 100,
+                    margin: "1rem"
+                })
+            }else {
+                $.showNotification({
+                    body: "InActive User Successfully",
+                    type: "success",
+                    duration: 2000,
+                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    zIndex: 100,
+                    margin: "1rem"
+                })
+            }
+
+        },
+        error: function (xhr) {
+            if (xhr.status == 302 || xhr.status == 200) {
+                window.location.href = "/ad/capstoneproject";
+            }
+        },
+    });
+})
+
+
+
+$(document).on("change", "#deActiveUser", function () {
+    const postId = $(this).attr("postId");
+
+    const status = $(this).val();
+    $.LoadingOverlay("show", {
+        size: 50,
+        maxSize: 50,
+    });
+
+    $.ajax({
+        url: "/update-StatusUser?id=" + postId + "&status=" + status,
+        type: "GET",
+        success: function (data) {
+            getSearchWhenActive();
+            $.LoadingOverlay("hide");
+            if(data === "true"){
+                $.showNotification({
+                    body: "Active User Successfully",
+                    type: "success",
+                    duration: 2000,
+                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    zIndex: 100,
+                    margin: "1rem"
+                })
+            }else {
+                $.showNotification({
+                    body: "InActive User Successfully",
+                    type: "success",
+                    duration: 2000,
+                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    zIndex: 100,
+                    margin: "1rem"
+                })
+            }
+
+        },
+        error: function (xhr) {
+            if (xhr.status == 302 || xhr.status == 200) {
+                window.location.href = "/ad/capstoneproject";
+            }
+        },
+    });
+})

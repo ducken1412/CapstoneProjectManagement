@@ -63,6 +63,8 @@ public interface UserService {
 
 	boolean updateProfileByUserId(String des, String phone, String address, String img, Date date,String uid);
 
+	boolean updateStatusByUserId(int status,String uid);
+
 	//count check leader
 	Integer checkCountLeader(String uId, Integer cpId);
 }

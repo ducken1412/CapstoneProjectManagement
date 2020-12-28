@@ -26,12 +26,13 @@
     <td><a href="#" class="chat-private-user" th:username="${post?.user_name}"><i class="fas fa-comment-dots"></i></a></td>
     <td>
         <div class="table-data-feature">
-            <button th:if="${((post.status_id == 5 || post.status_id == 9) && role == 4) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 14 || post.status_id == 16 ))}" class="item" th:onclick="|ProjectDetailApp(${post?.id})|" >
+            <button th:if="${((post.status_id == 5 || post.status_id == 9) && role == 4 && post?.rolename != 'Supervisor') || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 14 || post.status_id == 16 ))}" class="item" th:onclick="|ProjectDetailApp(${post?.id})|" >
                 <i class="fas fa-check"></i>
             </button>
 
-            <button th:if="${((post.status_id == 5 || post.status_id == 9)  && role == 4) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 14 || post.status_id == 16))}" class="item" th:onclick="|ProjectDetailReject(${post?.id})|" >
-                <i class="fas fa-times"></i>
+            <button th:if="${((post.status_id == 5 || post.status_id == 9)  && role == 4 && post?.rolename != 'Supervisor' ) || (role == 5 && ( post.status_id == 5 || post.status_id == 6 || post.status_id == 8 || post.status_id == 14 || post.status_id == 16))}" class="item" th:onclick="|ProjectDetailReject(${post?.id})|"
+                    style="background-color: #dc3545 !important; border:#dc3545 !important; ">
+                <i class="fas fa-times" style="color: white !important;"></i>
             </button>
         </div>
     </td>

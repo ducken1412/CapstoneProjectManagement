@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Constraint;
 import javax.validation.Valid;
@@ -176,12 +177,14 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/exportExcel")
-	public String exportExcel(Model model, Principal principal) throws IOException {
+	public String exportExcel(Model model, Principal principal, @RequestParam("status") Integer status,
+							  @RequestParam("profession") Integer profession
+			, @RequestParam("nameSearch") String nameSearch) throws IOException {
 		if(principal == null) {
 			return "redirect:/login";
 		}
 
-		List<Object[]> capstoneProjectPage = capstoneProjectService.getAllCap();
+		List<Object[]> capstoneProjectPage = capstoneProjectService.getAllCap(status,profession,nameSearch);
 		List<CapstoneProjectPagingBodyDTO> AuthorList = new ArrayList<CapstoneProjectPagingBodyDTO>();
 		for(Object[] obj : capstoneProjectPage){
 			CapstoneProjectPagingBodyDTO detail = new CapstoneProjectPagingBodyDTO();
@@ -391,6 +394,7 @@ public class CapstoneProjectController {
 
 		}
 		List<Object[]> capstoneProjectPage = capstoneProjectService.getAllByUserId(userid,currentPage- 1,pageSize,status,profession,nameSearch);
+		Integer countCapstoneProjectPage = capstoneProjectService.countCapAll(userid,status,profession,nameSearch);
 		List<CapstoneProjectPagingBodyDTO> AuthorList = new ArrayList<CapstoneProjectPagingBodyDTO>();
 		for(Object[] obj : capstoneProjectPage){
 			CapstoneProjectPagingBodyDTO detail = new CapstoneProjectPagingBodyDTO();
@@ -463,7 +467,7 @@ public class CapstoneProjectController {
 			AuthorList.add(detail);
 		}
 		Pageable secondPageWithFiveElements = PageRequest.of(currentPage -1, pageSize, Sort.by("id").descending());
-		Page<CapstoneProjectPagingBodyDTO> list = new PageImpl<>(AuthorList, secondPageWithFiveElements, AuthorList.size());
+		Page<CapstoneProjectPagingBodyDTO> list = new PageImpl<>(AuthorList, secondPageWithFiveElements, countCapstoneProjectPage);
 		model.addAttribute("capstoneProjectPage", list);
 
 		int totalPages = list.getTotalPages();
@@ -1413,7 +1417,7 @@ public class CapstoneProjectController {
 			dto = new MemberDTO(users.get(0));
 			boolean check = false;
 			for (UserRoles userRoles : users.get(0).getRoleUser()) {
-				if(userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_MEMBER_DB)) {
+				if(userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_MEMBER_DB) || userRoles.getUserRoleKey().getRole().getName().equals(Constant.ROLE_STUDENT_LEADER_DB)) {
 					check = true;
 					break;
 				}

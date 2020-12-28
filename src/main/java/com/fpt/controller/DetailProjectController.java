@@ -352,7 +352,7 @@ public class DetailProjectController {
         try {
             capstoneProjectService.updateStatusCapstoneProjectSendTD(id);
             capstoneProjectService.deleteUserNotSubmitCapstone(id);
-            capstoneProjectService.updateSupervisorsSubmitCapstone(id);
+            //capstoneProjectService.updateSupervisorsSubmitCapstone(id);
         } catch (Exception e) {
 
         }
@@ -381,13 +381,25 @@ public class DetailProjectController {
                 return "redirect:/403";
             }
 
+            String nameStatus = capstoneProject.getStatus().getName();
             HistoryRecords historyRecords = historyRecordService.findHistoryByUserIdCapstoneId(user.getId(), id);
-            if (historyRecords == null) {
+            if (historyRecords == null
+                    && (nameStatus.equals(Constant.STATUS_REGISTERING_CAPSTONE_DB) || nameStatus.equals(Constant.STATUS_REGISTED_CAPSTONE_DB))) {
                 return "redirect:/403";
             }
 
+            boolean checkLeader = false;
+            List<String> roles = userRoleService.getRoleNamesByEmail(principal.getName());
+            for (String role : roles) {
+                if (role.equals("student_leader")) {
+                    checkLeader = true;
+                }
+            }
+            if(checkLeader == false && (nameStatus.equals(Constant.STATUS_DOING_CAPSTONE_DB) || nameStatus.equals(Constant.STATUS_CHANGING_NAME_CAPSTONE_DB)
+            || nameStatus.equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB))){
+                return "redirect:/403";
+            }
 
-            String nameStatus = capstoneProject.getStatus().getName();
             if (nameStatus.equals(Constant.STATUS_REGISTERING_CAPSTONE_DB)) {
                 model.addAttribute("doingStatus", false);
             } else {
@@ -584,7 +596,7 @@ public class DetailProjectController {
             redirectAttributes.addFlashAttribute("notification", "Name Changing and name changingVi not blank!");
             return "redirect:/changing-name-project/" + capstoneProjects.getId();
         }
-        if (nameChanging.equalsIgnoreCase(projects.getName()) || nameViChange.equalsIgnoreCase(projects.getName())) {
+        if (nameChanging.equalsIgnoreCase(projects.getName()) || nameViChange.equalsIgnoreCase(projects.getNameVi())) {
             redirectAttributes.addFlashAttribute("notification", "Name Changing and name changingVi must not equal the old name!");
             return "redirect:/changing-name-project/" + capstoneProjects.getId();
         }

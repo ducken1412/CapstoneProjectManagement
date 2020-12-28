@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.management.Query;
 import javax.validation.Valid;
 
 @Service
@@ -241,8 +242,16 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
     }
 
     @Override
-    public List<Object[]> getAllCap() {
-        return capstoneProjectRepository.getAllCap();
+    public List<Object[]> getAllCap(Integer status, Integer profession, String nameSearch) {
+        nameSearch = '%' + nameSearch + '%';
+        return capstoneProjectRepository.getAllCap(status, profession, nameSearch);
+    }
+
+    @Override
+    public Integer countCapAll(String UserId, Integer status, Integer profession, String nameSearch) {
+        nameSearch = '%' + nameSearch + '%';
+        List<Integer> a = capstoneProjectRepository.countCapAll(UserId, status, profession, nameSearch);
+        return a.size();
     }
 
     @Override
