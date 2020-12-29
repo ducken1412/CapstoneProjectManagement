@@ -72,10 +72,10 @@ public class GoogleUtils {
         }
 
 
-        List<String> roleNames = this.userRolesService.getRoleNamesByEmail(email);
+        List<String> roleNames = userRolesService.getRoleNamesByEmail(email);
 
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
-        if (roleNames != null) {
+        if (!roleNames.isEmpty()) {
             for (String role : roleNames) {
                 switch (role) {
                     case Constant.ROLE_HEAD_DB:
