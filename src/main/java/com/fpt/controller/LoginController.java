@@ -142,7 +142,6 @@ public class LoginController {
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
 					userDetail.getAuthorities());
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-			authentication.setAuthenticated(true);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			List<String> roles = userRoleService.getRoleNamesByUserId(appUser.getId());
 			for (String role : roles) {
