@@ -683,6 +683,7 @@ $(document).on("click", "#btn-EditSupervisors", function () {
                 $('.modal-backdrop').hide(); // for black background
                 $('body').removeClass('modal-open'); // For scroll run
                 $('#Edit-Supervisors').modal('hide');
+                $('#btn-add-supervisors').prop('disabled', false);
                 loadProjectDetail(capstoneProject);
                 if(data === "Create Project Detail successfully"){
                     $.showNotification({
