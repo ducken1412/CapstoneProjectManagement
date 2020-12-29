@@ -6,6 +6,7 @@ import com.fpt.common.SendingMail;
 import com.fpt.dto.*;
 import com.fpt.entity.*;
 import com.fpt.service.*;
+import com.fpt.utils.Constant;
 import com.fpt.utils.ExcelHelper;
 import org.apache.http.client.utils.DateUtils;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -80,7 +81,7 @@ public class ReportController {
     private NotificationDetailService notificationDetailService;
 
     @Autowired
-    private SemestersService semestersService;
+    private StatusService statusService;
 
 
     @GetMapping("/report")
@@ -89,8 +90,13 @@ public class ReportController {
             return "redirect:/login";
         }
 
+
         Users user = userService.findByEmail(principal.getName());
-        if(user.getCapstoneProjectDetails().isEmpty() || !user.getCapstoneProjectDetails().get(0).getStatus().getName().equals("doing_capstone")){
+        Status status = statusService.findStatusByUserId(user.getId());
+        if(user.getCapstoneProjectDetails().isEmpty() || (
+                !status.getName().equals(Constant.STATUS_DOING_CAPSTONE_DB) &&
+                !status.getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB))
+        ){
             return "error/403Page";
         }
         try {
@@ -170,7 +176,9 @@ public class ReportController {
         } catch (Exception ex) {
 
         }
-        if(user.getRoleUser().get(0).getUserRoleKey().getRole().getId() == 1){
+        if(user.getRoleUser().get(0).getUserRoleKey().getRole().getName().equals(Constant.ROLE_LECTURERS_DB)
+                || user.getRoleUser().get(0).getUserRoleKey().getRole().getName().equals(Constant.ROLE_LECTURERS_DB)
+                || user.getRoleUser().get(0).getUserRoleKey().getRole().getName().equals(Constant.ROLE_HEAD_DB)){
             model.addAttribute("checkReportLeader", true);
         }
         return "home/report-detail";
@@ -200,6 +208,12 @@ public class ReportController {
         Users user = userService.findByEmail(principal.getName());
         String userId = user.getId();
         CapstoneProjects capstoneProject = capstoneProjectDetailService.findCapstoneProjectByUserId(userId);
+
+        if(reportForm.getTitle() == null || reportForm.getContent() == null || reportForm.getTitle().isEmpty() || reportForm.getContent().isEmpty()){
+            redirectAttributes.addFlashAttribute("notification", "Title and Content not blank!");
+            return "redirect:/report";
+        }
+
         String type = "daily report";
         List<String> roles = userRoleService.getRoleNamesByEmail(principal.getName());
         for (String role : roles) {
@@ -229,7 +243,7 @@ public class ReportController {
             }
 
             //Import Excel
-            if (file != null) {
+            if (file != null && !file.isEmpty()) {
                 String message = "";
 
                 Workbook workbook = new XSSFWorkbook(file.getInputStream());
@@ -348,6 +362,7 @@ public class ReportController {
                     workbook.close();
                     return "home/add-report";
                 }
+                workbook.close();
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -357,8 +372,10 @@ public class ReportController {
         String userName = user.getUsername();
         int reportId = report.getId();
         String baseUrl = String.format("%s://%s:%d/", request.getScheme(), request.getServerName(), request.getServerPort());
-        String title = userName + " report at " + date;
-        String content = "Report by " + userName + " at " + date + " Click " + "<a href=\"" + baseUrl + "report/" + reportId + "\">view report detail.</a>";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String parsedDate = formatter.format(date);
+        String title = userName + " report at " + parsedDate;
+        String content = "Report by " + userName + " at " + parsedDate + " Click " + "<a href=\"" + baseUrl + "report/" + reportId + "\">view report detail.</a>";
         String typeReport = "private";
         Notifications notifications = new Notifications();
         notifications.setContent(content);
@@ -383,7 +400,7 @@ public class ReportController {
             }
         }
         notificationDetailService.saveAllNotificationDetails(detailsList);
-        return "redirect:/report/" + reportId;
+        return "redirect:report/" + reportId;
     }
 
     @RequestMapping(value = "/list-reports", method = RequestMethod.GET)

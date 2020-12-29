@@ -2,6 +2,7 @@ package com.fpt.service;
 
 import java.util.List;
 
+import com.fpt.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,16 @@ public class StatusServiceImpl implements StatusService{
 		return  status;
 	}
 
+
+	@Override
+	public Status findStatusByUserId(String userId) {
+		return statusRepository.findStatusByUserId(userId);
+	}
+
+	@Override
+	public Status findStatusByCapstoneProject(Integer id) {
+		return statusRepository.findStatusByCapstoneProject(id);
+	}
 
 
 }

@@ -37,7 +37,7 @@ function checkDisableButtonSelect(){
 
 function loadScrip(){
     $("#checkall").change(function() {
-        debugger;
+        
         if(this.checked) {
             $('input[type="checkbox"]').prop('checked', true);
             $('#btn-addApprove').prop('disabled', false);
@@ -105,7 +105,6 @@ function getListPostInit() {
         type: "GET",
         success: function (data) {
             $("#Capstone-container").html(data);
-            loadCommentContainer(sizeDefault, -1);
             $.LoadingOverlay("hide");
             if (!(size === null || page === null)) {
                 window.history.pushState("", "", "/ad/capstoneproject" + rewriteUrl(size, page));
@@ -115,45 +114,14 @@ function getListPostInit() {
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {
+                $.LoadingOverlay("hide");
                 window.location.href = "/ad/capstoneproject";
             }
         },
     });
 }
 
-function loadCommentContainer(size, postId) {
-    let id;
-    let s;
-    $(".list-post-container").each(function (i) {
-        id = $(this).find("#post-id").val();
-        let arr = $(this).find(".comment-container");
-        let viewMoreElement = $(this).find("#view-more-comments");
-        // check post selected
-        if (postId.toString() !== id) {
-            s = sizeDefault
-        } else {
-            s = size
-        }
-        let arrSize = arr.length;
-        // check and set display for div comment
-        if (arrSize >= s) {
-            arr.each(function (j) {
-                if (j < (arrSize - s)) {
-                    $(this).addClass("d-none");
-                } else {
-                    $(this).removeClass("d-none");
-                }
 
-            })
-        }
-        if ((arrSize - s) < sizeDefault) {
-            arr.each(function (j) {
-                $(this).removeClass("d-none");
-            })
-            viewMoreElement.addClass("d-none");
-        }
-    })
-}
 
 
 
@@ -169,7 +137,6 @@ function getListPost() {
         type: "GET",
         success: function (data) {
             $("#Capstone-container").html(data);
-            loadCommentContainer(sizeDefault, -1);
             if (!(size === null || page === null)) {
                 window.history.pushState("", "", "/ad/capstoneproject" + rewriteUrl(size, page));
             }
@@ -177,6 +144,7 @@ function getListPost() {
         },
         error: function (xhr) {
             if (xhr.status == 302 || xhr.status == 200) {
+                $.LoadingOverlay("hide");
                 window.location.href = "/forum";
             }
         },
@@ -198,7 +166,6 @@ function getListPostSearch() {
         type: "GET",
         success: function (data) {
             $("#Capstone-container").html(data);
-            loadCommentContainer(sizeDefault, -1);
             loadScrip();
             $.LoadingOverlay("hide");
         },
@@ -231,9 +198,13 @@ $(document).on("click", "#btn-ViewProject", function () {
     });
 });
 $(document).on("click", "#btn-deleteProject", function () {
-
     const postId = $(this).attr("postId");
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         const des = $("#ApproveDes").val();
         $("#loading-Approve").attr("hidden", false);
         $.ajax({
@@ -249,7 +220,7 @@ $(document).on("click", "#btn-deleteProject", function () {
                     $.showNotification({
                         body: data,
                         type: "success",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -258,7 +229,7 @@ $(document).on("click", "#btn-deleteProject", function () {
                     $.showNotification({
                         body: data,
                         type: "danger",
-                        vibrate: [200, 100, 200, 100, 200, 100, 200],
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -278,8 +249,12 @@ $(document).on("click", "#btn-deleteProject", function () {
 $(document).on("click", "#btn-RejectProject", function () {
 
     const postId = $(this).attr("postId");
-
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         $("#loading-Reject").attr("hidden", false);
         const des = $("#RejectDes").val();
         $.ajax({
@@ -295,7 +270,7 @@ $(document).on("click", "#btn-RejectProject", function () {
                 $.showNotification({
                     body: data,
                     type: "success",
-                    duration: 3000,
+                    duration: 2000,
                     shadow: "0 2px 6px rgba(0,0,0,0.2)",
                     zIndex: 100,
                     margin: "1rem"
@@ -345,7 +320,6 @@ $(document).on("click", ".page-link", function (e) {
         type: "GET",
         success: function (data) {
             $("#Capstone-container").html(data);
-            loadCommentContainer(sizeDefault, -1);
             $.LoadingOverlay("hide");
             if (!(size === null || page === null || page === "Previous")) {
                 window.history.pushState("", "", "/ad/capstoneproject" + rewriteUrl(size, page));
@@ -378,7 +352,12 @@ function rewriteUrl(size, page) {
 
 
 $(document).on("click", "#btn-addApprove", function () {
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         let postIdlist = "";
         $('td> label > input[type="checkbox"]').each(function () {
             if(this.checked){
@@ -387,7 +366,7 @@ $(document).on("click", "#btn-addApprove", function () {
             }
 
         });
-        debugger;
+        
         const des = $("#ApproveDeslist").val();
         $("#loading-Approvelist").attr("hidden", false);
         $.ajax({
@@ -404,7 +383,7 @@ $(document).on("click", "#btn-addApprove", function () {
                     $.showNotification({
                         body: data,
                         type: "success",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -413,7 +392,7 @@ $(document).on("click", "#btn-addApprove", function () {
                     $.showNotification({
                         body: data,
                         type: "danger",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -432,10 +411,15 @@ $(document).on("click", "#btn-addApprove", function () {
 });
 
 $(document).on("click", "#btn-addReject", function () {
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         let postIdlist = "";
         $('td> label > input[type="checkbox"]').each(function () {
-            debugger;
+            
             if(this.checked){
                 var postId = $(this).attr("postId");
                 postIdlist = postIdlist + postId + ',';
@@ -459,7 +443,7 @@ $(document).on("click", "#btn-addReject", function () {
                     $.showNotification({
                         body: data,
                         type: "success",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -468,7 +452,7 @@ $(document).on("click", "#btn-addReject", function () {
                     $.showNotification({
                         body: data,
                         type: "danger",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -493,12 +477,12 @@ function ProjectDetailApp(postId) {
     $(".btn-ok").click(function () {
         const des = $("#ApproveDesDetail").val();
         $("#loading-ApproveDetail").attr("hidden", false);
-        debugger;
+        
         $.ajax({
             url: "/update-Status-Detail?id=" + postId + "&des=" + des,
             type: "GET",
             success: function (data) {
-                debugger;
+                
                 $("#loading-ApproveDetail").attr("hidden", true);
                 $("#ApproveDesDetail").val("");
                 $('.modal-backdrop').hide(); // for black background
@@ -546,7 +530,7 @@ function ProjectDetailReject(postId) {
     $(".btn-okRejectDetail").click(function () {
         $("#loading-RejectDetail").attr("hidden", false);
         const des = $("#RejectDesDetail").val();
-        debugger;
+        
         $.ajax({
             url: "/rejectDetail?id=" + postId + "&des=" + des,
             type: "GET",
@@ -593,9 +577,14 @@ $(document).on("click", "#btn-AddDetail", function () {
     $('body').removeClass('modal-open'); // For scroll run
     $('#confirm-View').modal('hide');
     $('#Add-ProjectDetail').modal('show');
-    debugger;
+    
     const capstoneProject =$('#idproject').val();
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         $("#loading-AddDetail").attr("hidden", false);
 
         let id = getJsonMember();
@@ -612,7 +601,7 @@ $(document).on("click", "#btn-AddDetail", function () {
                     $.showNotification({
                         body: data,
                         type: "success",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -621,7 +610,7 @@ $(document).on("click", "#btn-AddDetail", function () {
                     $.showNotification({
                         body: data,
                         type: "danger",
-                        duration: 3000,
+                        duration: 2000,
                         shadow: "0 2px 6px rgba(0,0,0,0.2)",
                         zIndex: 100,
                         margin: "1rem"
@@ -642,9 +631,14 @@ $(document).on("click", "#btn-EditSupervisors", function () {
     $('body').removeClass('modal-open'); // For scroll run
     $('#confirm-View').modal('hide');
     $('#Edit-Supervisors').modal('show');
-    debugger;
+    
     const capstoneProject =$('#idproject').val();
+    let countCheck = 0;
     $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
         $("#loading-EditSupervisors").attr("hidden", false);
 
         let id = getJsonMember();
@@ -705,7 +699,7 @@ function getJsonMember() {
     var count = 0;
     i = $('.attrTable tr').length;
     $('.attrTable tr').each(function (a, b) {
-        debugger;
+        
         let name = $('.attrName', b).text();
         if(name != ""){
             if(count == (i-1)){
@@ -759,7 +753,6 @@ $(document).on("click", "#btn-add-member", function (e) {
         url: "/getMemberProject?username=" + username + "&capstoneProject=" + capstoneProject,
         type: "GET",
         success: function (data) {
-            debugger;
             let obj = JSON.parse(data);
             if (obj.success) {
                 $("#member-table").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">'+obj.user.username+'</span> </td> <td class="pt-2"> </td><td class="pt-2"> <div class="table-data-feature pl-2"> <a href="" class="item del-member" data-toggle="tooltip" data-placement="top" title="Delete"> <i class="fas fa-trash fa-xs"></i> </a>\n' +
@@ -793,7 +786,6 @@ $(document).on("click", "#btn-add-supervisors", function (e) {
         url: "/getSupervisorsProject?username=" + username + "&capstoneProject=" + capstoneProject,
         type: "GET",
         success: function (data) {
-            debugger;
             let obj = JSON.parse(data);
             if (obj.success) {
                 $("#supervisors-table").append('<tr class="tr-shadow"> <td class="pt-2"> <span class="block-email attrName">'+obj.user.username+'</span> </td> <td class="pt-2"> </td><td class="pt-2"> <div class="table-data-feature pl-2"> <a href="" class="item del-member" data-toggle="tooltip" data-placement="top" title="Delete"> <i class="fas fa-trash fa-xs"></i> </a>\n' +
@@ -816,3 +808,113 @@ $(document).on("click", ".del-member", function(e) {
         $('#btn-add-supervisors').prop('disabled', false);
     }
 })
+
+
+
+$(document).on("click", "#btn-exportExcel", function () {
+    const  pro = $('#SearchProfession').val();
+    const  status = $('#SearchStatus').val();
+    const  nameSearch = $('#nameSearch').val();
+    debugger;
+    $.ajax({
+        url: "/exportExcel?status=" + status+ "&profession=" + pro + "&nameSearch=" + nameSearch,
+        type: "GET",
+        success: function (data) {
+
+            $('#linkDowloadExel')[0].click();
+        },
+        error: function (xhr) {
+            if (xhr.status == 302 || xhr.status == 200) {
+                window.location.href = "/ad/capstoneproject";
+            }
+        },
+    });
+});
+
+$(document).on("click", "#btn-passProject", function () {
+    const postId = $(this).attr("postId");
+    let countCheck = 0;
+    $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
+        const des = $("#PassDes").val();
+        $("#loading-Approve").attr("hidden", false);
+        $.ajax({
+            url: "/update-Status?id=" + postId + "&des=" + des,
+            type: "GET",
+            success: function (data) {
+                $("#loading-Pass").attr("hidden", true);
+                $("#PassDes").val("");
+                $('.modal-backdrop').hide(); // for black background
+                $('body').removeClass('modal-open'); // For scroll run
+                $('#confirm-Pass').modal('hide');
+                if(data === "The Project has been update successfully"){
+                    $.showNotification({
+                        body: data,
+                        type: "success",
+                        duration: 2000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }else {
+                    $.showNotification({
+                        body: data,
+                        type: "danger",
+                        duration: 2000,
+                        shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                        zIndex: 100,
+                        margin: "1rem"
+                    })
+                }
+                getListPost();
+            },
+            error: function (xhr) {
+                if (xhr.status == 302 || xhr.status == 200) {
+                    window.location.href = "/ad/capstoneproject";
+                }
+            },
+        });
+    })
+});
+
+$(document).on("click", "#btn-failProject", function () {
+
+    const postId = $(this).attr("postId");
+    let countCheck = 0;
+    $(".btn-ok").click(function () {
+        ++countCheck;
+        if(countCheck > 1) {
+            return false;
+        }
+        $("#loading-Fail").attr("hidden", false);
+        const des = $("#FailDes").val();
+        $.ajax({
+            url: "/reject?id=" + postId + "&des=" + des,
+            type: "GET",
+            success: function (data) {
+                $("#loading-Fail").attr("hidden", true);
+                $("#FailDes").val("");
+                $('.modal-backdrop').hide(); // for black background
+                $('body').removeClass('modal-open'); // For scroll run
+                $('#confirm-Fail').modal('hide');
+                getListPost();
+                $.showNotification({
+                    body: data,
+                    type: "success",
+                    duration: 2000,
+                    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    zIndex: 100,
+                    margin: "1rem"
+                })
+            },
+            error: function (xhr) {
+                if (xhr.status == 302 || xhr.status == 200) {
+                    window.location.href = "/ad/capstoneproject";
+                }
+            },
+        });
+    })
+});

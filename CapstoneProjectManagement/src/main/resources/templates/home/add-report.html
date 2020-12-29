@@ -40,6 +40,9 @@
                             </div>
                             <!-- content here -->
                             <div class="card">
+                                <div class="col col-md-2 mt-3">
+                                    <p th:text="${notification}" style="color: red"></p>
+                                </div>
                                 <div class="card-body card-block">
                                     <form th:action="@{/add-report}" th:object="${report}" method="post"  enctype="multipart/form-data">
                                         <div class="row form-group">
@@ -48,7 +51,7 @@
                                             </div>
                                             <div class="col-12 col-md-10">
 													<textarea name="title" id="title" rows="2"
-                                                              placeholder="Title..." class="form-control" required></textarea>
+                                                              placeholder="Title..." class="form-control"></textarea>
 <!--                                                <span class="bg-danger pull-right error-mess" th:errors="*{name}"></span>-->
                                             </div>
                                         </div>
@@ -58,7 +61,7 @@
                                             </div>
                                             <div class="col-12 col-md-10">
 													<textarea name="content" id="content" rows="40"
-                                                              placeholder="Content..." class="form-control" required></textarea>
+                                                              placeholder="Content..." class="form-control"></textarea>
 <!--                                                    <span class="bg-danger pull-right error-mess" th:errors="*{content}"></span>-->
                                             </div>
                                         </div>
@@ -67,10 +70,13 @@
                                                 <label for="content" class=" form-control-label" style="font-size: 18px;width: 90%; text-transform: uppercase;">Add a
                                                     files</label>
                                             </div>
-                                            <div class="col-12 col-md-10">
+                                            <div class="col-3 col-md-3">
                                                 <input type="file" id="fileInputUpload" name="file" class="fileUploadClass" >
                                                 <div id="uploadFile">
                                                 </div>
+                                            </div>
+                                            <div class="col-9 col-md-7 ">
+                                                <a th:href="'/file/TemplateWeeklyReport.xlsx'">Download template to import </a>
                                             </div>
                                         </div>
                                         <div th:if="${(checkReport == false && checkReportLeader == true) || (checkReportStudent == true)}">

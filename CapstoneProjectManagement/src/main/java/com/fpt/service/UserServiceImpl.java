@@ -1,8 +1,9 @@
 package com.fpt.service;
 
+import java.util.Date;
 import java.util.List;
 
-import com.fpt.entity.Reports;
+import com.fpt.dto.UserManagementDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,9 +33,8 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findAll();
 	}
 	@Override
-	public List<Users> getAllUserStudent() {
-		// return userRepository.getAllUserStudent();
-		return null;
+	public List<UserManagementDTO> getAllUserStudent(String site, String semester) {
+		return userRepository.getAllUserStudent(site, semester);
 	}
 
 	public boolean deleteUser(String id) {
@@ -50,6 +50,16 @@ public class UserServiceImpl implements UserService {
 	public boolean save(Users user) {
 		try {
 			userRepository.save(user);
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean saveAll(List<Users> user) {
+		try {
+			userRepository.saveAll(user);
 		} catch (IllegalArgumentException e) {
 			return false;
 		}
@@ -110,6 +120,64 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<Users> getUserByUserRoleAndProjectId(Integer id, Integer cid) {
 		return userRepository.getUserByUserRoleAndProjectId(id,cid);
+	}
+
+
+	@Override
+	public List<UserManagementDTO> getUserStudentByStatusId(Integer id) {
+		return userRepository.getUserStudentByStatusId(id);
+	}
+
+	@Override
+	public Integer countStudent(Integer id,String site, String semester) {
+		return userRepository.countStudent(id,site,semester);
+	}
+
+	@Override
+	public List<UserManagementDTO> getAllUserStudentHasNoTeam(String site, String semester) {
+		return userRepository.getAllUserStudentHasNoTeam(site,semester);
+	}
+
+	@Override
+	public Integer countStudentHasNoTeam(String site, String semester) {
+		return userRepository.countStudentHasNoTeam(site, semester);
+	}
+
+	@Override
+	public Integer countAllStudent(String site, String semester) {
+		return userRepository.countAllStudent(site,semester);
+	}
+
+	@Override
+	public Integer countStudentEligibleCapstone(String site, String semester) {
+		return userRepository.countStudentEligibleCapstone(site,semester);
+	}
+
+    @Override
+	public boolean updateProfileByUserId(String des, String phone, String address, String img, Date date,String uid) {
+		try {
+			userRepository.updateProfileByUserId(des,phone,address,img,date,uid);
+			return true;
+		}catch (Exception e){
+			System.out.println(e);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateStatusByUserId(int status,String uid) {
+		try {
+			userRepository.updateStatusByUserId(status,uid);
+			return true;
+		}catch (Exception e){
+			System.out.println(e);
+		}
+		return false;
+	}
+
+	@Override
+	public Integer checkCountLeader(String uId, Integer cpId) {
+		return  userRepository.checkCountLeader(uId,cpId);
 	}
 
 

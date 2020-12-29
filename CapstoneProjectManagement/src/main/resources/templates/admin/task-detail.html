@@ -53,7 +53,7 @@
                                                         <td th:text="${contact.email}"></td>
                                                         <td th:text="${contact.phone}"></td>
                                                         <td th:text="${contact.role}"></td>
-                                                        <td><a href="#"><i class="fas fa-comment-dots"></i></a></td>
+                                                        <td><a href="#" class="chat-private-user" th:username="${contact.username}"><i class="fas fa-comment-dots"></i></a></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -78,5 +78,48 @@
 
 <th:block th:include="home/_script"></th:block>
 <script th:src="@{/js/task/task.js}"></script>
+<script>
+     $(document).on("click", ".chat-private-user", function (e) {
+         $.LoadingOverlay("show", {
+             size: 50,
+             maxSize: 50,
+         });
+         var usernameChat = $(this).attr('username');
+         let roomId = 'pr_' + usernameChat + '_' + Cookies.get("username");
+         let roomId2 = 'pr_' + Cookies.get("username") + '_' + usernameChat;
+         $.ajax({
+             url: "/check-username-available/" + usernameChat,
+             type: "GET",
+             success: function (data) {
+                 $.ajax({
+                     url: "/find-room",
+                     type: "GET",
+                     data: {
+                         'room1' : roomId,
+                         'room2' : roomId2,
+                     },
+                     success: function (data) {
+                         if(data !== 'null' && data !== '') {
+                             window.location.href = "/messenger/" + data;
+                         } else {
+                             window.location.href = "/messenger/" + roomId;
+                         }
+                     },
+                     error: function (xhr) {
+                         if (xhr.status == 302 || xhr.status == 200) {
+                             // window.location.href = "/forum";
+                         }
+                     },
+                 });
+             },
+             error: function (xhr) {
+                 if (xhr.status == 302 || xhr.status == 200) {
+                     // window.location.href = "/forum";
+                 }
+             },
+         });
+     })
+
+</script>
 </body>
 </html>

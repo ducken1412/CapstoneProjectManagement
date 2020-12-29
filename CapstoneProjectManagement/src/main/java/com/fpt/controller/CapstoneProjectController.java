@@ -1,30 +1,31 @@
 package com.fpt.controller;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Constraint;
 import javax.validation.Valid;
 
-import com.fpt.dto.CapstoneProjectDetailBody;
-import com.fpt.dto.CapstoneProjectPagingBodyDTO;
-import com.fpt.dto.MemberDTO;
+import com.fpt.dto.*;
 import com.fpt.entity.*;
 import com.fpt.service.*;
 import com.fpt.utils.Constant;
+import com.fpt.utils.ExcelHelper;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import com.fpt.dto.CapstoneProjectDTO;
 
 @Controller
 public class CapstoneProjectController {
@@ -45,6 +46,8 @@ public class CapstoneProjectController {
 
 	@Autowired
 	private HistoryRecordService historyRecordService;
+	@Autowired
+	FilesStorageService storageService;
 
 	//KienBT4 add capstone start
 	@GetMapping("/ad/capstoneproject")
@@ -110,6 +113,9 @@ public class CapstoneProjectController {
 					case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
 						nameStatus = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
 						break;
+					case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+						nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
+						break;
 					default:
 						nameStatus = null;
 				}
@@ -149,6 +155,9 @@ public class CapstoneProjectController {
 					case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
 						nameStatus = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
 						break;
+					case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+						nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
+						break;
 					default:
 						nameStatus = null;
 				}
@@ -166,44 +175,16 @@ public class CapstoneProjectController {
 		return "home/CapstoneProject";
 	}
 
-	@GetMapping("/list-project")
-	public String getProjects(Model model, Principal principal, @RequestParam("page") String page, @RequestParam("size") String size, @RequestParam("status") Integer status, @RequestParam("profession") Integer profession, @RequestParam("nameSearch") String nameSearch) {
-		//get username
-		//UserDetails loginedUser = (UserDetails) ((Authentication) principal).getPrincipal();
-		//return loginedUser.getUsername();
-		// get user logged
+	@ResponseBody
+	@GetMapping("/exportExcel")
+	public String exportExcel(Model model, Principal principal, @RequestParam("status") Integer status,
+							  @RequestParam("profession") Integer profession
+			, @RequestParam("nameSearch") String nameSearch) throws IOException {
 		if(principal == null) {
 			return "redirect:/login";
 		}
-		Users users = userService.findByEmail(principal.getName());
-		int roleid = -1;
-		String userid = "-1";
-		if (users !=  null) {
-			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
-			userid = users.getId();
-			model.addAttribute("loggedUser", userid);
-			model.addAttribute("role", roleid);
-		} else {
-			return "error/403Page";
-		}
 
-		switch(roleid) {
-			case 3:
-				userid = "-1";
-				break;
-			case 5:
-				userid = "-1";
-				break;
-		}
-		int currentPage = 1;
-		int pageSize = 10;
-		try {
-			currentPage = Integer.parseInt(page);
-			pageSize = Integer.parseInt(size);
-		} catch (Exception ex) {
-
-		}
-		List<Object[]> capstoneProjectPage = capstoneProjectService.getAllByUserId(userid,currentPage- 1,pageSize,status,profession,nameSearch);
+		List<Object[]> capstoneProjectPage = capstoneProjectService.getAllCap(status,profession,nameSearch);
 		List<CapstoneProjectPagingBodyDTO> AuthorList = new ArrayList<CapstoneProjectPagingBodyDTO>();
 		for(Object[] obj : capstoneProjectPage){
 			CapstoneProjectPagingBodyDTO detail = new CapstoneProjectPagingBodyDTO();
@@ -262,6 +243,219 @@ public class CapstoneProjectController {
 				case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
 					nameStatus = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
 					break;
+				case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
+					break;
+				default:
+					nameStatus = null;
+			}
+			detail.setNameStatus(nameStatus);
+			detail.setSubjectCode(String.valueOf(obj[15] + "_" + obj[0]));
+			Integer countstudent = capstoneProjectService.getCountStudent((Integer) obj[0]);
+			detail.setCountDetail(countstudent);
+
+			//get User in capstone
+
+			List<Object[]> projectdetail = capstoneProjectDetailService.getByProjectId(detail.getId());
+			List<CapstoneProjectDetailBody> projectdetailList = new ArrayList<CapstoneProjectDetailBody>();
+			for(Object[] objdetail : projectdetail){
+				CapstoneProjectDetailBody projectdetailnew = new CapstoneProjectDetailBody();
+				projectdetailnew.setId((Integer) objdetail[0]);
+				projectdetailnew.setDescription_action((String) objdetail[1]);
+				projectdetailnew.setCapstone_project_id((Integer) objdetail[2]);
+				projectdetailnew.setStatus_id((Integer) objdetail[3]);
+				projectdetailnew.setUser_id((String) objdetail[4]);
+				projectdetailnew.setEmail((String) objdetail[5]);
+				projectdetailnew.setFirst_name((String) objdetail[6]);
+				projectdetailnew.setGender((Integer) objdetail[7]);
+				projectdetailnew.setImage((String) objdetail[8]);
+				projectdetailnew.setLast_name((String) objdetail[9]);
+				projectdetailnew.setPhone((String) objdetail[10]);
+				projectdetailnew.setUser_name((String) objdetail[11]);
+				projectdetailnew.setRoleid((Integer) objdetail[12]);
+				String roleDB = (String) objdetail[13];
+				switch (roleDB) {
+					case Constant.ROLE_HEAD_DB:
+						roleDB = Constant.ROLE_HEAD;
+						break;
+					case Constant.ROLE_LECTURERS_DB:
+						roleDB = Constant.ROLE_LECTURERS;
+						break;
+					case Constant.ROLE_STUDENT_MEMBER_DB:
+						roleDB = Constant.ROLE_STUDENT_MEMBER;
+						break;
+					case Constant.ROLE_STUDENT_LEADER_DB:
+						roleDB = Constant.ROLE_STUDENT_LEADER;
+						break;
+					default:
+						roleDB = null;
+				}
+				projectdetailnew.setRolename(roleDB);
+
+				String nameStatusDeatil = (String) objdetail[14];
+				switch (nameStatusDeatil) {
+					case Constant.STATUS_REGISTERING_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_REGISTERING_CAPSTONE;
+						break;
+					case Constant.STATUS_REGISTED_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_REGISTED_CAPSTONE;
+						break;
+					case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
+						nameStatusDeatil = Constant.STATUS_APPROVE_CAPSTONE_LECTURER;
+						break;
+					case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
+						nameStatusDeatil = Constant.STATUS_APPROVE_CAPSTONE_TRAINING;
+						break;
+					case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:
+						nameStatusDeatil = Constant.STATUS_APPROVE_CAPSTONE_HEAD;
+						break;
+					case Constant.STATUS_DOING_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_DOING_CAPSTONE;
+						break;
+					case Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE;
+						break;
+					case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE;
+						break;
+					case Constant.STATUS_REJECT_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_REJECT_CAPSTONE;
+						break;
+					case Constant.STATUS_CHANGING_NAME_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_CHANGING_NAME_CAPSTONE;
+						break;
+					case Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_CHANGING_NAME_BY_LECTURER_CAPSTONE;
+						break;
+					case Constant.STATUS_PENDING_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_PENDING_CAPSTONE;
+						break;
+					case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
+						nameStatusDeatil = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
+						break;
+					case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+						nameStatusDeatil = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
+						break;
+					default:
+						nameStatusDeatil = null;
+				}
+				if(!roleDB.equals(Constant.ROLE_LECTURERS)){
+					projectdetailnew.setNameStatus(nameStatusDeatil);
+				}
+				projectdetailList.add(projectdetailnew);
+			}
+
+			detail.setDetail(projectdetailList);
+
+			AuthorList.add(detail);
+		}
+		Resource file = storageService.load("CapstoneProjectList.xlsx");
+		String excelFilePath = file.getURI().getPath();
+		ExcelHelper.writeExcel(AuthorList,excelFilePath);
+
+		return "true";
+	}
+
+	@GetMapping("/list-project")
+	public String getProjects(Model model, Principal principal, @RequestParam("page") String page, @RequestParam("size") String size, @RequestParam("status") Integer status, @RequestParam("profession") Integer profession, @RequestParam("nameSearch") String nameSearch) {
+		//get username
+		//UserDetails loginedUser = (UserDetails) ((Authentication) principal).getPrincipal();
+		//return loginedUser.getUsername();
+		// get user logged
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		Users users = userService.findByEmail(principal.getName());
+		int roleid = -1;
+		String userid = "-1";
+		if (users !=  null) {
+			roleid = users.getRoleUser().get(0).getUserRoleKey().getRole().getId();
+			userid = users.getId();
+			model.addAttribute("loggedUser", userid);
+			model.addAttribute("role", roleid);
+		} else {
+			return "error/403Page";
+		}
+
+		switch(roleid) {
+			case 3:
+				userid = "-1";
+				break;
+			case 5:
+				userid = "-1";
+				break;
+		}
+		int currentPage = 1;
+		int pageSize = 10;
+		try {
+			currentPage = Integer.parseInt(page);
+			pageSize = Integer.parseInt(size);
+		} catch (Exception ex) {
+
+		}
+		List<Object[]> capstoneProjectPage = capstoneProjectService.getAllByUserId(userid,currentPage- 1,pageSize,status,profession,nameSearch);
+		Integer countCapstoneProjectPage = capstoneProjectService.countCapAll(userid,status,profession,nameSearch);
+		List<CapstoneProjectPagingBodyDTO> AuthorList = new ArrayList<CapstoneProjectPagingBodyDTO>();
+		for(Object[] obj : capstoneProjectPage){
+			CapstoneProjectPagingBodyDTO detail = new CapstoneProjectPagingBodyDTO();
+			detail.setId((Integer) obj[0]);
+			detail.setDescription_action((String) obj[1]);
+			detail.setDescription((String) obj[2]);
+			detail.setDocument((String) obj[3]);
+			detail.setName((String) obj[4]);
+			detail.setName_abbreviation((String) obj[5]);
+			detail.setName_lang_other((String) obj[6]);
+			detail.setName_vi((String) obj[7]);
+			detail.setProgram((String) obj[8]);
+			detail.setSpecialty((String) obj[9]);
+			detail.setProfession_id((Integer) obj[10]);
+			detail.setStatus_id((Integer) obj[11]);
+			detail.setNameChanging((String) obj[12]);
+			detail.setNameChangingVi((String) obj[13]);
+			String nameStatus = (String) obj[14];
+			switch (nameStatus) {
+				case Constant.STATUS_REGISTERING_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_REGISTERING_CAPSTONE;
+					break;
+				case Constant.STATUS_REGISTED_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_REGISTED_CAPSTONE;
+					break;
+				case Constant.STATUS_APPROVE_CAPSTONE_LUCTURER_DB:
+					nameStatus = Constant.STATUS_APPROVE_CAPSTONE_LECTURER;
+					break;
+				case Constant.STATUS_APPROVE_CAPSTONE_TRAINING_DB:
+					nameStatus = Constant.STATUS_APPROVE_CAPSTONE_TRAINING;
+					break;
+				case Constant.STATUS_APPROVE_CAPSTONE_HEAD_DB:
+					nameStatus = Constant.STATUS_APPROVE_CAPSTONE_HEAD;
+					break;
+				case Constant.STATUS_DOING_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_DOING_CAPSTONE;
+					break;
+				case Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_NOT_ELIGIBLE_DEFENCE_CAPSTONE;
+					break;
+				case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE;
+					break;
+				case Constant.STATUS_REJECT_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_REJECT_CAPSTONE;
+					break;
+				case Constant.STATUS_CHANGING_NAME_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_CHANGING_NAME_CAPSTONE;
+					break;
+				case Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_CHANGING_NAME_BY_LECTURER_CAPSTONE;
+					break;
+				case Constant.STATUS_PENDING_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_PENDING_CAPSTONE;
+					break;
+				case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
+					nameStatus = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
+					break;
+				case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
+					break;
 				default:
 					nameStatus = null;
 			}
@@ -273,7 +467,7 @@ public class CapstoneProjectController {
 			AuthorList.add(detail);
 		}
 		Pageable secondPageWithFiveElements = PageRequest.of(currentPage -1, pageSize, Sort.by("id").descending());
-		Page<CapstoneProjectPagingBodyDTO> list = new PageImpl<>(AuthorList, secondPageWithFiveElements, AuthorList.size());
+		Page<CapstoneProjectPagingBodyDTO> list = new PageImpl<>(AuthorList, secondPageWithFiveElements, countCapstoneProjectPage);
 		model.addAttribute("capstoneProjectPage", list);
 
 		int totalPages = list.getTotalPages();
@@ -283,6 +477,8 @@ public class CapstoneProjectController {
 		}
 		return "home/list-capstoneProject";
 	}
+
+
 
 	@GetMapping("/list-StudentProject")
 	public String listStudentProject(Model model, @RequestParam("projectid") String projectid,Principal principal) {
@@ -300,6 +496,8 @@ public class CapstoneProjectController {
 		CapstoneProjects currentProduct =capstoneProjectService
 				.findById(Integer.parseInt(projectid));
 		Integer countstudent = capstoneProjectService.getCountStudent(currentProduct.getId());
+		Status status = statusService.findStatusByCapstoneProject(currentProduct.getId());
+		int statusIdOld = status.getId();
 
 		if(countstudent == currentProduct.getProfession().getMaxMember()){
 			addStudent = 1;
@@ -321,7 +519,24 @@ public class CapstoneProjectController {
 			projectdetailnew.setPhone((String) objdetail[10]);
 			projectdetailnew.setUser_name((String) objdetail[11]);
 			projectdetailnew.setRoleid((Integer) objdetail[12]);
-			projectdetailnew.setRolename((String) objdetail[13]);
+			String roleDB = (String) objdetail[13];
+			switch (roleDB) {
+				case Constant.ROLE_HEAD_DB:
+					roleDB = Constant.ROLE_HEAD;
+					break;
+				case Constant.ROLE_LECTURERS_DB:
+					roleDB = Constant.ROLE_LECTURERS;
+					break;
+				case Constant.ROLE_STUDENT_MEMBER_DB:
+					roleDB = Constant.ROLE_STUDENT_MEMBER;
+					break;
+				case Constant.ROLE_STUDENT_LEADER_DB:
+					roleDB = Constant.ROLE_STUDENT_LEADER;
+					break;
+				default:
+					roleDB = "";
+			}
+			projectdetailnew.setRolename(roleDB);
 
 			String nameStatus = (String) objdetail[14];
 			switch (nameStatus) {
@@ -364,10 +579,15 @@ public class CapstoneProjectController {
 				case Constant.STATUS_PENDING_CAPSTONE_BY_HEAD_DB:
 					nameStatus = Constant.STATUS_PENDING_CAPSTONE_BY_HEAD;
 					break;
+				case Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE_DB:
+					nameStatus = Constant.STATUS_ELIGIBLE_DEFENCE_CAPSTONE_BY_LECTURE_CAPSTONE;
+					break;
 				default:
 					nameStatus = null;
 			}
-			projectdetailnew.setNameStatus(nameStatus);
+			if(!roleDB.equals(Constant.ROLE_LECTURERS)){
+				projectdetailnew.setNameStatus(nameStatus);
+			}
 			projectdetailList.add(projectdetailnew);
 		}
 		Pageable secondPageWithFiveElements = PageRequest.of(0, 100, Sort.by("id").descending());
@@ -377,9 +597,9 @@ public class CapstoneProjectController {
 		model.addAttribute("role", roleid);
 		model.addAttribute("id", projectid);
 
-		if((currentProduct.getStatus().getId() >= 5 && currentProduct.getStatus().getId() <= 8)
-				|| currentProduct.getStatus().getId() == 14
-				|| currentProduct.getStatus().getId() == 16 ){
+		if((statusIdOld >= 5 && statusIdOld <= 8)
+				|| statusIdOld == 14
+				|| statusIdOld == 16 ){
 			model.addAttribute("checkEditDetail", true);
 		}else {
 			model.addAttribute("checkEditDetail", false);
@@ -416,7 +636,12 @@ public class CapstoneProjectController {
 			statusId = 8;
 		}
 		if(roleid == 4){
-			statusId = 6;
+			if(currentProduct.getStatus().getId() == 5){
+				statusId = 6;
+			}else {
+				statusId = 17;
+			}
+
 		}
 		if(roleid == 5){
 			switch(currentProduct.getStatus().getId()) {
@@ -440,7 +665,8 @@ public class CapstoneProjectController {
 					break;
 			}
 		}
-		currentProduct.setStatus(statusService.getStatusById(statusId));
+		Status statusNew = statusService.getStatusById(statusId);
+		currentProduct.setStatus(statusNew);
 		currentProduct.setDesAction(des);
 		capstoneProjectDetailService.save(currentProduct);
 		Users user = capstoneProjectDetailService.getUserById(Integer.parseInt(id)).get(0);
@@ -516,15 +742,18 @@ public class CapstoneProjectController {
 					+ currentProduct.getId() + " has 2 supervisors, please reject a supervisors";
 		}
 		int statusId = -1;
-		int statusIdOld = currentProduct.getStatus().getId();
+		Status status = statusService.findStatusByCapstoneProject(currentProduct.getId());
+		int statusIdOld = status.getId();
 		if(roleid == 3){
 			statusId = 8;
 		}
 		if(roleid == 4){
 			if(statusIdOld == 13){
 				statusId = 15;
-			}else {
+			}else if(statusIdOld == 5) {
 				statusId = 6;
+			} else {
+				statusId = 17;
 			}
 		}
 		if(roleid == 5){
@@ -547,13 +776,17 @@ public class CapstoneProjectController {
 				case 15:
 					statusId = 9;
 					break;
+				case 17:
+					statusId = 11;
+					break;
 			}
 		}
 		if(statusIdOld == 15){
 			currentProduct.setName(currentProduct.getNameChanging());
 			currentProduct.setNameVi(currentProduct.getNameViChanging());
 		}
-		currentProduct.setStatus(statusService.getStatusById(statusId));
+		Status statusNew = statusService.getStatusById(statusId);
+		currentProduct.setStatus(statusNew);
 		currentProduct.setDesAction(des);
 		capstoneProjectService.saveRegisterProject(currentProduct);
 
@@ -601,15 +834,18 @@ public class CapstoneProjectController {
 			return "Not found project.";
 		}
 		int statusId = -1;
-		int statusIdOld = currentProduct.getStatus().getId();
+		Status status = statusService.findStatusByCapstoneProject(currentProduct.getId());
+		int statusIdOld = status.getId();
 		if(roleid == 3){
 			statusId = 16;
 		}
 		if(roleid == 4){
 			if(statusIdOld == 13){
 				statusId = 9;
-			}else {
+			}else if(statusIdOld == 5){
 				statusId = 14;
+			}else {
+				statusId = 10;
 			}
 		}
 		if(roleid == 5){
@@ -625,11 +861,13 @@ public class CapstoneProjectController {
 		if (statusIdOld == 13 || statusIdOld == 15) {
 			currentProduct.setName(null);
 			currentProduct.setNameVi(null);
-			currentProduct.setStatus(statusService.getStatusById(statusId));
+			Status statusNew = statusService.getStatusById(statusId);
+			currentProduct.setStatus(statusNew);
 			currentProduct.setDesAction(des);
 			capstoneProjectService.saveRegisterProject(currentProduct);
 		} else {
-			currentProduct.setStatus(statusService.getStatusById(statusId));
+			Status statusNew = statusService.getStatusById(statusId);
+			currentProduct.setStatus(statusNew);
 			currentProduct.setDesAction(des);
 			capstoneProjectService.saveRegisterProject(currentProduct);
 			List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
@@ -683,7 +921,8 @@ public class CapstoneProjectController {
 				statusId = 12;
 		}
 
-		currentProduct.setStatus(statusService.getStatusById(statusId));
+		Status statusNew = statusService.getStatusById(statusId);
+		currentProduct.setStatus(statusNew);
 		currentProduct.setDesAction(des);
 		capstoneProjectDetailService.save(currentProduct);
 
@@ -758,7 +997,8 @@ public class CapstoneProjectController {
 				break;
 
 			}else {
-				int statusIdOld = currentProduct.getStatus().getId();
+				Status statusOld = statusService.findStatusByCapstoneProject(currentProduct.getId());
+				int statusIdOld = statusOld.getId();
 				int statusId = -1;
 				if(roleid == 3){
 					statusId = 8;
@@ -766,8 +1006,10 @@ public class CapstoneProjectController {
 				if(roleid == 4){
 					if(statusIdOld == 13){
 						statusId = 15;
-					}else {
+					}else if(statusIdOld == 5) {
 						statusId = 6;
+					} else {
+						statusId = 17;
 					}
 
 				}
@@ -792,13 +1034,17 @@ public class CapstoneProjectController {
 						case 15:
 							statusId = 9;
 							break;
+						case 17:
+							statusId = 11;
+							break;
 					}
 				}
 				if(statusIdOld == 15){
 					currentProduct.setName(currentProduct.getNameChanging());
 					currentProduct.setNameVi(currentProduct.getNameViChanging());
 				}
-				currentProduct.setStatus(statusService.getStatusById(statusId));
+				Status statusNew = statusService.getStatusById(statusId);
+				currentProduct.setStatus(statusNew);
 				currentProduct.setDesAction(des);
 				boolean data = capstoneProjectService.saveRegisterProject(currentProduct);
 				if (!data){
@@ -869,15 +1115,18 @@ public class CapstoneProjectController {
 				return "Not found project.";
 			}
 			int statusId = -1;
-			int statusIdOld = currentProduct.getStatus().getId();
+			Status status = statusService.findStatusByCapstoneProject(currentProduct.getId());
+			int statusIdOld = status.getId();
 			if(roleid == 3){
 				statusId = 16;
 			}
 			if(roleid == 4){
 				if(statusIdOld == 13){
 					statusId = 9;
-				}else {
+				}else if(statusIdOld == 5){
 					statusId = 14;
+				}else {
+					statusId = 10;
 				}
 			}
 			if(roleid == 5){
@@ -893,11 +1142,13 @@ public class CapstoneProjectController {
 			if(statusIdOld == 13 || statusIdOld == 15){
 				currentProduct.setName(null);
 				currentProduct.setNameVi(null);
-				currentProduct.setStatus(statusService.getStatusById(statusId));
+				Status statusNew = statusService.getStatusById(statusId);
+				currentProduct.setStatus(statusNew);
 				currentProduct.setDesAction(des);
 				data = capstoneProjectService.saveRegisterProject(currentProduct);
 			} else {
-				currentProduct.setStatus(statusService.getStatusById(statusId));
+				Status statusNew = statusService.getStatusById(statusId);
+				currentProduct.setStatus(statusNew);
 				currentProduct.setDesAction(des);
 				capstoneProjectService.saveRegisterProject(currentProduct);
 				List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
@@ -1116,6 +1367,24 @@ public class CapstoneProjectController {
 			return "redirect:/login";
 		}
 		Users user = userService.findByEmail(principal.getName());
+		Date dateCurrent = new Date();
+		Date startRegister = user.getSemester().getStartRegisterCapstone();
+		Date endRegister = user.getSemester().getEndRegisterCapstone();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			startRegister = formatter.parse(startRegister.toString());
+			endRegister = formatter.parse(endRegister.toString());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		if(!startRegister.before(dateCurrent) || !endRegister.after(dateCurrent)) {
+			SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+			model.addAttribute("messageTime", "The start time is " + fmt.format(startRegister) + ", the end time is " + fmt.format(endRegister));
+			model.addAttribute("checkTime", false);
+		} else {
+			model.addAttribute("checkTime", true);
+		}
+		System.out.println(user.getSemester().getEndRegisterCapstone());
 		model.addAttribute("loggedUser", user);
 		List<Profession> professions = professionService.findAll();
 		model.addAttribute("professions", professions);

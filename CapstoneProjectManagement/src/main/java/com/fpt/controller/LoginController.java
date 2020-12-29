@@ -57,7 +57,19 @@ public class LoginController {
 	private StatisticsService statisticsService;
 
 	@RequestMapping(value = {"/", "/login"})
-	public String login(HttpServletRequest request) {
+	public String login(HttpServletRequest request,Model model, HttpServletResponse response) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null)
+			for (Cookie cookie : cookies) {
+				cookie.setValue("");
+				cookie.setPath("/");
+				cookie.setMaxAge(0);
+				response.addCookie(cookie);
+			}
+		String error = request.getParameter("error");
+		if(error != null){
+			model.addAttribute("error" ,"User was not found in the system");
+		}
 		return "login/loginPage";
 	}
 
@@ -83,9 +95,17 @@ public class LoginController {
 		Users appUser;
 		if (email != null) {
 			appUser = this.userService.findByEmail(email);
-			userDetail = googleUtils.buildUser(email, appUser);
+			if(appUser.getStatus().getName().equals(Constant.STATUS_INACTIVE_USER_DB)) {
+				return "redirect:/login?error=true";
+			}
+			try {
+				userDetail = googleUtils.buildUser(email, appUser);
+			} catch (Exception e) {
+				return "redirect:/login?error=true";
+			}
+
 		} else {
-			return "redirect:/login?google=error";
+			return "redirect:/login?error=true";
 		}
 		String userFullName;
 		if (appUser.getFirstName() != null && appUser.getLastName() != null) {
@@ -170,7 +190,7 @@ public class LoginController {
 			}
 			return "redirect:/forum";
 		} else {
-			return "redirect:/login?google=error";
+			return "redirect:/login?error=true";
 		}
 
 	}

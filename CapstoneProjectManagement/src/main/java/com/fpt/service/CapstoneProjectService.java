@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import com.fpt.dto.CapstoneProjectDTO;
+import com.fpt.entity.Users;
 import org.springframework.stereotype.Service;
 
 import com.fpt.entity.CapstoneProjects;
@@ -25,6 +26,11 @@ public interface CapstoneProjectService {
 
 	// get all
 	List<Object[]> getAllByUserId(String UserId, Integer PageIndex, Integer PageSize,Integer status,Integer profession,String nameSearch);
+
+	List<Object[]> getAllCap(Integer status, Integer profession, String nameSearch);
+
+	Integer countCapAll(String UserId,Integer status,Integer profession,String nameSearch);
+
 	CapstoneProjects findById(Integer id);
 	Integer getCountStudent (Integer id);
 	CapstoneProjects getCapstoneProjectByUserId(String userId);
@@ -40,4 +46,12 @@ public interface CapstoneProjectService {
 	boolean capstoneProjectChangingName(String nameC, String nameV, Integer id);
 
 	CapstoneProjects getCapstoneProjecRegistingtByUserId(String userId);
+
+	CapstoneProjects getCapstoneProjectRegistedByUserId(String userId);
+
+	List<Users> findUserByCapstoneProjectId(Integer id);
+
+	List<CapstoneProjects> findCapstoneProjectRegistedBySupervisorId(String userId);
+
+	boolean updateSupervisorsSubmitCapstone(Integer id);
 }

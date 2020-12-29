@@ -65,10 +65,26 @@
                     <li>
                         <a th:href="@{/lecturers}">
                             <i class="fas  fa-user"></i>
-                            <span class="bot-line"></span>Lectures</a>
+                            <span class="bot-line"></span>Supervisors</a>
+                    </li>
+                    <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                        th:if="${authority.getAuthority() == 'TrainingDepAuthen'}">
+                        <a href="#">
+                            <i class="fas  fa-briefcase"></i>
+                            <span class="bot-line"></span>Manage User</a>
+                        <ul class="header3-sub-list list-unstyled">
+                            <li >
+                                <a th:href="@{/ad/manageuser}">Create Users</a>
+                            </li>
+
+                            <li >
+                                <a  th:href="@{/student-managements}" >Manage Student</a>
+                            </li>
+                        </ul>
                     </li>
 
-                    <li class="has-sub">
+                    <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                        th:if="${authority.getAuthority() != 'HeadAuthen' && authority.getAuthority() != 'TrainingDepAuthen'}">
                         <a href="#">
                             <i class="fas  fa-bullhorn"></i>
                             <span class="bot-line"></span>Reports</a>
@@ -86,7 +102,33 @@
                             </li>
                         </ul>
                     </li>
-                     <li class="has-sub">
+
+                    <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                        th:if="${authority.getAuthority() == 'TrainingDepAuthen'}">
+                        <a href="#">
+                            <i class="fas  fa-bullhorn"></i>
+                            <span class="bot-line"></span>Notifications</a>
+                        <ul class="header3-sub-list list-unstyled">
+                            <li >
+                                <a th:if="${#request.userPrincipal != null}" th:href="@{/td/notification}">Create Notifications</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                        th:if="${authority.getAuthority() == 'TrainingDepAuthen'}">
+                        <a href="#">
+                            <i class="fas  fa-bookmark"></i>
+                            <span class="bot-line"></span>History</a>
+                        <ul class="header3-sub-list list-unstyled">
+                            <li >
+                                <a th:if="${#request.userPrincipal != null}" th:href="@{/history-records}">History List</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                         th:if="${authority.getAuthority() == 'MemberAuthen' || authority.getAuthority() == 'LeaderAuthen'}">
                        <a href="#">
                             <i class="fas fa-american-sign-language-interpreting"></i>
                             <span class="bot-line"></span>Model</a>
@@ -99,19 +141,20 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="has-sub">
+                    <li class="has-sub" th:each="authority : ${#authentication.getPrincipal().authorities}"
+                        th:if="${authority.getAuthority() == 'MemberAuthen'|| authority.getAuthority() == 'LeaderAuthen'}">
                        <a href="#">
                             <i class="fas fa-american-sign-language-interpreting"></i>
                             <span class="bot-line"></span>Guide</a>
                         <ul class="header3-sub-list list-unstyled">
                             <li >
-                                <a th:href="@{/createreport}" target="_blank">Create Report</a>
+                                <a th:href="@{/createreport}" target="_blank">Create Report Tutorial</a>
                             </li>
                             <li >
-                                <a th:href="@{/createcapstone}" target="_blank">Create Capstone</a>
+                                <a th:href="@{/createcapstone}" target="_blank">Create Capstone Tutorial</a>
                             </li>
                              <li >
-                                <a th:href="@{/jira}" target="_blank">Export Jira to Excel</a>
+                                <a th:href="@{/jira}" target="_blank">Export Jira to Excel Tutorial</a>
                             </li>
                         </ul>
                     </li>
@@ -147,6 +190,10 @@
                                     </h5>
                                     <span class="email"><h5 th:if="${#request.userPrincipal != null}" th:utext="${#request.userPrincipal.name}"></h5></span>
                                 </div>
+                            </div>
+                            <div class="account-dropdown__footer">
+                                <a th:if="${#request.userPrincipal != null}" th:href="@{/edit-user}">
+                                    <i class="fas fa-book"></i>Edit Profile</a>
                             </div>
                             <div class="account-dropdown__footer">
                                 <a th:if="${#request.userPrincipal != null}" th:href="@{/j_spring_security_logout}">

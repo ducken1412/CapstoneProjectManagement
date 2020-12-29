@@ -11,7 +11,6 @@
         <th:block th:include="home/_header"></th:block>
         <th:block th:include="home/_header-mobile"></th:block>
         <div class="main-content">
-
             <div class="section__content section__content--p30">
                 <div class="container-fluid">
                     <div class="row">
@@ -26,22 +25,12 @@
                             <div class="mb-2 au-card recent-report">
                                 <div class="table-data__tool">
                                     <div class="table-data__tool-left d-flex">
-                                        <div class="rs-select2--light rs-select2--md">
-                                            <select class="js-select2" name="property">
-                                                <option selected="selected">All Properties</option>
-                                                <option value="">Option 1</option>
-                                                <option value="">Option 2</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        <div class="rs-select2--light rs-select2--sm">
-                                            <select class="js-select2" name="time">
-                                                <option selected="selected">Today</option>
-                                                <option value="">3 Days</option>
-                                                <option value="">1 Week</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
+                                        <form class="au-form-icon--sm ml-2" id="search-form" action="" method="GET">
+                                            <input class="au-input--w300 au-input--style2" id="search-input" type="text" placeholder="Search for title...">
+                                            <button class="au-btn--submit2 mr-1 text-secondary" style="background-color: white !important;" type="submit">
+                                                <i class="fas fa-search text-secondary"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                     <div class="table-data__tool-right">
                                         <button
