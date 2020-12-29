@@ -38,10 +38,6 @@ public class DashboardController {
   
     @GetMapping("/db/dashboard")
     public String getDashboard(Model model, Principal principal){
-        if(principal == null) {
-            return "redirect:/login";
-        }
-
         try {
             //get sites and semesters
             List<Sites> sites = sitesService.findAll();
