@@ -31,6 +31,7 @@ public class NotificationDetailServiceTest {
 		when(notificationDetailRepository.getIdNotification(id)).thenReturn(list);
 		assertEquals(list, notificationDetailService.getIdNotification(id));
 	}
+	
 	@Test
 	public void testaddNotificationDetail() {
 		NotificationDetails notificationDetails = new NotificationDetails();

@@ -206,6 +206,7 @@ public class CapstoneProjectDetailServiceTest {
 	when(capstoneProjectDetailRepository.getStatusById(id)).thenReturn(list);
 	assertEquals(list, capstoneProjectDetailService.getStatusById(id));
 }
+	
 	@Test
 	public void testgetByProjectId() {
 	Integer id = 2;

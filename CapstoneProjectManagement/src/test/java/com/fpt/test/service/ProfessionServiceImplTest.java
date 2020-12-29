@@ -34,6 +34,7 @@ public class ProfessionServiceImplTest {
 		assertEquals(list, professionService.findAll());
 	}
 
+	
 	@Test
 	public void testfindByName() {
 		String name="khang";

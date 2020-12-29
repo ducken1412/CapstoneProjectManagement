@@ -109,6 +109,7 @@ public class HistoryRecordServiceTest {
 			assertEquals(list, historyRecordService.getDataRoleStudent());
 		
 }
+	
 	@Test
 	public void testgetDataRoleHead() {
 		 List<HistoryRecords> list= new ArrayList<HistoryRecords>();

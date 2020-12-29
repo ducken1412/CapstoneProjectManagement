@@ -40,6 +40,7 @@ public class FilesServiceTest {
 		when(filesRepository.save(file)).thenThrow(NullPointerException.class);
 		assertEquals(false, filesService.saveFiles(file));
 }*/
+	
 	@Test
 	public void testdeleteAllByPostId() {
 		Integer postId=2;

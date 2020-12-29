@@ -31,6 +31,7 @@ public class ListLecturersServiceTest {
 		List<Users> list= new ArrayList<>();
 		when(listlecturerRepository.findAll()).thenReturn(list);
 		assertEquals(list, listLecturersService.getAllLecturersDTOActive());
+	
 	}
 
 }

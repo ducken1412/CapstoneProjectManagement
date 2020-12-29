@@ -35,7 +35,8 @@ public class PostServiceTest {
 		when(postRepository.findById(id)).thenReturn(optionalpost);
 		assertEquals(post, postService.findById(id));
 	}
-    @Test
+    
+	@Test
 	public void testgetSemesterByUserId() {
 		 List<Posts> list = new ArrayList<>();
 		
