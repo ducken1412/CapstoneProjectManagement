@@ -72,7 +72,7 @@ public class GoogleUtils {
         }
 
 
-        List<String> roleNames = userRolesService.getRoleNamesByEmail(email);
+        List<String> roleNames = this.userRolesService.getRoleNamesByEmail(email);
 
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
         if (!roleNames.isEmpty()) {

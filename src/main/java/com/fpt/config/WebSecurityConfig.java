@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.failureUrl("/login?error=true")
 				.usernameParameter("username")
 				.passwordParameter("password");
-		http.authorizeRequests().and().logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/login?message=logout").deleteCookies("auth_code", "JSESSIONID").invalidateHttpSession(true);
+		http.authorizeRequests().and().logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/login?message=logout").deleteCookies("auth_code", "JSESSIONID").invalidateHttpSession(true).clearAuthentication(true);
 
 
 		http.sessionManagement().maximumSessions(1).expiredUrl("/login").and().invalidSessionUrl("/login");
