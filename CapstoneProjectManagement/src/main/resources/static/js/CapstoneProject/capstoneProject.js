@@ -577,7 +577,24 @@ $(document).on("click", "#btn-AddDetail", function () {
     $('body').removeClass('modal-open'); // For scroll run
     $('#confirm-View').modal('hide');
     $('#Add-ProjectDetail').modal('show');
-    
+    $('#member-table').remove();
+    $('#member').val('');
+    $('#memberTable').html(' <table class="members" id="member-table">\n' +
+        '                        <thead>\n' +
+        '                        <tr>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                        </tr>\n' +
+        '                        </thead>\n' +
+        '                        <tbody>\n' +
+        '                        </tbody>\n' +
+        '                    </table>');
+
+
     const capstoneProject =$('#idproject').val();
     let countCheck = 0;
     $(".btn-ok").click(function () {
@@ -631,6 +648,22 @@ $(document).on("click", "#btn-EditSupervisors", function () {
     $('body').removeClass('modal-open'); // For scroll run
     $('#confirm-View').modal('hide');
     $('#Edit-Supervisors').modal('show');
+    $('#supervisors-table').remove();
+    $('#supervisors').val('');
+    $('#supervisorsTable').html(' <table class="members" id="supervisors-table">\n' +
+        '                        <thead>\n' +
+        '                        <tr>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                            <th></th>\n' +
+        '                        </tr>\n' +
+        '                        </thead>\n' +
+        '                        <tbody>\n' +
+        '                        </tbody>\n' +
+        '                    </table>');
     
     const capstoneProject =$('#idproject').val();
     let countCheck = 0;
