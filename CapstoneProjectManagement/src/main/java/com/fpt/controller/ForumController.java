@@ -166,7 +166,9 @@ public class ForumController {
             records.setPost(post);
             if (postService.save(post)) {
                 recordService.save(records);
-                return String.valueOf(dto.getId());
+                output.put("hasError", false);
+                output.put("data", String.valueOf(post.getId()));
+                return new Gson().toJson(output);
             } else {
                 return "error";
             }
