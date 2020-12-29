@@ -52,7 +52,7 @@ public class CapstoneProjectController {
 	//KienBT4 add capstone start
 	@GetMapping("/ad/capstoneproject")
 	public String forum(Model model , Principal principal) {
-
+		System.out.println(principal);
 		if(principal == null) {
 			return "redirect:/login";
 		}
