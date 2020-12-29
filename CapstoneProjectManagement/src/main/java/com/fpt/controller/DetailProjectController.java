@@ -345,17 +345,32 @@ public class DetailProjectController {
     }
 
     @RequestMapping(value = "/sendtd", method = RequestMethod.POST)
-    public String editReport(@RequestParam("projectId") Integer id, Model model, Principal principal) {
+    public String editReport(@RequestParam("projectId") Integer id, Model model, RedirectAttributes redirectAttributes, Principal principal) {
         if (principal == null) {
             return "redirect:/login";
         }
-        try {
-            capstoneProjectService.updateStatusCapstoneProjectSendTD(id);
-            capstoneProjectService.deleteUserNotSubmitCapstone(id);
-            //capstoneProjectService.updateSupervisorsSubmitCapstone(id);
-        } catch (Exception e) {
-
+        List<CapstoneProjectDetails> details = capstoneProjectDetailService.getUserByCapstioneID(id);
+        boolean checkSupervisior = false;
+        for (CapstoneProjectDetails c : details){
+            if(c.getUser().getRoleUser().get(0).getUserRoleKey().getRole().getName().equals(Constant.ROLE_LECTURERS_DB)){
+                checkSupervisior = true;
+                break;
+            }
         }
+        if(checkSupervisior){
+            try {
+                capstoneProjectService.updateStatusCapstoneProjectSendTD(id);
+                capstoneProjectService.deleteUserNotSubmitCapstone(id);
+                //capstoneProjectService.updateSupervisorsSubmitCapstone(id);
+            } catch (Exception e) {
+
+            }
+        }
+        else {
+            redirectAttributes.addFlashAttribute("notificationError", "The group must have at least one Supervisor, please go to the Supervisor page!");
+            return "redirect:/project-detail/" + id;
+        }
+
         return "redirect:/project-detail/" + id;
     }
 

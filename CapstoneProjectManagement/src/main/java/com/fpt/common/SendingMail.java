@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 
 @Component
 public class SendingMail {
@@ -41,6 +43,17 @@ public class SendingMail {
         // hard coded a file path
         //FileSystemResource file = new FileSystemResource(new File("path/android.png"));
         //helper.addAttachment("my_photo.png", new ClassPathResource("android.png"));
+        sendingMail.javaMailSender.send(msg);
+    }
+
+    public static void sendEmailGroup(List<String> sendTo, String subject, String content) throws MessagingException {
+        MimeMessage msg = sendingMail.javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+        for (String email : sendTo) {
+            helper.addTo(email);
+        }
+        helper.setSubject(subject);
+        helper.setText(content, true);
         sendingMail.javaMailSender.send(msg);
     }
 }
