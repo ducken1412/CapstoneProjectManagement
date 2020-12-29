@@ -45,6 +45,21 @@
 
 	</div>
 	<th:block th:include="home/_script"></th:block>
+	<script>
+		$(document).ready(function (e) {
+			deleteCookies();
+		});
+		function deleteCookies(){
+			var cookies = document.cookie.split(";");
+			for (var i = 0; i < cookies.length; i++){
+				var spcook =  cookies[i].split("=");
+				document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;";
+			}
+		}
+		$('.btn-google').click(function (e) {
+			deleteCookies();
+		})
+	</script>
 </body>
 </html>
 
