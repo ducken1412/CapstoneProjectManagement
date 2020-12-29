@@ -46,7 +46,9 @@ public class ForumController {
     private FilesService filesService;
     @GetMapping("/forum")
     public String forum(Principal principal) {
-        System.out.println(principal);
+        if(principal == null) {
+			return "redirect:/login";
+		}
         return "home/forum";
     }
 

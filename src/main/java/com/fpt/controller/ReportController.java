@@ -385,6 +385,7 @@ public class ReportController {
         notificationsService.addNotification(notifications);
         List<NotificationDetails> detailsList = new ArrayList<>();
         NotificationDetails notificationDetails = null;
+        List<String> usersList = new ArrayList<>();
         for (Users users : userRecipients) {
             if (!users.equals(user)) {
                 notificationDetails = new NotificationDetails();
@@ -392,14 +393,15 @@ public class ReportController {
                 notificationDetails.setNotification(notifications);
                 notificationDetails.setUser(users);
                 detailsList.add(notificationDetails);
-                try {
-                    SendingMail.sendEmail(users.getEmail(), "[FPTU Capstone Project] " + title, content);
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                }
+               usersList.add(users.getEmail());
             }
         }
         notificationDetailService.saveAllNotificationDetails(detailsList);
+        try {
+            SendingMail.sendEmailGroup(usersList, "[FPTU Capstone Project] " + title, content);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
         return "redirect:report/" + reportId;
     }
 

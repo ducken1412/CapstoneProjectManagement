@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Constraint;
 import javax.validation.Valid;
 
+import com.fpt.common.SendingMail;
 import com.fpt.dto.*;
 import com.fpt.entity.*;
 import com.fpt.service.*;
@@ -250,7 +251,7 @@ public class CapstoneProjectController {
 					nameStatus = null;
 			}
 			detail.setNameStatus(nameStatus);
-			detail.setSubjectCode(String.valueOf(obj[15] + "_" + obj[0]));
+			detail.setSubjectCode(String.valueOf(obj[15].toString() + obj[0].toString()));
 			Integer countstudent = capstoneProjectService.getCountStudent((Integer) obj[0]);
 			detail.setCountDetail(countstudent);
 
@@ -460,7 +461,7 @@ public class CapstoneProjectController {
 					nameStatus = null;
 			}
 			detail.setNameStatus(nameStatus);
-			detail.setSubjectCode(String.valueOf(obj[15] + "_" + obj[0]));
+			detail.setSubjectCode(String.valueOf(obj[15].toString() + obj[0].toString()));
 			Integer countstudent = capstoneProjectService.getCountStudent((Integer) obj[0]);
 			detail.setCountDetail(countstudent);
 			detail.setDetail(null);
@@ -694,7 +695,7 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/update-Status")
-	public String updateStatus( @RequestParam("id") String id, @RequestParam("des") String des,Principal principal) {
+	public String updateStatus( @RequestParam("id") String id, @RequestParam("des") String des, HttpServletRequest request, Principal principal) {
 
 		if(principal == null) {
 			return "redirect:/login";
@@ -801,6 +802,57 @@ public class CapstoneProjectController {
 				}
 			}
 		}
+		String baseUrl = String.format("%s://%s:%d/", request.getScheme(), request.getServerName(), request.getServerPort());
+		String title = "V/v: Thông tin khóa luận";
+		String supervisiorName ="";
+		String supervisiorMail = "";
+		String content ="";
+		List<String> sendMailGroup = new ArrayList<>();
+		if(statusIdOld != 15 && statusId == 9){
+			for(CapstoneProjectDetails items : detail){
+				Users userdetail = capstoneProjectDetailService.getUserById(items.getId()).get(0);
+				if(!userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4)){
+					sendMailGroup.add(userdetail.getEmail());
+				}else{
+					supervisiorName = userdetail.getFirstName() + " " + userdetail.getLastName();
+					supervisiorMail = userdetail.getEmail();
+				}
+			}
+			content = "Chào em," + "<br>" +
+					"Gửi em thông tin khóa luận vào kỳ tới,"+
+					"<br>" +
+					"Tên nhóm: " + currentProduct.getProfession().getSubjectCode() + currentProduct.getId() +
+					"<br>" +
+					"Tên đồ án-TA: " + currentProduct.getName() +
+					"<br>" +
+					"Tên đồ án-TV: " + currentProduct.getNameVi() +
+					"<br>" +
+					"Tên viết tắt: " + currentProduct.getNameAbbreviation() +
+					"<br>" +
+					"Giảng viên hướng dẫn: " + supervisiorName +
+					"<br>" +
+					"Email giảng viên hướng dẫn: " + supervisiorMail +
+					"<br>" +
+					"Thông tin chi tiết click link sau: " + " Click " + "<a href=\"" + baseUrl + "project-detail/" + currentProduct.getId() + "\">view project information.</a>";
+		}
+
+
+		if(roleid == 5 &&statusIdOld == 15){
+			title = "V/v: Thông tin khóa luận";
+			content = "Chào em," + "<br>" +
+					"Nhóm đồ án của em đổi tên  thành công  ";
+			for(CapstoneProjectDetails items : detail){
+				Users userdetail = capstoneProjectDetailService.getUserById(items.getId()).get(0);
+				if(!userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4)){
+					sendMailGroup.add(userdetail.getEmail());
+				}
+			}
+		}
+		try {
+			SendingMail.sendEmailGroup(sendMailGroup, "[FPTU Capstone Project] " + title, content);
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
 
 		Date date = new Date();
 		HistoryRecords history = new HistoryRecords();
@@ -814,7 +866,7 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/reject")
-	public String reject( @RequestParam("id") String id, @RequestParam("des") String des,Principal principal) {
+	public String reject( @RequestParam("id") String id, @RequestParam("des") String des,HttpServletRequest request, Principal principal) {
 		if(principal == null) {
 			return "redirect:/login";
 		}
@@ -876,6 +928,39 @@ public class CapstoneProjectController {
 				item.setDesAction(des);
 				capstoneProjectDetailService.save(item);
 			}
+		}
+		String baseUrl = String.format("%s://%s:%d/", request.getScheme(), request.getServerName(), request.getServerPort());
+		String title = "";
+		String content = "";
+		List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
+		List<String> sendMailGroup = new ArrayList<>();
+		if(statusId == 12){
+			title = "V/v: Thông tin khóa luận";
+			content = "Chào em," + "<br>" +
+					"Nhóm của em đã bị reject do "+ des;
+			for(CapstoneProjectDetails items : detail){
+				Users userdetail = capstoneProjectDetailService.getUserById(items.getId()).get(0);
+				if(!userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4)){
+					sendMailGroup.add(userdetail.getEmail());
+				}
+			}
+		}
+
+		if((roleid == 4 &&statusIdOld == 13) || (roleid == 5 &&statusIdOld == 15)){
+			title = "V/v: Thông tin khóa luận";
+			content = "Chào em," + "<br>" +
+					"Nhóm đồ án của em đổi tên không thành công do "+ des;
+			for(CapstoneProjectDetails items : detail){
+				Users userdetail = capstoneProjectDetailService.getUserById(items.getId()).get(0);
+				if(!userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4)){
+					sendMailGroup.add(userdetail.getEmail());
+				}
+			}
+		}
+		try {
+			SendingMail.sendEmailGroup(sendMailGroup, "[FPTU Capstone Project] " + title, content);
+		} catch (Exception ex) {
+			System.out.println(ex);
 		}
 		Date date = new Date();
 		HistoryRecords history = new HistoryRecords();
@@ -939,7 +1024,7 @@ public class CapstoneProjectController {
 
 	@ResponseBody
 	@GetMapping("/update-StatusList")
-	public String updateStatusList( @RequestParam("id") String id, @RequestParam("des") String des,Principal principal) {
+	public String updateStatusList( @RequestParam("id") String id, @RequestParam("des") String des, HttpServletRequest request, Principal principal) {
 		if(principal == null) {
 			return "redirect:/login";
 		}
@@ -1062,6 +1147,59 @@ public class CapstoneProjectController {
 					}
 				}
 
+				String baseUrl = String.format("%s://%s:%d/", request.getScheme(), request.getServerName(), request.getServerPort());
+				String title = "V/v: Thông tin khóa luận";
+				String supervisiorName ="";
+				String supervisiorMail = "";
+				String content ="";
+				List<String> sendMailGroup = new ArrayList<>();
+				if(statusIdOld != 15 && statusId == 9){
+					for(CapstoneProjectDetails items : detail){
+						Users userdetail = capstoneProjectDetailService.getUserById(items.getId()).get(0);
+						if(!userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4)){
+							sendMailGroup.add(userdetail.getEmail());
+						}else{
+							supervisiorName = userdetail.getFirstName() + " " + userdetail.getLastName();
+							supervisiorMail = userdetail.getEmail();
+						}
+					}
+					content = "Chào em," + "<br>" +
+							"Gửi em thông tin khóa luận vào kỳ tới,"+
+							"<br>" +
+							"Tên nhóm: " + currentProduct.getProfession().getSubjectCode() + currentProduct.getId() +
+							"<br>" +
+							"Tên đồ án-TA: " + currentProduct.getName() +
+							"<br>" +
+							"Tên đồ án-TV: " + currentProduct.getNameVi() +
+							"<br>" +
+							"Tên viết tắt: " + currentProduct.getNameAbbreviation() +
+							"<br>" +
+							"Giảng viên hướng dẫn: " + supervisiorName +
+							"<br>" +
+							"Email giảng viên hướng dẫn: " + supervisiorMail +
+							"<br>" +
+							"Thông tin chi tiết click link sau: " + " Click " + "<a href=\"" + baseUrl + "project-detail/" + currentProduct.getId() + "\">view project information.</a>";
+				}
+
+
+				if(roleid == 5 &&statusIdOld == 15){
+					title = "V/v: Thông tin khóa luận";
+					content = "Chào em," + "<br>" +
+							"Nhóm đồ án của em đổi tên  thành công  ";
+					for(CapstoneProjectDetails items : detail){
+						Users userdetail = capstoneProjectDetailService.getUserById(items.getId()).get(0);
+						if(!userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4)){
+							sendMailGroup.add(userdetail.getEmail());
+						}
+					}
+				}
+
+				try {
+					SendingMail.sendEmailGroup(sendMailGroup, "[FPTU Capstone Project] " + title, content);
+				} catch (Exception ex) {
+					System.out.println(ex);
+				}
+
 				Date date = new Date();
 				HistoryRecords history = new HistoryRecords();
 				history.setContent("Update Status Capstone Project");
@@ -1155,11 +1293,32 @@ public class CapstoneProjectController {
 				for(CapstoneProjectDetails item : detail) {
 					item.setStatus(statusService.getStatusById(statusId));
 					item.setDesAction(des);
-					capstoneProjectDetailService.save(item);
+					data = capstoneProjectDetailService.save(item);
 				}
 			}
 			if (!data){
 				return "error";
+			}
+
+			String title = "";
+			String content = "";
+			List<CapstoneProjectDetails> detail = currentProduct.getCapstoneProjectDetails();
+			List<String> sendMailGroup = new ArrayList<>();
+			if(statusId == 12){
+				title = "V/v: Thông tin khóa luận";
+				content = "Chào em," + "<br>" +
+						"Nhóm của em đã bị reject do "+ des;
+				for(CapstoneProjectDetails items : detail){
+					Users userdetail = capstoneProjectDetailService.getUserById(items.getId()).get(0);
+					if(!userdetail.getRoleUser().get(0).getUserRoleKey().getRole().getId().equals(4)){
+						sendMailGroup.add(userdetail.getEmail());
+					}
+				}
+			}
+			try {
+				SendingMail.sendEmailGroup(sendMailGroup, "[FPTU Capstone Project] " + title, content);
+			} catch (Exception ex) {
+				System.out.println(ex);
 			}
 
 			Date date = new Date();
