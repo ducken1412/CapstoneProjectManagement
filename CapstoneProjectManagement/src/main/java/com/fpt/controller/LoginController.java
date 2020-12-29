@@ -58,6 +58,7 @@ public class LoginController {
 
 	@RequestMapping(value = {"/", "/login"})
 	public String login(HttpServletRequest request,Model model, HttpServletResponse response) {
+		SecurityContextHolder.clearContext();
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null)
 			for (Cookie cookie : cookies) {
@@ -95,11 +96,11 @@ public class LoginController {
 		Users appUser;
 		if (email != null) {
 			appUser = this.userService.findByEmail(email);
-			if(appUser.getStatus().getName().equals(Constant.STATUS_INACTIVE_USER_DB)) {
-				return "redirect:/login?error=true";
-			}
 			try {
 				userDetail = googleUtils.buildUser(email, appUser);
+				if(appUser.getStatus().getName().equals(Constant.STATUS_INACTIVE_USER_DB)) {
+					return "redirect:/login?error=true";
+				}
 			} catch (Exception e) {
 				return "redirect:/login?error=true";
 			}
@@ -141,6 +142,7 @@ public class LoginController {
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
 					userDetail.getAuthorities());
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+			authentication.setAuthenticated(true);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			List<String> roles = userRoleService.getRoleNamesByUserId(appUser.getId());
 			for (String role : roles) {
