@@ -129,10 +129,10 @@ public class ReportController {
                 }
                 model.addAttribute("checkReport", false);
             }
-            if(user.getRoleUser().get(0).getUserRoleKey().getRole().getName().equals("student_member")
-                    && user.getCapstoneProjectDetails().get(0).getStatus().getName().equals(Constant.STATUS_DOING_CAPSTONE_DB)
-                    && user.getCapstoneProjectDetails().get(0).getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_CAPSTONE_DB)
-                    && user.getCapstoneProjectDetails().get(0).getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB)
+            if((user.getRoleUser().get(0).getUserRoleKey().getRole().getName().equals("student_member"))
+                    && (user.getCapstoneProjectDetails().get(0).getStatus().getName().equals(Constant.STATUS_DOING_CAPSTONE_DB)
+                    || user.getCapstoneProjectDetails().get(0).getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_CAPSTONE_DB)
+                    || user.getCapstoneProjectDetails().get(0).getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB))
             ){
                 model.addAttribute("checkReportStudent", true);
             }
