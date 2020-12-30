@@ -160,6 +160,8 @@ public class ManageUserController {
 
                     if(manageUserForm.getRole() == 2){
                         status = statusService.getStatusById(manageUserForm.getStatus());
+                    }else {
+                        status = statusService.getStatusById(18);
                     }
                     List<Users> usersListTemp = new ArrayList<>();
 
