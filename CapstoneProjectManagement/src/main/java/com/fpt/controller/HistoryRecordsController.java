@@ -19,7 +19,7 @@ public class HistoryRecordsController {
     @Autowired
     private HistoryRecordService historyRecordService;
 
-    @RequestMapping(value = "/history-records", method = RequestMethod.GET)
+    @RequestMapping(value = "td/history-records", method = RequestMethod.GET)
     public String loadHistory(Model model, Integer role, Principal principal) {
         if (principal == null) {
             return "redirect:/login";
@@ -36,7 +36,7 @@ public class HistoryRecordsController {
         return "home/history-records";
     }
 
-    @RequestMapping(value = "/history-records", method = RequestMethod.POST)
+    @RequestMapping(value = "history-records", method = RequestMethod.POST)
     public String loadDataTableToTheDropdown(Model model, Integer role, Integer type, Principal principal) {
         if (principal == null) {
             return "redirect:/login";

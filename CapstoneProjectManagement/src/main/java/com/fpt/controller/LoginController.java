@@ -129,6 +129,9 @@ public class LoginController {
 			Cookie cookieDetail = new Cookie("idDetail",
 					appUser.getCapstoneProjectDetails().get(0).getCapstoneProject().getId().toString() );
 			response.addCookie(cookieDetail);
+		} else {
+			Cookie cookieDetail = new Cookie("idDetail","null" );
+			response.addCookie(cookieDetail);
 		}
 
 		if (appUser.getImage() != null) {

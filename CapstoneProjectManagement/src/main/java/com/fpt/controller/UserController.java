@@ -176,7 +176,7 @@ public class UserController {
 		}
 
 
-    @RequestMapping(value = "/student-managements", method = RequestMethod.GET)
+    @RequestMapping(value = "td/student-managements", method = RequestMethod.GET)
     public String studentManagment(Model model, Principal principal) {
         if (principal == null) {
             return "redirect:/login";
@@ -190,7 +190,7 @@ public class UserController {
         return "home/student-management";
     }
 
-    @RequestMapping(value = "/student-management", method = RequestMethod.GET)
+    @RequestMapping(value = "td/student-management", method = RequestMethod.GET)
     public String loadDataTableToTheDropdown(Model model, @RequestParam(required = false, name = "type") String typeParam, @RequestParam(required = false, name = "site") String site,
                                              @RequestParam(required = false, name = "semester") String semester, Principal principal) {
         if (principal == null) {

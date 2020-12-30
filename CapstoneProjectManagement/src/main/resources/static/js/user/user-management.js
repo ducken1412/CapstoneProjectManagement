@@ -14,7 +14,7 @@ function getSearch() {
         maxSize: 50,
     });
     $.ajax({
-        url: "/student-management?site=" + site + "&semester=" + semester + "&type=" + type,
+        url: "/td/student-management?site=" + site + "&semester=" + semester + "&type=" + type,
         type: "GET",
 
         success: function (data) {
@@ -38,7 +38,7 @@ function getSearchWhenActive() {
     var type = $('#dr-type').val().toString();
 
     $.ajax({
-        url: "/student-management?site=" + site + "&semester=" + semester + "&type=" + type,
+        url: "/td/student-management?site=" + site + "&semester=" + semester + "&type=" + type,
         type: "GET",
 
         success: function (data) {
