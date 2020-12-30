@@ -674,7 +674,7 @@ $(document).on("click", "#btn-EditSupervisors", function () {
         }
         $("#loading-EditSupervisors").attr("hidden", false);
 
-        let id = getJsonMember();
+        let id = getJsonSup();
         $.ajax({
             url: "/editSupervisors?id=" + id + "&capstoneProject=" + capstoneProject,
             type: "GET",
@@ -683,6 +683,7 @@ $(document).on("click", "#btn-EditSupervisors", function () {
                 $('.modal-backdrop').hide(); // for black background
                 $('body').removeClass('modal-open'); // For scroll run
                 $('#Edit-Supervisors').modal('hide');
+                $('#btn-add-supervisors').prop('disabled', false);
                 loadProjectDetail(capstoneProject);
                 if(data === "Create Project Detail successfully"){
                     $.showNotification({
@@ -716,8 +717,7 @@ $(document).on("click", "#btn-EditSupervisors", function () {
 function getDataMember() {
     let ary = [];
     var member = '';
-
-    $('.attrTable tr').each(function (a, b) {
+    $('.attrTableMember tr').each(function (a, b) {
         let name = $('.attrName', b).text();
         let value = $('.attrValue', b).find(":selected").text();
         ary.push({username: name, role: value});
@@ -729,9 +729,10 @@ function getDataMember() {
 function getJsonMember() {
     var member = '';
     var i = 0;
-    var count = 0;
-    i = $('.attrTable tr').length;
-    $('.attrTable tr').each(function (a, b) {
+    var count = 1;
+    debugger;
+    i = $('.attrTableMember tr').length;
+    $('.attrTableMember tr').each(function (a, b) {
         
         let name = $('.attrName', b).text();
         if(name != ""){
@@ -746,6 +747,41 @@ function getJsonMember() {
     });
     return member;
 }
+
+function getDataSup() {
+    let ary = [];
+    var member = '';
+    $('.attrTableSup tr').each(function (a, b) {
+        let name = $('.attrName', b).text();
+        let value = $('.attrValue', b).find(":selected").text();
+        ary.push({username: name, role: value});
+        member = member + '{ "name":"'+name+'" , "value":"'+value+'" },'
+
+    });
+    return ary;
+}
+function getJsonSup() {
+    var member = '';
+    var i = 0;
+    var count = 0;
+    debugger;
+    i = $('.attrTableSup tr').length;
+    $('.attrTableSup tr').each(function (a, b) {
+
+        let name = $('.attrName', b).text();
+        if(name != ""){
+            if(count == (i-1)){
+                member = member +',' + name ;
+            }
+            else {
+                member = member + name;
+            }
+            ++count;
+        }
+    });
+    return member;
+}
+
 function getFormData(capstoneProject){
 
     var formData = new FormData();
