@@ -27,7 +27,10 @@
                                  style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkUpdateSuccess  == true}">
                                 User successfully updated!!!!
                                 <br>
-                                <a th:href="@{'/student-managements'}">Click here</a> to view detail page.
+                                <div th:if="${checkClickDetail  == true}">
+                                    <a th:href="@{'/td/student-managements'}">Click here</a> to view detail page.
+                                </div>
+
                             </div>
                             <div class="alert alert-danger mx-4" role="alert"
                                  style="width: auto; margin-left: 0px; margin-top: 20px;" th:if="${checkUpdateError == true}">
