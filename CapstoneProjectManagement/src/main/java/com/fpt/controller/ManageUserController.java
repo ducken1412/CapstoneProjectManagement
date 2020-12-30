@@ -154,7 +154,7 @@ public class ManageUserController {
                         return "admin/manage-user";
                     }
                     List<Users> usersList = ExcelHelper.excelToUsers(sheet);
-                    Status status = new Status();
+                    Status status = null;
                     Sites sites = sitesService.findById(manageUserForm.getSite());
                     List<Roles> roleList = roleService.findAll();
 
@@ -224,6 +224,11 @@ public class ManageUserController {
         }
         model.addAttribute("checkUpdateError", false);
         model.addAttribute("checkUpdateSuccess", true);
+        if(manageUserForm.getRole() == 2) {
+            model.addAttribute("checkClickDetail", true);
+        }else {
+            model.addAttribute("checkClickDetail", false);
+        }
         return "admin/manage-user";
     }
 
