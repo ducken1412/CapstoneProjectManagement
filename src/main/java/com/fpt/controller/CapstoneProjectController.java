@@ -1355,7 +1355,13 @@ public class CapstoneProjectController {
 			return "Over student to can approve project.";
 		}
 		String[] st = id.split(",");
+
 		for(int i = 0;i < st.length; i++ ) {
+
+			if(st[i].equals("")){
+				continue;
+			}
+
 			CapstoneProjectDetails projects = new CapstoneProjectDetails();
 			int statusId = 9;
 			projects.setDesAction("");
