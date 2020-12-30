@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Constraint;
 import javax.validation.Valid;
 
@@ -1603,7 +1604,7 @@ public class CapstoneProjectController {
 	@ResponseBody
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerProject(@Valid @RequestBody CapstoneProjectDTO dataForm, BindingResult result,
-								  Model model, Principal principal, HttpServletRequest request){
+								  Model model, Principal principal, HttpServletRequest request, HttpServletResponse response){
 		if(principal == null) {
 			return "redirect:/login";
 		}
@@ -1617,7 +1618,7 @@ public class CapstoneProjectController {
 			output.put("errors", errors);
 			return new Gson().toJson(output);
 		}
-		return capstoneProjectService.registerProject(dataForm,principal,baseUrl);
+		return capstoneProjectService.registerProject(dataForm,principal,baseUrl,response);
 	}
 
 	@GetMapping("/get-member-form")

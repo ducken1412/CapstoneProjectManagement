@@ -16,7 +16,7 @@ public interface TaskDetailsRepository extends JpaRepository<TaskDetails, Intege
     @Query(value = "SELECT t FROM TaskDetails t WHERE t.capstoneProject.id = ?1 AND t.week = ?2")
     List<TaskDetails> findTaskDetailsByCapstoneProjectId(Integer projectId, int week);
 
-    @Query(value = "SELECT DISTINCT(t.week) FROM TaskDetails t")
+    @Query(value = "SELECT DISTINCT(t.week) FROM TaskDetails t ORDER BY t.week ASC")
     List<Integer> findDistinctByWeek();
 
     @Transactional

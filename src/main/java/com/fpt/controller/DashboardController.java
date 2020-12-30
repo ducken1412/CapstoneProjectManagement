@@ -131,7 +131,7 @@ public class DashboardController {
         Users users = userService.findByEmail(principal.getName());
         //phan trang
         int currentPage = 1;
-        int pageSize = 10;
+        int pageSize = 9;
         try {
             currentPage = Integer.parseInt(page);
             pageSize = Integer.parseInt(size);

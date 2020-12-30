@@ -392,7 +392,7 @@ public class DetailProjectController {
             diff = Duration.between(d2.atStartOfDay(), d1.atStartOfDay());
             long diffDays = diff.toDays();
             long currentWeek = diffDays / 7;
-            if (currentWeek > 8) {
+            if (currentWeek > 15) {
                 return "redirect:/403";
             }
 

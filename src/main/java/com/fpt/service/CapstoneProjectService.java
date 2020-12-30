@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.fpt.entity.CapstoneProjects;
 import com.fpt.entity.Status;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface CapstoneProjectService {
 	List<String> getCapstoneProjectNameByUserId(String UserId);
 
@@ -22,7 +24,7 @@ public interface CapstoneProjectService {
 	//get all project
 	List<CapstoneProjects> getAllProject();
 
-	String registerProject(CapstoneProjectDTO dataForm, Principal principal, String baseUrl);
+	String registerProject(CapstoneProjectDTO dataForm, Principal principal, String baseUrl, HttpServletResponse response);
 
 	// get all
 	List<Object[]> getAllByUserId(String UserId, Integer PageIndex, Integer PageSize,Integer status,Integer profession,String nameSearch);

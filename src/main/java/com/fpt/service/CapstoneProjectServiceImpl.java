@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.management.Query;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Service
@@ -95,7 +97,7 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public String registerProject(CapstoneProjectDTO dataForm, Principal principal, String baseUrl) {
+    public String registerProject(CapstoneProjectDTO dataForm, Principal principal, String baseUrl, HttpServletResponse response) {
 
         Map<String, Object> output = new HashMap<>();
         List<String> errors = new ArrayList<>();
@@ -231,6 +233,9 @@ public class CapstoneProjectServiceImpl implements CapstoneProjectService {
         notificationDetailService.saveAllNotificationDetails(detailsList);
         output.put("hasError", false);
         output.put("message", "Project registration is successful.");
+        Cookie cookieDetail = new Cookie("idDetail",
+               projects.getId().toString() );
+        response.addCookie(cookieDetail);
         return new Gson().toJson(output);
     }
 

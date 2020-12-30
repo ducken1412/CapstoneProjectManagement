@@ -78,7 +78,7 @@
                             </li>
 
                             <li >
-                                <a  th:href="@{/student-managements}" >Manage Student</a>
+                                <a  th:href="@{/td/student-managements}" >Manage Student</a>
                             </li>
                         </ul>
                     </li>
@@ -122,7 +122,7 @@
                             <span class="bot-line"></span>History</a>
                         <ul class="header3-sub-list list-unstyled">
                             <li >
-                                <a th:if="${#request.userPrincipal != null}" th:href="@{/history-records}">History List</a>
+                                <a th:if="${#request.userPrincipal != null}" th:href="@{/td/history-records}">History List</a>
                             </li>
                         </ul>
                     </li>
@@ -244,7 +244,8 @@
             }
 
             if (c.indexOf(idDetail) == 0) {
-                if(c.substring(idDetail.length, c.length).length != 0){
+                debugger;
+                if(c.substring(idDetail.length, c.length).length != 0 && c.substring(idDetail.length, c.length) !== 'null'){
                     $("#linkCap").attr("href","/project-detail/"+c.substring(idDetail.length, c.length));
                 }else {
                     $("#linkCap").css('display','none');
