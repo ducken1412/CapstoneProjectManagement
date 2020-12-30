@@ -361,7 +361,7 @@ public class DetailProjectController {
             try {
                 capstoneProjectService.updateStatusCapstoneProjectSendTD(id);
                 capstoneProjectService.deleteUserNotSubmitCapstone(id);
-                //capstoneProjectService.updateSupervisorsSubmitCapstone(id);
+                capstoneProjectService.updateSupervisorsSubmitCapstone(id);
             } catch (Exception e) {
 
             }
