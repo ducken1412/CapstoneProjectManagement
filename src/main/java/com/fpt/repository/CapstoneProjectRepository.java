@@ -57,7 +57,8 @@ public interface CapstoneProjectRepository extends JpaRepository<CapstoneProject
 	List<Integer> countCapAll(String name,Integer status,Integer profession,String nameSearch);
 
 
-	@Query("SELECT count(ru.id) FROM CapstoneProjectDetails ru WHERE ru.capstoneProject.id = ?1 and ru.user.roleUser.size <> 4")
+	@Query(value = "SELECT COUNT(capd.id) FROM `capstone_project_details` capd \n" +
+			"INNER JOIN `users` u ON capd.`user_id` = u.`id` INNER JOIN `user_roles` ur ON ur.`user_id` = u.`id` WHERE capd.`capstone_project_id` = ?1 AND ur.`role_id` <> 4",nativeQuery = true)
 	Integer getCountStudent(Integer id);
 	//kienbt4 add code capstone end
 	@Query("SELECT ru.capstoneProject FROM CapstoneProjectDetails ru WHERE ru.user.id = ?1")
