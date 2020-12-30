@@ -166,7 +166,11 @@ public class LoginController {
 						Cookie cookie1 = new Cookie("currentWeek", String.valueOf(currentWeek));
 						response.addCookie(cookie1);
 						Integer maxWeekStatistic = statisticsService.findMaxWeekByCap(capstoneProjects.getId());
-						if(currentWeek >= 2){
+						if(currentWeek >= 2 && capstoneProjects != null &&
+								(capstoneProjects.getStatus().getName().equals(Constant.STATUS_DOING_CAPSTONE_DB) ||
+								 capstoneProjects.getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_CAPSTONE_DB) ||
+								 capstoneProjects.getStatus().getName().equals(Constant.STATUS_CHANGING_NAME_BY_LECTURES_CAPSTONE_DB) )
+						){
 							if(maxWeekStatistic == null){
 								Cookie cookieCheckReport = new Cookie("checkReported", "false");
 								response.addCookie(cookieCheckReport);
