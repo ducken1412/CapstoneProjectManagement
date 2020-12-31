@@ -145,15 +145,19 @@ public class NotificationsController {
             records.setCreatedDate(date);
             recordService.save(records);
             success = true;
-        }
-
-        Users userReceiver =  userService.findById(dto.getUser_id().trim());
-        if(userReceiver == null){
-            redirectAttributes.addFlashAttribute("notification", "Recipient does not exist!");
+            redirectAttributes.addFlashAttribute("notificationsuccess", "Posted successfully!");
             return "redirect:/td/notification";
         }
+        Users userReceiver = null;
+        if (dto.getUser_id() != null) {
+             userReceiver =  userService.findById(dto.getUser_id().trim());
+
+        }
+
+
+
         //add notifitcation for one user
-        if (!dto.getUser_id().trim().isEmpty()) {
+        if (dto.getUser_id() != null) {
             NotificationDetails notificationDetails = new NotificationDetails();
             notifications.setType("private");
             notifications.setTitle(dto.getTitle());
@@ -174,31 +178,45 @@ public class NotificationsController {
             records.setCreatedDate(date);
             recordService.save(records);
             success = true;
+            redirectAttributes.addFlashAttribute("notificationsuccess", "Posted successfully!");
+            return "redirect:/td/notification";
         }
 
         if (dto.getProject_id() != null) {
-            notifications.setTitle(dto.getTitle());
-            notifications.setType("private");
-            notifications.setContent(dto.getContent());
-            notifications.setCreated_date(date);
-            notificationsService.addNotification(notifications);
-            int project_id = dto.getProject_id();
-            int noti_id = notifications.getId();
-            List<CapstoneProjectDetails> capstoneProjectDetails = capstoneProjectDetailService.getDetailByCapstoneProjectId(project_id);
-            NotificationDetails notificationDetails;
-            for (int i = 0; i < capstoneProjectDetails.size(); i++) {
-                notificationDetails = new NotificationDetails();
-                notificationDetails.setNotification(notificationsService.getOneNoification(noti_id));
-                notificationDetails.setUser(capstoneProjectDetails.get(i).getUser());
-                notificationDetails.setType("private");
-                notificationDetailService.addNotificationDetail(notificationDetails);
-                records.setUser(user_login);
-                records.setContent("Create notificaton");
-                records.setNotification(notifications);
-                records.setCreatedDate(date);
-                recordService.save(records);
+            try {
+                notifications.setTitle(dto.getTitle());
+                notifications.setType("private");
+                notifications.setContent(dto.getContent());
+                notifications.setCreated_date(date);
+                notificationsService.addNotification(notifications);
+                int project_id = dto.getProject_id();
+                int noti_id = notifications.getId();
+                List<CapstoneProjectDetails> capstoneProjectDetails = capstoneProjectDetailService.getDetailByCapstoneProjectId(project_id);
+                NotificationDetails notificationDetails;
+                for (int i = 0; i < capstoneProjectDetails.size(); i++) {
+                    notificationDetails = new NotificationDetails();
+                    notificationDetails.setNotification(notificationsService.getOneNoification(noti_id));
+                    notificationDetails.setUser(capstoneProjectDetails.get(i).getUser());
+                    notificationDetails.setType("private");
+                    notificationDetailService.addNotificationDetail(notificationDetails);
+                    records.setUser(user_login);
+                    records.setContent("Create notificaton");
+                    records.setNotification(notifications);
+                    records.setCreatedDate(date);
+                    recordService.save(records);
+                }
+                success = true;
+                redirectAttributes.addFlashAttribute("notificationsuccess", "Posted successfully!");
+                return "redirect:/td/notification";
+            }catch (Exception e){
+                redirectAttributes.addFlashAttribute("notification", "Team has not any member!");
+                return "redirect:/td/notification";
             }
-            success = true;
+
+        }
+        if(userReceiver == null){
+            redirectAttributes.addFlashAttribute("notification", "Recipient does not exist!");
+            return "redirect:/td/notification";
         }
         if (success == true) {
             redirectAttributes.addFlashAttribute("notificationsuccess", "Posted successfully!");

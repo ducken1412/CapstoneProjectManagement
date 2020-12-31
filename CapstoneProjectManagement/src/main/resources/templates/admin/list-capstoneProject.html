@@ -3,7 +3,7 @@
     <div class="row" style="margin-left: 10px; margin-right: 10px;">
         <!-- Team member -->
         <div class="col-xs-12 col-sm-6 col-md-4" th:each="list_statistic : ${statisticsPage}">
-            <div class="card" style="height: 405px;">
+            <div class="card" style="height: 405px; width: 380px;" >
                 <div class="card-header" >
                     <strong class="card-title"> <p th:text="${list_statistic.capstoneProject.name}"></p>
                         <small th:if="${list_statistic.timeTrackingCurrent < 50}">
